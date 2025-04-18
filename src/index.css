@@ -1,0 +1,111 @@
+@import url("https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap");
+@import "tailwindcss";
+
+@theme {
+	--default-font-family: "Lexend", sans-serif;
+	--color-meko-dark-blue-transparent: oklch(16.27% 0.173 264.01); /* #000F47 */
+	--color-meko-blue-transparent-1: oklch(16.27% 0.173 264.01 / 15%);
+	--color-meko-blue-transparent-2: oklch(16.27% 0.173 264.01 / 20%);
+	--color-meko-blue-transparent-3: oklch(16.27% 0.173 264.01 / 30%);
+
+	--color-meko-blue-light-1: oklch(75.73% 0.179 231.53); /* #28C2FC */
+	--color-meko-blue-light-3: oklch(88.56% 0.116 226.82); /* #7EDAFD */
+	--color-meko-blue-flat: oklch(52.95% 0.177 243.54); /* #006EB6 */
+	--color-meko-blue-darker: oklch(39.43% 0.156 248.11); /* #0040B6 */
+
+	--color-meko-orange: oklch(67.52% 0.192 56.39); /* #FF7F32 */
+	--color-meko-white-blue: oklch(95.73% 0.051 210.54); /* #D4F3FE */
+	--color-meko-green: oklch(64.65% 0.194 146.71); /* #00AF42 */
+
+	--color-meko-red: oklch(51.69% 0.213 28.72); /* #D32828 */
+	--color-meko-red-2: oklch(64.79% 0.184 29.04); /* #F34B4B */
+	--color-meko-red-transparent: oklch(21.35% 0.11 27.83 / 20%); /* #780101 */
+
+	--text-h1: 3rem;
+	--text-h1--font-weight: 700;
+	--text-h2: 1.75rem;
+	--text-h2--font-weight: 800;
+	--text-h3: 1.25rem;
+	--text-h3--font-weight: 800;
+}
+
+html,
+body,
+#root {
+	width: 100%;
+	height: 100%;
+	background: linear-gradient(180deg, #006eb6 0%, #0040b6 100%);
+}
+
+#root::after {
+	content: "";
+	position: absolute;
+	z-index: 1;
+	top: 0;
+	right: 0;
+	left: 50%;
+	width: 70%;
+	height: 47%;
+	transform: translateX(-50%) translateY(-50%);
+	background: radial-gradient(
+		50% 50% at 50% 50%,
+		#0abeff 0%,
+		rgba(10, 190, 255, 0) 100%
+	);
+}
+
+#root::after::after {
+	content: "";
+	height: 10%;
+}
+
+#root::before {
+	content: "";
+	position: absolute;
+	z-index: 1;
+	bottom: 0;
+	right: 0;
+	left: 0;
+	width: 100%;
+	height: 50%;
+	/* Pointer events none so it doesn't interfere with content below */
+	pointer-events: none;
+
+	/* Grid properties */
+	--grid-size: 50px; /* Adjust spacing of the grid lines */
+	/* --- CHANGE: Increased line opacity from 0.1 to 0.3 --- */
+	--grid-line-color: rgba(255, 255, 255, 0.3); /* Light color for grid lines */
+	--grid-line-width: 1px; /* Thickness of grid lines */
+
+	/* Create the grid using repeating linear gradients */
+	background-image: repeating-linear-gradient(
+			to right,
+			var(--grid-line-color) 0,
+			var(--grid-line-color) var(--grid-line-width),
+			transparent var(--grid-line-width),
+			transparent var(--grid-size)
+		),
+		repeating-linear-gradient(
+			to bottom,
+			var(--grid-line-color) 0,
+			var(--grid-line-color) var(--grid-line-width),
+			transparent var(--grid-line-width),
+			transparent var(--grid-size)
+		);
+	background-size: var(--grid-size) var(--grid-size); /* Set the size of the repeating pattern */
+
+	/* Apply the mask to make the grid fade */
+	/* The gradient makes it visible at the bottom (0deg) and transparent at the top */
+	/* --- CHANGE: Increased mask start opacity from 0.1 to 0.5 --- */
+	mask-image: linear-gradient(
+		0deg,
+		rgba(217, 217, 217, 0.5) 0%,
+		rgba(115, 115, 115, 0) 100%
+	);
+	/* Vendor prefix for compatibility */
+	-webkit-mask-image: linear-gradient(
+		0deg,
+		rgba(217, 217, 217, 0.5) 0%,
+		rgba(115, 115, 115, 0) 100%
+	);
+}
