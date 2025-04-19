@@ -1,17 +1,22 @@
 import {
+	LessonCard,
+	LessonCardAction,
+	LessonCardContent,
+	LessonCardImage,
+} from "@/app/lesson";
+import { ModuleCard } from "@/app/modules";
+import {
 	Button,
-	Checkbox,
-	Input,
-	Label,
 	Typography,
-	Radio,
+	Sample,
+	Section,
+	Status,
+	NavItem,
 } from "@/components";
-import { Tag } from "@/components/atoms/actions/tag";
-import { PropsWithChildren, ReactNode, useState } from "react";
+import { LastActivityIcon } from "@/components/atoms/icons/last-activity-icon";
 import { useTranslation } from "react-i18next";
 
 export function UiPage() {
-	const [v, setV] = useState(false);
 	const { t, i18n } = useTranslation();
 	const toggleLang = () => {
 		i18n.changeLanguage(i18n.language === "en" ? "fr" : "en");
@@ -28,177 +33,116 @@ export function UiPage() {
 				</div>
 			</div>
 			<Section title="Typography">
-				<div className="grid gap-4">
-					{typographyData.map((item) => (
-						<LabeledSection label={item.id} key={`t-${item.id}`}>
-							<Typography
-								key={`t-${item.id}`}
-								as={item.as}
-								className={item.className}
-							>
-								{item.text}
-							</Typography>
-						</LabeledSection>
-					))}
-				</div>
+				<Sample.Typography />
 			</Section>
 			<Section title="Button">
-				<div className="max-w-5xl grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-					{btnData.map((btn) => (
-						<LabeledSection label={btn.id} key={`b-${btn.id}`}>
-							<Button variant={btn.variant} size={btn.size}>
-								{btn.label}
-							</Button>
-						</LabeledSection>
-					))}
-				</div>
+				<Sample.Button />
 			</Section>
 			<Section title="Input">
-				<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-					{(["normal", "small"] as const).map((size, index) =>
-						[true, false].map((showLabel, lindex) =>
-							[
-								{ placeholder: "placeholder", error: false },
-								{ placeholder: "", error: false },
-								{ placeholder: "", error: true },
-							].map((p, jindex) => (
-								<LabeledSection
-									label={`${size}-${showLabel && "show label"} ${
-										p.placeholder
-									} ${p.error && "error"}`}
-									key={`input-${index}-${lindex}-${jindex}`}
-								>
-									{showLabel && <Label uppercase>Identifiant</Label>}
-									<Input
-										size={size}
-										placeholder={p.placeholder}
-										error={p.error}
-									/>
-								</LabeledSection>
-							))
-						)
-					)}
-				</div>
+				<Sample.Input />
 			</Section>
-			<Section title="Checkbox & Radio">
-				<div className="grid grid-cols-6 gap-12">
-					<LabeledSection label="Radio">
-						<Radio
-							name="myOptions"
-							value="option1"
-							checked={v}
-							onChange={(e) => setV(e.target.checked)}
-							aria-label="Option 1" // Essential for accessibility
-						/>
-					</LabeledSection>
-					<LabeledSection label="Checkbox">
-						<Checkbox aria-label="test" />
-					</LabeledSection>
-					<LabeledSection label="Checkbox + label">
-						<Label>
-							<Checkbox aria-label="test" />
-							<Typography className="">Checkbox label</Typography>
-						</Label>
-					</LabeledSection>
-				</div>
+			<Section title="Checkbox & Radio & Switch">
+				<Sample.CheckboxNRadioNSwitch />
 			</Section>
-			<Section title="Switch">
-				<div className=""></div>
+			<Section title="Nav Item">
+				<div className="">
+					<NavItem label="Last activity" icon={<LastActivityIcon />} />
+				</div>
 			</Section>
 			<Section title="Tag">
-				<div className="grid grid-cols-2 lg:grid-cols-4">
-					<LabeledSection label="tag">
-						<Tag>
-							<Typography weight="bold" as="p" styleCase="uppercase">
-								Les 7 derniers jours
-							</Typography>
-						</Tag>
-					</LabeledSection>
-					<LabeledSection label="tag selected">
-						<Tag selected>
-							<Typography weight="bold" as="p" styleCase="uppercase">
-								Les 7 derniers jours
-							</Typography>
-						</Tag>
-					</LabeledSection>
+				<Sample.Tag />
+			</Section>
+			<Section title="Otp Input">
+				<Sample.OtpInput />
+			</Section>
+			<Section title="Status">
+				<Sample.Status />
+			</Section>
+			<Section title="Menu-Option">
+				<Sample.MenuOption />
+			</Section>
+			<Section title="Menu">
+				<Sample.Menu />
+			</Section>
+			<Section title="Card">
+				<Sample.Card />
+			</Section>
+			<Section title="Table">
+				<Sample.Table.Root />
+			</Section>
+			<Section title="Popover + menu">
+				<Sample.Popover />
+			</Section>
+			<Section title="Dialog">
+				<Sample.Dialog />
+			</Section>
+			<Section title="module card">
+				<div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+					<ModuleCard
+						src="https://picsum.photos/200"
+						altSrc="Avatar"
+						title="Les maitres des additions"
+						status="completed"
+					/>
+					<ModuleCard
+						src="https://picsum.photos/200"
+						altSrc="Avatar"
+						title="Les maitres des additions"
+						status="inProgress"
+						progress="2/5"
+					/>
+					<ModuleCard
+						src="https://picsum.photos/200"
+						altSrc="Avatar"
+						title="Les maitres des additions"
+						status="toDiscover"
+					/>
+					<ModuleCard
+						src="https://picsum.photos/200"
+						altSrc="Avatar"
+						title="Les maitres des additions"
+						status="blocked"
+					/>
 				</div>
 			</Section>
+			<Section title="lesson card">
+				<div className="">
+					<LessonCard>
+						<LessonCardImage
+							src="https://picsum.photos/200"
+							alt="avatar perso"
+						/>
+						<LessonCardContent className="h-[149px] ">
+							<div className="mb-2.5">
+								<Typography
+									weight="bold"
+									variant="p4"
+									styleCase="uppercase"
+								>
+									Addition Express
+								</Typography>
+							</div>
+							<Status status="completed" size="small" />
+							<div className="pt-2">
+								<div>
+									<Typography color="primary">Module :</Typography>
+									<Typography>Les maitres des additions</Typography>
+								</div>
+								<div>
+									<Typography color="primary">Leçon :</Typography>
+									<Typography>1</Typography>
+								</div>
+							</div>
+						</LessonCardContent>
+						<LessonCardAction className=" ">
+							<Button size="small" color="secondary">
+								Lancer
+							</Button>
+						</LessonCardAction>
+					</LessonCard>
+				</div>
+			</Section>
+			<div className="h-[40vh]"></div>
 		</div>
 	);
 }
-
-function Section({ title, children }: { title: string; children: ReactNode }) {
-	return (
-		<div className="grid grid-cols-6 lg:grid-cols-12">
-			<div className="col-span-2 mb-12">
-				<Typography as="h3">{title}</Typography>
-			</div>
-			<div className="col-span-10">{children}</div>
-		</div>
-	);
-}
-
-function LabeledSection({
-	label,
-	children,
-}: PropsWithChildren<{ label: string }>) {
-	return (
-		<div className="relative my-4 group">
-			<div className="opacity-20 group-hover:opacity-100 absolute -top-8 left-0 text-stone-200 underline">
-				{label}
-			</div>
-			{children}
-		</div>
-	);
-}
-
-const typographyData = [
-	{ id: "H1", as: "h1" as const, text: "Apprendre les maths en s'amusant !" },
-	{ id: "H2", as: "h2" as const, text: "Création compte parent" },
-	{ id: "H3", as: "h3" as const, text: "Abonnement en cours" },
-	{
-		id: "Paragraph",
-		as: "p" as const,
-		text: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facere natus accusamus laborum maxime, excepturi fugit illo amet! Sunt officiis accusamus, cumque dolorem molestiae suscipit recusandae rem tempore totam a! Commodi?",
-		className: "max-w-2xl",
-	},
-];
-
-const btnData = [
-	{
-		id: "primary normal",
-		variant: "primary" as const,
-		size: "normal" as const,
-		label: "Essai gratuit de 7 jours",
-	},
-	{
-		id: "secondary normal",
-		variant: "secondary" as const,
-		size: "normal" as const,
-		label: "Essai gratuit de 7 jours",
-	},
-	{
-		id: "disable normal",
-		variant: "disable" as const,
-		size: "normal" as const,
-		label: "Essai gratuit de 7 jours",
-	},
-	{
-		id: "primary small",
-		variant: "primary" as const,
-		size: "small" as const,
-		label: "Essai gratuit de 7 jours",
-	},
-	{
-		id: "secondary small",
-		variant: "secondary" as const,
-		size: "small" as const,
-		label: "Essai gratuit de 7 jours",
-	},
-	{
-		id: "disable small",
-		variant: "disable" as const,
-		size: "small" as const,
-		label: "Essai gratuit de 7 jours",
-	},
-];

@@ -2,7 +2,7 @@ import { cn } from "@/utils/style"; // Assuming you have this utility
 import { useId, ChangeEvent, ComponentPropsWithoutRef } from "react";
 
 // Define the props for the Radio component
-interface RadioProps
+interface Props
 	extends Omit<
 		ComponentPropsWithoutRef<"input">,
 		"type" | "onChange" | "checked" | "id" | "className" // Omit props handled specifically
@@ -15,7 +15,6 @@ interface RadioProps
 	name: string;
 	// 'value' identifies this specific radio button's value when selected
 	value: string | number;
-
 	id?: string; // Allow passing an external ID
 	className?: string; // ClassName for the wrapper label element
 	"aria-label": string; // Enforce aria-label for accessibility as there's no visible label
@@ -32,7 +31,7 @@ export function Radio({
 	className,
 	"aria-label": ariaLabel, // Destructure aria-label
 	...rest // Pass remaining input props
-}: RadioProps) {
+}: Props) {
 	const internalId = useId();
 	const id = externalId ?? internalId;
 

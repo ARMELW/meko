@@ -6,10 +6,12 @@ export const typographyVariant = cva("", {
 	variants: {
 		variant: {
 			h1: "text-h1",
-			h2: "text-3xl font-extrabold uppercase",
-			h3: "text-xl font-extrabold uppercase",
+			h2: "text-3xl",
+			h3: "text-xl",
+			p4: "text-lg",
 			p: "text-base",
 			span: "text-base",
+			small: "text-sm",
 		},
 		align: {
 			left: "text-left",
@@ -20,7 +22,7 @@ export const typographyVariant = cva("", {
 		color: {
 			default: "text-white",
 			primary: "text-meko-blue-light-1",
-			secondary: "text-secondary",
+			secondary: "text-meko-blue-light-3",
 			error: "text-destructive",
 		},
 		shadow: {
@@ -42,6 +44,6 @@ export const typographyVariant = cva("", {
 		color: "default",
 		shadow: "none",
 		weight: "default",
-		styleCase: "default"
+		styleCase: "default",
 	},
 });

@@ -24,7 +24,7 @@ import { ChooseSubscriptionPage } from "@/pages/private/subscription/choose-subs
 import { SubscriptionSettingPage } from "@/pages/private/subscription/subscription-setting-page";
 import { PaymentPage } from "@/pages/private/subscription/payment-page";
 import { NotFoundPage } from "@/pages/not-found-page";
-import { ProtectedLayout } from "./components/ProtectedLayout";
+import { ProtectedLayout } from "./components/protected-layout";
 import { UiPage } from "@/pages/ui-page";
 
 const privateRoutes: RouteObject[] = [

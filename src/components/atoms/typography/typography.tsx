@@ -10,7 +10,8 @@ interface Props extends Omit<ComponentProps<"p">, "color">, TypoVariantProps {
 }
 
 export function Typography({
-	as = "p",
+	as = "span",
+	variant,
 	children,
 	className,
 	align,
@@ -38,13 +39,19 @@ export function Typography({
 		}
 		return shadow;
 	}, [as, shadow]);
+	const _variant = useMemo(() => {
+		if (["small", "p4"].find((v) => v === variant)) {
+			return variant;
+		}
+		return as;
+	}, [as, variant]);
 
 	return (
 		<Component
 			className={clsx(
 				className,
 				typographyVariant({
-					variant: as,
+					variant: _variant,
 					align,
 					color,
 					shadow: _shadow,
