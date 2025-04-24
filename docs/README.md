@@ -2,37 +2,46 @@
 
 ## 🏗️ **Introduction**
 
--  **Nom du projet** : Meko Academy Front Office
--  **Description** : -
--  **Version actuelle** : v1.0.0
--  **Date de début** : -
--  **Objectif** : Ce document décrit la structure, les normes de codage, et les bonnes pratiques du projet pour assurer une maintenabilité et une collaboration efficaces.
+-  **Project Name**: Meko Academy Front Office
+-  **Description**: -
+-  **Current Version**: v0.5.0
+-  **Start Date**: -
+-  **Objective**: This document outlines the structure, coding standards, and best practices of the project to ensure maintainability and effective collaboration.
 
-## Ressources
+## Resources
 
--  Flow Miro : [https://miro.com/app/board/uXjVILKzzrE=/?share_link_id=2980115032](https://miro.com/app/board/uXjVILKzzrE=/?share_link_id=2980115032)
+-  Miro Flow: [https://miro.com/app/board/uXjVILKzzrE=/?share_link_id=2980115032](https://miro.com/app/board/uXjVILKzzrE=/?share_link_id=2980115032)
 
 ## 🚀 [Installation](./core/INSTALL.md)
 
--  Prérequis
--  Instructions d'installation
+-  Prerequisites
+-  Installation Instructions
 
-## 📂 [Structure du projet](./core/PROJECT_STRUCTURE.md)
+## 📂 [Project Structure](./core/PROJECT_STRUCTURE.md)
 
--  Principes de structure
--  Typage
+-  Structure Principles
+-  Typing
 
-## 🧩 [Normes de codage](./core/RULES.md)
+## 🧩 [Coding Standards](./core/RULES.md)
 
--  Nom des fichiers et dossiers
--  Structure des composants
--  ESLint et Prettier
--  Gestion des états
--  Import Absolue
+-  File and Folder Naming
+-  Component Structure
+-  ESLint and Prettier
+-  State Management
+-  Absolute Imports
 
-## 🧪 [Flux des imports et des dépendances](./core/FLOW.md)
+## ✨ [Design system](./core/DESIGN_SYSTEM.md)
 
--  Dépendance des Composants
--  Gestion des Hooks et de la Logique Réutilisable
--  Utilisation de Modules pour la Maintenabilité
+
+
+## 🚩 [Services](./core/SERVICES.md)
+
+See the [Services](./../src/services) folder.
+
+## 🧪 [Import and Dependency Flow](./core/FLOW.md)
+
+-  Component Dependency
+-  Managing Hooks and Reusable Logic
+-  Using Modules for Maintainability
 -  Conclusion
+

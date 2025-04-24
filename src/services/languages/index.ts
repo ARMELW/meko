@@ -7,12 +7,8 @@ import fr from "./res/fr";
 
 export const defaultNS = "ns1";
 export const resources = {
-	en: {
-		translation: en,
-	},
-	fr: {
-		translation: fr,
-	},
+	en: { translation: en },
+	fr: { translation: fr },
 } as const;
 
 i18n

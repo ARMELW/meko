@@ -1,26 +1,24 @@
 ## 🚀 **Installation**
 
-### Prérequis
-- **Node.js** : version 20 ou plus récent
-- **Npm** : version 0.11 ou plus récent
-- **Dépendances** :
-  ```bash
-  npm install
-  ```
-
-### Installation du projet
-1. Installez les dépendances :
+### Prerequisites
+- **Node.js**: version 20 or newer
+- **Npm**: version 0.11 or newer
+- **Dependencies**:
    ```bash
    npm install
    ```
-2. Modifiez les variables d'environnement par rapport au mode dans `./env`
-   ```
-   VITE_APP_SERVER_URL=https://api.example.com
-   ```
 
-2. Lancez l’application :
-   ```
-   npm run dev
-   ```
+### Project installation
+1. Install the dependencies:
+    ```bash
+    npm install
+    ```
+2. Update the environment variables according to the mode in `./env`:
+    ```
+    VITE_APP_SERVER_URL=https://api.example.com
+    ```
 
-   
+3. Start the application:
+    ```
+    npm run dev
+    ```

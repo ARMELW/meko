@@ -1,4 +1,4 @@
-import CONFIG from "@/config";
+import { CONFIG } from "@/config";
 import { createApiInstance, createPrivateApiInstance } from "./helper";
 
 export const http = {

@@ -1,3 +1,13 @@
+import { validateConfig } from "./schema";
+
+const env = import.meta.env;
 export const CONFIG = {
-	title: import.meta.env.VITE_APP_TITLE,
+	APP_MODE: env.VITE_APP_MODE,
+	APP_SERVER_URL: env.VITE_APP_SERVER_URL,
+	SESSION_KEY: env.VITE_APP_STORE_SESSION_KEY,
 };
+
+export async function checkConfig() {
+	console.log(`Config loaded in mode : ${CONFIG.APP_MODE}`);
+	await validateConfig(CONFIG);
+}

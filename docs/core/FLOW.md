@@ -1,33 +1,31 @@
-## 🧪 **Flux des imports et des dépendances**
+## 🧪 **Flow of imports and dependencies**
 
-Ce flux illustre comment les dépendances circulent dans notre code, ce qui est crucial pour garantir la maintenabilité de l'application.
+This flow illustrates how dependencies circulate in our code, which is crucial for ensuring the maintainability of the application.
 
 <img src="./../assets/flow.jpg" />
 
+> It is important to note that all `shared` files can be imported into `src/app` and `src/features`, but not the other way around.
 
-> Il est important de noter que tous les fichiers `shared`  peuvent être importés dans `src/app` et `src/features`, mais pas l'inverse.
+Let's take the example of the `LoginPage` screen, located in the `src/app/pages` folder. This screen is imported into `src/routes`.
 
-Prenons l'exemple de l'écran `LoginPage`, situé dans le dossier `src/app/pages`. Cet écran est importé dans `src/routes`. 
+### Component dependency
 
-### Dépendance des Composants
+The `LoginPage` screen may require other components:
 
-La page `LoginPage` peut avoir besoin d'autres composants :
+- **Screen-specific components**: If these components are only used by `Login`, they can remain in the same file as long as it does not impact readability. Otherwise, move them to `/src/app/auth/components`.
 
-- **Composants spécifiques à l'écran** : Si ces composants ne sont utilisés que par `Login`, ils peuvent rester dans le même fichier, tant que cela n'impacte pas la lisibilité. Sinon, déplacez-les vers `/src/app/auth/components`.
+- **Reusable components**: If these components are needed in other screens, it is better to place them in the `/src/components` folder.
 
-- **Composants réutilisés** : Si ces composants sont nécessaires dans d'autres écrans, il est préférable de les placer dans le dossier `/src/components`.
+### Managing hooks and reusable logic
 
-### Gestion des Hooks et de la Logique Réutilisable
+Similarly, if certain logic is used in multiple parts of the application, we can create a hook in `/src/hooks`. Otherwise, move it to `/src/app/auth/hooks` for better organization.
 
-De la même manière, si certaines logiques sont utilisées dans plusieurs parties de l'application, nous pouvons créer un hook dans `/src/hooks`. Sinon, déplacez-le vers `/src/app/auth/hooks` pour une meilleure organisation.
+### Using modules for maintainability
 
-### Utilisation de Modules pour la Maintenabilité
-
-Pour améliorer la maintenabilité, nous adoptons la notion de modules. Lorsqu'un refactoring est effectué dans un module, tant que l'API des fonctions ou composants exportés reste inchangée, nous minimisons le risque de régression.
+To improve maintainability, we adopt the concept of modules. When refactoring is performed within a module, as long as the API of the exported functions or components remains unchanged, we minimize the risk of regression.
 
 ### Conclusion
 
-En suivant ces pratiques, nous nous assurons que notre application reste modulaire, maintenable et facilement extensible.
-
+By following these practices, we ensure that our application remains modular, maintainable, and easily extensible.
 
 ---
