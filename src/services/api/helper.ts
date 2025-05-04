@@ -1,4 +1,6 @@
+import { authClient } from "@/config/auth";
 import axios, { AxiosError, AxiosHeaders } from "axios";
+import { redirect } from "react-router";
 
 interface CreateApiInstanceArgs {
 	baseURL: string;
@@ -13,15 +15,29 @@ export function createApiInstance({ baseURL, headers }: CreateApiInstanceArgs) {
 			Accept: "application/json",
 			...(headers || {}),
 		},
+		// Important: Allow cookies to be sent with requests
+		withCredentials: true,
 	});
 
-	// log each request
-	api.interceptors.request.use();
+	api.interceptors.request.use(
+		async (config) => {
+			// No need to manually add authorization header
+			// Better Auth will handle cookies automatically
+			return config
+		},
+		(error) => Promise.reject(error)
+	)
+
 
 	// handle error
 	api.interceptors.response.use(
 		(res) => res,
 		(error) => {
+			if (error.response && error.response.status === 401) {
+				// Clear the session via Better Auth client
+				authClient.signOut()
+				redirect('/login')
+			}
 			console.log("error", JSON.stringify(error, null, 3));
 			return Promise.reject(handleAPIError(error));
 		}
@@ -50,7 +66,7 @@ export function createPrivateApiInstance({
 		return config;
 	});
 
-   // handle refresh token
+	// handle refresh token
 
 	return api;
 }
