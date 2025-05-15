@@ -26,6 +26,9 @@ import { PaymentPage } from "@/pages/private/subscription/payment-page";
 import { NotFoundPage } from "@/pages/not-found-page";
 import { ProtectedLayout } from "./components/protected-layout";
 import { UiPage } from "@/pages/ui-page";
+import { VerifyOtpPage } from "@/pages/public/auth/verify-otp-page";
+import { Header } from "@/components/molecules/layout/header";
+import Footer from '@/components/molecules/layout/footer';
 
 const privateRoutes: RouteObject[] = [
 	{
@@ -110,9 +113,15 @@ const privateRoutes: RouteObject[] = [
 const routes: RouteObject[] = [
 	{
 		element: (
-			<div className="relative z-10 w-full h-full overflow-auto">
-				<Outlet />
-			</div>
+			<>
+				<div className="px-4 lg:px-32 xl:px-32 max-w-screen-2xl">
+					<Header />
+					<div className="z-10 relative w-full h-full overflow-auto">
+						<Outlet />
+					</div>
+				</div>
+				<Footer />
+			</>
 		),
 		children: [
 			{
@@ -133,6 +142,10 @@ const routes: RouteObject[] = [
 					{
 						path: "login",
 						element: <LoginPage />,
+					},
+					{
+						path: 'verify-otp',
+						element: <VerifyOtpPage />
 					},
 					{
 						path: "forgot-password",

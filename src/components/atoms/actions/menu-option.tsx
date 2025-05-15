@@ -12,7 +12,7 @@ export function MenuOption({ label, selected, onClick }: Props) {
 		<div
 			onClick={onClick}
 			className={cn(
-				"active:scale-[0.99] transition-transform",
+				"active:scale-[0.99] cursor-pointer transition-transform",
 				"group bg-transparent hover:bg-meko-blue-transparent-1 px-5 py-4 text-meko-blue-light-3 cursor-pointer",
 				selected && "bg-meko-blue-transparent-2 text-white"
 			)}
@@ -22,7 +22,7 @@ export function MenuOption({ label, selected, onClick }: Props) {
 				weight="bold"
 				variant="small"
 				color={selected ? "default" : "secondary"}
-				className=""
+				className="[text-shadow:0_4px_20px_#00000040]"
 			>
 				{label}
 			</Typography>
