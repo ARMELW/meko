@@ -30,17 +30,20 @@
 }
 
 html,
-body,
-#root {
+body {
 	width: 100%;
-	height: 100%;
+	min-height: 100%;
+	margin: 0;
+	position: relative;
+	z-index: 0;
+	font-family: var(--default-font-family);
 	background: linear-gradient(180deg, #006eb6 0%, #0040b6 100%);
 }
 
-#root::after {
+body::after {
 	content: "";
 	position: absolute;
-	z-index: 1;
+	z-index: -1;
 	top: 0;
 	right: 0;
 	left: 50%;
@@ -54,30 +57,26 @@ body,
 	);
 }
 
-#root::after::after {
+body::after::after {
 	content: "";
 	height: 10%;
 }
 
-#root::before {
+
+body::before {
 	content: "";
-	position: absolute;
-	z-index: 1;
+	position: fixed;
 	bottom: 0;
-	right: 0;
 	left: 0;
-	width: 100%;
-	height: 50%;
-	/* Pointer events none so it doesn't interfere with content below */
+	width: 100vw;
+	height: 50vh;
+	z-index: 1;
 	pointer-events: none;
 
-	/* Grid properties */
-	--grid-size: 50px; /* Adjust spacing of the grid lines */
-	/* --- CHANGE: Increased line opacity from 0.1 to 0.3 --- */
-	--grid-line-color: rgba(255, 255, 255, 0.3); /* Light color for grid lines */
-	--grid-line-width: 1px; /* Thickness of grid lines */
+	--grid-size: 50px;
+	--grid-line-color: rgba(255, 255, 255, 0.3);
+	--grid-line-width: 1px;
 
-	/* Create the grid using repeating linear gradients */
 	background-image: repeating-linear-gradient(
 			to right,
 			var(--grid-line-color) 0,
@@ -92,20 +91,29 @@ body,
 			transparent var(--grid-line-width),
 			transparent var(--grid-size)
 		);
-	background-size: var(--grid-size) var(--grid-size); /* Set the size of the repeating pattern */
+	background-size: var(--grid-size) var(--grid-size);
 
-	/* Apply the mask to make the grid fade */
-	/* The gradient makes it visible at the bottom (0deg) and transparent at the top */
-	/* --- CHANGE: Increased mask start opacity from 0.1 to 0.5 --- */
 	mask-image: linear-gradient(
 		0deg,
-		rgba(217, 217, 217, 0.5) 0%,
+		rgba(217, 217, 217, 0.8) 0%,
+		rgba(217, 217, 217, 0.4) 30%,
 		rgba(115, 115, 115, 0) 100%
 	);
-	/* Vendor prefix for compatibility */
 	-webkit-mask-image: linear-gradient(
 		0deg,
-		rgba(217, 217, 217, 0.5) 0%,
+		rgba(217, 217, 217, 0.8) 0%,
+		rgba(217, 217, 217, 0.4) 30%,
 		rgba(115, 115, 115, 0) 100%
 	);
+}
+
+
+#root {
+	width: 100%;
+	min-height: 100vh;
+	position: relative;
+	z-index: 0;
+}
+.meko-bg {
+	background: linear-gradient(180deg, #006eb6 0%, #0040b6 100%);
 }
