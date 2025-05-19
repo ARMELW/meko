@@ -2,8 +2,10 @@ import { Button } from '@/components/atoms/actions/button';
 import { MenuOption } from '@/components/atoms/actions/menu-option';
 import { Link, useNavigate } from 'react-router';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 export function Header() {
+    const { t } = useTranslation();
     const navigate = useNavigate();
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -18,9 +20,10 @@ export function Header() {
                     <img src='/small-logo.svg' alt="Logo" className="w-auto" />
                 </Link>
                 <div className='flex flex-row items-center gap-3'>
-                    <MenuOption onClick={() => navigate('/login')} label="Se connecter" />
-                    <Button variant={'primary'} size={'small'}>
-                        Essai gratuit de 7 jours
+                    <MenuOption onClick={() => navigate('/login')} label={t('auth.login')} />
+                    
+                    <Button onClick={()=> navigate('/register') } variant={'primary'} size={'small'}>
+                       {t('common.trial')}
                     </Button>
                 </div>
             </div>
@@ -47,7 +50,7 @@ export function Header() {
                             navigate('/login');
                             setMobileMenuOpen(false);
                         }}
-                        label="Se connecter"
+                        label={t('auth.login')}
                     />
                     <Button
                         variant={'primary'}
@@ -55,7 +58,7 @@ export function Header() {
                         className="w-full"
                         onClick={() => setMobileMenuOpen(false)}
                     >
-                        Essai gratuit de 7 jours
+                         {t('common.trial')}
                     </Button>
                 </div>
             )}

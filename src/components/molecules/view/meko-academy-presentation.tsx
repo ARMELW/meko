@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { Play } from 'lucide-react';
 import { Typography } from '@/components/atoms/typography/typography';
+import { useTranslation } from 'react-i18next';
 
 interface YouTubeEmbedProps {
     videoId: string;
@@ -76,6 +77,7 @@ const MekoAcademy: React.FC<MekoAcademyProps> = ({
     videoId = "bu5IDmDxUA4",
     thumbnailSrc = "/small-logo.svg"
 }) => {
+    const { t } = useTranslation()
     return (
         <section className="px-4 sm:px-6 lg:px-8 py-6 sm:py-10 md:py-8 lg:py-12 w-full">
             <div className="flex flex-col items-center mx-auto max-w-4xl">
@@ -85,14 +87,14 @@ const MekoAcademy: React.FC<MekoAcademyProps> = ({
                         className="font-bold text-xl sm:text-2xl md:text-3xl tracking-wide"
                         align='center'
                     >
-                        DÉCOUVREZ MEKO ACADEMY EN ACTION !
+                        {t('landing.discover')}
                     </Typography>
                 </div>
 
                 <VideoPlayer
                     videoId={videoId}
                     thumbnailSrc={thumbnailSrc}
-                    alt="Miniature vidéo Meko Academy"
+                    alt=""
                 />
             </div>
         </section>

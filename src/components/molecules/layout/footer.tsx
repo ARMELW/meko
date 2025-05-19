@@ -18,7 +18,7 @@ export default function Footer() {
   }, []);
 
   return (
-    <footer className={`relative ${isMobile ? 'flex-col space-y-6 py-12' : ''} flex justify-between items-center bg-blue-900 mt-20 px-6 py-4 text-white`}>
+    <footer className={`relative ${isMobile ? 'flex-col space-y-6 py-12' : ''} flex justify-between items-center bg-blue-900 mt-30 px-6 py-4 text-white`}>
 
       <div className={`${isMobile ? 'flex-col space-y-3' : ''} flex items-center space-x-6 ${isMobile ? 'space-x-0' : ''}`}>
         <div className="flex items-center space-x-2">
