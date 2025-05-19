@@ -16,7 +16,7 @@ function LandingPage() {
   }
 
   return (
-    <div>
+    <div className="w-full h-screen flex justify-center items-center">
       <button onClick={() => navigate('/login')}>Sign In</button>
       <button onClick={() => navigate('/register')}>
         Create Account
