@@ -1,3 +1,6 @@
+import { login } from "@/app/auth/api/login";
+import { Button, Checkbox, Input, Label, Typography } from "@/components";
+import { Link, redirect } from "react-router";
 
 import { LoginFormData, loginSchema, } from "@/app/auth";
 import { useOtpAuth } from "@/app/auth/hooks/use-otp-auth";
@@ -12,89 +15,70 @@ const defaultValues: LoginFormData = {
   email: "",
 };
 function LoginPage() {
-  const navigate = useNavigate();
-  const [isSubmitted, setIsSubmitted] = useState(false);
-  const { loading, initiateOtpLogin } = useOtpAuth();
+  const signIn = async () => {
+    await login({
+      email: "armelgeek5@gmail.com",
+      password: "password",
+    }, {
+      onSuccess: () => {
+        console.log("User successfully login");
+        redirect('/');
+      },
+      onError: (error) => {
+        console.error("Login failed:", error);
+      },
+    });
+  }
+  return <div className="container mx-auto">
+    <div className="w-full h-screen flex flex-col justify-center items-center">
 
-  const {
-    control,
-    handleSubmit,
-    reset
-  } = useForm<LoginFormData>({
-    defaultValues,
-    resolver: zodResolver(loginSchema),
-    mode: "onChange",
-  });
-  const onSubmit = async (data: LoginFormData) => {
-    try {
-      await initiateOtpLogin({
-        email: data.email,
-      });
-      setIsSubmitted(true);
-      navigate("/verify-otp", {
-        state: { email: data.email },
-      });
-    } catch (error) {
 
-      console.error("Login error:", error);
-    }
-  };
+      <div className="w-full form-logo-title">
+        <img src="/assets/images/logos/meko-logo.png" alt="" className="!h-[60px] mx-auto mb-8" />
+      </div>
 
-  return (
-    <div className="flex flex-col justify-center items-center h-full">
+      <div className="w-[22%] bg-meko-blue-transparent-2 rounded-xl  p-5">
+        <form action="" className="w-full space-y-4">
 
-      <form onSubmit={handleSubmit(onSubmit)}>
 
-        <div className="flex flex-col justify-center items-center w-[350px]">
-          <img src="/logo.svg" className="pb-10" />
-          <Card className="flex flex-col justify-center items-center p-8">
+          <div className="input-container">
+            <Label uppercase >
+              <span className="text-[13px]">
+                Identifiant
+              </span>
+            </Label>
+            <Input size="w-full" />
+          </div>
+          <div className="input-container">
+            <Label uppercase>
+              <span className="text-[13px]">
+                Mot de passe
+              </span>
+            </Label>
+            <Input size="w-full" type="password" />
+          </div>
 
-            <div className="flex flex-col justify-center items-center">
-              <Typography variant='h1'>
-                Bienvenue sur Meko Academy
-              </Typography>
-              <Typography align="center">
-                Entrez votre adresse email pour continuer !
-              </Typography>
-            </div>
-            <div className="flex flex-col gap-3 py-4 w-full">
-              <ControlledTextInput
-                name="email"
-                control={control}
-                type="email"
-                autoComplete="email"
-                placeholder="mekoacademy@email.com"
-                disabled={loading || isSubmitted}
-              />
-            </div>
+          <div className="input-container">
+            <Checkbox label="Se souvenir de moi" />
+          </div>
 
-            <Button
-              type="submit"
-              size="small"
-              color="secondary"
-            >
-              {loading ? <Loader2 /> : "Se connecter"}
 
+          <div className="w-full flex justify-center">
+            <Button onClick={signIn} size="small" color="secondary" className="h-[53px]">
+              Se connecter
             </Button>
+          </div>
+        </form>
+      </div>
 
-            {isSubmitted && !loading && (
-              <Button
-                type="button"
-                onClick={() => {
-                  reset();
-                  setIsSubmitted(false);
-                }}
-                size="small"
-              >
-                Réessayer
-              </Button>
-            )}
-          </Card>
-        </div>
+      <div className="w-full my-8">
+        <Typography as={"p"} className="text-center">
+          <Link to={'/forgot-password'} className="block text-center">Mot de passe oublié ?</Link>
+        </Typography>
+      </div>
 
-      </form>
-    </div>
-  );
+    </div>;
+  </div>;
 }
 
 export { LoginPage };
