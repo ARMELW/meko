@@ -11,6 +11,8 @@ export const authClient = createAuthClient({
         inferAdditionalFields({
             user: {
                 isAdmin: { type: 'boolean' },
+                firstname: { type: 'string'},
+                lastname: { type: 'string'}
             },
         }),
         emailOTPClient()

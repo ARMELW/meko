@@ -8,11 +8,13 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
 import { ControlledTextInput } from "@/components/molecules/form/controlled-input";
 import { Loader2 } from 'lucide-react';
+import { useTranslation } from "react-i18next";
 const defaultValues: LoginFormData = {
   email: "",
 };
 function LoginPage() {
   const navigate = useNavigate();
+   const { t } = useTranslation();
   const [isSubmitted, setIsSubmitted] = useState(false);
   const { loading, initiateOtpLogin } = useOtpAuth();
 
@@ -32,7 +34,10 @@ function LoginPage() {
       });
       setIsSubmitted(true);
       navigate("/verify-otp", {
-        state: { email: data.email },
+        state: { 
+          email: data.email,
+          isSignUp: false 
+        },
       });
     } catch (error) {
 
@@ -73,22 +78,9 @@ function LoginPage() {
               size="small"
               color="secondary"
             >
-              {loading ? <Loader2 /> : "Se connecter"}
+              {loading ? <Loader2 /> : t('auth.connect')}
 
             </Button>
-
-            {isSubmitted && !loading && (
-              <Button
-                type="button"
-                onClick={() => {
-                  reset();
-                  setIsSubmitted(false);
-                }}
-                size="small"
-              >
-                Réessayer
-              </Button>
-            )}
           </Card>
         </div>
 

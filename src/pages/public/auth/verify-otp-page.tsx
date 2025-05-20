@@ -14,6 +14,9 @@ function VerifyOtpPage() {
   const location = useLocation();
   const { loading, initiateVerifyOtpLogin } = useVerifyOtpAuth();
   const email = location.state?.email;
+  const firstName = location.state?.firstName || '';
+  const lastName = location.state?.lastName || '';
+  const isSignUp = location.state?.isSignUp || false;
 
   if (!email) {
     navigate("/login");
@@ -31,8 +34,17 @@ function VerifyOtpPage() {
       await initiateVerifyOtpLogin({
         email: email,
         otp: data.otp,
+      }, {
+        isSignUp,
+        firstName,
+        lastName
       });
-      navigate("/");
+      if (isSignUp) {
+        navigate("/profile/create-child");
+      } else {
+        navigate("/profile/choose");
+      }
+
     } catch (error) {
       console.error("Verify tokenn error:", error);
     }

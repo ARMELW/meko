@@ -5,6 +5,7 @@ import {
   useController,
   UseControllerProps,
 } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 type ControlledTextInputProps<T extends FieldValues> = UseControllerProps<T> & {
   disabled?: boolean;
 } & Omit<Props, 'value' | 'onChange' | 'onBlur' | 'name'>;
@@ -18,7 +19,8 @@ export function ControlledTextInput<T extends FieldValues>({
   shouldUnregister,
   ...props
 }: ControlledTextInputProps<T>) {
-  const { field } = useController<T>({
+  const { t } = useTranslation();
+  const { field, fieldState } = useController<T>({
     control,
     name,
     defaultValue,
@@ -27,13 +29,18 @@ export function ControlledTextInput<T extends FieldValues>({
   });
 
   return (
-    <Input
-      {...props}
-      name={field.name}
-      onChange={field.onChange}
-      onBlur={field.onBlur}
-      ref={field.ref}
-      value={field.value ?? ''}
-    />
+    <>
+      <Input
+        {...props}
+        name={field.name}
+        onChange={field.onChange}
+        onBlur={field.onBlur}
+        ref={field.ref}
+        value={field.value ?? ''}
+      />
+      {fieldState.error && (
+        <p className="mt-1 font-bold text-meko-red text-xs">{t(fieldState.error.message || '')}</p>
+      )}
+    </>
   );
 }

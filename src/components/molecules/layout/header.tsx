@@ -3,14 +3,134 @@ import { MenuOption } from '@/components/atoms/actions/menu-option';
 import { Link, useNavigate } from 'react-router';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { authClient, useSession } from '@/config/auth';
+import { Typography } from '@/components/atoms/typography/typography';
 
 export function Header() {
     const { t } = useTranslation();
     const navigate = useNavigate();
+    const { data: session } = useSession();
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+    const [isLoggingOut, setIsLoggingOut] = useState(false);
+    const isAuthenticated = !!session;
 
     const toggleMobileMenu = () => {
         setMobileMenuOpen(!mobileMenuOpen);
+    };
+
+    const handleLogout = async () => {
+        setIsLoggingOut(true);
+        try {
+            await authClient.signOut();
+            navigate('/');
+        } catch (error) {
+            console.error('Logout failed:', error);
+        } finally {
+            setIsLoggingOut(false);
+        }
+    };
+
+    const renderAuthOptions = () => {
+        if (isAuthenticated) {
+            return (
+                <>
+                   <Link to={'/profile/choose'}>
+                    <div className='flex flex-row items-center gap-3'>
+                        
+                        <Typography
+                            as="h3"
+                            styleCase="uppercase"
+                            weight="bold"
+                            variant="small"
+                            color={"default"}
+                        >
+                            {session.user?.name || 'User'}
+                        </Typography>
+                        <p className='font-bold text-white'></p>
+                        <img
+                            src={session.user?.image || "https://i.pravatar.cc/300"}
+                            alt="Avatar"
+                            className="border border-3 border-white rounded-full w-12 h-12"
+                        />
+
+                    </div>
+                    </Link>
+                </>
+            );
+        }
+
+        return (
+            <>
+                <MenuOption
+                    onClick={() => navigate('/login')}
+                    label={t('auth.login')}
+                />
+                <Button
+                    onClick={() => navigate('/register')}
+                    variant={'primary'}
+                    size={'small'}
+                >
+                    {t('common.trial')}
+                </Button>
+            </>
+        );
+    };
+
+    const renderMobileAuthOptions = () => {
+        if (isAuthenticated) {
+            return (
+                <>
+                    <MenuOption
+                        onClick={() => {
+                            navigate('/dashboard');
+                            setMobileMenuOpen(false);
+                        }}
+                        label={t('common.dashboard')}
+                    />
+                    <img
+                        src="https://i.pravatar.cc/300"
+                        alt="Avatar"
+                        className="rounded-2xl w-20 h-20"
+                    />
+                    <MenuOption
+                        onClick={() => {
+                            handleLogout();
+                            setMobileMenuOpen(false);
+                        }}
+                        label={
+                            isLoggingOut ? (
+                                t('auth.loggingOut')
+                            ) : (
+                                t('auth.logout')
+                            )
+                        }
+                    />
+                </>
+            );
+        }
+
+        return (
+            <>
+                <MenuOption
+                    onClick={() => {
+                        navigate('/login');
+                        setMobileMenuOpen(false);
+                    }}
+                    label={t('auth.login')}
+                />
+                <Button
+                    variant={'primary'}
+                    size={'small'}
+                    className="w-full"
+                    onClick={() => {
+                        navigate('/register');
+                        setMobileMenuOpen(false);
+                    }}
+                >
+                    {t('common.trial')}
+                </Button>
+            </>
+        );
     };
 
     return (
@@ -20,11 +140,7 @@ export function Header() {
                     <img src='/small-logo.svg' alt="Logo" className="w-auto" />
                 </Link>
                 <div className='flex flex-row items-center gap-3'>
-                    <MenuOption onClick={() => navigate('/login')} label={t('auth.login')} />
-                    
-                    <Button onClick={()=> navigate('/register') } variant={'primary'} size={'small'}>
-                       {t('common.trial')}
-                    </Button>
+                    {renderAuthOptions()}
                 </div>
             </div>
 
@@ -45,21 +161,7 @@ export function Header() {
 
             {mobileMenuOpen && (
                 <div className="md:hidden top-14 right-0 left-0 z-50 absolute flex flex-col gap-4 shadow-lg px-4 py-3 border-white border-t meko-bg">
-                    <MenuOption
-                        onClick={() => {
-                            navigate('/login');
-                            setMobileMenuOpen(false);
-                        }}
-                        label={t('auth.login')}
-                    />
-                    <Button
-                        variant={'primary'}
-                        size={'small'}
-                        className="w-full"
-                        onClick={() => setMobileMenuOpen(false)}
-                    >
-                         {t('common.trial')}
-                    </Button>
+                    {renderMobileAuthOptions()}
                 </div>
             )}
         </div>
