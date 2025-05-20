@@ -6,7 +6,8 @@ const en = {
    common: {
 		trial: '7-day free trial',
       month: 'Month',
-      dashboard: 'Dashboard'
+      dashboard: 'Dashboard',
+      ready:  'Ready Now !'
 	},
    auth: {
       login: 'Login',

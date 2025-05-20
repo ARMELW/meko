@@ -5,7 +5,8 @@ const fr = {
 	common: {
 		trial: 'Essai gratuit de 7 jours',
 		month: 'Mois',
-		dashboard: 'Tableau de bord'
+		dashboard: 'Tableau de bord',
+		ready:  'Commencer maintenant !'
 	},
 	auth: {
       login: 'Connexion',

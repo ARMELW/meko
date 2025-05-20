@@ -1,9 +1,23 @@
 import { Button } from "@/components/atoms/actions/button";
 import { Typography } from "@/components/atoms/typography/typography";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router";
+import { useSession } from "@/config/auth"; 
 
 export default function HeroSection() {
     const { t } = useTranslation();
+    const navigate = useNavigate();
+    const { data: session } = useSession();
+    const isAuthenticated = !!session; 
+    
+    const handleButtonClick = () => {
+        if (isAuthenticated) {
+            navigate('/profile/choose');
+        } else {
+            navigate('/register');
+        }
+    };
+    
     return (
         <section className="py-4 md:py-6 lg:py-8 overflow-hidden text-white">
             <div className="flex md:flex-row flex-col justify-between items-center gap-6 md:gap-8 lg:gap-10 mx-auto px-4 sm:px-6 container">
@@ -15,8 +29,16 @@ export default function HeroSection() {
                         {t('landing.heroDescription')}
                     </p>
                     <div className="flex justify-center md:justify-start">
-                        <Button variant={'primary'} className="w-full sm:w-auto" size={'small'}>
-                            {t('common.trial')}
+                        <Button 
+                            variant={'primary'} 
+                            onClick={handleButtonClick} 
+                            className="w-full sm:w-auto" 
+                            size={'small'}
+                        >
+                            {isAuthenticated 
+                                ? t('common.ready') 
+                                : t('common.trial')  
+                            }
                         </Button>
                     </div>
                 </div>
