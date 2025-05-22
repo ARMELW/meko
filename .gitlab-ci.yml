@@ -45,7 +45,7 @@ deploy-k8s:
     - echo "tafiditra ato"  
   script:
     - |
-      ssh -o StrictHostKeyChecking=no -i ~/.ssh/known_hosts $SSH_USER@$SSH_IP "
+      ssh -o StrictHostKeyChecking=no -i ~/.ssh/ssh_key $SSH_USER@$SSH_IP "
         echo $REGISTRY_PASS | docker login $REGISTRY_HOST -u $REGISTRY_USER --password-stdin
         # echo '$REGISTRY_PASS' | microk8s ctr images pull $IMAGE_DOCKER:$IMAGE_TAG --user $REGISTRY_USER:$REGISTRY_PASS &&
         # microk8s kubectl apply -f /home/$SSH_USER/manifests/front.yaml"
