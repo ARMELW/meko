@@ -42,7 +42,6 @@ deploy-k8s:
     - chmod 600 ~/.ssh/ssh_key
     - ssh-keyscan ${SSH_IP} >> ~/.ssh/known_hosts
     - chmod 644 ~/.ssh/known_hosts
-    - echo $REGISTRY_PASS | docker login $REGISTRY_HOST -u $REGISTRY_USER --password-stdin
     - echo "tafiditra ato"  
   script:
     - |
