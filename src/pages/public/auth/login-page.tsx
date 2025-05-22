@@ -1,7 +1,18 @@
+// import { login } from "@/app/auth/api/login";
+import { Button, Checkbox, Input, Label, Typography, Card } from "@/components";
+import { Link, redirect } from "react-router";
 
-import { Button, Checkbox, Input, Label, Typography } from "@/components";
-import { Link } from "react-router";
-
+import { LoginFormData, loginSchema, } from "@/app/auth";
+import { useOtpAuth } from "@/app/auth/hooks/use-otp-auth";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router";
+import { ControlledTextInput } from "@/components/molecules/form/controlled-input";
+import { Loader2 } from 'lucide-react';
+const defaultValues: LoginFormData = {
+  email: "",
+};
 function LoginPage() {
   const signIn = async () => {
    {/** await login({
