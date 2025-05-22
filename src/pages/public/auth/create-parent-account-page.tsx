@@ -1,4 +1,4 @@
-import { parentRegister } from "@/app/auth/api/parent-register";
+// import { parentRegister } from "@/app/auth/api/parent-register";
 import { Button, Input, Label, Typography } from "@/components";
 import { Link, redirect } from "react-router";
 
