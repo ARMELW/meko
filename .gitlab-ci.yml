@@ -1,30 +1,49 @@
-stages:
-  - build
+# stages:
+#   - build
 
-variables:
-  DOCKER_TLS_CERTDIR: ""
-  IMAGE_TAG: "1.0"
+# variables:
+#   DOCKER_TLS_CERTDIR: ""
+#   IMAGE_TAG: "1.0"
 
-build-image:
-  stage: build
-  image: docker:latest
-  tags:
-    - front
+# build-image:
+#   stage: build
+#   image: docker:latest
+#   tags:
+#     - front
 
-  variables:
-    DOCKER_HOST: unix:///var/run/docker.sock
+#   variables:
+#     DOCKER_HOST: unix:///var/run/docker.sock
 
+#   before_script:
+#     - mkdir -p /etc/docker/certs.d/registry.meko.ac
+#     - echo "$CERT_CA" > /etc/docker/certs.d/registry.meko.ac/ca.crt
+#     - echo "$REGISTRY_PASS" | docker login "$REGISTRY_HOST" -u "$REGISTRY_USER" --password-stdin
+#     - echo "tafiditra ato"
+
+#   script:
+#     - docker build -t "$IMAGE_DOCKER:$IMAGE_TAG" .
+#     - echo "Pushing image to registry..."
+#     - docker push "$IMAGE_DOCKER:$IMAGE_TAG"
+
+#   only:
+#     - develop
+deploy-k8s:
+  stage: deploy
+  image:  alpine:latest
   before_script:
-    - mkdir -p /etc/docker/certs.d/registry.meko.ac
-    - echo "$CERT_CA" > /etc/docker/certs.d/registry.meko.ac/ca.crt
-    - cat /etc/docker/certs.d/registry.meko.ac/ca.crt
-    - echo "$REGISTRY_PASS" | docker login "$REGISTRY_HOST" -u "$REGISTRY_USER" --password-stdin
-    - echo "tafiditra ato"
-
+    - 'command -v ssh-agent >/dev/null || ( apk add --update openssh )'
+    - eval $(ssh-agent -s)
+    - mkdir -p ~/.ssh
+    - echo "$SSH_KEY" | tr -d '\r' > ~/.ssh/ssh_key
+    - chmod 600 ~/.ssh/ssh_key
+    - ssh-keyscan ${SSH_IP} >> ~/.ssh/known_hosts
+    - chmod 644 ~/.ssh/known_hosts
+    - echo $REGISTRY_PASS | docker login $REGISTRY_HOST -u $REGISTRY_USER --password-stdin
+    - echo "tafiditra ato"  
   script:
-    - docker build -t "$IMAGE_DOCKER:$IMAGE_TAG" .
-    - echo "Pushing image to registry..."
-    # - docker push "$IMAGE_DOCKER:$IMAGE_TAG"
-
+    - |
+      ssh -o StrictHostKeyChecking=no -i "$SSH_PRIVATE_KEY" $SSH_USER@$SSH_IP "
+        echo '$REGISTRY_PASS' | microk8s ctr images pull $IMAGE_DOCKER:$IMAGE_TAG --user $REGISTRY_USER:$REGISTRY_PASS &&
+        microk8s kubectl apply -f /home/$SSH_USER/manifests/front.yaml"
   only:
-    - develop
+    - dev
