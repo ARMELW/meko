@@ -27,7 +27,7 @@ interface PlanItemProps {
     isSelected?: boolean;
 }
 
-function PriceTag({ price, billingCycle }: PriceTagProps) {
+function PriceTag({ price }: PriceTagProps) {
     return (
         <div className="relative flex justify-center py-3 sm:py-4 md:py-5 text-white">
             <span className="text-5xl sm:text-6xl md:text-7xl">{price}</span>
