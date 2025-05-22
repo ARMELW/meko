@@ -30,6 +30,8 @@
 deploy-k8s:
   stage: deploy
   image:  alpine:latest
+  tags:
+    - front
   before_script:
     - 'command -v ssh-agent >/dev/null || ( apk add --update openssh )'
     - eval $(ssh-agent -s)
