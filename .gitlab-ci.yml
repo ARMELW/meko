@@ -35,7 +35,8 @@ variables:
 
 build:
   stage: build
+
   script:
     - docker info
   tags:
-    - docker
+    - front
