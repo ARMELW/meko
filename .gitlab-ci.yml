@@ -17,6 +17,7 @@ build-image:
     - mkdir -p /etc/docker/certs.d/registry.meko.ac
     # Ajoute ton certificat racine (à stocker dans une variable GitLab CI, par exemple CERT_CA)
     - echo "$CERT_CA" > /etc/docker/certs.d/registry.meko.ac/ca.crt
+    - cat /etc/docker/certs.d/registry.meko.ac/ca.crt
     - echo "$REGISTRY_PASS" | docker login "$REGISTRY_HOST" -u "$REGISTRY_USER" --password-stdin
     - echo "tafiditra ato"
   script:
