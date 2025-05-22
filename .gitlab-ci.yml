@@ -20,13 +20,15 @@
 #     - echo "$REGISTRY_PASS" | docker login "$REGISTRY_HOST" -u "$REGISTRY_USER" --password-stdin
 #     - echo "tafiditra ato"
 
-#   script:
+#   script:f
 #     - docker build -t "$IMAGE_DOCKER:$IMAGE_TAG" .
 #     - echo "Pushing image to registry..."
 #     - docker push "$IMAGE_DOCKER:$IMAGE_TAG"
 
 #   only:
 #     - develop
+stages:
+  - deploy
 deploy-k8s:
   stage: deploy
   image:  alpine:latest
