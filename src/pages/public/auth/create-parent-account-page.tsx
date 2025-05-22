@@ -1,10 +1,10 @@
-import { parentRegister } from "@/app/auth/api/parent-register";
+
 import { Button, Input, Label, Typography } from "@/components";
-import { Link, redirect } from "react-router";
+import { Link } from "react-router";
 
 function CreateParentAccountPage() {
   const register = async () => {
-    await parentRegister({
+    /**await parentRegister({
       name: "Armel Wanes",
       email: "armelgeek5@gmail.com",
       password: "password",
@@ -16,12 +16,12 @@ function CreateParentAccountPage() {
       onError: (error) => {
         console.error("Registration failed:", error);
       },
-    });
+    });**/
   }
-  return <div className="w-full h-screen flex flex-col justify-center items-center">
+  return <div className="flex flex-col justify-center items-center w-full h-screen">
 
     <div className="w-[35%]">
-      <form action="" className="w-full space-y-4">
+      <form action="" className="space-y-4 w-full">
 
         <Typography as="h3" align={"center"}>
           Création compte parent
@@ -31,7 +31,7 @@ function CreateParentAccountPage() {
           Renseignez vos informations
         </Typography>
 
-        <div className="grid  grid-cols-2 gap-4">
+        <div className="gap-4 grid grid-cols-2">
           <div className="input-container">
             <Label uppercase>
               <span className="text-[13px]">
@@ -88,19 +88,19 @@ function CreateParentAccountPage() {
         </div>
 
         <div className="w-full">
-          <Typography as={"p"} className="text-center text-sm">
+          <Typography as={"p"} className="text-sm text-center">
             En créant un compte, vous acceptez les <Link to="#">conditions générales</Link> de Meko Academy.
           </Typography>
         </div>
 
-        <div className="w-full flex justify-center">
+        <div className="flex justify-center w-full">
           <Button onClick={register} size="small" color="secondary">
             Créer le compte
           </Button>
         </div>
         <div className="w-full">
           <Typography as={"p"} className="text-center">
-            <Link to={'/login'} className="block text-center  text-sm">Vous avez déja un compte ?</Link>
+            <Link to={'/login'} className="block text-sm text-center">Vous avez déja un compte ?</Link>
           </Typography>
         </div>
 

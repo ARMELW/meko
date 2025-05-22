@@ -1,22 +1,10 @@
-import { login } from "@/app/auth/api/login";
-import { Button, Checkbox, Input, Label, Typography } from "@/components";
-import { Link, redirect } from "react-router";
 
-import { LoginFormData, loginSchema, } from "@/app/auth";
-import { useOtpAuth } from "@/app/auth/hooks/use-otp-auth";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Button, Card, Typography } from "@/components";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router";
-import { ControlledTextInput } from "@/components/molecules/form/controlled-input";
-import { Loader2 } from 'lucide-react';
-const defaultValues: LoginFormData = {
-  email: "",
-};
+import { Button, Checkbox, Input, Label, Typography } from "@/components";
+import { Link } from "react-router";
+
 function LoginPage() {
   const signIn = async () => {
-    await login({
+   {/** await login({
       email: "armelgeek5@gmail.com",
       password: "password",
     }, {
@@ -28,17 +16,18 @@ function LoginPage() {
         console.error("Login failed:", error);
       },
     });
+     */}
   }
-  return <div className="container mx-auto">
-    <div className="w-full h-screen flex flex-col justify-center items-center">
+  return <div className="mx-auto container">
+    <div className="flex flex-col justify-center items-center w-full h-screen">
 
 
       <div className="w-full form-logo-title">
-        <img src="/assets/images/logos/meko-logo.png" alt="" className="!h-[60px] mx-auto mb-8" />
+        <img src="/assets/images/logos/meko-logo.png" alt="" className="mx-auto mb-8 !h-[60px]" />
       </div>
 
-      <div className="w-[22%] bg-meko-blue-transparent-2 rounded-xl  p-5">
-        <form action="" className="w-full space-y-4">
+      <div className="bg-meko-blue-transparent-2 p-5 rounded-xl w-[22%]">
+        <form action="" className="space-y-4 w-full">
 
 
           <div className="input-container">
@@ -63,7 +52,7 @@ function LoginPage() {
           </div>
 
 
-          <div className="w-full flex justify-center">
+          <div className="flex justify-center w-full">
             <Button onClick={signIn} size="small" color="secondary" className="h-[53px]">
               Se connecter
             </Button>
@@ -71,7 +60,7 @@ function LoginPage() {
         </form>
       </div>
 
-      <div className="w-full my-8">
+      <div className="my-8 w-full">
         <Typography as={"p"} className="text-center">
           <Link to={'/forgot-password'} className="block text-center">Mot de passe oublié ?</Link>
         </Typography>
