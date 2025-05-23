@@ -53,6 +53,8 @@ deploy-k8s:
         ls
         # echo '$REGISTRY_PASS' | microk8s ctr images pull $IMAGE_DOCKER:$IMAGE_TAG --user $REGISTRY_USER:$REGISTRY_PASS 
         echo "ready for deployment"
+        microk8s delete depployment frontofficemeko
+        microk8s delete depployment meko-fo
         microk8s kubectl apply -f deploy.yml
         microk8s kubectl rollout restart deployment frontofficemeko 
         microk8s  kubectl rollout status deployment/frontofficemeko  --timeout=120s
