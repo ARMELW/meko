@@ -3,23 +3,34 @@
 
 @theme {
 	--default-font-family: "Lexend", sans-serif;
-	--color-meko-dark-blue-transparent: oklch(0.21 0.1063 263.16 / 60%); /* #000F47 */
+	--color-meko-dark-blue-transparent: oklch(0.21 0.1063 263.16 / 60%);
+	/* #000F47 */
 	--color-meko-blue-transparent-1: oklch(0.21 0.1063 263.16 / 15%);
 	--color-meko-blue-transparent-2: oklch(0.21 0.1063 263.16 / 20%);
 	--color-meko-blue-transparent-3: oklch(0.21 0.1063 263.16 / 30%);
 
-	--color-meko-blue-light-1: oklch(0.76 0.1444 230.11); /* #28C2FC */
-	--color-meko-blue-light-3: oklch(0.84 0.1005 224.76); /* #7EDAFD */
-	--color-meko-blue-flat: oklch(0.52 0.1401 247.65); /* #006EB6 */
-	--color-meko-blue-darker: oklch(0.42 0.1947 261.88); /* #0040B6 */
+	--color-meko-blue-light-1: oklch(0.76 0.1444 230.11);
+	/* #28C2FC */
+	--color-meko-blue-light-3: oklch(0.84 0.1005 224.76);
+	/* #7EDAFD */
+	--color-meko-blue-flat: oklch(0.52 0.1401 247.65);
+	/* #006EB6 */
+	--color-meko-blue-darker: oklch(0.42 0.1947 261.88);
+	/* #0040B6 */
 
-	--color-meko-orange: oklch(0.73 0.1777 47.62); /* #FF7F32 */
-	--color-meko-white-blue: oklch(0.95 0.0356 221.18); /* #D4F3FE */
-	--color-meko-green: oklch(0.66 0.1932 147.4); /* #00AF42 */
+	--color-meko-orange: oklch(0.73 0.1777 47.62);
+	/* #FF7F32 */
+	--color-meko-white-blue: oklch(0.95 0.0356 221.18);
+	/* #D4F3FE */
+	--color-meko-green: oklch(0.66 0.1932 147.4);
+	/* #00AF42 */
 
-	--color-meko-red: oklch(0.56 0.2057 27); /* #D32828 */
-	--color-meko-red-2: oklch(0.65 0.2048 24.87); /* #F34B4B */
-	--color-meko-red-transparent: oklch(0.36 0.147 29.1 / 20%); /* #780101 */
+	--color-meko-red: oklch(0.56 0.2057 27);
+	/* #D32828 */
+	--color-meko-red-2: oklch(0.65 0.2048 24.87);
+	/* #F34B4B */
+	--color-meko-red-transparent: oklch(0.36 0.147 29.1 / 20%);
+	/* #780101 */
 
 	--text-h1: 3rem;
 	--text-h1--font-weight: 700;
@@ -50,11 +61,9 @@ body::after {
 	width: 70%;
 	height: 47%;
 	transform: translateX(-50%) translateY(-50%);
-	background: radial-gradient(
-		50% 50% at 50% 50%,
-		#0abeff 0%,
-		rgba(10, 190, 255, 0) 100%
-	);
+	background: radial-gradient(50% 50% at 50% 50%,
+			#0abeff 0%,
+			rgba(10, 190, 255, 0) 100%);
 }
 
 body::after::after {
@@ -70,41 +79,34 @@ body::before {
 	left: 0;
 	width: 100vw;
 	height: 50vh;
-	z-index: 1;
+	z-index: 0;
+	opacity: 0.5;
 	pointer-events: none;
 
 	--grid-size: 50px;
 	--grid-line-color: rgba(255, 255, 255, 0.3);
 	--grid-line-width: 1px;
 
-	background-image: repeating-linear-gradient(
-			to right,
+	background-image: repeating-linear-gradient(to right,
 			var(--grid-line-color) 0,
 			var(--grid-line-color) var(--grid-line-width),
 			transparent var(--grid-line-width),
-			transparent var(--grid-size)
-		),
-		repeating-linear-gradient(
-			to bottom,
+			transparent var(--grid-size)),
+		repeating-linear-gradient(to bottom,
 			var(--grid-line-color) 0,
 			var(--grid-line-color) var(--grid-line-width),
 			transparent var(--grid-line-width),
-			transparent var(--grid-size)
-		);
+			transparent var(--grid-size));
 	background-size: var(--grid-size) var(--grid-size);
 
-	mask-image: linear-gradient(
-		0deg,
-		rgba(217, 217, 217, 0.8) 0%,
-		rgba(217, 217, 217, 0.4) 30%,
-		rgba(115, 115, 115, 0) 100%
-	);
-	-webkit-mask-image: linear-gradient(
-		0deg,
-		rgba(217, 217, 217, 0.8) 0%,
-		rgba(217, 217, 217, 0.4) 30%,
-		rgba(115, 115, 115, 0) 100%
-	);
+	mask-image: linear-gradient(0deg,
+			rgba(217, 217, 217, 0.8) 0%,
+			rgba(217, 217, 217, 0.4) 30%,
+			rgba(115, 115, 115, 0) 100%);
+	-webkit-mask-image: linear-gradient(0deg,
+			rgba(217, 217, 217, 0.8) 0%,
+			rgba(217, 217, 217, 0.4) 30%,
+			rgba(115, 115, 115, 0) 100%);
 }
 
 
@@ -114,6 +116,7 @@ body::before {
 	position: relative;
 	z-index: 0;
 }
+
 .meko-bg {
 	background: linear-gradient(180deg, #006eb6 0%, #0040b6 100%);
 }
