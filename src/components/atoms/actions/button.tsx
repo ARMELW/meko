@@ -4,7 +4,9 @@ import { ComponentPropsWithoutRef } from "react";
 
 type Props = ComponentPropsWithoutRef<"button"> &
 	VariantProps<typeof btnContainerVariant> &
-	VariantProps<typeof btnVariant>;
+	VariantProps<typeof btnVariant> & {
+		innerClassName?: string;
+	};
 
 export function Button({ variant, size, children, ...props }: Props) {
 	return (
@@ -27,7 +29,7 @@ export function Button({ variant, size, children, ...props }: Props) {
 					className={cn(
 						"rounded-[0.475rem]",
 						"w-full h-full",
-						"uppercase font-extrabold flex items-center",
+						"uppercase font-extrabold flex items-center", props?.innerClassName,
 						btnVariant({ variant: variant, size: size })
 					)}
 				>
