@@ -3,7 +3,6 @@ import { OtpFormData, otpSchema, useVerifyOtpAuth, } from "@/app/auth";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button, Card, Typography } from "@/components";
 import { useForm } from "react-hook-form";
-import ControlledOtpInput from "@/components/molecules/form/controlled-otp-input";
 import { useLocation, useNavigate } from "react-router";
 import { Loader2 } from "lucide-react";
 const defaultValues: OtpFormData = {
@@ -22,7 +21,7 @@ function VerifyOtpPage() {
     navigate("/login");
   }
   const {
-    control,
+    //control,
     handleSubmit,
   } = useForm<OtpFormData>({
     defaultValues,
@@ -68,7 +67,7 @@ function VerifyOtpPage() {
               </Typography>
             </div>
             <div className="flex flex-col gap-3 py-4 w-full">
-              <ControlledOtpInput name="otp" control={control} />
+              {/**<ControlledOtpInput name="otp" control={control} />**/}
             </div>
             <Button
               type="submit"

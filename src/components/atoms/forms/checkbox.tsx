@@ -47,6 +47,7 @@ interface CheckboxProps
 	id?: string;
 	className?: string; // ClassName for the wrapper label element
 	"aria-label"?: string; // Add aria-label for accessibility since there's no visible label
+	label?: string;
 }
 
 export function Checkbox({
@@ -59,6 +60,7 @@ export function Checkbox({
 	disabled,
 	className,
 	"aria-label": ariaLabel, // Destructure aria-label
+	label,
 	...rest
 }: CheckboxProps) {
 	const [internalChecked, setInternalChecked] =
@@ -128,6 +130,12 @@ export function Checkbox({
 			>
 				{displayChecked && <CheckmarkIcon />}
 			</div>
+
+			{label && (
+				<span className="ml-2 text-white text-sm select-none">
+					{label}
+				</span>
+			)}
 		</label>
 	);
 }

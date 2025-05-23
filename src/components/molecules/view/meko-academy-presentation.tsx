@@ -1,5 +1,4 @@
 import React, { useState, useRef } from 'react';
-import { Play } from 'lucide-react';
 import { Typography } from '@/components/atoms/typography/typography';
 import { useTranslation } from 'react-i18next';
 

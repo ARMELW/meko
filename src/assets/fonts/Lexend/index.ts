@@ -7,8 +7,15 @@ import LexendMedium from "./static/Lexend-Medium.ttf";
 import LexendRegular from "./static/Lexend-Regular.ttf";
 import LexendSemiBold from "./static/Lexend-SemiBold.ttf";
 import LexendThin from "./static/Lexend-Thin.ttf";
-import { FontData } from "@/types/font";
-
+type FontData = {
+	name: string;
+	path: string;
+	options: {
+		style: string;
+		weight: string;
+		display: string;
+	};
+}
 export const lexendFont: FontData[] = [
 	{
 		name: "Lexend",

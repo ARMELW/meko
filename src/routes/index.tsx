@@ -108,6 +108,8 @@ const privateRoutes: RouteObject[] = [
 			},
 		],
 	},
+
+
 ];
 
 const routes: RouteObject[] = [
