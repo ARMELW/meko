@@ -70,7 +70,7 @@ deploy-k8s:
 #         export KUBECONFIG=/etc/rancher/k3s/k3s.yaml # si tu utilises k3s
 #         echo "$REGISTRY_PASS" | docker login $REGISTRY_HOST -u $REGISTRY_USER --password-stdin
 
-#         kubectl delete deployment backofficemeko --ignore-not-found
+#          kubectl delete deployment backofficemeko --ignore-not-found
 #         kubectl apply -f - <<YAML
 # $(cat deploy.generated.yml)
 # YAML
