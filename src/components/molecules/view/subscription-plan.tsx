@@ -73,7 +73,7 @@ export function PlanItem({ plan, billingCycle, handlePlanSelect, isSelected = fa
                 <Button 
                     size="small" 
                     onClick={() => handlePlanSelect(plan.id)}
-                    className="w-full"
+                    className="w-full" innerClassName={"justify-center"}
                 >
                     ACHETER L'OFFRE
                 </Button>
