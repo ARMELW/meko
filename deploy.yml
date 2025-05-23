@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: frontofficemeko
-        image: registry.meko.ca/frontoffice-meko:IMAGE_TAG_PLACEHOLDER
+        image: registry.meko.ca/frontoffice-meko:1.0
         ports:
         - containerPort: 5173 # Correspond au port exposé par l'application dans le conteneur
       imagePullSecrets:
