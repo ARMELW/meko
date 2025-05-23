@@ -56,6 +56,7 @@ deploy-k8s:
         microk8s kubectl apply -f deploy.yml
         microk8s kubectl rollout restart deployment frontofficemeko 
         microk8s  kubectl rollout status deployment/frontofficemeko  --timeout=120s
+        docker system prune -f -a
         # microk8s kubectl apply -f /home/$SSH_USER/manifests/front.yaml"
       EOF
   only:
