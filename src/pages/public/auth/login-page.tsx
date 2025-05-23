@@ -20,8 +20,7 @@ function LoginPage() {
 
   const {
     control,
-    handleSubmit,
-    reset
+    handleSubmit
   } = useForm<LoginFormData>({
     defaultValues,
     resolver: zodResolver(loginSchema),

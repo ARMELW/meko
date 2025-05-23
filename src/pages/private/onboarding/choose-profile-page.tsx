@@ -18,23 +18,23 @@ function ChooseProfilePage() {
     alert(`Avatar cliqué: ID ${id}`);
   };
 
-  return <div className="w-full  flex flex-col justify-center items-center">
+  return <div className="flex flex-col justify-center items-center py-29 w-full">
     <div className="w-[50%]">
 
-      <div className="w-full typo-container flex justify-center">
+      <div className="flex justify-center w-full typo-container">
         <Typography as="h3" align={"center"}>
-          Choisis ton profil
+          Choisi ton profil
         </Typography>
       </div>
-      <div className="w-full avatar-grid p-12">
-        <div className="grid grid-cols-3 gap-6 justify-center items-center">
+      <div className="avatar-grid p-12 w-full">
+        <div className="justify-center items-center gap-6 grid grid-cols-3">
           {avatars.map((avatar, index) => (
-            <div className="avatar-item flex flex-col items-center" key={index}>
-              <div onClick={() => handleChoice(avatar.id)} className="w-[70px] h-[70px] rounded-full overflow-hidden  shadow-lg cursor-pointer">
+            <div className="flex flex-col items-center avatar-item" key={index}>
+              <div onClick={() => handleChoice(avatar.id)} className="shadow-lg rounded-full w-[70px] h-[70px] overflow-hidden cursor-pointer">
                 <img src={avatar.src} alt={`Avatar ${index + 1}`} className="w-full h-full object-cover" />
               </div>
               <Typography as="span" align={"center"} className="uppercase">
-                <span className="text-[#7EDAFD] font-[700]">
+                <span className="font-[700] text-[#7EDAFD]">
                   {avatar.name}
                 </span>
               </Typography>

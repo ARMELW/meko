@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { authClient, useSession } from '@/config/auth';
 import { Typography } from '@/components/atoms/typography/typography';
-import { Loader2, LogOut, User, Settings } from 'lucide-react';
+import { Loader2, LogOut, Settings } from 'lucide-react';
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 
 export function Header() {
