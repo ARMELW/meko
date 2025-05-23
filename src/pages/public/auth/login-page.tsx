@@ -15,7 +15,7 @@ const defaultValues: LoginFormData = {
 };
 function LoginPage() {
   const signIn = async () => {
-   {/** await login({
+    {/** await login({
       email: "armelgeek5@gmail.com",
       password: "password",
     }, {
@@ -37,45 +37,54 @@ function LoginPage() {
         <img src="/assets/images/logos/meko-logo.png" alt="" className="mx-auto mb-8 !h-[60px]" />
       </div>
 
-      <div className="bg-meko-blue-transparent-2 p-5 rounded-xl w-[22%]">
-        <form action="" className="space-y-4 w-full">
+      <div className="xs:w-full lg:w-[28%]">
+        <div className="bg-meko-blue-transparent-2 p-5 rounded-xl w-full">
+          <form action="" className="space-y-4 w-full">
 
 
-          <div className="input-container">
-            <Label uppercase >
-              <span className="text-[13px]">
-                Identifiant
-              </span>
-            </Label>
-            <Input size="w-full" />
-          </div>
-          <div className="input-container">
-            <Label uppercase>
-              <span className="text-[13px]">
-                Mot de passe
-              </span>
-            </Label>
-            <Input size="w-full" type="password" />
-          </div>
+            <div className="input-container">
+              <Label uppercase >
+                <span className="text-[13px]">
+                  Identifiant
+                </span>
+              </Label>
+              <Input size="w-full" />
+            </div>
+            <div className="input-container">
+              <Label uppercase>
+                <span className="text-[13px]">
+                  Mot de passe
+                </span>
+              </Label>
+              <Input size="w-full" type="password" />
+            </div>
 
-          <div className="input-container">
-            <Checkbox label="Se souvenir de moi" />
-          </div>
+            <div className="input-container">
+              <Checkbox label="Se souvenir de moi" />
+            </div>
 
 
-          <div className="flex justify-center w-full">
-            <Button onClick={signIn} size="small" color="secondary" className="h-[53px]">
-              Se connecter
-            </Button>
-          </div>
-        </form>
+            <div className="flex justify-center w-full">
+              <Button onClick={signIn} size="small" color="secondary" className="h-[43px]">
+                <Typography as="span" shadow={'sm'} weight={'bold'} className="text-sm uppercase">
+                  Se connecter
+                </Typography>
+              </Button>
+            </div>
+          </form>
+        </div>
+
+        <div className="my-8 w-full text-center">
+          <Link to={'/forgot-password'}>
+            <Typography as={"span"} className="text-center">
+              Mot de passe oublié ?
+            </Typography>
+          </Link>
+        </div>
+
       </div>
 
-      <div className="my-8 w-full">
-        <Typography as={"p"} className="text-center">
-          <Link to={'/forgot-password'} className="block text-center">Mot de passe oublié ?</Link>
-        </Typography>
-      </div>
+
 
     </div>;
   </div>;

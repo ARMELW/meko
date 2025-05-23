@@ -19,7 +19,7 @@ export function Button({ variant, size, children, ...props }: Props) {
 		>
 			<div
 				className={cn(
-					"rounded-[0.625rem] p-0.5",
+					"rounded-[0.625rem] p-0.5 w-full h-full",
 					btnContainerVariant({ variant: variant })
 				)}
 			>
@@ -27,7 +27,7 @@ export function Button({ variant, size, children, ...props }: Props) {
 					className={cn(
 						"rounded-[0.475rem]",
 						"w-full h-full",
-						"uppercase font-extrabold",
+						"uppercase font-extrabold flex items-center",
 						btnVariant({ variant: variant, size: size })
 					)}
 				>
