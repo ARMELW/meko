@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontofficemeko
+  labels:
+    app: frontofficemeko
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: frontofficemeko
+  template:
+    metadata:
+      labels:
+        app: frontofficemeko
+    spec:
+      containers:
+      - name: frontofficemeko
+        image: registry.meko.ca/frontoffice-meko:IMAGE_TAG_PLACEHOLDER
+        ports:
+        - containerPort: 5173 # Correspond au port exposé par l'application dans le conteneur
+      imagePullSecrets:
+      - name: registry-secret
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontofficemeko
+spec:
+  selector:
+    app: frontofficemeko
+  ports:
+    - protocol: TCP
+      port: 80 # Port exposé par le service pour les autres composants
+      targetPort: 5173 # Redirige vers le port 5173 du conteneur
+  type: ClusterIP
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: notification-ingress
+  namespace: default
+spec:
+  ingressClassName: nginx
+  tls:
+  - hosts:
+    - dev.frontoffice-meko.com
+    secretName: frontoffice-meko-tls
+  rules:
+  - host: dev.frontoffice-meko.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: frontofficemeko
+            port:
+              number: 80 # Correspond au port exposé par le service
