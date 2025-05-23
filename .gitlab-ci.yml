@@ -47,7 +47,7 @@ deploy-k8s:
     - echo "tafiditra ato"  
   script:
     - |
-      ssh -o StrictHostKeyChecking=no -i ~/.ssh/ssh_key $SSH_USER@$SSH_IP "
+      ssh -o StrictHostKeyChecking=no -i ~/.ssh/ssh_key $SSH_USER@$SSH_IP <<EOF
         echo $REGISTRY_PASS | docker login $REGISTRY_HOST -u $REGISTRY_USER --password-stdin
         cd ${REMOTE_DIR} &&
         ls
@@ -57,6 +57,7 @@ deploy-k8s:
         microk8s kubectl rollout restart deployment frontoffice-meko 
         microk8s  kubectl rollout status deployment/frontoffice-meko  --timeout=120s
         # microk8s kubectl apply -f /home/$SSH_USER/manifests/front.yaml"
+        EOF
   only:
     - develop
   
