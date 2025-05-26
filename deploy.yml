@@ -34,8 +34,28 @@ metadata:
 spec:
   selector:
     app: meko-fo
-  type: NodePort
+  type: ClusterIP
   ports:
     - port: 5173       # Port dans le cluster
       targetPort: 5173 # Port dans le conteneur
-      nodePort: 30173  # Port sur la machine physique (host)
+---
+# ingress
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: dev.meko.ac
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "false"
+spec:
+  rules:
+  - host: dev.meko.ac
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: meko-fo-service
+            port:
+              number: 5173
