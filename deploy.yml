@@ -15,6 +15,7 @@ spec:
       containers:
         - name: meko-fo
           image: registry.meko.ac/frontoffice-meko:1.0
+          imagePullPolicy: Always
           ports:
             - containerPort: 5173
           resources:
