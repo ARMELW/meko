@@ -1,4 +1,4 @@
-import { authClient } from "@/config/auth";
+
 import axios, { AxiosError, AxiosHeaders } from "axios";
 import { redirect } from "react-router";
 
