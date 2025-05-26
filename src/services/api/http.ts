@@ -4,11 +4,11 @@ import { PaginatedResponse } from "@/types/pagination";
 
 export interface ResourceEndpoints {
   base: string;
-  list?: (qs: string) => string;
-  create?: string;
-  detail?: (slug: string) => string;
-  update?: (slug: string) => string;
-  delete?: (slug: string) => string;
+  list: (qs: string) => string;
+  create: string;
+  detail: (slug: string) => string;
+  update: (slug: string) => string;
+  delete: (slug: string) => string;
   [key: string]: unknown;
 }
 

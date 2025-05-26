@@ -37,20 +37,3 @@ import { PaginatedResponse } from '@/types/pagination';
       isLoading,
     };
   }
-  
-  export function useDetail<T>(
-    queryKeys: { detail: (slug: string) => QueryKey },
-    service: Pick<BaseService<T, unknown>, 'detail'>,
-    slug: string
-  ) {
-    const { data, isLoading } = useQuery({
-      queryKey: queryKeys.detail(slug),
-      queryFn: () => service.detail(slug),
-      enabled: !!slug,
-    });
-  
-    return {
-      data,
-      isLoading,
-    };
-  }

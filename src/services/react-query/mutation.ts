@@ -3,7 +3,7 @@ import { toast } from "sonner";
 import { BaseService } from "../api/http";
 
 export interface MutationConfig<T, P> {
-    service: Pick<BaseService<T, P>, 'create' | 'update' | 'remove'>;
+    service: Pick<BaseService<T, P>, 'create'>;
     queryKeys: { lists: () => QueryKey };
     successMessages?: {
       create?: string;
@@ -54,32 +54,13 @@ export interface MutationConfig<T, P> {
       },
     });
   
-    const updateMutation = useMutation({
-      mutationFn: ({ slug, data }: { slug: string; data: P }) =>
-        service.update(slug, data),
-      onSuccess: () => handleSuccess('update'),
-      onError: (error: Error) => {
-        toast.error(`Erreur lors de la mise à jour: ${error.message}`);
-      },
-    });
-  
-    const deleteMutation = useMutation({
-      mutationFn: (slug: string) => service.remove(slug),
-      onSuccess: () => handleSuccess('delete'),
-      onError: (error: Error) => {
-        toast.error(`Erreur lors de la suppression: ${error.message}`);
-      },
-    });
+   
   
     
   
     return {
       create: createMutation.mutate,
-      update: updateMutation.mutate,
-      remove: deleteMutation.mutate,
       isCreating: createMutation.isPending,
-      isUpdating: updateMutation.isPending,
-      isDeleting: deleteMutation.isPending,
       invalidate: (queryKey: QueryKey) => queryClient.invalidateQueries({ queryKey })
     };
   }
