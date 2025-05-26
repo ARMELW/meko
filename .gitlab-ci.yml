@@ -26,51 +26,52 @@ build-image:
   script:
     - docker build -t "$IMAGE_DOCKER:$IMAGE_TAG" .
     - echo "Pushing image to registry..."
-    - docker push "$IMAGE_DOCKER:$IMAGE_TAG"
+    - echo "$CI_COMMIT_ID"
+    # - docker push "$IMAGE_DOCKER:$IMAGE_TAG"
 
-  only:
-    - develop
+#   only:
+#     - develop
 
-deploy-k8s:
-  stage: deploy
-  image: alpine:latest
-  tags:
-    - front
-  before_script:
-    - apk add --no-cache openssh-client
-    - eval $(ssh-agent -s)
-    - mkdir -p ~/.ssh
-    - echo "$SSH_KEY" | tr -d '\r' > ~/.ssh/ssh_key
-    - chmod 600 ~/.ssh/ssh_key
-    - ssh-keyscan -H $SSH_IP >> ~/.ssh/known_hosts
-    - chmod 644 ~/.ssh/known_hosts
-    - echo "🔐 SSH setup complete"
-  script:
-    - |
-      ssh -o StrictHostKeyChecking=no -i ~/.ssh/ssh_key $SSH_USER@$SSH_IP bash -s <<EOF
-        echo "$REGISTRY_PASS" | docker login $REGISTRY_HOST -u $REGISTRY_USER --password-stdin
-        cd "$REMOTE_DIR" || { echo "❌ Unable to access $REMOTE_DIR"; exit 1; }
-        echo "📂 Contents of $REMOTE_DIR:"
-        ls -l
+# deploy-k8s:
+#   stage: deploy
+#   image: alpine:latest
+#   tags:
+#     - front
+#   before_script:
+#     - apk add --no-cache openssh-client
+#     - eval $(ssh-agent -s)
+#     - mkdir -p ~/.ssh
+#     - echo "$SSH_KEY" | tr -d '\r' > ~/.ssh/ssh_key
+#     - chmod 600 ~/.ssh/ssh_key
+#     - ssh-keyscan -H $SSH_IP >> ~/.ssh/known_hosts
+#     - chmod 644 ~/.ssh/known_hosts
+#     - echo "🔐 SSH setup complete"
+#   script:
+#     - |
+#       ssh -o StrictHostKeyChecking=no -i ~/.ssh/ssh_key $SSH_USER@$SSH_IP bash -s <<EOF
+#         echo "$REGISTRY_PASS" | docker login $REGISTRY_HOST -u $REGISTRY_USER --password-stdin
+#         cd "$REMOTE_DIR" || { echo "❌ Unable to access $REMOTE_DIR"; exit 1; }
+#         echo "📂 Contents of $REMOTE_DIR:"
+#         ls -l
 
-        echo "🧹 Deleting old deployments (ignore if not found)..."
-        microk8s kubectl delete deployment frontofficemeko --ignore-not-found
-        microk8s kubectl delete deployment meko-fo --ignore-not-found
+#         echo "🧹 Deleting old deployments (ignore if not found)..."
+#         microk8s kubectl delete deployment frontofficemeko --ignore-not-found
+#         microk8s kubectl delete deployment meko-fo --ignore-not-found
 
-        echo "🚀 Applying deployment manifest..."
-        microk8s kubectl apply -f deploy.yml
+#         echo "🚀 Applying deployment manifest..."
+#         microk8s kubectl apply -f deploy.yml
 
-        echo "🔁 Restarting deployment meko-fo..."
-        microk8s kubectl rollout restart deployment meko-fo
+#         echo "🔁 Restarting deployment meko-fo..."
+#         microk8s kubectl rollout restart deployment meko-fo
 
-        echo "⏳ Waiting for deployment to stabilize..."
-        microk8s kubectl rollout status deployment/meko-fo --timeout=120s
+#         echo "⏳ Waiting for deployment to stabilize..."
+#         microk8s kubectl rollout status deployment/meko-fo --timeout=120s
 
-        echo "✅ Front-end deployment complete."
-        # docker system prune -f -a  # ← Optionnel, à activer seulement si tu es sûr
-      EOF
-  only:
-    - develop
+#         echo "✅ Front-end deployment complete."
+#          docker system prune -f -a  # ← Optionnel, à activer seulement si tu es sûr
+#       EOF
+#   only:
+#     - develop
 
   
   #       - echo "🔁 Substituting tag in deploy.yml"
