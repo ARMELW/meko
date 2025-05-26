@@ -23,10 +23,10 @@ build-image:
     - echo "tafiditra ato"
 
   script:
-    - docker build -t "$IMAGE_DOCKER:$IMAGE_TAG" .
+    - docker build -t "$CI_REGISTRY_IMAGE:$IMAGE_TAG" .
     - echo "Pushing image to registry..."
     - echo "test de push"
-    - docker push "$CI_REGISTRY_PASSWORD:$IMAGE_TAG"
+    - docker push "$CI_REGISTRY_IMAGE:$IMAGE_TAG"
 
   only:
     - develop
