@@ -13,7 +13,7 @@ export function MenuOption({ label, selected, onClick }: Props) {
 			onClick={onClick}
 			className={cn(
 				"active:scale-[0.99] cursor-pointer transition-transform",
-				"group bg-transparent hover:bg-meko-blue-transparent-1 px-5 py-4 text-meko-blue-light-3 cursor-pointer",
+				"group bg-transparent hover:bg-meko-blue-transparent-1 px-5 py-4 text-meko-blue-light-3 cursor-pointer rounded-lg",
 				selected && "bg-meko-blue-transparent-2 text-white"
 			)}
 

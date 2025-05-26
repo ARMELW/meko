@@ -33,36 +33,45 @@ build-image:
 
 deploy-k8s:
   stage: deploy
-  image:  alpine:latest
+  image: alpine:latest
   tags:
     - front
   before_script:
-    - 'command -v ssh-agent >/dev/null || ( apk add --update openssh )'
+    - apk add --no-cache openssh-client
     - eval $(ssh-agent -s)
     - mkdir -p ~/.ssh
     - echo "$SSH_KEY" | tr -d '\r' > ~/.ssh/ssh_key
     - chmod 600 ~/.ssh/ssh_key
-    - ssh-keyscan ${SSH_IP} >> ~/.ssh/known_hosts
+    - ssh-keyscan -H $SSH_IP >> ~/.ssh/known_hosts
     - chmod 644 ~/.ssh/known_hosts
-    - echo "tafiditra ato"  
+    - echo "🔐 SSH setup complete"
   script:
     - |
-      ssh -o StrictHostKeyChecking=no -i ~/.ssh/ssh_key $SSH_USER@$SSH_IP <<EOF
-        echo $REGISTRY_PASS | docker login $REGISTRY_HOST -u $REGISTRY_USER --password-stdin
-        cd ${REMOTE_DIR} &&
-        ls
-        # echo '$REGISTRY_PASS' | microk8s ctr images pull $IMAGE_DOCKER:$IMAGE_TAG --user $REGISTRY_USER:$REGISTRY_PASS 
-        echo "ready for deployment"
-        microk8s   kubectl delete depployment frontofficemeko
-        microk8s  kubectl delete depployment meko-fo
+      ssh -o StrictHostKeyChecking=no -i ~/.ssh/ssh_key $SSH_USER@$SSH_IP bash -s <<EOF
+        echo "$REGISTRY_PASS" | docker login $REGISTRY_HOST -u $REGISTRY_USER --password-stdin
+        cd "$REMOTE_DIR" || { echo "❌ Unable to access $REMOTE_DIR"; exit 1; }
+        echo "📂 Contents of $REMOTE_DIR:"
+        ls -l
+
+        echo "🧹 Deleting old deployments (ignore if not found)..."
+        microk8s kubectl delete deployment frontofficemeko --ignore-not-found
+        microk8s kubectl delete deployment meko-fo --ignore-not-found
+
+        echo "🚀 Applying deployment manifest..."
         microk8s kubectl apply -f deploy.yml
-        microk8s kubectl rollout restart deployment meko-fo 
-        microk8s  kubectl rollout status deployment/meko-fo  --timeout=120s
-        docker system prune -f -a
-        # microk8s kubectl apply -f /home/$SSH_USER/manifests/front.yaml"
+
+        echo "🔁 Restarting deployment meko-fo..."
+        microk8s kubectl rollout restart deployment meko-fo
+
+        echo "⏳ Waiting for deployment to stabilize..."
+        microk8s kubectl rollout status deployment/meko-fo --timeout=120s
+
+        echo "✅ Front-end deployment complete."
+        # docker system prune -f -a  # ← Optionnel, à activer seulement si tu es sûr
       EOF
   only:
     - develop
+
   
   #       - echo "🔁 Substituting tag in deploy.yml"
 #     - sed "s|IMAGE_TAG_PLACEHOLDER|$IMAGE_TAG|g" deploy.yml > deploy.generated.yml
