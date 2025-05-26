@@ -1,93 +1,91 @@
-// import { login } from "@/app/auth/api/login";
-import { Button, Checkbox, Input, Label, Typography, Card } from "@/components";
-import { Link, redirect } from "react-router";
 
 import { LoginFormData, loginSchema, } from "@/app/auth";
 import { useOtpAuth } from "@/app/auth/hooks/use-otp-auth";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Button, Card, Typography } from "@/components";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
 import { ControlledTextInput } from "@/components/molecules/form/controlled-input";
 import { Loader2 } from 'lucide-react';
+import { useTranslation } from "react-i18next";
 const defaultValues: LoginFormData = {
   email: "",
 };
 function LoginPage() {
-  const signIn = async () => {
-    {/** await login({
-      email: "armelgeek5@gmail.com",
-      password: "password",
-    }, {
-      onSuccess: () => {
-        console.log("User successfully login");
-        redirect('/');
-      },
-      onError: (error) => {
-        console.error("Login failed:", error);
-      },
-    });
-     */}
-  }
-  return <div className="mx-auto container">
-    <div className="flex flex-col justify-center items-center w-full h-screen">
+  const navigate = useNavigate();
+   const { t } = useTranslation();
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const { loading, initiateOtpLogin } = useOtpAuth();
 
+  const {
+    control,
+    handleSubmit
+  } = useForm<LoginFormData>({
+    defaultValues,
+    resolver: zodResolver(loginSchema),
+    mode: "onChange",
+  });
+  const onSubmit = async (data: LoginFormData) => {
+    try {
+      await initiateOtpLogin({
+        email: data.email,
+      });
+      setIsSubmitted(true);
+      navigate("/verify-otp", {
+        state: { 
+          email: data.email,
+          isSignUp: false 
+        },
+      });
+    } catch (error) {
 
-      <div className="w-full form-logo-title">
-        <img src="/assets/images/logos/meko-logo.png" alt="" className="mx-auto mb-8 !h-[60px]" />
-      </div>
+      console.error("Login error:", error);
+    }
+  };
 
-      <div className="xs:w-full lg:w-[28%]">
-        <div className="bg-meko-blue-transparent-2 p-5 rounded-xl w-full">
-          <form action="" className="space-y-4 w-full">
+  return (
+    <div className="flex flex-col justify-center items-center h-full">
 
+      <form onSubmit={handleSubmit(onSubmit)}>
 
-            <div className="input-container">
-              <Label uppercase >
-                <span className="text-[13px]">
-                  Identifiant
-                </span>
-              </Label>
-              <Input size="w-full" />
+        <div className="flex flex-col justify-center items-center w-[350px]">
+          <img src="/logo.svg" className="pb-10" />
+          <Card className="flex flex-col justify-center items-center p-8">
+
+            <div className="flex flex-col justify-center items-center">
+              <Typography variant='h1'>
+                Bienvenue sur Meko Academy
+              </Typography>
+              <Typography align="center">
+                Entrez votre adresse email pour continuer !
+              </Typography>
             </div>
-            <div className="input-container">
-              <Label uppercase>
-                <span className="text-[13px]">
-                  Mot de passe
-                </span>
-              </Label>
-              <Input size="w-full" type="password" />
+            <div className="flex flex-col gap-3 py-4 w-full">
+              <ControlledTextInput
+                name="email"
+                control={control}
+                type="email"
+                autoComplete="email"
+                placeholder="mekoacademy@email.com"
+                disabled={loading || isSubmitted}
+              />
             </div>
 
-            <div className="input-container">
-              <Checkbox label="Se souvenir de moi" />
-            </div>
+            <Button
+              type="submit"
+              size="small"
+              color="secondary"
+            >
+              {loading ? <Loader2 /> : t('auth.connect')}
 
-
-            <div className="flex justify-center w-full">
-              <Button onClick={signIn} size="small" color="secondary" className="h-[43px]">
-                <Typography as="span" shadow={'sm'} weight={'bold'} className="text-sm uppercase">
-                  Se connecter
-                </Typography>
-              </Button>
-            </div>
-          </form>
+            </Button>
+          </Card>
         </div>
 
-        <div className="my-8 w-full text-center">
-          <Link to={'/forgot-password'}>
-            <Typography as={"span"} className="text-center">
-              Mot de passe oublié ?
-            </Typography>
-          </Link>
-        </div>
-
-      </div>
-
-
-
-    </div>;
-  </div>;
+      </form>
+    </div>
+  );
 }
 
 export { LoginPage };

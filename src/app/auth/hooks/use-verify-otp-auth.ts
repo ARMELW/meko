@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { verifyOtp, VerifyOtpData } from "..";
 import { useTranslation } from 'react-i18next';
 import { toast } from "sonner"
+import { VerifyOtpOptions } from '../types';
 export function useVerifyOtpAuth() {
     const { t } = useTranslation();
     const [loading, setLoading] = useState<boolean>(false);
@@ -9,14 +10,16 @@ export function useVerifyOtpAuth() {
 
 
     const initiateVerifyOtpLogin = async (
-        data: VerifyOtpData
+        data: VerifyOtpData,
+        options: VerifyOtpOptions = { isSignUp: false }
     ): Promise<void> => {
         setLoading(true);
         setError(null);
 
         try {
             await verifyOtp(
-                data
+                data,
+                options
             );
             toast(t('auth.success'))
         } catch (unexpectedError) {

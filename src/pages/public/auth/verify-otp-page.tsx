@@ -5,6 +5,7 @@ import { Button, Card, Typography } from "@/components";
 import { useForm } from "react-hook-form";
 import { useLocation, useNavigate } from "react-router";
 import { Loader2 } from "lucide-react";
+import ControlledOtpInput from "@/components/molecules/form/controlled-otp-input";
 const defaultValues: OtpFormData = {
   otp: "",
 };
@@ -13,12 +14,15 @@ function VerifyOtpPage() {
   const location = useLocation();
   const { loading, initiateVerifyOtpLogin } = useVerifyOtpAuth();
   const email = location.state?.email;
+  const firstName = location.state?.firstName || '';
+  const lastName = location.state?.lastName || '';
+  const isSignUp = location.state?.isSignUp || false;
 
   if (!email) {
     navigate("/login");
   }
   const {
-    //control,
+    control,
     handleSubmit,
   } = useForm<OtpFormData>({
     defaultValues,
@@ -30,8 +34,17 @@ function VerifyOtpPage() {
       await initiateVerifyOtpLogin({
         email: email,
         otp: data.otp,
+      }, {
+        isSignUp,
+        firstName,
+        lastName
       });
-      navigate("/");
+      if (isSignUp) {
+        navigate("/profile/create-child");
+      } else {
+        navigate("/profile/choose");
+      }
+
     } catch (error) {
       console.error("Verify tokenn error:", error);
     }
@@ -55,7 +68,7 @@ function VerifyOtpPage() {
               </Typography>
             </div>
             <div className="flex flex-col gap-3 py-4 w-full">
-              {/**<ControlledOtpInput name="otp" control={control} />**/}
+              <ControlledOtpInput name="otp" control={control} />
             </div>
             <Button
               type="submit"

@@ -1,65 +1,95 @@
-// import { parentRegister } from "@/app/auth/api/parent-register";
-import { Button, Input, Label, Typography } from "@/components";
-import { Link } from "react-router";
 
+import { useOtpAuth } from "@/app/auth";
+import { signUpSchema } from "@/app/auth/schema";
+import { SignUpFormData } from "@/app/auth/types";
+import { Button, Label, Typography } from "@/components";
+import { ControlledTextInput } from "@/components/molecules/form/controlled-input";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Loader2 } from "lucide-react";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { useTranslation } from "react-i18next";
+import { Link, useNavigate } from "react-router";
+const defaultValues: SignUpFormData = {
+  email: "",
+  firstName: "",
+  lastName: ""
+};
 function CreateParentAccountPage() {
-  const register = async () => {
-    /**await parentRegister({
-      name: "Armel Wanes",
-      email: "armelgeek5@gmail.com",
-      password: "password",
-    }, {
-      onSuccess: () => {
-        console.log("User successfully registered");
-        redirect('/');
-      },
-      onError: (error) => {
-        console.error("Registration failed:", error);
-      },
-    });**/
+  const navigate = useNavigate();
+  const { t } = useTranslation();
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const { loading, initiateOtpLogin } = useOtpAuth();
+  const {
+    control,
+    handleSubmit
+  } = useForm<SignUpFormData>({
+    defaultValues,
+    resolver: zodResolver(signUpSchema),
+    mode: "onSubmit",
+  });
+  const onSubmit = async (data: SignUpFormData) => {
+    try {
+      await initiateOtpLogin({
+        email: data.email,
+      });
+      setIsSubmitted(true);
+      //TODO: il faut que l'on assure le state soit bien recuperer coté verification
+      navigate("/verify-otp", {
+        state: {
+          email: data.email,
+          firstName: data.firstName,
+          lastName: data.lastName,
+          isSignUp: true
+        },
+      });
+    } catch (error) {
+
+      console.error("Sign Up error:", error);
+    }
   }
   return <div className="flex flex-col justify-center items-center w-full h-screen">
 
-    <div className="w-[35%]">
-      <form action="" className="space-y-4 w-full">
+    <div>
+      <form className="space-y-4 w-full" onSubmit={handleSubmit(onSubmit)}>
+
 
         <Typography as="h3" align={"center"}>
-          Création compte parent
+          {t('auth.createAccount')}
         </Typography>
 
         <Typography as="p" align={"left"}>
-          Renseignez vos informations
+          {t('auth.provideInfo')}
         </Typography>
 
-        <div className="gap-4 grid grid-cols-2">
+        <div className="flex flex-row gap-4">
           <div className="input-container">
             <Label uppercase>
               <span className="text-[13px]">
-                Nom
+                {t('auth.firstName')}
               </span>
             </Label>
-            <Input size="w-full" />
+            <ControlledTextInput
+              name="firstName"
+              control={control}
+              placeholder="Nom"
+              size="small"
+              disabled={isSubmitted}
+            />
           </div>
           <div className="input-container">
             <Label uppercase>
               <span className="text-[13px]">
-                Prénom
+                {t('auth.lastName')}
               </span>
             </Label>
-            <Input size="w-full" />
-          </div>
-        </div>
-
-        <div className="w-full">
-          <div className="input-container">
-            <div className="w-full">
-              <Label  uppercase>
-                <span className="text-[13px]" >
-                  email
-                </span>
-              </Label>
-              <Input size="w-full" />
-            </div>
+            <ControlledTextInput
+              name="lastName"
+              control={control}
+              placeholder="Prénom"
+              size="small"
+              disabled={isSubmitted}
+            />
           </div>
         </div>
 
@@ -67,40 +97,42 @@ function CreateParentAccountPage() {
           <div className="input-container">
             <div className="w-full">
               <Label uppercase>
-                <span className="text-[13px]">
-                  creation mot de passe
+                <span className="text-[13px]" >
+                  {t('auth.email')}
                 </span>
               </Label>
-              <Input size="w-full" type="password" />
+              <ControlledTextInput
+                name="email"
+                control={control}
+                type="email"
+                autoComplete="email"
+                placeholder="mekoacademy@email.com"
+                size="small"
+                disabled={isSubmitted}
+              />
             </div>
-          </div>
-        </div>
-
-        <div className="input-container">
-          <div className="w-full">
-            <Label uppercase>
-              <span className="text-[13px]">
-                Confirmation mot de passe
-              </span>
-            </Label>
-            <Input size="w-full" type="password" />
           </div>
         </div>
 
         <div className="w-full">
           <Typography as={"p"} className="text-sm text-center">
-            En créant un compte, vous acceptez les <Link to="#">conditions générales</Link> de Meko Academy.
+            {t('auth.termsAgreement')} <Link to="#" className="text-meko-blue-light-1">{t('auth.termsLink')}</Link>.
           </Typography>
         </div>
 
         <div className="flex justify-center w-full">
-          <Button onClick={register} size="small" color="secondary">
-            Créer le compte
+          <Button
+            type="submit"
+            size="small"
+            color="secondary"
+          >
+            {loading ? <Loader2 /> : t('auth.signUp')}
+
           </Button>
         </div>
-        <div className="w-full">
+        <div className="flex justify-center w-full">
           <Typography as={"p"} className="text-center">
-            <Link to={'/login'} className="block text-sm text-center">Vous avez déja un compte ?</Link>
+            <Link to={'/login'} className="block text-meko-blue-light-1 text-sm text-center">{t('auth.alreadyHaveAccount')}</Link>
           </Typography>
         </div>
 

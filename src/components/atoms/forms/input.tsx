@@ -1,7 +1,7 @@
 import { cn } from "@/utils/style";
 import { ComponentProps } from "react";
 
-interface Props extends Omit<ComponentProps<"input">, "size"> {
+export interface Props extends Omit<ComponentProps<"input">, "size"> {
 	size?: "normal" | "small" | "w-full";
 	error?: boolean;
 }

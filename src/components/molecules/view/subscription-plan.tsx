@@ -4,6 +4,7 @@ import { Switch } from '@/components/atoms/forms/switch';
 import { Typography } from '@/components/atoms/typography/typography';
 import { Card, CardContent, CardTitle } from '@/components/atoms/view/card';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface Plan {
     id: string;
@@ -28,19 +29,22 @@ interface PlanItemProps {
 }
 
 function PriceTag({ price }: PriceTagProps) {
+    const { t } = useTranslation();
+    
     return (
         <div className="relative flex justify-center py-3 sm:py-4 md:py-5 text-white">
             <span className="text-5xl sm:text-6xl md:text-7xl">{price}</span>
 
             <div className="flex flex-col items-center mt-1 sm:mt-2 ml-1">
                 <span className="font-semibold text-3xl sm:text-4xl md:text-5xl">€</span>
-                <span className="pl-1 sm:pl-2 font-semibold text-meko-blue-light-1 text-xs sm:text-sm tracking-wide">/MOIS</span>
+                <span className="pl-1 sm:pl-2 font-semibold text-meko-blue-light-1 text-xs sm:text-sm uppercase tracking-wide">/ {t('common.month')}</span>
             </div>
         </div>
     );
 }
 
 export function PlanItem({ plan, billingCycle, handlePlanSelect, isSelected = false }: PlanItemProps) {
+     const { t } = useTranslation();
     return (
         <Card 
             key={plan.id} 
@@ -73,9 +77,9 @@ export function PlanItem({ plan, billingCycle, handlePlanSelect, isSelected = fa
                 <Button 
                     size="small" 
                     onClick={() => handlePlanSelect(plan.id)}
-                    className="w-full" innerClassName={"justify-center"}
+                    className="w-full uppercase"
                 >
-                    ACHETER L'OFFRE
+                    {t('landing.buyPlan')}
                 </Button>
             </CardContent>
         </Card>
@@ -85,7 +89,7 @@ export function PlanItem({ plan, billingCycle, handlePlanSelect, isSelected = fa
 export default function SubscriptionPlanDemo() {
     const [billingCycle, setBillingCycle] = useState<'monthly' | 'annual'>('monthly');
     const [selectedPlan, setSelectedPlan] = useState<string | null>(null);
-
+    const { t } = useTranslation();
     const plans: Plan[] = [
         {
             id: 'individual',
@@ -125,7 +129,7 @@ export default function SubscriptionPlanDemo() {
                 <div className="flex flex-row justify-center sm:py-6 pb-8 md:pb-8">
                     <div className="px-4 max-w-xs sm:max-w-xl md:max-w-2xl">
                         <Typography as={'h2'} align='center' className="text-xl sm:text-2xl md:text-3xl">
-                            CHOISISSEZ L'ABONNEMENT QUI VOUS CONVIENT
+                            {t('landing.planTitle')}
                         </Typography>
                     </div>
                 </div>
@@ -137,11 +141,11 @@ export default function SubscriptionPlanDemo() {
                         variant="small"
                         className="text-xs sm:text-sm"
                     >
-                        MENSUEL
+                          {t('landing.mensual')}
                     </Typography>
 
                     <Switch 
-                        aria-label="Changer de cycle de facturation" 
+                        aria-label={t('landing.switchPlan')}
                         checked={billingCycle === 'annual'} 
                         onChange={handleBillingToggle} 
                     />
@@ -153,7 +157,7 @@ export default function SubscriptionPlanDemo() {
                         color={'primary'}
                         className="text-xs sm:text-sm"
                     >
-                        ANNUEL
+                        {t('landing.annual')}
                     </Typography>
                 </div>
 

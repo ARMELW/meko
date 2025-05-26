@@ -26,31 +26,31 @@ function ChooseAvatarPage() {
     alert(`Avatar cliqué: ID ${id}`);
   };
 
-  return <div className="w-full  flex flex-col justify-center items-center">
+  return <div className="flex flex-col justify-center items-center w-full h-full">
     <div className="w-[50%]">
 
-      <div className="w-full typo-container flex justify-center">
+      <div className="flex justify-center w-full typo-container">
         <Typography as="h3" align={"center"}>
-          Choisis ton avatar
+          Choisi ton avatar
         </Typography>
       </div>
 
-      <div className="w-full flex items-center justify-center p-5">
-        <div className="avatar-profil ">
-          <img src="/assets/images/avatars/frame_26088240.png" alt="" className="avatar-profile w-[70px] h-[70px]" />
+      <div className="flex justify-center items-center p-5 w-full">
+        <div className="avatar-profil">
+          <img src="/assets/images/avatars/frame_26088240.png" alt="" className="w-[70px] h-[70px] avatar-profile" />
         </div>
       </div>
 
-      <div className="w-full typo-container flex justify-center">
-        <Typography as="p" align={"center"} className="w-[91%] ">
+      <div className="flex justify-center w-full typo-container">
+        <Typography as="p" align={"center"} className="w-[91%]">
           Commence par choisir ton avatar. Tu pourras toujours le changer plus tard si tu le souhaites.
         </Typography>
       </div>
 
-      <div className="w-full avatar-grid p-12">
-        <div className="grid grid-cols-4 gap-12">
+      <div className="avatar-grid p-12 w-full">
+        <div className="gap-12 grid grid-cols-4">
           {avatars.map((avatar, index) => (
-            <div key={index} onClick={() => handleChoice(avatar.id)} className="w-[70px] h-[70px] rounded-full overflow-hidden  shadow-lg cursor-pointer">
+            <div key={index} onClick={() => handleChoice(avatar.id)} className="shadow-lg rounded-full w-[70px] h-[70px] overflow-hidden cursor-pointer">
               <img src={avatar.src} alt={`Avatar ${index + 1}`} className="w-full h-full object-cover" />
             </div>
           ))}
