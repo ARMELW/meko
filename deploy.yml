@@ -46,9 +46,12 @@ kind: Ingress
 metadata:
   name: dev.meko.ac
   annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /
-    nginx.ingress.kubernetes.io/force-ssl-redirect: "false"
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
 spec:
+  tls:
+  - hosts:
+    - dev.meko.ac
+    secretName: dev.meko.ac-tls
   rules:
   - host: dev.meko.ac
     http:
