@@ -19,7 +19,7 @@ build-image:
   variables:
     DOCKER_HOST: unix:///var/run/docker.sock
   before_script:
-    # - mkdir -p /etc/docker/certs.d/$DOCKER_REGISTRY
+    - mkdir -p /etc/docker/certs.d/$DOCKER_REGISTRY
     - echo "$CERT_CA" > /etc/docker/certs.d/$DOCKER_REGISTRY/ca.crt
     - echo "$REGISTRY_PASS" | docker login "$DOCKER_REGISTRY" -u "$REGISTRY_USER" --password-stdin
   script:
