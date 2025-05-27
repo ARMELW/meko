@@ -1,5 +1,8 @@
+const prefix = 'api';
 export const API_ENDPOINTS = {
+ 
   children: {
-    base: 'v1/children'
+    base: `${prefix}/v1/children`,
+    create: `${prefix}/v1/children`
   }
 } as const;

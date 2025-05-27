@@ -26,12 +26,10 @@ export abstract class BaseServiceImpl<T, TPayload> implements BaseService<T, TPa
   protected abstract serializeParams(filter: Filter): string;
 
   protected async fetchData<R>(url: string, options: RequestInit): Promise<R> {
-    const response = await fetch(`${import.meta.env.VITE_APP_SERVER_URL}${url}`, {
+    const response = await fetch(`${import.meta.env.VITE_APP_SERVER_URL}/${url}`, {
       ...options,
-      headers: {
-        'Content-Type': 'application/json',
-        ...options.headers,
-      },
+      credentials: 'include',
+      
     });
 
     if (!response.ok) {
@@ -61,7 +59,6 @@ export abstract class BaseServiceImpl<T, TPayload> implements BaseService<T, TPa
     });
   }
 
-
   protected put<R>(endpoint: string, data: unknown): Promise<R> {
     return this.fetchData<R>(endpoint, {
       method: 'PUT',
@@ -83,6 +80,7 @@ export abstract class BaseServiceImpl<T, TPayload> implements BaseService<T, TPa
   }
 
   async create(payload: TPayload): Promise<ApiResponse<T>> {
+    console.log('payload', payload, this.endpoints);
     return this.post<ApiResponse<T>>(this.endpoints.create, payload);
   }
 
@@ -93,7 +91,6 @@ export abstract class BaseServiceImpl<T, TPayload> implements BaseService<T, TPa
   async remove(slug: string): Promise<ApiResponse> {
     return this.delete<ApiResponse>(this.endpoints.delete(slug));
   }
-
 
   protected handleApiError(error: unknown): never {
     if (error instanceof Error) {

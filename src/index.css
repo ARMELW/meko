@@ -120,3 +120,6 @@ body::before {
 .meko-bg {
 	background: linear-gradient(180deg, #006eb6 0%, #0040b6 100%);
 }
+.rdp-vhidden {
+  @apply hidden;
+}

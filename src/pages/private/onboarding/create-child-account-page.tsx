@@ -1,27 +1,40 @@
-// import { parentRegister } from "@/app/auth/api/parent-register";
-import { Button, Input, Label, Typography } from "@/components";
-// import { Link, redirect } from "react-router"; 
-
+import { addChildrenSchema } from "@/app/children/schema";
+import { ChildrenPayload } from "@/app/children/type";
+import {  Label, Typography } from "@/components";
+import { ControlledTextInput } from "@/components/molecules/form/controlled-input";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { useChildrenActions } from '../../../app/children/hooks/use-children-actions';
+import { LoadingButton } from "@/components/atoms/actions/loading-button";
+import { useNavigate } from "react-router";
+const defaultValues: ChildrenPayload = {
+  firstname: "",
+  lastname: "",
+  birthday: "",
+};
 function CreateChildAccountPage() {
-  const register = async () => {
-    // await parentRegister({
-    //   name: "Armel Wanes",
-    //   email: "armelgeek5@gmail.com",
-    //   password: "password",
-    // }, {
-    //   onSuccess: () => {
-    //     console.log("User successfully registered");
-    //     redirect('/');
-    //   },
-    //   onError: (error) => {
-    //     console.error("Registration failed:", error);
-    //   },
-    // });
-  }
-  return <div className="w-full h-screen flex flex-col justify-center items-center">
+  const navigate = useNavigate();
+  const { create, isCreating } = useChildrenActions();
+  const {
+    control,
+    handleSubmit
+  } = useForm<ChildrenPayload>({
+    defaultValues,
+    resolver: zodResolver(addChildrenSchema),
+    mode: "onChange",
+  });
+  const onSubmit = async (data: ChildrenPayload) => {
+
+    await create({
+      ...data
+    })
+    navigate("/profile/welcome");
+
+  };
+  return (<div className="w-full h-screen flex flex-col justify-center items-center">
 
     <div className="w-[35%]">
-      <form action="" className="w-full space-y-4">
+      <form action="" className="w-full space-y-4" onSubmit={handleSubmit(onSubmit)}>
 
         <Typography as="h3" align={"center"}>
           Création compte enfant
@@ -38,7 +51,13 @@ function CreateChildAccountPage() {
                 Nom
               </span>
             </Label>
-            <Input size="w-full" />
+            <ControlledTextInput
+              name="firstname"
+              size="small"
+              control={control}
+              placeholder="Entrez le nom"
+              disabled={isCreating}
+            />
           </div>
           <div className="input-container">
             <Label uppercase>
@@ -46,28 +65,44 @@ function CreateChildAccountPage() {
                 Prénom
               </span>
             </Label>
-            <Input size="w-full" />
+            <ControlledTextInput
+              name="lastname"
+              size="small"
+              control={control}
+              placeholder="Entrez le  prénom"
+              disabled={isCreating}
+            />
           </div>
         </div>
 
         <div className="w-full">
           <div className="input-container">
             <div className="w-full">
-              <Label  uppercase>
+              <Label uppercase>
                 <span className="text-[13px]" >
                   Date de naissance
                 </span>
               </Label>
-              <Input size="w-full" />
+              <ControlledTextInput
+                name="birthday"
+                size="small"
+                type="date"
+                control={control}
+                placeholder=""
+                disabled={isCreating}
+              />
             </div>
           </div>
         </div>
 
 
         <div className="w-full flex justify-center">
-          <Button onClick={register} size="small" color="secondary">
+          <LoadingButton type="submit"
+            loading={isCreating}
+            size="small"
+            color="secondary">
             Créer le compte
-          </Button>
+          </LoadingButton>
         </div>
 
 
@@ -75,7 +110,7 @@ function CreateChildAccountPage() {
     </div>
 
 
-  </div>;
+  </div>);
 }
 
 export { CreateChildAccountPage };
