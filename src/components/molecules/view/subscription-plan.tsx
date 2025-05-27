@@ -77,7 +77,7 @@ export function PlanItem({ plan, billingCycle, handlePlanSelect, isSelected = fa
                 <Button 
                     size="small" 
                     onClick={() => handlePlanSelect(plan.id)}
-                    className="w-full uppercase"
+                    className="w-full sm:w-auto uppercases"
                 >
                     {t('landing.buyPlan')}
                 </Button>

@@ -1,23 +1,38 @@
+import { useChildren } from "@/app/children";
 import { Typography } from "@/components";
+import { useSession } from "@/services/session/store";
+import { useNavigate } from "react-router";
 
-type Avatar = {
-  id: number;
-  name: string;
-  src: string;
-};
 
 function ChooseProfilePage() {
+  const navigate = useNavigate();
+  const { data: avatars, isLoading } = useChildren();
+  const selectChild = useSession(state => state.selectChild);
 
-  const avatars: Avatar[] = [
-    { id: 1, src: '/assets/images/avatars/frame_26088240_1.png', name: 'john' },
-    { id: 2, src: '/assets/images/avatars/image.png', name: 'Jane' },
-    { id: 3, src: '/assets/images/avatars/frame_26088240_2.png', name: 'Jennifer' },
-  ];
+  
+  const handleChoice = (child: { id: string; firstname: string; lastname: string; avatarUrl?: string }) => {
+    if (!child) {
+      return;
+    }
 
-  const handleChoice = (id: number) => {
-    alert(`Avatar cliqué: ID ${id}`);
+    selectChild({
+      id: child.id,
+      firstname: child.firstname,
+      lastname: child.lastname,
+      avatarUrl: child.avatarUrl
+    });
+
+    navigate("/home");
   };
 
+
+  if (isLoading) {
+    return (
+      <div className="w-full h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-primary-500"></div>
+      </div>
+    );
+  }
   return <div className="flex flex-col justify-center items-center py-29 w-full">
     <div className="w-[50%]">
 
@@ -26,16 +41,23 @@ function ChooseProfilePage() {
           Choisi ton profil
         </Typography>
       </div>
+      {(!avatars?.data || avatars.data.length === 0) && (
+          <div className="col-span-full text-center">
+            <Typography as="p" className="text-gray-500">
+              Vous n'avez pas encore ajouté d'enfant à votre compte.
+            </Typography>
+          </div>
+        )}
       <div className="avatar-grid p-12 w-full">
         <div className="justify-center items-center gap-6 grid grid-cols-3">
-          {avatars.map((avatar, index) => (
+          {avatars?.data.map((avatar, index) => (
             <div className="flex flex-col items-center avatar-item" key={index}>
-              <div onClick={() => handleChoice(avatar.id)} className="shadow-lg rounded-full w-[70px] h-[70px] overflow-hidden cursor-pointer">
-                <img src={avatar.src} alt={`Avatar ${index + 1}`} className="w-full h-full object-cover" />
+              <div onClick={() => handleChoice(avatar)} className="shadow-lg rounded-full w-[70px] h-[70px] overflow-hidden cursor-pointer">
+                <img src={avatar.avatarUrl} alt={`Avatar ${index + 1}`} className="w-full h-full object-cover" />
               </div>
               <Typography as="span" align={"center"} className="uppercase">
                 <span className="font-[700] text-[#7EDAFD]">
-                  {avatar.name}
+                  {avatar.firstname} {avatar.lastname}
                 </span>
               </Typography>
             </div>

@@ -2,10 +2,10 @@
 import { useOtpAuth } from "@/app/auth";
 import { signUpSchema } from "@/app/auth/schema";
 import { SignUpFormData } from "@/app/auth/types";
-import { Button, Label, Typography } from "@/components";
+import { Label, Typography } from "@/components";
+import { LoadingButton } from "@/components/atoms/actions/loading-button";
 import { ControlledTextInput } from "@/components/molecules/form/controlled-input";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Loader2 } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
@@ -121,14 +121,15 @@ function CreateParentAccountPage() {
         </div>
 
         <div className="flex justify-center w-full">
-          <Button
+          <LoadingButton
+            loading={loading}
             type="submit"
             size="small"
             color="secondary"
           >
-            {loading ? <Loader2 /> : t('auth.signUp')}
+            {t('auth.signUp')}
 
-          </Button>
+          </LoadingButton>
         </div>
         <div className="flex justify-center w-full">
           <Typography as={"p"} className="text-center">

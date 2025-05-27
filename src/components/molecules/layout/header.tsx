@@ -4,17 +4,22 @@ import { Link, useNavigate } from 'react-router';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { authClient, useSession } from '@/config/auth';
+import { useSession as useChildrenSession } from '@/services/session/store';
 import { Typography } from '@/components/atoms/typography/typography';
-import { Loader2, LogOut, Settings } from 'lucide-react';
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 
 export function Header() {
     const { t } = useTranslation();
     const navigate = useNavigate();
     const { data: session } = useSession();
+    const selectedChild = useChildrenSession(state => state.selectedChild);
+    const logout = useChildrenSession(state => state.logout);
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const [isLoggingOut, setIsLoggingOut] = useState(false);
     const isAuthenticated = !!session;
+
+    const displayName = selectedChild ? selectedChild.firstname : session?.user?.name || 'User';
+    const displayImage = selectedChild ? selectedChild.avatarUrl : session?.user?.image;
 
     const toggleMobileMenu = () => {
         setMobileMenuOpen(!mobileMenuOpen);
@@ -23,8 +28,14 @@ export function Header() {
     const handleLogout = async () => {
         setIsLoggingOut(true);
         try {
-            await authClient.signOut();
-            navigate('/');
+            if (selectedChild) {
+                logout();
+                navigate('/profile/choose');
+            } else {
+                await authClient.signOut();
+                navigate('/');
+            }
+
         } catch (error) {
             console.error('Logout failed:', error);
         } finally {
@@ -45,45 +56,60 @@ export function Header() {
                                 variant="small"
                                 color={"default"}
                             >
-                                {session.user?.name || 'User'}
+                                {displayName}
                             </Typography>
                             <img
-                                src={session.user?.image || "https://i.pravatar.cc/300"}
+                                src={displayImage || "https://i.pravatar.cc/300"}
                                 alt="Avatar"
-                                className="border border-3 border-white rounded-full w-12 h-12"
+                                className="border border-white rounded-full w-12 h-12"
                             />
                         </button>
                     </DropdownMenu.Trigger>
 
                     <DropdownMenu.Portal>
                         <DropdownMenu.Content
-                            className="z-50 bg-meko-blue-flat shadow-lg p-2 border border-white rounded-md min-w-[200px]"
+                            className="z-50 bg-meko-blue-darker shadow-lg rounded-md min-w-[200px]"
                             sideOffset={5}
                             align="end"
                         >
-                            <DropdownMenu.Item
-                                className="flex items-center hover:bg-meko-blue-light-3 px-3 py-2 rounded text-white text-sm cursor-pointer"
-                                onSelect={() => navigate('/profile/choose')}
-                            >
-                                <Settings className="mr-2 w-4 h-4" />
-                                {t('common.dashboard')}
-                            </DropdownMenu.Item>
+                            {!selectedChild && (
+                                <>
+                                    <DropdownMenu.Item
+                                        className="flex text-meko-blue-light-1 uppercase items-center hover:bg-meko-blue-transparent-1  px-4 py-2  text-xs cursor-pointer"
+                                        onSelect={() => navigate('/children/home')}
+                                    >
+                                        {t('common.dashboard')}
+                                    </DropdownMenu.Item>
+                                </>
+                            )}
+                            {selectedChild && (
+                                <>
+                                    <DropdownMenu.Item
+                                        className="flex text-meko-blue-light-1 uppercase items-center hover:bg-meko-blue-transparent-1 px-4 py-2   text-xs cursor-pointer"
+                                        onSelect={() => navigate('/profile/choose')}
+                                    >
+                                        Changer de profile
+                                    </DropdownMenu.Item>
 
-                            <DropdownMenu.Separator className="bg-meko-blue-light-3 my-2 h-px" />
-
+                                      <DropdownMenu.Item
+                                        className="flex text-meko-blue-light-1 uppercase items-center hover:bg-meko-blue-transparent-1 px-4 py-2 rounded  text-xs cursor-pointer"
+                                        onSelect={() => navigate('/profile/choose')}
+                                    >
+                                        Changer d'avatar
+                                    </DropdownMenu.Item>
+                                </>
+                            )}
                             <DropdownMenu.Item
-                                className="flex items-center hover:bg-meko-blue-light-3 disabled:opacity-50 px-3 py-2 rounded text-white text-sm cursor-pointer disabled:cursor-not-allowed"
+                                className="flex text-meko-blue-light-1 uppercase items-center  hover:bg-meko-blue-transparent-1 px-4 py-2 rounded  text-xs cursor-pointer disabled:cursor-not-allowed"
                                 onSelect={handleLogout}
                                 disabled={isLoggingOut}
                             >
                                 {isLoggingOut ? (
                                     <>
-                                        <Loader2 className="mr-2 w-4 h-4 animate-spin" />
                                         {t('auth.loggingOut')}
                                     </>
                                 ) : (
                                     <>
-                                        <LogOut className="mr-2 w-4 h-4" />
                                         {t('auth.logout')}
                                     </>
                                 )}
@@ -116,7 +142,7 @@ export function Header() {
             return (
                 <div className="flex flex-col items-center gap-4">
                     <img
-                        src={session.user?.image || "https://i.pravatar.cc/300"}
+                        src={displayImage || "https://i.pravatar.cc/300"}
                         alt="Avatar"
                         className="border-2 border-white rounded-full w-20 h-20"
                     />
@@ -125,7 +151,7 @@ export function Header() {
                         weight="bold"
                         color={"default"}
                     >
-                        {session.user?.name || 'User'}
+                        {displayName}
                     </Typography>
 
                     <MenuOption
@@ -141,13 +167,14 @@ export function Header() {
                     <MenuOption
                         onClick={() => {
                             if (!isLoggingOut) {
+
                                 handleLogout();
+
                                 setMobileMenuOpen(false);
                             }
                         }}
                         label={
                             isLoggingOut ? t('auth.loggingOut') : t('auth.logout')
-
                         }
                     />
                 </div>

@@ -1,12 +1,14 @@
 import { addChildrenSchema } from "@/app/children/schema";
 import { ChildrenPayload } from "@/app/children/type";
-import {  Label, Typography } from "@/components";
+import { Label, Typography } from "@/components";
 import { ControlledTextInput } from "@/components/molecules/form/controlled-input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useChildrenActions } from '../../../app/children/hooks/use-children-actions';
 import { LoadingButton } from "@/components/atoms/actions/loading-button";
 import { useNavigate } from "react-router";
+import { useChildrenStore } from "@/app/children/store";
+
 const defaultValues: ChildrenPayload = {
   firstname: "",
   lastname: "",
@@ -15,6 +17,8 @@ const defaultValues: ChildrenPayload = {
 function CreateChildAccountPage() {
   const navigate = useNavigate();
   const { create, isCreating } = useChildrenActions();
+  const setCurrentChild = useChildrenStore((state) => state.setCurrentChild);
+
   const {
     control,
     handleSubmit
@@ -25,11 +29,15 @@ function CreateChildAccountPage() {
   });
   const onSubmit = async (data: ChildrenPayload) => {
 
-    await create({
+   create({
       ...data
-    })
-    navigate("/profile/welcome");
-
+    }, {
+      onSuccess: (res) => {
+        console.log("Enfant créé avec succès:", res.data);
+        setCurrentChild(res.data!);
+        navigate("/profile/welcome");
+      }
+    });
   };
   return (<div className="w-full h-screen flex flex-col justify-center items-center">
 

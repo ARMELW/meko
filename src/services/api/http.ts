@@ -6,18 +6,19 @@ export interface ResourceEndpoints {
   base: string;
   list: (qs: string) => string;
   create: string;
-  detail: (slug: string) => string;
-  update: (slug: string) => string;
-  delete: (slug: string) => string;
+  detail: (id: string) => string;
+  update: (id: string) => string;
+  delete: (id: string) => string;
   [key: string]: unknown;
 }
 
 export interface BaseService<T, TPayload> {
   list(filter: Filter): Promise<PaginatedResponse<T>>;
-  detail(slug: string): Promise<T>;
+  detail(id: string): Promise<T>;
   create(payload: TPayload): Promise<ApiResponse<T>>;
-  update(slug: string, payload: TPayload): Promise<ApiResponse<T>>;
-  remove(slug: string): Promise<ApiResponse>;
+  update(id: string, payload: TPayload): Promise<ApiResponse<T>>;
+  patch(id: string, payload: Partial<TPayload>): Promise<ApiResponse<T>>;
+  remove(id: string): Promise<ApiResponse>;
 }
 
 export abstract class BaseServiceImpl<T, TPayload> implements BaseService<T, TPayload> {
@@ -48,23 +49,31 @@ export abstract class BaseServiceImpl<T, TPayload> implements BaseService<T, TPa
     return response.json();
   }
 
-  protected get<R>(endpoint: string): Promise<R> {
+  get<R>(endpoint: string): Promise<R> {
     return this.fetchData<R>(endpoint, { method: 'GET' });
   }
 
-  protected post<R>(endpoint: string, data: unknown): Promise<R> {
+  post<R>(endpoint: string, data: unknown): Promise<R> {
     return this.fetchData<R>(endpoint, {
       method: 'POST',
       body: JSON.stringify(data),
     });
   }
 
-  protected put<R>(endpoint: string, data: unknown): Promise<R> {
+  put<R>(endpoint: string, data: unknown): Promise<R> {
     return this.fetchData<R>(endpoint, {
       method: 'PUT',
       body: JSON.stringify(data),
     });
   }
+
+  patch<R>(endpoint: string, data: unknown): Promise<R> {
+    return this.fetchData<R>(endpoint, {
+      method: 'PATCH',
+      body: JSON.stringify(data),
+    });
+  }
+
 
   protected delete<R>(endpoint: string): Promise<R> {
     return this.fetchData<R>(endpoint, { method: 'DELETE' });
@@ -75,8 +84,8 @@ export abstract class BaseServiceImpl<T, TPayload> implements BaseService<T, TPa
     return this.get<PaginatedResponse<T>>(this.endpoints.list(queryString));
   }
 
-  async detail(slug: string): Promise<T> {
-    return this.get<T>(this.endpoints.detail(slug));
+  async detail(id: string): Promise<T> {
+    return this.get<T>(this.endpoints.detail(id));
   }
 
   async create(payload: TPayload): Promise<ApiResponse<T>> {
@@ -84,13 +93,16 @@ export abstract class BaseServiceImpl<T, TPayload> implements BaseService<T, TPa
     return this.post<ApiResponse<T>>(this.endpoints.create, payload);
   }
 
-  async update(slug: string, payload: TPayload): Promise<ApiResponse<T>> {
-    return this.put<ApiResponse<T>>(this.endpoints.update(slug), payload);
+  async update(id: string, payload: TPayload): Promise<ApiResponse<T>> {
+    return this.put<ApiResponse<T>>(this.endpoints.update(id), payload);
   }
 
-  async remove(slug: string): Promise<ApiResponse> {
-    return this.delete<ApiResponse>(this.endpoints.delete(slug));
+  async remove(id: string): Promise<ApiResponse> {
+    return this.delete<ApiResponse>(this.endpoints.delete(id));
   }
+
+  
+
 
   protected handleApiError(error: unknown): never {
     if (error instanceof Error) {

@@ -1,30 +1,54 @@
+import { useAvatarActions, useAvatars } from "@/app/avatar/hooks/use-avatar";
+import { Avatar } from "@/app/avatar/types";
+import { useChildrenStore } from "@/app/children/store";
 import { Typography } from "@/components";
-
-type Avatar = {
-  id: number;
-  src: string;
-};
+import { useNavigate } from "react-router";
+import { useEffect } from "react";
+import { toast } from "sonner";
 
 function ChooseAvatarPage() {
+  const navigate = useNavigate();
+  const { data: avatars, isLoading } = useAvatars();
+  const { select } = useAvatarActions();
+  
+  const currentChild = useChildrenStore(state => state.currentChild);
+  const clearCurrentChild = useChildrenStore(state => state.clearCurrentChild);
 
-  const avatars: Avatar[] = [
-    { id: 1, src: '/assets/images/avatars/frame_26088240_1.png' },
-    { id: 2, src: '/assets/images/avatars/image.png' },
-    { id: 3, src: '/assets/images/avatars/frame_26088240_2.png' },
-    { id: 4, src: '/assets/images/avatars/frame_26088240_3.png' },
-    { id: 5, src: '/assets/images/avatars/frame_26088240_5.png' },
-    { id: 7, src: '/assets/images/avatars/frame_26088240_6.png' },
-    { id: 8, src: '/assets/images/avatars/frame_26088240_7.png' },
-    { id: 9, src: '/assets/images/avatars/frame_26088240_8.png' },
-    { id: 10, src: '/assets/images/avatars/frame_26088240_9.png' },
-    { id: 11, src: '/assets/images/avatars/frame_26088240_10.png' },
-    { id: 11, src: '/assets/images/avatars/frame_26088240_11.png' },
-    { id: 12, src: '/assets/images/avatars/frame_26088240_12.png' },
-  ];
+  useEffect(() => {
+    if (!currentChild) {
+      navigate("/profile/choose");
+    }
+  }, [currentChild, navigate]);
 
-  const handleChoice = (id: number) => {
-    alert(`Avatar cliqué: ID ${id}`);
+  const handleChoice = async (avatar: Avatar) => {
+    if (!currentChild) {
+      return;
+    }
+
+    try {
+      await select({
+        id: currentChild.id,
+        avatarUrl: avatar.url
+      });
+      toast('Avatar sélectionné avec succès', {
+        description: 'Tu peux le changer à tout moment dans les paramètres de ton profil.',
+        duration: 5000,
+        icon: '✅'
+      })
+     clearCurrentChild(); 
+     navigate("/profile/choose");
+    } catch (error) {
+      console.error('Erreur lors de la sélection de l\'avatar:', error);
+    }
   };
+
+  if (isLoading || !currentChild) {
+    return (
+      <div className="w-full h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-primary-500"></div>
+      </div>
+    );
+  }
 
   return <div className="flex flex-col justify-center items-center w-full h-full">
     <div className="w-[50%]">
@@ -46,12 +70,20 @@ function ChooseAvatarPage() {
           Commence par choisir ton avatar. Tu pourras toujours le changer plus tard si tu le souhaites.
         </Typography>
       </div>
+      {avatars?.length === 0 && (
+        <div className="flex justify-center items-center w-full p-5">
+          <Typography as="p" align={"center"} className="text-red-500">
+            Aucun avatar disponible pour le moment.
+          </Typography>
+        </div>
+      )}
 
       <div className="avatar-grid p-12 w-full">
         <div className="gap-12 grid grid-cols-4">
-          {avatars.map((avatar, index) => (
-            <div key={index} onClick={() => handleChoice(avatar.id)} className="shadow-lg rounded-full w-[70px] h-[70px] overflow-hidden cursor-pointer">
-              <img src={avatar.src} alt={`Avatar ${index + 1}`} className="w-full h-full object-cover" />
+
+          {avatars?.map((avatar, index) => (
+            <div key={index} onClick={() => handleChoice(avatar)} className="shadow-lg rounded-full w-[70px] h-[70px] overflow-hidden cursor-pointer">
+              <img src={avatar.url} alt={`Avatar ${index + 1}`} className="w-full h-full object-cover" />
             </div>
           ))}
         </div>

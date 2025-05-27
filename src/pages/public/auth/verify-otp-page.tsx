@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form";
 import { useLocation, useNavigate } from "react-router";
 import { Loader2 } from "lucide-react";
 import ControlledOtpInput from "@/components/molecules/form/controlled-otp-input";
+import { LoadingButton } from "@/components/atoms/actions/loading-button";
 const defaultValues: OtpFormData = {
   otp: "",
 };
@@ -70,14 +71,15 @@ function VerifyOtpPage() {
             <div className="flex flex-col gap-3 py-4 w-full">
               <ControlledOtpInput name="otp" control={control} />
             </div>
-            <Button
+            <LoadingButton
+              loading={loading}
               type="submit"
               size="small"
               color="secondary"
             >
-              {loading ? <Loader2 /> : "Valider"}
+              {"Valider"}
 
-            </Button>
+            </LoadingButton>
 
           </Card>
         </div>

@@ -11,6 +11,7 @@ export const addChildrenSchema = z.object({
 });
 
 export const childrenSchema = z.object({
+  id: z.string(),
   firstname: z
     .string()
     .min(1, "firstname.required"),

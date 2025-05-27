@@ -29,6 +29,7 @@ import { UiPage } from "@/pages/ui-page";
 import { VerifyOtpPage } from "@/pages/public/auth/verify-otp-page";
 import { Header } from "@/components/molecules/layout/header";
 import Footer from '@/components/molecules/layout/footer';
+import { ChildrenHomePage } from "@/pages/private/onboarding/children-home-page";
 
 const privateRoutes: RouteObject[] = [
 	{
@@ -49,7 +50,7 @@ const privateRoutes: RouteObject[] = [
 			{
 				path: "avatar",
 				element: <ChooseAvatarPage />,
-			},
+			}
 		],
 	},
 	{
@@ -72,6 +73,15 @@ const privateRoutes: RouteObject[] = [
 				path: ":lessonId",
 				element: <LessonPage />,
 			},
+		],
+	},
+	{
+		path: "/children",
+		children: [
+			{
+				path: "home",
+				element: <ChildrenHomePage />,
+			}
 		],
 	},
 	{

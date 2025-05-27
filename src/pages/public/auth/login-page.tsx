@@ -2,13 +2,13 @@
 import { LoginFormData, loginSchema, } from "@/app/auth";
 import { useOtpAuth } from "@/app/auth/hooks/use-otp-auth";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Button, Card, Typography } from "@/components";
+import {  Card, Typography } from "@/components";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
 import { ControlledTextInput } from "@/components/molecules/form/controlled-input";
-import { Loader2 } from 'lucide-react';
 import { useTranslation } from "react-i18next";
+import { LoadingButton } from "@/components/atoms/actions/loading-button";
 const defaultValues: LoginFormData = {
   email: "",
 };
@@ -72,14 +72,15 @@ function LoginPage() {
               />
             </div>
 
-            <Button
+            <LoadingButton
+              loading={loading}
               type="submit"
               size="small"
               color="secondary"
             >
-              {loading ? <Loader2 /> : t('auth.connect')}
+              {t('auth.connect')}
 
-            </Button>
+            </LoadingButton>
           </Card>
         </div>
 
