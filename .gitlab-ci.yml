@@ -3,7 +3,6 @@ stages:
   - deploy
 
 variables:
-  DOCKER_TLS_CERTDIR: ""
   IMAGE_TAG: "$CI_COMMIT_SHORT_SHA"
   REMOTE_DIR: "/home/project/meko-academy-front-office"
   DOCKER_REGISTRY: "$REGISTRY_HOST"
@@ -26,7 +25,7 @@ build-image:
     - echo "Building Docker image:"" $IMAGE_NAME"
     - docker build -t "$IMAGE_NAME" .
     - echo "📦 Pushing image to registry..."
-    # - docker push "$IMAGE_NAME"
+    - docker push "$IMAGE_NAME"
   only:
     - develop
 
