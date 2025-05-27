@@ -48,20 +48,15 @@ deploy-k8s:
       ssh -o StrictHostKeyChecking=no -i ~/.ssh/ssh_key $SSH_USER@$SSH_IP <<EOF
         set -e
         echo "$REGISTRY_PASS" | docker login $DOCKER_REGISTRY -u $REGISTRY_USER --password-stdin
-        cd "$REMOTE_DIR" || exit 1
-        # echo "🧼 Cleaning old deployments..."
-        # microk8s kubectl delete deployment frontofficemeko --ignore-not-found
-        # microk8s kubectl delete deployment meko-fo --ignore-not-found
-
+        cd "$REMOTE_DIR" || exit 1       
         echo "📄 Replacing image tag in deployment manifest..."
         sed -i "s|image: .*|image: $IMAGE_NAME|" deploy.yml
         cat deploy.yml
-
-        # echo "🚀 Deploying updated front..."
-        # microk8s kubectl apply -f deploy.yml
+        echo "🚀 Deploying updated front..."
+        microk8s kubectl apply -f deploy.yml
         # microk8s kubectl rollout restart deployment meko-fo
         # microk8s kubectl rollout status deployment/meko-fo --timeout=120s
-        # echo "✅ Deployment successful."
+        echo "✅ Deployment successful."
         docker system prune -f -a
       EOF
   only:
