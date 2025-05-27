@@ -10,7 +10,7 @@ variables:
 
 build-image:
   stage: build
-  image: docker:latest
+  # image: docker:latest
   tags:
     - front
   services:
@@ -22,10 +22,11 @@ build-image:
     - echo "$CERT_CA" > /etc/docker/certs.d/$DOCKER_REGISTRY/ca.crt
     - echo "$REGISTRY_PASS" | docker login "$DOCKER_REGISTRY" -u "$REGISTRY_USER" --password-stdin
   script:
-    - echo "Building Docker image:"" $IMAGE_NAME"
-    - docker build -t "$IMAGE_NAME" .
-    - echo "📦 Pushing image to registry..."
-    - docker push "$IMAGE_NAME"
+    |
+     echo "Building Docker image:"" $IMAGE_NAME"
+     docker build -t "$IMAGE_NAME" .
+     echo "📦 Pushing image to registry..."
+     docker push "$IMAGE_NAME"
   only:
     - develop
 
@@ -47,108 +48,19 @@ deploy-k8s:
       echo "🔐 Connecting to remote server to deploy..."
       ssh -o StrictHostKeyChecking=no -i ~/.ssh/ssh_key $SSH_USER@$SSH_IP <<EOF
         set -e
+
         echo "$REGISTRY_PASS" | docker login $DOCKER_REGISTRY -u $REGISTRY_USER --password-stdin
         cd "$REMOTE_DIR" || exit 1       
+
         echo "📄 Replacing image tag in deployment manifest..."
         sed -i "s|image: .*|image: $IMAGE_NAME|" deploy.yml
         cat deploy.yml
+        
         echo "🚀 Deploying updated front..."
         microk8s kubectl apply -f deploy.yml
-        # microk8s kubectl rollout restart deployment meko-fo
-        # microk8s kubectl rollout status deployment/meko-fo --timeout=120s
+
         echo "✅ Deployment successful."
         docker system prune -f -a
       EOF
   only:
     - develop
-
-# stages:
-#   - build
-#   - deploy
-
-# variables:
-#   DOCKER_TLS_CERTDIR: ""
-#   IMAGE_TAG: "1.0"
-#   REMOTE_DIR: "/home/project/meko-academy-front-office"  
-
-# build-image:
-#   stage: build
-#   image: docker:latest 
-#   tags:
-#     - front
-
-#   variables:
-#     DOCKER_HOST: unix:///var/run/docker.sock
-
-#   before_script:
-#     - mkdir -p /etc/docker/certs.d/registry.meko.ac
-#     - echo "$CERT_CA" > /etc/docker/certs.d/registry.meko.ac/ca.crt
-#     - echo "$REGISTRY_PASS" | docker login "$REGISTRY_HOST" -u "$REGISTRY_USER" --password-stdin
-#     - echo "tafiditra ato"
-
-#   script:
-#     - docker build -t "$IMAGE_DOCKER:$IMAGE_TAG" .
-#     - echo "Pushing image to registry..."
-#     - echo "test de push"
-#     - docker push "$IMAGE_DOCKER:$IMAGE_TAG"
-
-#   only:
-#     - develop
-
-# deploy-k8s:
-#   stage: deploy
-#   image: alpine:latest
-#   tags:
-#     - front 
-#   before_script:
-#     - apk add --no-cache openssh-client
-#     - eval $(ssh-agent -s)
-#     - mkdir -p ~/.ssh
-#     - echo "$SSH_KEY" | tr -d '\r' > ~/.ssh/ssh_key
-#     - chmod 600 ~/.ssh/ssh_key
-#     - ssh-keyscan -H $SSH_IP >> ~/.ssh/known_hosts
-#     - chmod 644 ~/.ssh/known_hosts
-#     - echo "🔐 SSH setup complete"
-#   script:
-#     - |
-#       ssh -o StrictHostKeyChecking=no -i ~/.ssh/ssh_key $SSH_USER@$SSH_IP bash -s <<EOF
-#         echo "$REGISTRY_PASS" | docker login $REGISTRY_HOST -u $REGISTRY_USER --password-stdin
-#         cd "$REMOTE_DIR" || { echo "❌ Unable to access $REMOTE_DIR"; exit 1; }
-#         echo "📂 Contents of $REMOTE_DIR:"
-#         ls -l
-
-#         echo "🧹 Deleting old deployments (ignore if not found)..."
-#         microk8s kubectl delete deployment frontofficemeko --ignore-not-found
-#         microk8s kubectl delete deployment meko-fo --ignore-not-found
-
-#         echo "🚀 Applying deployment manifest..."
-#         microk8s kubectl apply -f deploy.yml
-
-#         echo "🔁 Restarting deployment meko-fo..."
-#         microk8s kubectl rollout restart deployment meko-fo
-
-#         echo "⏳ Waiting for deployment to stabilize..."
-#         microk8s kubectl rollout status deployment/meko-fo --timeout=120s
-
-#         echo "✅ Front-end deployment complete."
-#          docker system prune -f -a  # ← Optionnel, à activer seulement si tu es sûr
-#       EOF
-#   only:
-#     - develop
-
-  
-  #       - echo "🔁 Substituting tag in deploy.yml"
-#     - sed "s|IMAGE_TAG_PLACEHOLDER|$IMAGE_TAG|g" deploy.yml > deploy.generated.yml
-
-#     - echo "🚀 Deploying to server"
-#     - |
-#       ssh -i ~/.ssh/ssh_key $SSH_USER@$SSH_IP <<EOF
-#         export KUBECONFIG=/etc/rancher/k3s/k3s.yaml # si tu utilises k3s
-#         echo "$REGISTRY_PASS" | docker login $REGISTRY_HOST -u $REGISTRY_USER --password-stdin
-
-#          kubectl delete deployment backofficemeko --ignore-not-found
-#         kubectl apply -f - <<YAML
-# $(cat deploy.generated.yml)
-# YAML
-#         kubectl rollout status deployment/backofficemeko --timeout=120s
-# EOF
