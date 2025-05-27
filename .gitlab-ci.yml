@@ -13,8 +13,7 @@ build-image:
   # image: docker:latest
   tags:
     - front
-  services:
-    - docker:dind
+    
   variables:
     DOCKER_HOST: unix:///var/run/docker.sock
   before_script:
