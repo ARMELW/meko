@@ -13,6 +13,9 @@ export const useChildrenActions = () => {
     });
     return {
         create: mutations.create,
-        isCreating: mutations.isCreating
+        update: mutations.modify,
+        isUpdating: mutations.isModifing,
+        isCreating: mutations.isCreating,
+        invalidate: mutations.invalidate,
     };
 };

@@ -128,7 +128,7 @@ const routes: RouteObject[] = [
 			<>
 				<div className="px-4 lg:px-32 xl:px-32 max-w-screen-2xl">
 					<Header />
-					<div className="z-10 relative w-full h-full overflow-auto">
+					<div className="z-10 relative w-full h-full">
 						<Outlet />
 					</div>
 				</div>

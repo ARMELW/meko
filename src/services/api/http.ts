@@ -17,7 +17,7 @@ export interface BaseService<T, TPayload> {
   detail(id: string): Promise<T>;
   create(payload: TPayload): Promise<ApiResponse<T>>;
   update(id: string, payload: TPayload): Promise<ApiResponse<T>>;
-  patch(id: string, payload: Partial<TPayload>): Promise<ApiResponse<T>>;
+  modify(id: string, payload: Partial<TPayload>): Promise<ApiResponse<T>>;
   remove(id: string): Promise<ApiResponse>;
 }
 
@@ -30,7 +30,7 @@ export abstract class BaseServiceImpl<T, TPayload> implements BaseService<T, TPa
     const response = await fetch(`${import.meta.env.VITE_APP_SERVER_URL}/${url}`, {
       ...options,
       credentials: 'include',
-      
+
     });
 
     if (!response.ok) {
@@ -89,7 +89,6 @@ export abstract class BaseServiceImpl<T, TPayload> implements BaseService<T, TPa
   }
 
   async create(payload: TPayload): Promise<ApiResponse<T>> {
-    console.log('payload', payload, this.endpoints);
     return this.post<ApiResponse<T>>(this.endpoints.create, payload);
   }
 
@@ -97,11 +96,15 @@ export abstract class BaseServiceImpl<T, TPayload> implements BaseService<T, TPa
     return this.put<ApiResponse<T>>(this.endpoints.update(id), payload);
   }
 
+  async modify(id: string, payload: TPayload): Promise<ApiResponse<T>> {
+    return this.patch<ApiResponse<T>>(this.endpoints.update(id), payload);
+  }
+
   async remove(id: string): Promise<ApiResponse> {
     return this.delete<ApiResponse>(this.endpoints.delete(id));
   }
 
-  
+
 
 
   protected handleApiError(error: unknown): never {

@@ -1,5 +1,6 @@
 import { useChildren } from "@/app/children";
 import { Typography } from "@/components";
+import UserAvatar from "@/components/atoms/view/user-avatar";
 import { useSession } from "@/services/session/store";
 import { useNavigate } from "react-router";
 
@@ -7,7 +8,7 @@ import { useNavigate } from "react-router";
 function ChooseProfilePage() {
   const navigate = useNavigate();
   const { data: avatars, isLoading } = useChildren();
-  const selectChild = useSession(state => state.selectChild);
+  const login = useSession(state => state.login);
 
   
   const handleChoice = (child: { id: string; firstname: string; lastname: string; avatarUrl?: string }) => {
@@ -15,7 +16,7 @@ function ChooseProfilePage() {
       return;
     }
 
-    selectChild({
+    login({
       id: child.id,
       firstname: child.firstname,
       lastname: child.lastname,
@@ -53,7 +54,7 @@ function ChooseProfilePage() {
           {avatars?.data.map((avatar, index) => (
             <div className="flex flex-col items-center avatar-item" key={index}>
               <div onClick={() => handleChoice(avatar)} className="shadow-lg rounded-full w-[70px] h-[70px] overflow-hidden cursor-pointer">
-                <img src={avatar.avatarUrl} alt={`Avatar ${index + 1}`} className="w-full h-full object-cover" />
+                <UserAvatar avatarUrl={avatar.avatarUrl}   size={70} username={`${avatar.firstname} ${avatar.lastname}`} alt={'Avatar'} />
               </div>
               <Typography as="span" align={"center"} className="uppercase">
                 <span className="font-[700] text-[#7EDAFD]">

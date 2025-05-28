@@ -7,19 +7,22 @@ import { authClient, useSession } from '@/config/auth';
 import { useSession as useChildrenSession } from '@/services/session/store';
 import { Typography } from '@/components/atoms/typography/typography';
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
+import UserAvatar from '@/components/atoms/view/user-avatar';
+import { useChildrenStore } from '@/app/children/store';
 
 export function Header() {
     const { t } = useTranslation();
     const navigate = useNavigate();
     const { data: session } = useSession();
-    const selectedChild = useChildrenSession(state => state.selectedChild);
+    const sessionChild = useChildrenSession(state => state.selectedChild);
     const logout = useChildrenSession(state => state.logout);
+    const setCurrentChild = useChildrenStore(state => state.setCurrentChild);
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const [isLoggingOut, setIsLoggingOut] = useState(false);
     const isAuthenticated = !!session;
 
-    const displayName = selectedChild ? selectedChild.firstname : session?.user?.name || 'User';
-    const displayImage = selectedChild ? selectedChild.avatarUrl : session?.user?.image;
+    const displayName = sessionChild ? sessionChild.firstname + " " + sessionChild.lastname : session?.user?.name || 'User';
+    const displayImage = sessionChild ? sessionChild.avatarUrl : session?.user?.image;
 
     const toggleMobileMenu = () => {
         setMobileMenuOpen(!mobileMenuOpen);
@@ -28,7 +31,7 @@ export function Header() {
     const handleLogout = async () => {
         setIsLoggingOut(true);
         try {
-            if (selectedChild) {
+            if (sessionChild) {
                 logout();
                 navigate('/profile/choose');
             } else {
@@ -58,11 +61,8 @@ export function Header() {
                             >
                                 {displayName}
                             </Typography>
-                            <img
-                                src={displayImage || "https://i.pravatar.cc/300"}
-                                alt="Avatar"
-                                className="border border-white rounded-full w-12 h-12"
-                            />
+                            <UserAvatar avatarUrl={displayImage || ''} className="border border-white rounded-full w-12 h-12" size={50} username={displayName} alt={'Avatar'} />
+
                         </button>
                     </DropdownMenu.Trigger>
 
@@ -72,7 +72,7 @@ export function Header() {
                             sideOffset={5}
                             align="end"
                         >
-                            {!selectedChild && (
+                            {!sessionChild && (
                                 <>
                                     <DropdownMenu.Item
                                         className="flex text-meko-blue-light-1 uppercase items-center hover:bg-meko-blue-transparent-1  px-4 py-2  text-xs cursor-pointer"
@@ -80,20 +80,26 @@ export function Header() {
                                     >
                                         {t('common.dashboard')}
                                     </DropdownMenu.Item>
+
                                 </>
                             )}
-                            {selectedChild && (
-                                <>
-                                    <DropdownMenu.Item
-                                        className="flex text-meko-blue-light-1 uppercase items-center hover:bg-meko-blue-transparent-1 px-4 py-2   text-xs cursor-pointer"
-                                        onSelect={() => navigate('/profile/choose')}
-                                    >
-                                        Changer de profile
-                                    </DropdownMenu.Item>
 
-                                      <DropdownMenu.Item
+                            <DropdownMenu.Item
+                                className="flex text-meko-blue-light-1 uppercase items-center hover:bg-meko-blue-transparent-1 px-4 py-2   text-xs cursor-pointer"
+                                onSelect={() => navigate('/profile/choose')}
+                            >
+                                Changer de profile
+                            </DropdownMenu.Item>
+                            {sessionChild && (
+                                <>
+
+                                    <DropdownMenu.Item
                                         className="flex text-meko-blue-light-1 uppercase items-center hover:bg-meko-blue-transparent-1 px-4 py-2 rounded  text-xs cursor-pointer"
-                                        onSelect={() => navigate('/profile/choose')}
+                                        onSelect={() => {
+                                            //setCurrentChild(sessionChild);
+                                            navigate('/profile/avatar');
+                                            
+                                        }}
                                     >
                                         Changer d'avatar
                                     </DropdownMenu.Item>

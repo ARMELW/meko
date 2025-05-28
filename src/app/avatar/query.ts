@@ -2,7 +2,7 @@ import { API_ENDPOINTS } from "@/config/api";
 import { BaseServiceImpl } from "@/services/api/http";
 import { Avatar, AvatarPayload } from "./types";
 
-export class ChildrenServiceImpl extends BaseServiceImpl<Avatar, AvatarPayload> {
+export class AvatarServiceImpl extends BaseServiceImpl<Avatar, AvatarPayload> {
   protected endpoints = {
     base: API_ENDPOINTS.avatar.base,
     create: API_ENDPOINTS.avatar.base,
@@ -16,4 +16,4 @@ export class ChildrenServiceImpl extends BaseServiceImpl<Avatar, AvatarPayload> 
     return '';
   }
 }
-export const childrenService = new ChildrenServiceImpl();
+export const avatarService = new AvatarServiceImpl();

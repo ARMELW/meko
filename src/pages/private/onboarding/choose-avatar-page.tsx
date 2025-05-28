@@ -5,7 +5,6 @@ import { Typography } from "@/components";
 import { useNavigate } from "react-router";
 import { useEffect } from "react";
 import { toast } from "sonner";
-
 function ChooseAvatarPage() {
   const navigate = useNavigate();
   const { data: avatars, isLoading } = useAvatars();
@@ -83,7 +82,7 @@ function ChooseAvatarPage() {
 
           {avatars?.map((avatar, index) => (
             <div key={index} onClick={() => handleChoice(avatar)} className="shadow-lg rounded-full w-[70px] h-[70px] overflow-hidden cursor-pointer">
-              <img src={avatar.url} alt={`Avatar ${index + 1}`} className="w-full h-full object-cover" />
+              <img src={avatar.url} alt={`Avatar ${index + 1}`} className="w-full h-full object-cover" />                           
             </div>
           ))}
         </div>

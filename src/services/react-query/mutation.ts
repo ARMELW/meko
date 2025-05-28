@@ -1,10 +1,9 @@
 import { QueryKey, useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { BaseService } from "../api/http";
-import { ApiResponse } from "@/types";
 
 export interface MutationConfig<T, P> {
-  service: Pick<BaseService<T, P>, 'create'>;
+  service: Pick<BaseService<T, P>, 'create' | 'modify' | 'update' | 'remove'>;
   queryKeys: { lists: () => QueryKey };
   successMessages?: {
     create?: string;
@@ -52,6 +51,7 @@ export function useMutations<T, P>(config: MutationConfig<T, P>) {
       if (!response.data) {
         throw new Error("No data returned from service.create");
       }
+
       return response.data;
     },
     onSuccess: (data: T) => handleSuccess('create', data),
@@ -60,10 +60,63 @@ export function useMutations<T, P>(config: MutationConfig<T, P>) {
     },
   });
 
+  const updateMutation = useMutation({
+    mutationFn: async ({ id, data }: { id: string; data: P }) => {
+
+      const response = await service.update(id, data);
+      if (!response.data) {
+        throw new Error("No data returned from service.create");
+      }
+
+      return response.data;
+    },
+    onSuccess: (data: T) => handleSuccess('update', data),
+    onError: (error: Error) => {
+      toast.error(`Erreur lors de la mise à jour: ${error.message}`);
+    },
+  });
+
+
+  const modifyMutation = useMutation({
+    mutationFn: async ({ id, data }: { id: string; data: P }) => {
+
+      const response = await service.modify(id, data);
+      if (!response.data) {
+        throw new Error("No data returned from service.create");
+      }
+
+      return response.data;
+    },
+    onSuccess: (data: T) => handleSuccess('update', data),
+    onError: (error: Error) => {
+      toast.error(`Erreur lors de la mise à jour: ${error.message}`);
+    },
+  });
+
+  const deleteMutation = useMutation({
+    mutationFn: async (id: string) => {
+      const response = await service.remove(id);
+      if (!response.data) {
+        throw new Error("No data returned from service.create");
+      }
+
+      return response.data;
+    },
+    onSuccess: (data: T) => handleSuccess('delete', data),
+    onError: (error: Error) => {
+      toast.error(`Erreur lors de la suppression: ${error.message}`);
+    },
+  });
   return {
     create: createMutation.mutate,
+    update: updateMutation.mutate,
+    remove: deleteMutation.mutate,
+    modify: modifyMutation.mutate,
     createAsync: createMutation.mutateAsync,
+    isUpdating: updateMutation.isPending,
+    isDeleting: deleteMutation.isPending,
     isCreating: createMutation.isPending,
+    isModifing: modifyMutation.isPending,
     invalidate: (queryKey: QueryKey) => queryClient.invalidateQueries({ queryKey })
   };
 }
