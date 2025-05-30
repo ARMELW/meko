@@ -23,7 +23,7 @@ build-image:
   script:
     |
      echo "Building Docker image:"" $IMAGE_NAME"
-     docker build -t "$IMAGE_NAME" .
+     docker build -t "$IMAGE_NAME" . 
      echo "📦 Pushing image to registry..."
      docker push "$IMAGE_NAME"
   only:
