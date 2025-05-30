@@ -31,7 +31,7 @@ function ChildMonitoringPage() {
       setCurrentChild(formatted[0]);
     }
   }, [formatted, currentChild, setCurrentChild]);
-
+  console.log('currentChild',currentChild);
 
   return <div className="min-h-screen  text-white p-4 md:p-8">
     <div className="flex gap-6">

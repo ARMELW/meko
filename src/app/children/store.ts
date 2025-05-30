@@ -10,9 +10,6 @@ interface ChildrenStore {
 
 export const useChildrenStore = create<ChildrenStore>((set) => ({
   currentChild: null,
-  setCurrentChild: (child) => set({ currentChild: {
-    ...child,
-    avatarUrl: generateUrl(child.avatarUrl || '') 
-  } }),
+  setCurrentChild: (child) => set({ currentChild: child}),
   clearCurrentChild: () => set({ currentChild: null }),
 }));
