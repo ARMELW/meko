@@ -43,9 +43,11 @@ function ChildMonitoringPage() {
                 <UserAvatar avatarUrl={children.avatarUrl} size={50} username={`${children.firstname} ${children.lastname}`} alt={`Avatar ${index + 1}`} />
 
               </div>
+              <div>
               <Typography as="span" styleCase={"uppercase"} weight={"bold"} color={"secondary"} className="text-sm">
                 {children.firstname + " " + children.lastname}
               </Typography>
+              </div>
             </div>
           ))}
 

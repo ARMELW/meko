@@ -44,7 +44,8 @@ const EditChild = ({ childToEdit, setChildToEdit, onClose }: EditChildProps) => 
         if (childToEdit) {
             setValue("firstname", childToEdit.firstname);
             setValue("lastname", childToEdit.lastname);
-            setValue("birthday", new Date(childToEdit.birthday));
+            const formattedDate = new Date(childToEdit.birthday).toISOString().split('T')[0];
+            setValue("birthday", formattedDate);
         }
     }, [childToEdit, setValue]);
     const onSubmit = async (data: ChildrenPayload) => {
