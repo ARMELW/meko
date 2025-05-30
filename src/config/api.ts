@@ -8,6 +8,8 @@ export const API_ENDPOINTS = {
     detail: (id: string) => `${prefix}/v1/children/${id}`,
     update: (id: string) => `${prefix}/v1/children/${id}`,
     delete: (id: string) => `${prefix}/v1/children/${id}`,
+    requestDelete:(id:string) => `${prefix}/v1/children/${id}/request-delete`,
+    verifyDelete:(id:string) => `${prefix}/v1/children/${id}`,
     select(id: string): string {
       return `${prefix}/v1/children/${id}/avatar`
     }

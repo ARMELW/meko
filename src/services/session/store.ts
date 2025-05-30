@@ -2,17 +2,18 @@ import { CONFIG } from "@/config";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 
-interface State {
-	selectedChild: {
-		id: string;
-		firstname: string;
-		lastname: string;
-		avatarUrl?: string;
-	} | null;
+interface Child {
+	id: string;
+	firstname: string;
+	lastname: string;
+	avatarUrl?: string;
 }
 
+interface State {
+	selectedChild: Child | null;
+}
 interface Action {
-	login: (selectedChild: any) => void;
+	login: (selectedChild: Child) => void;
 	logout: () => void;
 }
 

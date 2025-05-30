@@ -72,16 +72,18 @@ function LoginPage() {
                 disabled={loading || isSubmitted}
               />
             </div>
+            <div className="flex flex-row justify-center items-center w-full">
+              <LoadingButton
+                loading={loading}
+                type="submit"
+                size="small"
+                color="secondary"
+                className=""
+              >
+                {t('auth.connect')}
 
-            <LoadingButton
-              loading={loading}
-              type="submit"
-              size="small"
-              color="secondary"
-            >
-              {t('auth.connect')}
-
-            </LoadingButton>
+              </LoadingButton>
+            </div>
           </form>
         </Card>
 

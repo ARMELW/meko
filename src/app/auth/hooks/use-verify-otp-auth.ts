@@ -22,6 +22,7 @@ export function useVerifyOtpAuth() {
                 options
             );
             toast(t('auth.success'))
+            setLoading(false);
         } catch (unexpectedError) {
             console.error("Unexpected error during OTP login:", unexpectedError);
             setError(unexpectedError);

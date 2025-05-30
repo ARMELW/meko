@@ -75,8 +75,15 @@ export abstract class BaseServiceImpl<T, TPayload> implements BaseService<T, TPa
   }
 
 
-  protected delete<R>(endpoint: string): Promise<R> {
-    return this.fetchData<R>(endpoint, { method: 'DELETE' });
+  delete<R>(endpoint: string, data?: unknown): Promise<R> {
+    const options: RequestInit = {
+      method: 'DELETE',
+    };
+    if (data) {
+      options.body = JSON.stringify(data);
+    }
+
+    return this.fetchData<R>(endpoint, options);
   }
 
   async list(filter: Filter): Promise<PaginatedResponse<T>> {
@@ -100,8 +107,8 @@ export abstract class BaseServiceImpl<T, TPayload> implements BaseService<T, TPa
     return this.patch<ApiResponse<T>>(this.endpoints.update(id), payload);
   }
 
-  async remove(id: string): Promise<ApiResponse> {
-    return this.delete<ApiResponse>(this.endpoints.delete(id));
+  async remove(id: string, data?: unknown): Promise<ApiResponse> {
+    return this.delete<ApiResponse>(this.endpoints.delete(id), data);
   }
 
 

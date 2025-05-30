@@ -1,19 +1,20 @@
 
 import { OtpFormData, otpSchema, useVerifyOtpAuth, } from "@/app/auth";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Button, Card, Typography } from "@/components";
+import { Card, Typography } from "@/components";
 import { useForm } from "react-hook-form";
 import { useLocation, useNavigate } from "react-router";
-import { Loader2 } from "lucide-react";
 import ControlledOtpInput from "@/components/molecules/form/controlled-otp-input";
 import { LoadingButton } from "@/components/atoms/actions/loading-button";
+import { useState } from "react";
 const defaultValues: OtpFormData = {
   otp: "",
 };
 function VerifyOtpPage() {
   const navigate = useNavigate();
   const location = useLocation();
-  const { loading, initiateVerifyOtpLogin } = useVerifyOtpAuth();
+  const [loading, setLoading] = useState(false);
+  const { initiateVerifyOtpLogin } = useVerifyOtpAuth();
   const email = location.state?.email;
   const firstName = location.state?.firstName || '';
   const lastName = location.state?.lastName || '';
@@ -32,6 +33,7 @@ function VerifyOtpPage() {
   });
   const onSubmit = async (data: OtpFormData) => {
     try {
+      setLoading(true);
       await initiateVerifyOtpLogin({
         email: email,
         otp: data.otp,
@@ -40,6 +42,7 @@ function VerifyOtpPage() {
         firstName,
         lastName
       });
+       setLoading(false);
       if (isSignUp) {
         navigate("/profile/create-child");
       } else {
@@ -47,6 +50,7 @@ function VerifyOtpPage() {
       }
 
     } catch (error) {
+      setLoading(false);
       console.error("Verify tokenn error:", error);
     }
   };

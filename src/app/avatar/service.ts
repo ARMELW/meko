@@ -6,7 +6,7 @@ import { generateUrl } from '@/utils/utils';
 export const AvatarService = {
   getAll: async (): Promise<Avatar[]> => {
     const response = await avatarService.list({});
-    const data = response.data as any;
+    const data = response.data as unknown as { items: Avatar[] };
     
     if (!data || !data.items) {
       throw new Error('Failed to fetch avatars');

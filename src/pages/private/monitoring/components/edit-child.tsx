@@ -27,8 +27,8 @@ interface EditChildProps {
 
 const EditChild = ({ childToEdit, setChildToEdit, onClose }: EditChildProps) => {
     const { update, isUpdating, invalidate } = useChildrenActions();
-    const { open, openUpdate, close } = useModalStore();
-
+    const { open, mode, openUpdate, close } = useModalStore();
+    const makeOpen = !!(open && mode == 'update')
     const {
         control,
         handleSubmit,
@@ -52,6 +52,7 @@ const EditChild = ({ childToEdit, setChildToEdit, onClose }: EditChildProps) => 
             id: childToEdit.id,
             data
         });
+        //TODO: recuperer l'information depuis l'update pour mettre a jour le children edit
         setChildToEdit({
             id: childToEdit.id,
             ...data
@@ -71,7 +72,7 @@ const EditChild = ({ childToEdit, setChildToEdit, onClose }: EditChildProps) => 
     };
 
     return (
-        <Dialog open={open} onOpenChange={handleOpenChange}>
+        <Dialog open={makeOpen} onOpenChange={handleOpenChange}>
             <DialogTrigger asChild>
                 <Button
                     size="small"

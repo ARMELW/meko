@@ -8,7 +8,6 @@ import { useSession as useChildrenSession } from '@/services/session/store';
 import { Typography } from '@/components/atoms/typography/typography';
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 import UserAvatar from '@/components/atoms/view/user-avatar';
-import { useChildrenStore } from '@/app/children/store';
 
 export function Header() {
     const { t } = useTranslation();
@@ -16,7 +15,6 @@ export function Header() {
     const { data: session } = useSession();
     const sessionChild = useChildrenSession(state => state.selectedChild);
     const logout = useChildrenSession(state => state.logout);
-    const setCurrentChild = useChildrenStore(state => state.setCurrentChild);
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const [isLoggingOut, setIsLoggingOut] = useState(false);
     const isAuthenticated = !!session;
@@ -76,7 +74,7 @@ export function Header() {
                                 <>
                                     <DropdownMenu.Item
                                         className="flex text-meko-blue-light-1 uppercase items-center hover:bg-meko-blue-transparent-1  px-4 py-2  text-xs cursor-pointer"
-                                        onSelect={() => navigate('/children/home')}
+                                        onSelect={() => navigate('/monitoring')}
                                     >
                                         {t('common.dashboard')}
                                     </DropdownMenu.Item>

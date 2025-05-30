@@ -29,7 +29,6 @@ import { UiPage } from "@/pages/ui-page";
 import { VerifyOtpPage } from "@/pages/public/auth/verify-otp-page";
 import { Header } from "@/components/molecules/layout/header";
 import Footer from '@/components/molecules/layout/footer';
-import { ChildrenHomePage } from "@/pages/private/onboarding/children-home-page";
 
 const privateRoutes: RouteObject[] = [
 	{
@@ -76,15 +75,6 @@ const privateRoutes: RouteObject[] = [
 		],
 	},
 	{
-		path: "/children",
-		children: [
-			{
-				path: "home",
-				element: <ChildrenHomePage />,
-			}
-		],
-	},
-	{
 		path: "/monitoring",
 		children: [
 			{
@@ -126,7 +116,7 @@ const routes: RouteObject[] = [
 	{
 		element: (
 			<>
-				<div className="px-4 lg:px-32 xl:px-32 max-w-screen-2xl">
+				<div className="px-4 lg:px-32 xl:px-32 min-h-screen">
 					<Header />
 					<div className="z-10 relative w-full h-full">
 						<Outlet />

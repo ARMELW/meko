@@ -21,8 +21,8 @@ const defaultValues: ChildrenPayload = {
 };
 const CreateChild = () => {
     const { create, isCreating, invalidate } = useChildrenActions();
-    const { open, openCreate, close } = useModalStore();
-
+    const { open, mode, openCreate, close } = useModalStore();
+    const makeOpen = !!(open && mode == 'create')
     const {
         control,
         handleSubmit,
@@ -49,7 +49,7 @@ const CreateChild = () => {
     };
 
     return (
-        <Dialog open={open} onOpenChange={handleOpenChange}>
+        <Dialog open={makeOpen} onOpenChange={handleOpenChange}>
             <DialogTrigger asChild>
                 <span className="w-[50px] h-[50px] cursor-pointer rounded-full bg-blue-900 flex flex-col justify-center items-center">
                     <Plus className="text-white" size={28} />

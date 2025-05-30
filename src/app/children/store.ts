@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { Children } from './type';
+import { generateUrl } from '@/utils/utils';
 
 interface ChildrenStore {
   currentChild: Children | null;
@@ -9,6 +10,9 @@ interface ChildrenStore {
 
 export const useChildrenStore = create<ChildrenStore>((set) => ({
   currentChild: null,
-  setCurrentChild: (child) => set({ currentChild: child }),
+  setCurrentChild: (child) => set({ currentChild: {
+    ...child,
+    avatarUrl: generateUrl(child.avatarUrl || '') 
+  } }),
   clearCurrentChild: () => set({ currentChild: null }),
 }));

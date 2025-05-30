@@ -21,8 +21,8 @@ const ChildrenForm = ({ control, isLoading }: ChildrenFormProps) => {
           name="firstname"
           size="small"
           control={control}
-          placeholder="Entrez le nom"
-          className="w-full"
+           className="custom-input w-full"
+          
           disabled={isLoading}
         />
       </div>
@@ -36,7 +36,6 @@ const ChildrenForm = ({ control, isLoading }: ChildrenFormProps) => {
           name="lastname"
           size="small"
           control={control}
-          placeholder="Entrez le prénom"
           className="w-full"
           disabled={isLoading}
         />
