@@ -16,4 +16,9 @@ export default defineConfig({
 		"process.env": {},
 		"process.env.VITE_APP_SERVER_URL": JSON.stringify(process.env.VITE_APP_SERVER_URL)
 	},
+	server: {
+		host: '0.0.0.0',
+		port: 5173,
+		allowedHosts: ['dev.meko.ac'],
+	},
 });

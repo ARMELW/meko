@@ -2,7 +2,7 @@
 import { LoginFormData, loginSchema, } from "@/app/auth";
 import { useOtpAuth } from "@/app/auth/hooks/use-otp-auth";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {  Card, Typography } from "@/components";
+import { Card, Typography } from "@/components";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
@@ -14,7 +14,7 @@ const defaultValues: LoginFormData = {
 };
 function LoginPage() {
   const navigate = useNavigate();
-   const { t } = useTranslation();
+  const { t } = useTranslation();
   const [isSubmitted, setIsSubmitted] = useState(false);
   const { loading, initiateOtpLogin } = useOtpAuth();
 
@@ -33,9 +33,9 @@ function LoginPage() {
       });
       setIsSubmitted(true);
       navigate("/verify-otp", {
-        state: { 
+        state: {
           email: data.email,
-          isSignUp: false 
+          isSignUp: false
         },
       });
     } catch (error) {
@@ -47,17 +47,17 @@ function LoginPage() {
   return (
     <div className="flex flex-col justify-center items-center h-full">
 
-      <form onSubmit={handleSubmit(onSubmit)}>
 
-        <div className="flex flex-col justify-center items-center w-[350px]">
-          <img src="/logo.svg" className="pb-10" />
-          <Card className="flex flex-col justify-center items-center p-8">
+      <div className="flex flex-col justify-center items-center w-[33%]">
+        <img src="/logo.svg" className="pb-10 w-[30%]" />
+        <Card className="flex flex-col justify-center items-center p-8">
+          <form onSubmit={handleSubmit(onSubmit)}>
 
             <div className="flex flex-col justify-center items-center">
-              <Typography variant='h1'>
+              <Typography as="p" className="text-sm">
                 Bienvenue sur Meko Academy
               </Typography>
-              <Typography align="center">
+              <Typography align="center" as="p" className="text-sm">
                 Entrez votre adresse email pour continuer !
               </Typography>
             </div>
@@ -66,8 +66,9 @@ function LoginPage() {
                 name="email"
                 control={control}
                 type="email"
-                autoComplete="email"
+                autoComplete="off"
                 placeholder="mekoacademy@email.com"
+                size="w-full"
                 disabled={loading || isSubmitted}
               />
             </div>
@@ -81,10 +82,11 @@ function LoginPage() {
               {t('auth.connect')}
 
             </LoadingButton>
-          </Card>
-        </div>
+          </form>
+        </Card>
 
-      </form>
+      </div>
+
     </div>
   );
 }

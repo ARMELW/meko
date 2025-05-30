@@ -63,7 +63,7 @@ function CreateParentAccountPage() {
         </Typography>
 
         <div className="flex flex-row gap-4">
-          <div className="input-container">
+          <div className="input-container w-[50%]">
             <Label uppercase>
               <span className="text-[13px]">
                 {t('auth.firstName')}
@@ -73,11 +73,11 @@ function CreateParentAccountPage() {
               name="firstName"
               control={control}
               placeholder="Nom"
-              size="small"
+              size="w-full"
               disabled={isSubmitted}
             />
           </div>
-          <div className="input-container">
+          <div className="input-container w-[50%]">
             <Label uppercase>
               <span className="text-[13px]">
                 {t('auth.lastName')}
@@ -87,7 +87,7 @@ function CreateParentAccountPage() {
               name="lastName"
               control={control}
               placeholder="Prénom"
-              size="small"
+              size="w-full"
               disabled={isSubmitted}
             />
           </div>
@@ -101,13 +101,13 @@ function CreateParentAccountPage() {
                   {t('auth.email')}
                 </span>
               </Label>
-              <ControlledTextInput
+              <ControlledTextInput 
                 name="email"
                 control={control}
                 type="email"
-                autoComplete="email"
+                autoComplete="off"
                 placeholder="mekoacademy@email.com"
-                size="small"
+                size="w-full"
                 disabled={isSubmitted}
               />
             </div>
