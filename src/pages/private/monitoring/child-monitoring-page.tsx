@@ -33,8 +33,8 @@ function ChildMonitoringPage() {
   }, [formatted, currentChild, setCurrentChild]);
   console.log('currentChild',currentChild);
 
-  return <div className="min-h-screen  text-white p-4 md:p-8">
-    <div className="flex gap-6">
+  return <div className="min-h-screen text-white p-4 md:p-8">
+    <div className="flex flex-col md:flex-row gap-6">
       <aside className="w-20 md:w-32 flex flex-col items-center gap-4 ">
         <div className="child-item-wrapper flex flex-col items-center justify-center">
           {formatted.map((children: Children, index: number) => (
@@ -122,7 +122,7 @@ function ChildMonitoringPage() {
           </div>
         </Card>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4 ">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mt-4">
           <Card className="bg-[#000F4799] p-4">
             <Typography as="span" styleCase={"uppercase"} color={"secondary"} weight={"bold"}>
               Jeux terminés

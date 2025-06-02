@@ -45,7 +45,7 @@ function ChooseProfilePage() {
       </div>
       {(!avatars?.data || avatars.data.length === 0) && (
           <div className="col-span-full text-center">
-            <Typography as="p" className="text-gray-500">
+            <Typography as="p" className="text-gray-500" align='center'>
               {t('onboarding.profile.noChildren')}
             </Typography>
           </div>

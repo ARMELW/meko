@@ -13,7 +13,7 @@ const defaultValues: OtpFormData = {
 function VerifyOtpPage() {
   const navigate = useNavigate();
   const location = useLocation();
-  const [loading, setLoading] = useState(false);
+  const [loading,setLoading] = useState(false)
   const { initiateVerifyOtpLogin } = useVerifyOtpAuth();
   const email = location.state?.email;
   const firstName = location.state?.firstName || '';
@@ -42,13 +42,13 @@ function VerifyOtpPage() {
         firstName,
         lastName
       });
-       setLoading(false);
+      
       if (isSignUp) {
         navigate("/profile/create-child");
       } else {
         navigate("/profile/choose");
       }
-
+      setLoading(false);
     } catch (error) {
       setLoading(false);
       console.error("Verify tokenn error:", error);
