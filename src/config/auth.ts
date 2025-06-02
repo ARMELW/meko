@@ -6,7 +6,7 @@ import {
 } from 'better-auth/client/plugins'
 
 export const authClient = createAuthClient({
-    baseURL: `${import.meta.env.VITE_APP_SERVER_URL}/api/auth`,
+    baseURL: `${import.meta.env.VITE_APP_SERVER_URL || 'https://dev-api.meko.ac'}/api/auth`,
     plugins: [
         inferAdditionalFields({
             user: {

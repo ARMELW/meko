@@ -193,7 +193,7 @@ function ControlledOtpInput<T extends FieldValues>({
         const inputElement = (
             <OtpInput
                 key={`input-${i}`}
-                ref={(el) => (inputRefs.current[i] = el)}
+                ref={(el) => { inputRefs.current[i] = el; }}
                 autoCorrect="off"
                 type={inputType}
                 autoFocus={autoFocus && i === 0}

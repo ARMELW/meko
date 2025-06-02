@@ -1,6 +1,5 @@
 import { create } from 'zustand';
 import { Children } from './type';
-import { generateUrl } from '@/utils/utils';
 
 interface ChildrenStore {
   currentChild: Children | null;

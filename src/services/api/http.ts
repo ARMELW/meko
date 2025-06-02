@@ -27,7 +27,7 @@ export abstract class BaseServiceImpl<T, TPayload> implements BaseService<T, TPa
   protected abstract serializeParams(filter: Filter): string;
 
   protected async fetchData<R>(url: string, options: RequestInit): Promise<R> {
-    const response = await fetch(`${import.meta.env.VITE_APP_SERVER_URL}/${url}`, {
+    const response = await fetch(`${import.meta.env.VITE_APP_SERVER_URL || 'https://dev-api.meko.ac'}/${url}`, {
       ...options,
       credentials: 'include',
 
