@@ -1,7 +1,6 @@
 import { QueryKey, useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { BaseService } from "../api/http";
-
 export interface MutationConfig<T, P> {
   service: Pick<BaseService<T, P>, 'create' | 'modify' | 'update' | 'remove'>;
   queryKeys: { lists: () => QueryKey };
@@ -52,7 +51,11 @@ export function useMutations<T, P>(config: MutationConfig<T, P>) {
         throw new Error("No data returned from service.create");
       }
 
-      return response.data;
+       const result = response.data;
+      if (result && typeof result === 'object' && 'data' in result) {
+        return result.data as T;
+      }
+      return result as T;
     },
     onSuccess: (data: T) => handleSuccess('create', data),
     onError: (error: Error) => {
@@ -68,7 +71,11 @@ export function useMutations<T, P>(config: MutationConfig<T, P>) {
         throw new Error("No data returned from service.create");
       }
 
-      return response.data;
+       const result = response.data;
+      if (result && typeof result === 'object' && 'data' in result) {
+        return result.data as T;
+      }
+      return result as T;
     },
     onSuccess: (data: T) => handleSuccess('update', data),
     onError: (error: Error) => {
@@ -85,7 +92,11 @@ export function useMutations<T, P>(config: MutationConfig<T, P>) {
         throw new Error("No data returned from service.create");
       }
 
-      return response.data;
+       const result = response.data;
+      if (result && typeof result === 'object' && 'data' in result) {
+        return result.data as T;
+      }
+      return result as T;
     },
     onSuccess: (data: T) => handleSuccess('update', data),
     onError: (error: Error) => {
@@ -100,7 +111,11 @@ export function useMutations<T, P>(config: MutationConfig<T, P>) {
         throw new Error("No data returned from service.create");
       }
 
-      return response.data;
+      const result = response.data;
+      if (result && typeof result === 'object' && 'data' in result) {
+        return result.data as T;
+      }
+      return result as T;
     },
     onSuccess: (data: T) => handleSuccess('delete', data),
     onError: (error: Error) => {

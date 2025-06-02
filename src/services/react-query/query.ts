@@ -24,7 +24,7 @@ import { PaginatedResponse } from '@/types/pagination';
     const total = typeof response?.meta?.pagination?.total === 'string' 
       ? parseInt(response.meta.pagination.total) 
       : response?.meta?.pagination?.total ?? 0;
-    const totalPages = Math.ceil(total / pageSize);
+    const totalPages = Math.ceil(Number(total) / Number(pageSize));
   
     return {
       data: items,

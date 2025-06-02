@@ -39,7 +39,9 @@ export function ControlledTextInput<T extends FieldValues>({
         value={field.value ?? ''}
       />
       {fieldState.error && (
-        <p className="mt-1 font-bold text-meko-red text-xs">{t(fieldState.error.message || '')}</p>
+        <p className="mt-1 font-bold text-meko-red text-xs">
+          {t(fieldState.error.message || '', { defaultValue: fieldState.error.message || '' })}
+        </p>
       )}
     </>
   );

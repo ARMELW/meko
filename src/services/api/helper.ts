@@ -34,8 +34,6 @@ export function createApiInstance({ baseURL, headers }: CreateApiInstanceArgs) {
 		(res) => res,
 		(error) => {
 			if (error.response && error.response.status === 401) {
-				// Clear the session via Better Auth client
-				authClient.signOut()
 				redirect('/login')
 			}
 			console.log("error", JSON.stringify(error, null, 3));

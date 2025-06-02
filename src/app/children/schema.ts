@@ -21,7 +21,6 @@ export const childrenSchema = z.object({
     .string()
     .min(1, "birthday.required"),
   avatarUrl: z.string().url("avatarUrl.invalid").optional(),
-  firstLogin: z.boolean().default(true),
   createdAt: z.string().optional(),
   updatedAt: z.string().optional()
 });

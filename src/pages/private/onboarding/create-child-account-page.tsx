@@ -35,9 +35,8 @@ function CreateChildAccountPage() {
       ...data
     }, {
       onSuccess: (res) => {
-        console.log("Enfant créé avec succès:", res.data)
        
-        setCurrentChild(res.data!);
+        setCurrentChild(res);
         navigate("/profile/welcome");
       }
     });
