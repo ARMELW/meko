@@ -30,7 +30,7 @@ interface PlanItemProps {
 
 function PriceTag({ price }: PriceTagProps) {
     const { t } = useTranslation();
-    
+
     return (
         <div className="relative flex justify-center py-3 sm:py-4 md:py-5 text-white">
             <span className="text-5xl sm:text-6xl md:text-7xl">{price}</span>
@@ -44,10 +44,10 @@ function PriceTag({ price }: PriceTagProps) {
 }
 
 export function PlanItem({ plan, billingCycle, handlePlanSelect, isSelected = false }: PlanItemProps) {
-     const { t } = useTranslation();
+    const { t } = useTranslation();
     return (
-        <Card 
-            key={plan.id} 
+        <Card
+            key={plan.id}
             className={`w-full sm:w-72 md:w-80 lg:w-xs transition-all duration-300 ${isSelected ? 'ring-2 ring-offset-2 ring-meko-blue-light-1' : 'hover:shadow-lg'}`}
         >
             <CardTitle
@@ -73,16 +73,18 @@ export function PlanItem({ plan, billingCycle, handlePlanSelect, isSelected = fa
                         ? `Soit ${plan.annualPrice}€ l'année`
                         : `Soit ${plan.annualMonthlyPrice * 12}€ l'année`}
                 </Typography>
-
-                <Button 
-                    size="small" 
+                <div className="w-full">
+                <Button
+                    size="small"
                     onClick={() => handlePlanSelect(plan.id)}
-                    className="w-full sm:w-auto uppercases"
+                    className="w-full uppercase"
+                    innerClassName="flex flex-row justify-center items-center"
                 >
                     {t('landing.buyPlan')}
                 </Button>
-            </CardContent>
-        </Card>
+            </div>
+        </CardContent>
+        </Card >
     );
 }
 
@@ -141,13 +143,13 @@ export default function SubscriptionPlanDemo() {
                         variant="small"
                         className="text-xs sm:text-sm"
                     >
-                          {t('landing.mensual')}
+                        {t('landing.mensual')}
                     </Typography>
 
-                    <Switch 
+                    <Switch
                         aria-label={t('landing.switchPlan')}
-                        checked={billingCycle === 'annual'} 
-                        onChange={handleBillingToggle} 
+                        checked={billingCycle === 'annual'}
+                        onChange={handleBillingToggle}
                     />
 
                     <Typography
@@ -163,16 +165,16 @@ export default function SubscriptionPlanDemo() {
 
                 <div className="flex sm:flex-row flex-col justify-center items-center gap-6 w-full">
                     {plans.map((plan) => (
-                        <PlanItem 
-                            key={plan.id} 
-                            plan={plan} 
-                            billingCycle={billingCycle} 
+                        <PlanItem
+                            key={plan.id}
+                            plan={plan}
+                            billingCycle={billingCycle}
                             handlePlanSelect={handlePlanSelect}
                             isSelected={selectedPlan === plan.id}
                         />
                     ))}
                 </div>
-            
+
             </div>
         </section>
     );
