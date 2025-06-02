@@ -2,7 +2,7 @@ import { z } from "zod";
 export const addChildrenSchema = z.object({
   firstname: z
     .string()
-    .min(1, "firstname.required"),
+    .min(1, "auth.errors.firstName.required"),
   lastname: z
     .string(),
   birthday: z
@@ -14,7 +14,7 @@ export const childrenSchema = z.object({
   id: z.string(),
   firstname: z
     .string()
-    .min(1, "firstname.required"),
+    .min(1, "auth.errors.firstName.required"),
   lastname: z
     .string(),
   birthday: z

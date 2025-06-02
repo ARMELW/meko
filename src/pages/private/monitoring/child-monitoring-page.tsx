@@ -31,7 +31,6 @@ function ChildMonitoringPage() {
       setCurrentChild(formatted[0]);
     }
   }, [formatted, currentChild, setCurrentChild]);
-  console.log('currentChild',currentChild);
 
   return <div className="min-h-screen text-white p-4 md:p-8">
     <div className="flex flex-col md:flex-row gap-6">
@@ -44,9 +43,9 @@ function ChildMonitoringPage() {
 
               </div>
               <div>
-              <Typography as="span" styleCase={"uppercase"} weight={"bold"} color={"secondary"} className="text-sm">
-                {children.firstname + " " + children.lastname}
-              </Typography>
+                <Typography as="span" styleCase={"uppercase"} weight={"bold"} color={"secondary"} className="text-sm">
+                  {children.firstname + " " + children.lastname}
+                </Typography>
               </div>
             </div>
           ))}
@@ -65,62 +64,64 @@ function ChildMonitoringPage() {
       </aside>
 
       <main className="flex-1">
-        <Card className="text-white px-8 py-4 flex" style={{ boxShadow: "rgb(255 255 255 / 19%) 0px -1px 1px" }}>
-          <div className="flex items-center space-x-4 flex-1">
-            {currentChild && (
-              <UserAvatar avatarUrl={currentChild?.avatarUrl} size={100} username={`${currentChild.firstname} ${currentChild.lastname}`} alt={`Avatar`} />
-            )}
+        {currentChild && (
+          <Card className="text-white px-8 py-4 flex" style={{ boxShadow: "rgb(255 255 255 / 19%) 0px -1px 1px" }}>
+            <div className="flex items-center space-x-4 flex-1">
+              {currentChild && (
+                <UserAvatar avatarUrl={currentChild?.avatarUrl} size={100} username={`${currentChild.firstname} ${currentChild.lastname}`} alt={`Avatar`} />
+              )}
 
-            <div className="space-y-2 flex-1 px-4">
-              <div className="w-full flex space-x-8">
-                <div className="w-[50%]">
-                  <Typography as="span" className="block text-sm" color={"secondary"} styleCase={"uppercase"} weight={"bold"}>
-                    Nom
-                  </Typography>
-                  <p className="bg-meko-blue-transparent-2 rounded-xl focus:border-meko-blue-light-1 focus:border-2 outline-none py-2 px-5">
-                    {currentChild?.lastname || ''}
-                  </p>
+              <div className="space-y-2 flex-1 px-4">
+                <div className="w-full flex space-x-8">
+                  <div className="w-[50%]">
+                    <Typography as="span" className="block text-sm" color={"secondary"} styleCase={"uppercase"} weight={"bold"}>
+                      Nom
+                    </Typography>
+                    <p className="bg-meko-blue-transparent-2 rounded-xl focus:border-meko-blue-light-1 focus:border-2 outline-none py-2 px-5">
+                      {currentChild?.lastname || ''}
+                    </p>
+                  </div>
+                  <div className="w-[50%]">
+                    <Typography as="span" className="block text-sm" color={"secondary"} styleCase={"uppercase"} weight={"bold"}>
+                      Prénom
+                    </Typography>
+                    <p className="bg-meko-blue-transparent-2 rounded-xl focus:border-meko-blue-light-1 focus:border-2 outline-none py-2 px-5">
+                      {currentChild?.firstname || ''}
+                    </p>
+                  </div>
                 </div>
-                <div className="w-[50%]">
+                <div className="w-full">
                   <Typography as="span" className="block text-sm" color={"secondary"} styleCase={"uppercase"} weight={"bold"}>
-                    Prénom
+                    Date de naissance
                   </Typography>
                   <p className="bg-meko-blue-transparent-2 rounded-xl focus:border-meko-blue-light-1 focus:border-2 outline-none py-2 px-5">
-                    {currentChild?.firstname || ''}
+                    {currentChild?.birthday
+                      ? new Date(currentChild.birthday).toLocaleDateString('fr-FR', {
+                        day: '2-digit',
+                        month: '2-digit',
+                        year: 'numeric',
+                      })
+                      : ''}
                   </p>
                 </div>
               </div>
-              <div className="w-full">
-                <Typography as="span" className="block text-sm" color={"secondary"} styleCase={"uppercase"} weight={"bold"}>
-                  Date de naissance
-                </Typography>
-                <p className="bg-meko-blue-transparent-2 rounded-xl focus:border-meko-blue-light-1 focus:border-2 outline-none py-2 px-5">
-                  {currentChild?.birthday
-                    ? new Date(currentChild.birthday).toLocaleDateString('fr-FR', {
-                      day: '2-digit',
-                      month: '2-digit',
-                      year: 'numeric',
-                    })
-                    : ''}
-                </p>
-              </div>
+
             </div>
 
-          </div>
-
-          <div className="flex items-center space-x-2">
-            {currentChild && (
-              <EditChild
-                childToEdit={currentChild}
-                setChildToEdit={setCurrentChild}
-                onClose={handleCloseEdit}
+            <div className="flex items-center space-x-2">
+              {currentChild && (
+                <EditChild
+                  childToEdit={currentChild}
+                  setChildToEdit={setCurrentChild}
+                  onClose={handleCloseEdit}
+                />
+              )}
+              <DeleteChildDialog
+                childId={currentChild?.id || ''}
               />
-            )}
-            <DeleteChildDialog
-              childId={currentChild?.id || ''}
-            />
-          </div>
-        </Card>
+            </div>
+          </Card>
+        )}
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mt-4">
           <Card className="bg-[#000F4799] p-4">
