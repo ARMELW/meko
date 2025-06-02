@@ -3,13 +3,14 @@ import { Typography } from "@/components";
 import UserAvatar from "@/components/atoms/view/user-avatar";
 import { useSession } from "@/services/session/store";
 import { useNavigate } from "react-router";
+import { useTranslation } from "react-i18next";
 
 
 function ChooseProfilePage() {
   const navigate = useNavigate();
   const { data: avatars, isLoading } = useChildren();
   const login = useSession(state => state.login);
-
+  const { t } = useTranslation();
   
   const handleChoice = (child: { id: string; firstname: string; lastname: string; avatarUrl?: string }) => {
     if (!child) {
@@ -39,13 +40,13 @@ function ChooseProfilePage() {
 
       <div className="flex justify-center w-full typo-container">
         <Typography as="h3" align={"center"}>
-          Choisi ton profil
+          {t('onboarding.profile.title')}
         </Typography>
       </div>
       {(!avatars?.data || avatars.data.length === 0) && (
           <div className="col-span-full text-center">
             <Typography as="p" className="text-gray-500">
-              Vous n'avez pas encore ajouté d'enfant à votre compte.
+              {t('onboarding.profile.noChildren')}
             </Typography>
           </div>
         )}

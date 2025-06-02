@@ -4,6 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Plus } from 'lucide-react';
 import { addChildrenSchema, ChildrenPayload, useChildrenActions } from '@/app/children';
 import useModalStore from '@/app/children/modal';
+import { useTranslation } from 'react-i18next';
 import {
     Dialog,
     DialogCard,
@@ -20,6 +21,7 @@ const defaultValues: ChildrenPayload = {
     birthday: "",
 };
 const CreateChild = () => {
+    const { t } = useTranslation();
     const { create, isCreating, invalidate } = useChildrenActions();
     const { open, mode, openCreate, close } = useModalStore();
     const makeOpen = !!(open && mode == 'create')
@@ -57,7 +59,7 @@ const CreateChild = () => {
             </DialogTrigger>
             <DialogCard className="max-w-[600px]">
                 <DialogHeader>
-                    <DialogTitle title="Création compte enfant" />
+                    <DialogTitle title={t('monitoring.children.create.title')} />
                 </DialogHeader>
                 <DialogContent>
                     <form className="w-full space-y-4" onSubmit={handleSubmit(onSubmit)}>

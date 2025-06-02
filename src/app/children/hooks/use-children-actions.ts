@@ -2,19 +2,21 @@ import { useMutations } from "@/services/react-query/mutation";
 import { childrenService } from "../query";
 import { childrenKeys } from "../config";
 import { Children, ChildrenPayload, DeleteRequestPayload, DeleteVerificationPayload } from "../type";
+import { useTranslation } from "react-i18next";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { API_ENDPOINTS } from "@/config/api";
 import { toast } from "sonner";
 import { useChildrenStore } from "../store";
 
 export const useChildrenActions = () => {
+    const { t } = useTranslation();
     const currentChild = useChildrenStore(state => state.currentChild);
     const queryClient = useQueryClient();
     const mutations = useMutations<Children, ChildrenPayload>({
         service: childrenService,
         queryKeys: childrenKeys,
         successMessages: {
-            create: 'Enfant crée avec succès'
+            create: t('monitoring.children.create.success')
         }
     });
 
@@ -24,10 +26,10 @@ export const useChildrenActions = () => {
             return response;
         },
         onSuccess: () => {
-            toast.success("Code de vérification envoyé par email");
+            toast.success(t('monitoring.children.confirmDelete.verificationSent'));
         },
         onError: () => {
-            toast.error("Erreur lors de l'envoi du code de vérification");
+            toast.error(t('monitoring.children.confirmDelete.error'));
         }
     });
 
@@ -38,10 +40,10 @@ export const useChildrenActions = () => {
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: childrenKeys.lists() });
-            toast.success("Compte enfant supprimé avec succès");
+            toast.success(t('monitoring.children.confirmDelete.success'));
         },
         onError: () => {
-            toast.error("Code de vérification incorrect");
+            toast.error(t('monitoring.children.confirmDelete.error'));
         }
     });
 

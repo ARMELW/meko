@@ -8,6 +8,7 @@ import { useChildrenActions } from '../../../app/children/hooks/use-children-act
 import { LoadingButton } from "@/components/atoms/actions/loading-button";
 import { useNavigate } from "react-router";
 import { useChildrenStore } from "@/app/children/store";
+import { useTranslation } from "react-i18next";
 
 const defaultValues: ChildrenPayload = {
   firstname: "",
@@ -18,6 +19,7 @@ function CreateChildAccountPage() {
   const navigate = useNavigate();
   const { create, isCreating } = useChildrenActions();
   const setCurrentChild = useChildrenStore((state) => state.setCurrentChild);
+  const { t } = useTranslation();
 
   const {
     control,
@@ -33,7 +35,8 @@ function CreateChildAccountPage() {
       ...data
     }, {
       onSuccess: (res) => {
-        console.log("Enfant créé avec succès:", res.data);
+        console.log("Enfant créé avec succès:", res.data)
+       
         setCurrentChild(res.data!);
         navigate("/profile/welcome");
       }
@@ -45,39 +48,39 @@ function CreateChildAccountPage() {
       <form action="" className="w-full space-y-4" onSubmit={handleSubmit(onSubmit)}>
 
         <Typography as="h3" align={"center"}>
-          Création compte enfant
+          {t('onboarding.createChild.title')}
         </Typography>
 
         <Typography as="p" align={"left"}>
-          Renseignez les informations concernant l'enfant
+          {t('onboarding.createChild.subtitle')}
         </Typography>
 
         <div className="grid  grid-cols-2 gap-4">
           <div className="input-container">
             <Label uppercase>
               <span className="text-[13px]">
-                Nom
+                {t('onboarding.createChild.firstName')}
               </span>
             </Label>
             <ControlledTextInput
               name="firstname"
               size="small"
               control={control}
-              placeholder="Entrez le nom"
+              placeholder={t('onboarding.createChild.placeholders.firstName')}
               disabled={isCreating}
             />
           </div>
           <div className="input-container">
             <Label uppercase>
               <span className="text-[13px]">
-                Prénom
+                {t('onboarding.createChild.lastName')}
               </span>
             </Label>
             <ControlledTextInput
               name="lastname"
               size="small"
               control={control}
-              placeholder="Entrez le  prénom"
+              placeholder={t('onboarding.createChild.placeholders.lastName')}
               disabled={isCreating}
             />
           </div>
@@ -88,7 +91,7 @@ function CreateChildAccountPage() {
             <div className="w-full">
               <Label uppercase>
                 <span className="text-[13px]" >
-                  Date de naissance
+                  {t('onboarding.createChild.birthday')}
                 </span>
               </Label>
               <ControlledTextInput
@@ -109,7 +112,7 @@ function CreateChildAccountPage() {
             loading={isCreating}
             size="small"
             color="secondary">
-            Créer le compte
+            {t('onboarding.createChild.submit')}
           </LoadingButton>
         </div>
 

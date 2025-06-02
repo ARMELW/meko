@@ -2,6 +2,61 @@ const fr = {
 	ui: {
 		title: "Notre design system",
 	},
+	monitoring: {
+		children: {
+			create: {
+				title: "Création compte enfant",
+				firstName: "Nom de l'enfant",
+				lastName: "Prénom de l'enfant",
+				birthday: "Date de naissance",
+				placeholders: {
+					firstName: "Entrez le nom",
+					lastName: "Entrez le prénom"
+				},
+				submit: "Créer le compte",
+				success: "Enfant créé avec succès"
+			},
+			add: "Ajouter",
+			edit: "Modifier",
+			delete: "Supprimer",
+			confirmDelete: {
+				title: "Supprimer le compte enfant",
+				description: "Êtes-vous sûr de vouloir supprimer ce compte ?",
+				verificationSent: "Code de vérification envoyé par email",
+				success: "Compte enfant supprimé avec succès",
+				error: "Code de vérification incorrect"
+			}
+		}
+	},
+	onboarding: {
+		welcome: {
+			title: "Bienvenue sur Meko Academy {name} !",
+			description: "Moi, c'est Fifou, ton compagnon d'aventure. Ensemble, on va explorer un monde rempli de défis amusants et apprendre plein de choses tout en s'amusant ! Prêt(e) à commencer ?"
+		},
+		profile: {
+			title: "Choisis ton profil",
+			noChildren: "Vous n'avez pas encore ajouté d'enfant à votre compte."
+		},
+		avatar: {
+			title: "Choisis ton avatar",
+			description: "Commence par choisir ton avatar. Tu pourras toujours le changer plus tard si tu le souhaites.",
+			noAvatars: "Aucun avatar disponible pour le moment.",
+			success: "Avatar sélectionné avec succès",
+			successDescription: "Tu peux le changer à tout moment dans les paramètres de ton profil."
+		},
+		createChild: {
+			title: "Création compte enfant",
+			subtitle: "Renseignez les informations concernant l'enfant",
+			firstName: "Nom",
+			lastName: "Prénom",
+			birthday: "Date de naissance",
+			placeholders: {
+				firstName: "Entrez le nom",
+				lastName: "Entrez le prénom"
+			},
+			submit: "Créer le compte"
+		}
+	},
 	common: {
 		trial: 'Essai gratuit de 7 jours',
 		month: 'Mois',

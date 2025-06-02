@@ -2,13 +2,19 @@ import { Typography } from "@/components";
 import { ArrowRight } from "lucide-react";
 import CustomLink from './../../../components/atoms/actions/custom-link';
 
+import { useTranslation } from "react-i18next";
+import { useChildrenStore } from "@/app/children/store";
+
 function WelcomePage() {
+  const { t } = useTranslation();
+  const currentChild = useChildrenStore(state => state.currentChild);
+  const name = currentChild ? currentChild.firstname : '';
+
   return <div className="w-full h-screen flex flex-col justify-center items-center">
     <div className="w-[50%]">
-
       <div className="w-full typo-container flex justify-center">
         <Typography as="h3" align={"center"}>
-          Bienvenue sur Meko Academy John !
+          {t('onboarding.welcome.title', { name })}
         </Typography>
       </div>
 
@@ -20,8 +26,7 @@ function WelcomePage() {
 
       <div className="w-full typo-container flex justify-center">
         <Typography as="p" align={"center"} className="w-[91%] ">
-          Moi, c'est Fifou, ton compagnon d'aventure. Ensemble,
-          on va explorer un monde rempli de défis amusants et apprendre
+          {t('onboarding.welcome.description')}
           plein de choses tout en s'amusant ! Prêt(e) à commencer ?
         </Typography>
       </div>

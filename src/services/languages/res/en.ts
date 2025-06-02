@@ -3,6 +3,61 @@ const en = {
    ui: {
       title: "Design system"
    },
+   monitoring: {
+      children: {
+         create: {
+            title: "Create child account",
+            firstName: "Child's first name",
+            lastName: "Child's last name",
+            birthday: "Date of birth",
+            placeholders: {
+               firstName: "Enter first name",
+               lastName: "Enter last name"
+            },
+            submit: "Create account",
+            success: "Child account created successfully"
+         },
+         add: "Add",
+         edit: "Edit",
+         delete: "Delete",
+         confirmDelete: {
+            title: "Delete child account",
+            description: "Are you sure you want to delete this account?",
+            verificationSent: "Verification code sent by email",
+            success: "Child account successfully deleted",
+            error: "Incorrect verification code"
+         }
+      }
+   },
+   onboarding: {
+      welcome: {
+         title: "Welcome to Meko Academy {name}!",
+         description: "I'm Fifou, your adventure companion. Together, we'll explore a world full of fun challenges and learn lots of things while having fun! Ready to start?"
+      },
+      profile: {
+         title: "Choose your profile",
+         noChildren: "You haven't added any children to your account yet."
+      },
+      avatar: {
+         title: "Choose your avatar",
+         description: "Start by choosing your avatar. You can always change it later if you want.",
+         noAvatars: "No avatars available at the moment.",
+         success: "Avatar successfully selected",
+         successDescription: "You can change it anytime in your profile settings."
+      },
+      createChild: {
+         title: "Create child account",
+         subtitle: "Enter the child's information",
+         firstName: "First name",
+         lastName: "Last name",
+         birthday: "Date of birth",
+         placeholders: {
+            firstName: "Enter first name",
+            lastName: "Enter last name"
+         },
+         submit: "Create account"
+      }
+   },
    common: {
 		trial: '7-day free trial',
       month: 'Month',

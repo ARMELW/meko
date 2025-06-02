@@ -5,7 +5,10 @@ import { Typography } from "@/components";
 import { useNavigate } from "react-router";
 import { useEffect } from "react";
 import { toast } from "sonner";
+import { useTranslation } from "react-i18next";
+
 function ChooseAvatarPage() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { data: avatars, isLoading } = useAvatars();
   const { select } = useAvatarActions();
@@ -29,8 +32,8 @@ function ChooseAvatarPage() {
         id: currentChild.id,
         avatarUrl: avatar.url
       });
-      toast('Avatar sélectionné avec succès', {
-        description: 'Tu peux le changer à tout moment dans les paramètres de ton profil.',
+      toast(t('onboarding.avatar.success'), {
+        description: t('onboarding.avatar.successDescription'),
         duration: 5000,
         icon: '✅'
       })
@@ -54,7 +57,7 @@ function ChooseAvatarPage() {
 
       <div className="flex justify-center w-full typo-container">
         <Typography as="h3" align={"center"}>
-          Choisi ton avatar
+          {t('onboarding.avatar.title')}
         </Typography>
       </div>
 
@@ -66,13 +69,13 @@ function ChooseAvatarPage() {
 
       <div className="flex justify-center w-full typo-container">
         <Typography as="p" align={"center"} className="w-[91%]">
-          Commence par choisir ton avatar. Tu pourras toujours le changer plus tard si tu le souhaites.
+          {t('onboarding.avatar.description')}
         </Typography>
       </div>
       {avatars?.length === 0 && (
         <div className="flex justify-center items-center w-full p-5">
           <Typography as="p" align={"center"} className="text-red-500">
-            Aucun avatar disponible pour le moment.
+            {t('onboarding.avatar.noAvatars')}
           </Typography>
         </div>
       )}
