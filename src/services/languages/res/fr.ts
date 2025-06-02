@@ -24,7 +24,14 @@ const fr = {
 				description: "Êtes-vous sûr de vouloir supprimer ce compte ?",
 				verificationSent: "Code de vérification envoyé par email",
 				success: "Compte enfant supprimé avec succès",
-				error: "Code de vérification incorrect"
+				error: "Code de vérification incorrect",
+				codeTitle: "Code de vérification",
+				codeMessage: "Veuillez saisir le code de vérification envoyé à votre email",
+				sending: "Envoi en cours...",
+				sendCode: "Envoyer le code",
+				verify: "Vérifier",
+				verifying: "Vérification...",
+				message: "Veuillez confirmer la suppression de ce compte"
 			}
 		}
 	},

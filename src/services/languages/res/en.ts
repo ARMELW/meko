@@ -1,4 +1,3 @@
-
 const en = {
    ui: {
       title: "Design system"
@@ -25,7 +24,14 @@ const en = {
             description: "Are you sure you want to delete this account?",
             verificationSent: "Verification code sent by email",
             success: "Child account successfully deleted",
-            error: "Incorrect verification code"
+            error: "Incorrect verification code",
+            codeTitle: "Verification Code",
+            codeMessage: "Please enter the verification code sent to your email",
+            sending: "Sending...",
+            sendCode: "Send verification code",
+            verify: "Verify",
+            verifying: "Verifying...",
+            message: "Please confirm that you want to delete this account"
          }
       }
    },
