@@ -4,6 +4,7 @@ import UserAvatar from "@/components/atoms/view/user-avatar";
 import { useSession } from "@/services/session/store";
 import { useNavigate } from "react-router";
 import { useTranslation } from "react-i18next";
+import { toast } from "sonner";
 
 
 function ChooseProfilePage() {
@@ -11,7 +12,11 @@ function ChooseProfilePage() {
   const { data: avatars, isLoading } = useChildren();
   const login = useSession(state => state.login);
   const { t } = useTranslation();
-  
+  if(!avatars || !avatars.data || avatars.data.length === 0){
+     toast.info(t('onboarding.profile.noChildren'))
+     navigate("/profile/create-child");
+     return null;
+  }
   const handleChoice = (child: { id: string; firstname: string; lastname: string; avatarUrl?: string }) => {
     if (!child) {
       return;

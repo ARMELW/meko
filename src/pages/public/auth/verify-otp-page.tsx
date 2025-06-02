@@ -41,14 +41,16 @@ function VerifyOtpPage() {
         isSignUp,
         firstName,
         lastName
-      });
-      
+      }).then(() => {
       if (isSignUp) {
         navigate("/profile/create-child");
       } else {
         navigate("/profile/choose");
       }
       setLoading(false);
+      });
+      
+      
     } catch (error) {
       setLoading(false);
       console.error("Verify tokenn error:", error);
