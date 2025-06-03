@@ -6,6 +6,7 @@ import { useNavigate } from "react-router";
 import { useEffect } from "react";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
+import { useSession as useChildrenSession } from '@/services/session/store';
 
 function ChooseAvatarPage() {
   const { t } = useTranslation();
@@ -13,23 +14,23 @@ function ChooseAvatarPage() {
   const { data: avatars, isLoading } = useAvatars();
   const { select } = useAvatarActions();
   
-  const currentChild = useChildrenStore(state => state.currentChild);
+  const sessionChild = useChildrenSession(state => state.selectedChild);
   const clearCurrentChild = useChildrenStore(state => state.clearCurrentChild);
 
   useEffect(() => {
-    if (!currentChild) {
+    if (!sessionChild) {
       navigate("/profile/choose");
     }
-  }, [currentChild, navigate]);
+  }, [sessionChild, navigate]);
 
   const handleChoice = async (avatar: Avatar) => {
-    if (!currentChild) {
+    if (!sessionChild) {
       return;
     }
 
     try {
       await select({
-        id: currentChild.id,
+        id: sessionChild?.id || '',
         avatarUrl: avatar.url
       });
       toast(t('onboarding.avatar.success'), {
@@ -44,7 +45,7 @@ function ChooseAvatarPage() {
     }
   };
 
-  if (isLoading || !currentChild) {
+  if (isLoading || !sessionChild) {
     return (
       <div className="w-full h-screen flex items-center justify-center">
         <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-primary-500"></div>
