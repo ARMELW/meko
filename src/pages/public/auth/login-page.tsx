@@ -24,7 +24,7 @@ function LoginPage() {
   } = useForm<LoginFormData>({
     defaultValues,
     resolver: zodResolver(loginSchema),
-    mode: "onChange",
+    mode: "onSubmit",
   });
   const onSubmit = async (data: LoginFormData) => {
     try {

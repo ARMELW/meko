@@ -129,3 +129,12 @@ input.custom-input {
 	width: 100%;
 	color: rgba(255, 255, 255, 1);
 }
+
+.calendar-wrapper {
+  isolation: isolate;
+  pointer-events: auto;
+}
+
+.calendar-wrapper * {
+  pointer-events: auto;
+}

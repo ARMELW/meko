@@ -4,7 +4,7 @@ import * as Dialog from '@radix-ui/react-dialog';
 import { ControlledTextInput } from '../../form/controlled-input';
 import { useForm } from 'react-hook-form';
 import { Button } from '@/components/atoms/actions/button';
-
+import { ControlledDateTimePicker } from '../../form/controlled-date-picker';
 
 type ChilCreationForm = {
   firstName: string;
@@ -106,10 +106,9 @@ function CreateChildModal() {
                       Date de naissance
                     </span>
                   </Label>
-                  <ControlledTextInput
+                  <ControlledDateTimePicker
                     name="birthDate"
                     control={control}
-                    size="w-full"
                   />
                 </div>
 

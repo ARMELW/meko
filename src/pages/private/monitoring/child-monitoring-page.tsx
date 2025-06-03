@@ -6,6 +6,9 @@ import { useEffect, useMemo } from "react";
 import CreateChild from "./components/create-child";
 import EditChild from "./components/edit-child";
 import { DeleteChildDialog } from "@/app/children/components";
+import { format } from "date-fns";
+import { fr } from "date-fns/locale";
+import { useTranslation } from "react-i18next";
 
 
 function ChildMonitoringPage() {
@@ -96,11 +99,7 @@ function ChildMonitoringPage() {
                   </Typography>
                   <p className="bg-meko-blue-transparent-2 rounded-xl focus:border-meko-blue-light-1 focus:border-2 outline-none py-2 px-5">
                     {currentChild?.birthday
-                      ? new Date(currentChild.birthday).toLocaleDateString('fr-FR', {
-                        day: '2-digit',
-                        month: '2-digit',
-                        year: 'numeric',
-                      })
+                      ? format(new Date(currentChild.birthday), 'dd MMMM yyyy', { locale: fr })
                       : ''}
                   </p>
                 </div>

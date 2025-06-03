@@ -32,7 +32,18 @@ export function useMutations<T, P>(config: MutationConfig<T, P>) {
   };
 
   const handleSuccess = (type: 'create' | 'update' | 'delete', data: T) => {
-    queryClient.invalidateQueries({ queryKey: queryKeys.lists() });
+    // Invalider la requête mais garder les données en cache pendant 5 minutes
+    queryClient.invalidateQueries({ 
+      queryKey: queryKeys.lists(),
+      refetchType: "none" 
+    });
+    
+    // Mettre à jour le cache avec les nouvelles données
+    queryClient.setQueryDefaults(queryKeys.lists(), {
+      staleTime: 5 * 60 * 1000,  // 5 minutes
+      cacheTime: 10 * 60 * 1000  // 10 minutes
+    });
+    
     toast.success(messages[type]);
 
     if (type === 'create' && callbacks?.onCreateSuccess) {

@@ -15,7 +15,7 @@ export const useAvatarActions = () => {
   const { mutate: select } = useMutation({
     mutationFn: (payload: AvatarPayload) => AvatarService.select(payload),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['avatars'] });
+      queryClient.invalidateQueries({ queryKey: ['avatars', 'children'] });
     },
   });
 

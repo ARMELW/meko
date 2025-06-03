@@ -1,5 +1,6 @@
 import { ChildrenPayload } from '@/app/children';
 import { Label } from '@/components';
+import {ControlledDateTimePicker}  from '@/components/molecules/form/controlled-date-picker';
 import { ControlledTextInput } from '@/components/molecules/form/controlled-input';
 import { Control } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
@@ -50,15 +51,12 @@ const ChildrenForm = ({ control, isLoading }: ChildrenFormProps) => {
               {t('monitoring.children.create.birthday')}
             </span>
           </Label>
-          <ControlledTextInput
+
+          <ControlledDateTimePicker
             name="birthday"
-            size="small"
-            type="date"
             control={control}
-            className="w-full"
-            placeholder=""
-            disabled={isLoading}
           />
+
         </div>
       </div>
     </div>
