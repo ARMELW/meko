@@ -8,19 +8,19 @@ import EditChild from "./components/edit-child";
 import { DeleteChildDialog } from "@/app/children/components";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
-import { useTranslation } from "react-i18next";
 
 
 function ChildMonitoringPage() {
-
-  const { data: avatars } = useChildren();
+  const { data: avatars, invalidate } = useChildren();
   const currentChild = useChildrenStore(state => state.currentChild);
   const setCurrentChild = useChildrenStore((state) => state.setCurrentChild);
   const clearCurrentChild = useChildrenStore((state) => state.clearCurrentChild);
 
   const handleCloseEdit = () => {
     clearCurrentChild();
+    invalidate(); 
   };
+
   const formatted = useMemo(() => {
     const data = avatars?.data ? avatars.data : [];
     return data.map((v) => ({
@@ -30,8 +30,15 @@ function ChildMonitoringPage() {
   }, [avatars?.data]);
 
   useEffect(() => {
-    if (formatted.length > 0 && !currentChild) {
-      setCurrentChild(formatted[0]);
+    if (formatted.length > 0) {
+      if (currentChild) {
+        const updatedChild = formatted.find(child => child.id === currentChild.id);
+        if (updatedChild) {
+          setCurrentChild(updatedChild);
+        }
+      } else {
+        setCurrentChild(formatted[0]);
+      }
     }
   }, [formatted, currentChild, setCurrentChild]);
 

@@ -3,7 +3,10 @@ import { toast } from "sonner";
 import { BaseService } from "../api/http";
 export interface MutationConfig<T, P> {
   service: Pick<BaseService<T, P>, 'create' | 'modify' | 'update' | 'remove'>;
-  queryKeys: { lists: () => QueryKey };
+  queryKeys: {
+    lists: () => QueryKey;
+    details?: () => QueryKey[]; 
+  };
   successMessages?: {
     create?: string;
     update?: string;
@@ -32,17 +35,20 @@ export function useMutations<T, P>(config: MutationConfig<T, P>) {
   };
 
   const handleSuccess = (type: 'create' | 'update' | 'delete', data: T) => {
-    // Invalider la requête mais garder les données en cache pendant 5 minutes
-    queryClient.invalidateQueries({ 
-      queryKey: queryKeys.lists(),
-      refetchType: "none" 
-    });
+ 
+    queryClient.invalidateQueries({ queryKey: queryKeys.lists() });
     
-    // Mettre à jour le cache avec les nouvelles données
-    queryClient.setQueryDefaults(queryKeys.lists(), {
-      staleTime: 5 * 60 * 1000,  // 5 minutes
-      cacheTime: 10 * 60 * 1000  // 10 minutes
-    });
+    if (type === 'update') {
+      queryClient.invalidateQueries({ queryKey: queryKeys.lists() });
+      
+      if (queryKeys.details) {
+        const detailsKeys = queryKeys.details();
+        detailsKeys.forEach(key => {
+          queryClient.invalidateQueries({ queryKey: key });
+          queryClient.refetchQueries({ queryKey: key });
+        });
+      }
+    }
     
     toast.success(messages[type]);
 
