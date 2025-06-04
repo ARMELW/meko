@@ -15,6 +15,7 @@ function ChooseAvatarPage() {
   const { select } = useAvatarActions();
   
   const sessionChild = useChildrenSession(state => state.selectedChild);
+  const login = useChildrenSession(state => state.login);
   const clearCurrentChild = useChildrenStore(state => state.clearCurrentChild);
 
   useEffect(() => {
@@ -33,7 +34,12 @@ function ChooseAvatarPage() {
         id: sessionChild?.id || '',
         avatarUrl: avatar.url
       });
+      login({
+        ...sessionChild,
+        avatarUrl: avatar.url
+      });
       toast(t('onboarding.avatar.success'), {
+        position: 'bottom-right',
         description: t('onboarding.avatar.successDescription'),
         duration: 5000,
         icon: '✅'
