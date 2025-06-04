@@ -112,8 +112,12 @@ const fr = {
 		annual: 'Annuel',
 		switchPlan: 'Changer de cycle de facturation',
 		buyPlan: "Acheter l'offre"
+	},
+	form: {
+		'date-picker': {
+			placeholder: 'Sélectionner une date'
+		},
 	}
-
 };
 
 export default fr;

@@ -36,6 +36,7 @@ export function ControlledDateTimePicker<T extends FieldValues>({
       <DateTimePicker 
         value={field.value ? new Date(field.value) : undefined}
         onChange={handleChange}
+        placeholder={t('form.date-picker.placeholder')}
         className="w-[280px]" 
       />
 

@@ -112,7 +112,12 @@ const en = {
       annual: 'Annual',
       switchPlan: 'Switch Plan',
       buyPlan: "Buy the plan"
-   }
+   },
+   form: {
+		'date-picker': {
+			placeholder: 'Select a date'
+		},
+	},
 };
 
 export default en;
