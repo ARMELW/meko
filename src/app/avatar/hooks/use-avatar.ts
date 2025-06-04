@@ -6,6 +6,9 @@ export const useAvatars = () => {
   return useQuery({
     queryKey: ['avatars'],
     queryFn: AvatarService.getAll,
+    staleTime: 0,
+    refetchOnMount: true,
+    refetchOnWindowFocus: true,
   });
 };
 

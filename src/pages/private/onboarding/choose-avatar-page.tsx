@@ -28,7 +28,7 @@ function ChooseAvatarPage() {
     if (!sessionChild) {
       return;
     }
-
+    console.log('Avatar selected:', avatar);
     try {
       await select({
         id: sessionChild?.id || '',
