@@ -59,7 +59,7 @@ deploy-k8s:
         microk8s kubectl apply -f deploy.yml
 
         echo "✅ Deployment successful."
-        docker system prune -f -a
+        # docker system prune -f -a
       EOF
   only:
     - develop
