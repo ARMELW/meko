@@ -31,7 +31,7 @@ function CreateParentAccountPage() {
   const onSubmit = async (data: SignUpFormData) => {
     try {
       await initiateOtpLogin({
-        email: data.email,
+        email: data.email
       });
       setIsSubmitted(true);
       //TODO: il faut que l'on assure le state soit bien recuperer coté verification

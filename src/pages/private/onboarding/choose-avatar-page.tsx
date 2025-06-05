@@ -2,7 +2,7 @@ import { useAvatarActions, useAvatars } from "@/app/avatar/hooks/use-avatar";
 import { Avatar } from "@/app/avatar/types";
 import { useChildrenStore } from "@/app/children/store";
 import { Typography } from "@/components";
-import { useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import { useEffect } from "react";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
@@ -11,18 +11,20 @@ import { useSession as useChildrenSession } from '@/services/session/store';
 function ChooseAvatarPage() {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const location = useLocation();
+  const signUp = location.state?.signUp || false; 
   const { data: avatars, isLoading } = useAvatars();
   const { select } = useAvatarActions();
-  
   const sessionChild = useChildrenSession(state => state.selectedChild);
+  const selectedChild = useChildrenStore(state => state.currentChild);
   const login = useChildrenSession(state => state.login);
   const clearCurrentChild = useChildrenStore(state => state.clearCurrentChild);
 
   useEffect(() => {
-    if (!sessionChild) {
+    if (!signUp || !selectedChild) {
       navigate("/profile/choose");
     }
-  }, [sessionChild, navigate]);
+  }, [selectedChild, navigate]);
 
   const handleChoice = async (avatar: Avatar) => {
     if (!sessionChild) {

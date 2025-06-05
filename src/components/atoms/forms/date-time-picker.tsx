@@ -1,4 +1,3 @@
-import { Button } from '../actions/button';
 import { Input } from './input';
 import { Popover, PopoverContent, PopoverTrigger } from '../floating/popover';
 

@@ -1,14 +1,18 @@
 import { Typography } from "@/components";
 import { ArrowRight } from "lucide-react";
-import CustomLink from './../../../components/atoms/actions/custom-link';
-
 import { useTranslation } from "react-i18next";
-import { useChildrenStore } from "@/app/children/store";
+import { useSession as useChildrenSession } from '@/services/session/store';
+import { useNavigate } from "react-router";
 
 function WelcomePage() {
   const { t } = useTranslation();
-  const currentChild = useChildrenStore(state => state.currentChild);
+  const navigate = useNavigate();
+  const currentChild = useChildrenSession(state => state.selectedChild);
   const name = currentChild ? currentChild.firstname : '';
+
+  const handleNavigate = () => {
+    navigate(`/profile/avatar`, { state: { signUp: true } });
+  };
 
   return <div className="w-full h-screen flex flex-col justify-center items-center">
     <div className="w-[50%]">
@@ -27,14 +31,16 @@ function WelcomePage() {
       <div className="w-full typo-container flex justify-center">
         <Typography as="p" align={"center"} className="w-[91%] ">
           {t('onboarding.welcome.description')}
-          plein de choses tout en s'amusant ! Prêt(e) à commencer ?
         </Typography>
       </div>
 
       <div className="w-full action-container flex justify-center p-4">
-        <CustomLink customClass="px-2 py-1" useLink linkTo="/profile/avatar">
+        <div 
+          onClick={handleNavigate}
+          className="cursor-pointer px-2 py-1 flex items-center justify-center rounded-lg bg-[#000F4733]"
+        >
           <ArrowRight className="w-[34px] h-[34px] text-[#7EDAFD]" />
-        </CustomLink>
+        </div>
       </div>
 
     </div>

@@ -9,6 +9,7 @@ import { LoadingButton } from "@/components/atoms/actions/loading-button";
 import { useNavigate } from "react-router";
 import { useChildrenStore } from "@/app/children/store";
 import { useTranslation } from "react-i18next";
+import { ControlledDateTimePicker } from "@/components/molecules/form/controlled-date-picker";
 
 const defaultValues: ChildrenPayload = {
   firstname: "",
@@ -31,11 +32,11 @@ function CreateChildAccountPage() {
   });
   const onSubmit = async (data: ChildrenPayload) => {
 
-   create({
+    create({
       ...data
     }, {
       onSuccess: (res) => {
-       
+
         setCurrentChild(res);
         navigate("/profile/welcome");
       }
@@ -93,14 +94,12 @@ function CreateChildAccountPage() {
                   {t('onboarding.createChild.birthday')}
                 </span>
               </Label>
-              <ControlledTextInput
+              <ControlledDateTimePicker
                 name="birthday"
-                size="small"
-                type="date"
                 control={control}
-                placeholder=""
                 disabled={isCreating}
               />
+
             </div>
           </div>
         </div>
