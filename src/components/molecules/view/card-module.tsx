@@ -18,7 +18,7 @@ function CardModule({ image, title, status, progress }: CardModuleProps) {
 
 
   return <div className="w-full home-wrapper">
-    <Card>
+    <Card style={{ boxShadow: "rgb(255 255 255 / 19%) 0px -1px 1px" }}>
       <CardContent className="p-2">
         <div className="w-full card-image">
           <img src={image} alt={title} className="w-full h-[186px] object-cover rounded rounded-xl" />
