@@ -5,7 +5,7 @@ export function ProtectedLayout() {
 	const { data: session } = useSession();
 	const connnected = !!session;
 	if (!connnected) {
-		return <Navigate to={"/"} />;
+		// return <Navigate to={"/"} />;
 	}
 
 	return <Outlet />;
