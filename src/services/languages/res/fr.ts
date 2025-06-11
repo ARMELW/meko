@@ -68,7 +68,19 @@ const fr = {
 		trial: 'Essai gratuit de 7 jours',
 		month: 'Mois',
 		dashboard: 'Tableau de bord',
-		ready:  'Commencer maintenant !'
+		ready: 'Commencer maintenant !',
+		home: 'Accueil',
+		changeProfile: 'Changer de profil',
+		changeAvatar: "Changer d'avatar",
+		search: 'Rechercher'
+	},
+	menu: {
+		childOptions: {
+			title: 'Gestion compte enfant',
+			subscriptions: 'Abonnements',
+			addChild: 'Ajouter un enfant',
+			settings: 'Paramètres'
+		}
 	},
 	auth: {
       login: 'Connexion',

@@ -68,7 +68,19 @@ const en = {
 		trial: '7-day free trial',
       month: 'Month',
       dashboard: 'Dashboard',
-      ready:  'Ready Now !'
+      ready:  'Get Started Now!',
+      home: 'Home',
+      changeProfile: 'Change profile',
+      changeAvatar: 'Change avatar',
+      search: 'Search',
+	},
+	menu: {
+		childOptions: {
+			title: 'Manage child account',
+			subscriptions: 'Subscriptions',
+			addChild: 'Add child',
+			settings: 'Settings'
+		}
 	},
    auth: {
       login: 'Login',

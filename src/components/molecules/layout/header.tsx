@@ -8,6 +8,10 @@ import { useSession as useChildrenSession } from '@/services/session/store';
 import { Typography } from '@/components/atoms/typography/typography';
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 import UserAvatar from '@/components/atoms/view/user-avatar';
+import { Input } from '@/components/atoms/forms/input';
+import { NavItem } from '@/components/atoms/actions/nav-item';
+import { LastActivityIcon } from '@/components/atoms/icons/last-activity-icon';
+import { StatisticIcon } from '@/components/atoms/icons/statistic-icon';
 
 export function Header() {
     const { t } = useTranslation();
@@ -70,6 +74,7 @@ export function Header() {
                             sideOffset={5}
                             align="end"
                         >
+                            {/* Menu pour les parents */}
                             {!sessionChild && (
                                 <>
                                     <DropdownMenu.Item
@@ -78,31 +83,39 @@ export function Header() {
                                     >
                                         {t('common.dashboard')}
                                     </DropdownMenu.Item>
-
-                                </>
-                            )}
-
-                            <DropdownMenu.Item
-                                className="flex text-meko-blue-light-1 uppercase items-center hover:bg-meko-blue-transparent-1 px-4 py-2   text-xs cursor-pointer"
-                                onSelect={() => navigate('/profile/choose')}
-                            >
-                                Changer de profile
-                            </DropdownMenu.Item>
-                            {sessionChild && (
-                                <>
-
                                     <DropdownMenu.Item
-                                        className="flex text-meko-blue-light-1 uppercase items-center hover:bg-meko-blue-transparent-1 px-4 py-2 rounded  text-xs cursor-pointer"
-                                        onSelect={() => {
-                                            //setCurrentChild(sessionChild);
-                                            navigate('/profile/avatar');
-                                            
-                                        }}
+                                        className="flex text-meko-blue-light-1 uppercase items-center hover:bg-meko-blue-transparent-1 px-4 py-2   text-xs cursor-pointer"
+                                        onSelect={() => navigate('/profile/choose')}
                                     >
-                                        Changer d'avatar
+                                        {t('common.changeProfile')}
                                     </DropdownMenu.Item>
                                 </>
                             )}
+
+                            {/* Menu pour les enfants */}
+                            {sessionChild && (
+                                <>
+                                    <DropdownMenu.Item
+                                        className="flex text-meko-blue-light-1 uppercase items-center hover:bg-meko-blue-transparent-1 px-4 py-2   text-xs cursor-pointer"
+                                        onSelect={() => navigate('/home')}
+                                    >
+                                        {t('common.home')}
+                                    </DropdownMenu.Item>
+                                    <DropdownMenu.Item
+                                        className="flex text-meko-blue-light-1 uppercase items-center hover:bg-meko-blue-transparent-1 px-4 py-2   text-xs cursor-pointer"
+                                        onSelect={() => navigate('/profile/choose')}
+                                    >
+                                        {t('common.changeProfile')}
+                                    </DropdownMenu.Item>
+                                    <DropdownMenu.Item
+                                        className="flex text-meko-blue-light-1 uppercase items-center hover:bg-meko-blue-transparent-1 px-4 py-2 rounded  text-xs cursor-pointer"
+                                        onSelect={() => navigate('/profile/avatar')}
+                                    >
+                                        {t('common.changeAvatar')}
+                                    </DropdownMenu.Item>
+                                </>
+                            )}
+
                             <DropdownMenu.Item
                                 className="flex text-meko-blue-light-1 uppercase items-center  hover:bg-meko-blue-transparent-1 px-4 py-2 rounded  text-xs cursor-pointer disabled:cursor-not-allowed"
                                 onSelect={handleLogout}
@@ -208,21 +221,98 @@ export function Header() {
             </>
         );
     };
+    const renderChildrenOptions = () => {
+        if (!sessionChild) return null;
+        return (
+            <DropdownMenu.Root>
+                <DropdownMenu.Trigger asChild>
+                    <button className="flex items-center gap-2 ml-4 focus:outline-none cursor-pointer">
+                        <img src='/assets/images/icons/menu.png' alt="Enfants" className="w-6 h-6" />
+                    </button>
+                </DropdownMenu.Trigger>
 
+                <DropdownMenu.Portal>
+                    <DropdownMenu.Content
+                        className="z-50 bg-meko-blue-darker shadow-lg rounded-md min-w-[200px]"
+                        sideOffset={5}
+                        align="end"
+                    >
+                        {/* Header/Title for the dropdown */}
+                        <div className="bg-meko-blue-transparent-2 py-3 px-4 border-b border-meko-blue-transparent-1">
+                            <Typography variant="small" weight="bold" styleCase="uppercase" color="default">
+                                {t('menu.childOptions.title')}
+                            </Typography>
+                        </div>
+                        
+                        <DropdownMenu.Item
+                            className="flex text-meko-blue-light-1 uppercase items-center hover:bg-meko-blue-transparent-1 px-4 py-2 text-xs cursor-pointer"
+                            onSelect={() => navigate('/monitoring/child')}
+                        >
+                            {t('menu.childOptions.subscriptions')}
+                        </DropdownMenu.Item>
+                        <DropdownMenu.Item
+                            className="flex text-meko-blue-light-1 uppercase items-center hover:bg-meko-blue-transparent-1 px-4 py-2 text-xs cursor-pointer"
+                            onSelect={() => navigate('/monitoring/child')}
+                        >
+                            {t('menu.childOptions.addChild')}
+                        </DropdownMenu.Item>
+                        <DropdownMenu.Item
+                            className="flex text-meko-blue-light-1 uppercase items-center hover:bg-meko-blue-transparent-1 px-4 py-2 text-xs cursor-pointer"
+                            onSelect={() => navigate('/monitoring/child/settings')}
+                        >
+                            {t('menu.childOptions.settings')}
+                        </DropdownMenu.Item>
+                    </DropdownMenu.Content>
+                </DropdownMenu.Portal>
+            </DropdownMenu.Root>
+        );
+    }
     return (
         <div className="z-50 w-full">
-            <div className="hidden md:flex flex-row justify-between items-center px-4 lg:px-6 py-3">
-                <Link to={"/"} className="flex items-center">
-                    <img src='/small-logo.svg' alt="Logo" className="w-auto" />
-                </Link>
-                <div className='flex flex-row items-center gap-3 cursor-pointer'>
+            <div className="hidden md:flex flex-row justify-between items-center px-4 lg:px-6 py-2">
+                <div className="flex items-center gap-3">
+                    <Link to={sessionChild ? "/home" : "/"} className="flex items-center">
+                        <img
+                            src={sessionChild ? '/favicon.png' : '/small-logo.svg'}
+                            alt="Logo"
+                            className={sessionChild ? "w-12 h-auto" : "w-auto"}
+                        />
+                    </Link>
+                    {sessionChild && (
+                        <div className="flex flex-row">
+                            {renderChildrenOptions()}
+                            <Input
+                                type="text"
+                                size='small'
+                                name="search"
+                                placeholder={t('common.search')}
+                                className="ml-4 w-64 bg-meko-blue-transparent-2 text-white focus:border-meko-blue-light-1 focus:border-2 outline-none rounded-lg px-3 py-1"
+                                onChange={(e) => {
+                                    // Handle search input change
+                                    console.log(e.target.value);
+                                }}
+                            />
+                        </div>
+                    )}
+                </div>
+                <div className='flex flex-row items-center gap-8 cursor-pointer'>
+                    {sessionChild && (
+                        <div className="flex flex-row gap-10 items-center">
+                            <NavItem label="Dernière activité" icon={<LastActivityIcon />} />
+                            <NavItem label="Statistiques" icon={<StatisticIcon />} />
+                        </div>
+                    )}
                     {renderAuthOptions()}
                 </div>
             </div>
 
             <div className="md:hidden flex flex-row justify-between items-center px-4 py-3">
-                <Link to={"/"} className="flex items-center">
-                    <img src='/small-logo.svg' alt="Logo" className="w-auto h-7" />
+                <Link to={sessionChild ? "/home" : "/"} className="flex items-center">
+                    <img
+                        src={sessionChild ? '/favicon.png' : '/small-logo.svg'}
+                        alt="Logo"
+                        className="w-auto h-7"
+                    />
                 </Link>
                 <button
                     onClick={toggleMobileMenu}
