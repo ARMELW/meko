@@ -125,6 +125,16 @@ const fr = {
 		switchPlan: 'Changer de cycle de facturation',
 		buyPlan: "Acheter l'offre"
 	},
+	modules: {
+		loading: 'Chargement des modules...',
+		error: 'Erreur lors du chargement des modules',
+		noModules: 'Aucun module disponible',
+		status: {
+			not_started: 'À DÉCOUVRIR',
+			in_progress: 'EN COURS',
+			completed: 'TERMINÉ'
+		}
+	},
 	form: {
 		'date-picker': {
 			placeholder: 'Sélectionner une date'

@@ -222,7 +222,7 @@ export function Header() {
         );
     };
     const renderChildrenOptions = () => {
-        if (!sessionChild) return null;
+        if (!sessionChild || !isAuthenticated) return null;
         return (
             <DropdownMenu.Root>
                 <DropdownMenu.Trigger asChild>
@@ -237,7 +237,6 @@ export function Header() {
                         sideOffset={5}
                         align="end"
                     >
-                        {/* Header/Title for the dropdown */}
                         <div className="bg-meko-blue-transparent-2 py-3 px-4 border-b border-meko-blue-transparent-1">
                             <Typography variant="small" weight="bold" styleCase="uppercase" color="default">
                                 {t('menu.childOptions.title')}
@@ -271,14 +270,14 @@ export function Header() {
         <div className="z-50 w-full">
             <div className="hidden md:flex flex-row justify-between items-center px-4 lg:px-6 py-2">
                 <div className="flex items-center gap-3">
-                    <Link to={sessionChild ? "/home" : "/"} className="flex items-center">
+                    <Link to={(sessionChild && isAuthenticated) ? "/home" : "/"} className="flex items-center">
                         <img
-                            src={sessionChild ? '/favicon.png' : '/small-logo.svg'}
+                            src={(sessionChild && isAuthenticated) ? '/favicon.png' : '/small-logo.svg'}
                             alt="Logo"
-                            className={sessionChild ? "w-12 h-auto" : "w-auto"}
+                            className={(sessionChild && isAuthenticated) ? "w-12 h-auto" : "w-auto"}
                         />
                     </Link>
-                    {sessionChild && (
+                    {(sessionChild && isAuthenticated) && (
                         <div className="flex flex-row">
                             {renderChildrenOptions()}
                             <Input
@@ -296,7 +295,7 @@ export function Header() {
                     )}
                 </div>
                 <div className='flex flex-row items-center gap-8 cursor-pointer'>
-                    {sessionChild && (
+                    {(sessionChild && isAuthenticated) && (
                         <div className="flex flex-row gap-10 items-center">
                             <NavItem label="Dernière activité" icon={<LastActivityIcon />} />
                             <NavItem label="Statistiques" icon={<StatisticIcon />} />
@@ -307,9 +306,9 @@ export function Header() {
             </div>
 
             <div className="md:hidden flex flex-row justify-between items-center px-4 py-3">
-                <Link to={sessionChild ? "/home" : "/"} className="flex items-center">
+                <Link to={(sessionChild && isAuthenticated) ? "/home" : "/"} className="flex items-center">
                     <img
-                        src={sessionChild ? '/favicon.png' : '/small-logo.svg'}
+                        src={(sessionChild && isAuthenticated) ? '/favicon.png' : '/small-logo.svg'}
                         alt="Logo"
                         className="w-auto h-7"
                     />

@@ -125,6 +125,16 @@ const en = {
       switchPlan: 'Switch Plan',
       buyPlan: "Buy the plan"
    },
+   modules: {
+      loading: 'Loading modules...',
+      error: 'Error loading modules',
+      noModules: 'No modules available',
+      status: {
+         not_started: 'TO DISCOVER',
+         in_progress: 'IN PROGRESS',
+         completed: 'COMPLETED'
+      }
+   },
    form: {
 		'date-picker': {
 			placeholder: 'Select a date'
