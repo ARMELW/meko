@@ -57,6 +57,19 @@ const privateRoutes: RouteObject[] = [
 		element: <HomePage />,
 	},
 	{
+		path: "/learning",
+		children: [
+			{
+				index: true,
+				element: <HomePage />,
+			},
+			{
+				path: "modules/:moduleId",
+				element: <ModuleDetailPage />,
+			},
+		],
+	},
+	{
 		path: "/modules",
 		children: [
 			{

@@ -68,7 +68,20 @@ const fr = {
 		trial: 'Essai gratuit de 7 jours',
 		month: 'Mois',
 		dashboard: 'Tableau de bord',
-		ready:  'Commencer maintenant !'
+		ready: 'Commencer maintenant !',
+		home: 'Accueil',
+		changeProfile: 'Changer de profil',
+		changeAvatar: "Changer d'avatar",
+		search: 'Rechercher',
+		back: 'Retour'
+	},
+	menu: {
+		childOptions: {
+			title: 'Gestion compte enfant',
+			subscriptions: 'Abonnements',
+			addChild: 'Ajouter un enfant',
+			settings: 'Paramètres'
+		}
 	},
 	auth: {
       login: 'Connexion',
@@ -112,6 +125,37 @@ const fr = {
 		annual: 'Annuel',
 		switchPlan: 'Changer de cycle de facturation',
 		buyPlan: "Acheter l'offre"
+	},
+	modules: {
+		loading: 'Chargement des modules...',
+		error: 'Erreur lors du chargement des modules',
+		noModules: 'Aucun module disponible',
+		status: {
+			not_started: 'À DÉCOUVRIR',
+			in_progress: 'EN COURS',
+			completed: 'TERMINÉ'
+		},
+		detail: {
+			notFound: 'Module non trouvé',
+			totalLessons: 'Leçons totales',
+			totalGames: 'Jeux totaux',
+			completedGames: 'Jeux terminés',
+			progress: 'Progression',
+			overallProgress: 'Progression générale',
+			completed: 'terminés',
+			completedAt: 'Terminé le',
+			lesson: 'Leçon',
+			lessons: 'LEÇONS',
+			games: 'JEUX',
+			completedCount: 'TERMINÉS',
+			launch: 'LANCER',
+			gameStatus: {
+				completed: 'TERMINÉ',
+				available: 'À DÉCOUVRIR',
+				blocked: 'BLOQUÉ',
+				in_progress: 'EN COURS'
+			}
+		}
 	},
 	form: {
 		'date-picker': {

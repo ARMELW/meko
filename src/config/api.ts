@@ -16,5 +16,13 @@ export const API_ENDPOINTS = {
   },
   avatar: {
     base: `${prefix}/v1/avatars`,
+  },
+  modules: {
+    base: `${prefix}/v1/modules`,
+    list: (childId: string, qs: string) => `${prefix}/v1/children/${childId}/modules?${qs}`,
+    detail: (childId: string, moduleId: string) => `${prefix}/v1/children/${childId}/modules/${moduleId}`,
+    create: `${prefix}/v1/modules`,
+    update: (id: string) => `${prefix}/v1/modules/${id}`,
+    delete: (id: string) => `${prefix}/v1/modules/${id}`
   }
 } as const;

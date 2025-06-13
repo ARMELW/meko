@@ -1,4 +1,5 @@
 import { createBrowserRouter, RouterProvider } from "react-router";
+
 import routes from "./routes";
 import { Provider } from "./provider";
 import { Toaster } from "./components/atoms/floating/sonner";

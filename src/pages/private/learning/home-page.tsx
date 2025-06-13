@@ -1,73 +1,82 @@
-import { } from '@/components';
+import {
+  useModulesWithParams,
+  LoadingDisplay,
+  ErrorDisplay,
+  EmptyDisplay,
+  ModulesPagination
+} from '@/app/modules';
 import { CardModule } from '@/components/molecules/view/card-module';
-
-type CardStatus = 'À DÉCOUVRIR' | 'TERMINÉ' | 'EN COURS';
-
-type CardType = {
-  image: string;
-  title: string;
-  status: CardStatus;
-  progress?: string;
-};
-
+import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router';
 
 function HomePage() {
+  const { t } = useTranslation();
+  const navigate = useNavigate();
+  const {
+    data: modulesData,
+    isLoading,
+    error,
+    currentPage,
+    totalPages,
+    hasNextPage,
+    hasPrevPage,
+    goToPage,
+    changeLimit
+  } = useModulesWithParams();
+  const mapModuleStatusToCardStatus = (status: string) => {
+    switch (status) {
+      case 'completed':
+        return 'completed';
+      case 'in_progress':
+        return 'in_progress';
+      case 'not_started':
+        return 'not_started';
+    }
+  };
+  const handleModuleClick = (moduleId: string) => {
+    navigate(`/learning/modules/${moduleId}`);
+  };
 
-  const cards: CardType[] = [
-    {
-      image: '/assets/images/cards/addition-card.png',
-      title: 'LES MAITRES DES ADDITIONS',
-      status: 'À DÉCOUVRIR',
-    },
-    {
-      image: '/assets/images/cards/addition-card-2.png',
-      title: 'LES MAITRES DES ADDITIONS',
-      status: 'À DÉCOUVRIR',
-    },
-    {
-      image: '/assets/images/cards/addition-card-3.png',
-      title: 'LES MAITRES DES ADDITIONS',
-      status: 'TERMINÉ',
-    },
-    {
-      image: '/assets/images/cards/addition-card-4.png',
-      title: 'LES MAITRES DES ADDITIONS',
-      status: 'EN COURS',
-      progress: '2/8',
-    },
-    {
-      image: '/assets/images/cards/addition-card-5.png',
-      title: 'LES MAITRES DES ADDITIONS',
-      status: 'EN COURS',
-      progress: '2/8',
-    },
-    {
-      image: '/assets/images/cards/addition-card-6.png',
-      title: 'LES MAITRES DES ADDITIONS',
-      status: 'À DÉCOUVRIR',
-      progress: '2/8',
-    },
-    {
-      image: '/assets/images/cards/addition-card-7.png',
-      title: 'LES MAITRES DES ADDITIONS',
-      status: 'À DÉCOUVRIR',
-      progress: '2/8',
-    },
-    {
-      image: '/assets/images/cards/addition-card-8.png',
-      title: 'LES MAITRES DES ADDITIONS',
-      status: 'À DÉCOUVRIR',
-      progress: '2/8',
-    },
-  ];
+  if (isLoading) {
+    return <LoadingDisplay message={t('modules.loading')} />;
+  }
 
-  return <div className="w-full home-wrapper">
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 p-4">
-      {cards.map((card, index) => (
-        <CardModule key={index} {...card} />
-      ))}
+  if (error) {
+    return <ErrorDisplay message={t('modules.error')} />;
+  }
+
+  if (!modulesData?.modules || modulesData.modules.length === 0) {
+    return <EmptyDisplay message={t('modules.noModules')} />;
+  }
+
+  return (
+    <div className="w-full home-wrapper px-36">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 p-4">
+        {modulesData.modules.map((module) => (
+          <CardModule
+            key={module.id}
+            image={module.coverUrl}
+            title={module.name}
+            status={mapModuleStatusToCardStatus(module.status)}
+            progress={module.status === 'in_progress' ? `${module.completedGames}/${module.totalGames}` : undefined}
+            onClick={() => handleModuleClick(module.id)}
+          />
+        ))}
+      </div>
+
+      {modulesData.pagination && (
+        <ModulesPagination
+          pagination={modulesData.pagination}
+          currentPage={currentPage}
+          totalPages={totalPages}
+          hasNextPage={hasNextPage}
+          hasPrevPage={hasPrevPage}
+          onPageChange={goToPage}
+          onLimitChange={changeLimit}
+        />
+      )}
     </div>
-  </div>
+  );
 }
 
 export { HomePage };

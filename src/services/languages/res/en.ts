@@ -68,7 +68,20 @@ const en = {
 		trial: '7-day free trial',
       month: 'Month',
       dashboard: 'Dashboard',
-      ready:  'Ready Now !'
+      ready:  'Get Started Now!',
+      home: 'Home',
+      changeProfile: 'Change profile',
+      changeAvatar: 'Change avatar',
+      search: 'Search',
+      back: 'Back'
+	},
+	menu: {
+		childOptions: {
+			title: 'Manage child account',
+			subscriptions: 'Subscriptions',
+			addChild: 'Add child',
+			settings: 'Settings'
+		}
 	},
    auth: {
       login: 'Login',
@@ -112,6 +125,37 @@ const en = {
       annual: 'Annual',
       switchPlan: 'Switch Plan',
       buyPlan: "Buy the plan"
+   },
+   modules: {
+      loading: 'Loading modules...',
+      error: 'Error loading modules',
+      noModules: 'No modules available',
+      status: {
+         not_started: 'TO DISCOVER',
+         in_progress: 'IN PROGRESS',
+         completed: 'COMPLETED'
+      },
+      detail: {
+         notFound: 'Module not found',
+         totalLessons: 'Total lessons',
+         totalGames: 'Total games',
+         completedGames: 'Completed games',
+         progress: 'Progress',
+         overallProgress: 'Overall progress',
+         completed: 'completed',
+         completedAt: 'Completed on',
+         lesson: 'Lesson',
+         lessons: 'LESSONS',
+         games: 'GAMES',
+         completedCount: 'COMPLETED',
+         launch: 'LAUNCH',
+         gameStatus: {
+            completed: 'COMPLETED',
+            available: 'TO DISCOVER',
+            blocked:  'BLOCKED',
+            in_progress: 'IN PROGRESS',
+         }
+      }
    },
    form: {
 		'date-picker': {
