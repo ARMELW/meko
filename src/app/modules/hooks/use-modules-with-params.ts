@@ -14,7 +14,7 @@ export const useModulesWithParams = () => {
 
   const changeLimit = (limit: number) => {
     setLimit(limit);
-    setPage(1); // Reset to first page when changing limit
+    setPage(1);
   };
 
   const hasNextPage = modulesQuery.data?.pagination?.hasNext || false;

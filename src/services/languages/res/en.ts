@@ -73,6 +73,7 @@ const en = {
       changeProfile: 'Change profile',
       changeAvatar: 'Change avatar',
       search: 'Search',
+      back: 'Back'
 	},
 	menu: {
 		childOptions: {
@@ -133,6 +134,27 @@ const en = {
          not_started: 'TO DISCOVER',
          in_progress: 'IN PROGRESS',
          completed: 'COMPLETED'
+      },
+      detail: {
+         notFound: 'Module not found',
+         totalLessons: 'Total lessons',
+         totalGames: 'Total games',
+         completedGames: 'Completed games',
+         progress: 'Progress',
+         overallProgress: 'Overall progress',
+         completed: 'completed',
+         completedAt: 'Completed on',
+         lesson: 'Lesson',
+         lessons: 'LESSONS',
+         games: 'GAMES',
+         completedCount: 'COMPLETED',
+         launch: 'LAUNCH',
+         gameStatus: {
+            completed: 'COMPLETED',
+            available: 'TO DISCOVER',
+            blocked:  'BLOCKED',
+            in_progress: 'IN PROGRESS',
+         }
       }
    },
    form: {

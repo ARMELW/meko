@@ -7,14 +7,15 @@ import {
 } from '@/app/modules';
 import { CardModule } from '@/components/molecules/view/card-module';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router';
 
 function HomePage() {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const {
     data: modulesData,
     isLoading,
     error,
-    stats,
     currentPage,
     totalPages,
     hasNextPage,
@@ -22,14 +23,18 @@ function HomePage() {
     goToPage,
     changeLimit
   } = useModulesWithParams();
-
   const mapModuleStatusToCardStatus = (status: string) => {
-    const statusMap = {
-      'not_started': t('modules.status.not_started') as 'À DÉCOUVRIR',
-      'in_progress': t('modules.status.in_progress') as 'EN COURS',
-      'completed': t('modules.status.completed') as 'TERMINÉ',
-    };
-    return (statusMap[status as keyof typeof statusMap] || t('modules.status.not_started')) as 'À DÉCOUVRIR' | 'EN COURS' | 'TERMINÉ';
+    switch (status) {
+      case 'completed':
+        return 'completed';
+      case 'in_progress':
+        return 'in_progress';
+      case 'not_started':
+        return 'not_started';
+    }
+  };
+  const handleModuleClick = (moduleId: string) => {
+    navigate(`/learning/modules/${moduleId}`);
   };
 
   if (isLoading) {
@@ -54,6 +59,7 @@ function HomePage() {
             title={module.name}
             status={mapModuleStatusToCardStatus(module.status)}
             progress={module.status === 'in_progress' ? `${module.completedGames}/${module.totalGames}` : undefined}
+            onClick={() => handleModuleClick(module.id)}
           />
         ))}
       </div>

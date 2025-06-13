@@ -1,18 +1,54 @@
 import { Button, Card, CardContent, Typography } from "@/components";
+import { useParams, useNavigate } from 'react-router';
+import { useTranslation } from 'react-i18next';
+import { ArrowLeft } from 'lucide-react';
+import { useModuleDetail } from '@/app/modules/hooks/use-module-detail';
+import { useSession as useChildrenSession } from '@/services/session/store';
+import { LoadingDisplay, ErrorDisplay } from '@/app/modules/components/display-states';
 
 function ModuleDetailPage() {
-  return (
-    <div className="min-h-screen text-white  sm:w-full lg:w-[70%] mx-auto">
+  const { t } = useTranslation();
+  const navigate = useNavigate();
+  const { moduleId } = useParams<{ moduleId: string }>();
+  const { selectedChild } = useChildrenSession();
 
-      {/* Module Info */}
-      <div className="p-6 mb-8 flex flex-col md:flex-row gap-6">
+  const { data: moduleDetail, isLoading, error } = useModuleDetail(
+    selectedChild?.id || '',
+    moduleId || ''
+  );
+
+  const handleGameClick = (gameId: string) => {
+    console.log('Starting game:', gameId);
+  };
+
+  const handleGoBack = () => {
+    navigate(-1);
+  };
+
+  if (isLoading) return <LoadingDisplay message={t('modules.loading')} />;
+  if (error) return <ErrorDisplay message={t('modules.error')} />;
+  if (!moduleDetail) return <ErrorDisplay message={t('modules.detail.notFound')} />;
+
+  return (
+    <div className="min-h-screen text-white sm:w-full lg:w-[70%] mx-auto">
+      <div className="flex items-center space-x-4">
+        <button
+          onClick={handleGoBack}
+          className="flex items-center space-x-2"
+        >
+          <ArrowLeft className="w-4 h-4" />
+          <span>{t('common.back')}</span>
+        </button>
+      </div>
+
+      <div className="py-6 mb-8 flex flex-col md:flex-row gap-6">
         <div className="card-image-detail w-4/12">
           <Card style={{ boxShadow: "rgb(255 255 255 / 19%) 0px -1px 1px" }}>
             <CardContent className="p-2">
               <img
-                src="/assets/images/cards/image-detail.png"
-                alt="Module"
-                className="w-full aspect-square object-cover rounded rounded-xl"
+                src={moduleDetail.coverUrl}
+                alt={moduleDetail.moduleName}
+                className="w-full aspect-square object-cover rounded-xl"
               />
             </CardContent>
           </Card>
@@ -21,22 +57,19 @@ function ModuleDetailPage() {
         </div>
         <div className="w-8/12 space-y-3">
           <Typography as="h3" shadow={null}>
-            LES MAITRES DES ADDITIONS
+            {moduleDetail.moduleName}
           </Typography>
-          <Typography as="span" styleCase={"uppercase"} className="inline-block bg-[#FF7F32] px-2 py-0.5  text-xs font-semibold">
-            En cours
+          <Typography as="span" styleCase={"uppercase"} className="inline-block bg-[#FF7F32] px-2 py-0.5 text-xs font-semibold">
+            {moduleDetail.progressPercentage === 100 ? t('modules.status.completed') : moduleDetail.progressPercentage > 0 ? t('modules.status.in_progress') : t('modules.status.not_started')}
           </Typography>
           <p className="text-sm leading-relaxed">
-            Plonge toi dans le monde des additions et à travers des leçons interactives et des jeux amusants,
-            apprends à additionner avec facilité tout en relevant des défis ludiques. <br />
-            Prêt à devenir un maître des additions ?
+             {moduleDetail.moduleDescription}
           </p>
 
-          {/* Stats */}
           <div className="flex gap-4 mt-2 bg-[#000F4726] justify-center py-3">
-            <div className="flex-1 px-3  rounded text-center text-xs">
+            <div className="flex-1 px-3 rounded text-center text-xs">
               <Typography as="span" className="block text-[30px]" weight={"bold"} shadow={"sm"} align="center" styleCase={"uppercase"}>
-                4
+                {moduleDetail.totalLessons}
               </Typography>
               <Typography
                 as="span"
@@ -47,13 +80,13 @@ function ModuleDetailPage() {
                 color="secondary"
                 className="text-[14px]"
               >
-                LEÇONS
+                {t('modules.detail.lessons')}
               </Typography>
             </div>
 
-            <div className="flex-1 px-3  text-center text-xs border-x border-x-[#7EDAFD]">
+            <div className="flex-1 px-3 text-center text-xs border-x border-x-[#7EDAFD]">
               <Typography as="span" className="block text-[30px]" weight={"bold"} shadow={"sm"} align="center" styleCase={"uppercase"}>
-                8
+                {moduleDetail.totalGames}
               </Typography>
               <Typography
                 as="span"
@@ -64,13 +97,13 @@ function ModuleDetailPage() {
                 color="secondary"
                 className="text-[14px]"
               >
-                JEUX
+                {t('modules.detail.games')}
               </Typography>
             </div>
 
-            <div className="flex-1 px-3  rounded text-center text-xs">
+            <div className="flex-1 px-3 rounded text-center text-xs">
               <Typography as="span" className="block text-[30px]" weight={"bold"} shadow={"sm"} align="center" styleCase={"uppercase"}>
-                3
+                {moduleDetail.completedGames}
               </Typography>
               <Typography
                 as="span"
@@ -81,7 +114,7 @@ function ModuleDetailPage() {
                 color="secondary"
                 className="text-[14px]"
               >
-                TERMINÉS
+                {t('modules.detail.completedCount')}
               </Typography>
             </div>
           </div>
@@ -89,93 +122,44 @@ function ModuleDetailPage() {
         </div>
       </div>
 
-      {/* Lessons List */}
       <div className="relative border-l-8 border-[#08488b]">
-        {/* Lesson 1 */}
-        <div className="relative mb-10 pl-28">
-          <div className="absolute -left-14 w-28 top-0 bg-[#08488b] text-white font-bold text-sm">
-            <div className="w-full relative  px-2 py-1">
-              <div className="absolute w-full top-[-6px]  left-0 bg-[#08488b] h-3 z-0" style={{ transform: "skew(0deg, -5deg)" }}></div>
-              <div className="w-full relative z-2">
-                <Typography
-                  as="span"
-                  align="center"
-                  styleCase="uppercase"
-                  shadow="sm"
-                  weight="bold"
-                  color={"default"}
-                  className="text-[14px] block"
-                >
-                  Leçon
-                </Typography>
-                <Typography as="h1" className="bg-gradient-to-r from-[#FA4616] to-[#FF7F32] bg-clip-text !text-transparent" weight={"bold"} shadow={"sm"} align="center" styleCase={"uppercase"}>
-                  1
-                </Typography>
+        {moduleDetail.lessons.map((lesson) => (
+          <div key={lesson.id} className="relative mb-10 pl-28">
+            <div className="absolute -left-14 w-28 top-0 bg-[#08488b] text-white font-bold text-sm">
+              <div className="w-full relative px-2 py-1">
+                <div className="absolute w-full top-[-6px] left-0 bg-[#08488b] h-3 z-0" style={{ transform: "skew(0deg, -5deg)" }}></div>
+                <div className="w-full relative z-2">
+                  <Typography
+                    as="span"
+                    align="center"
+                    styleCase="uppercase"
+                    shadow="sm"
+                    weight="bold"
+                    color={"default"}
+                    className="text-[14px] block"
+                  >
+                    {t('modules.detail.lesson')}
+                  </Typography>
+                  <Typography as="h1" className="bg-gradient-to-r from-[#FA4616] to-[#FF7F32] bg-clip-text !text-transparent" weight={"bold"} shadow={"sm"} align="center" styleCase={"uppercase"}>
+                    {lesson.order}
+                  </Typography>
+                </div>
               </div>
             </div>
-          </div>
 
-          <div className="space-y-3">
-            <LessonItem
-              image="/assets/images/cards/fig-1.png"
-              title="ADDITION EXPRESS"
-              status="TERMINÉ"
-            />
-            <LessonItem
-              image="/assets/images/cards/fig-2.png"
-              title="MISSION +1"
-              status="TERMINÉ"
-            />
-            <LessonItem
-              image="/assets/images/cards/fig-3.png"
-              title="LES CHIFFRES MAGIQUES"
-              status="À DÉCOUVRIR"
-            />
-          </div>
-        </div>
-        {/* Lesson 2 */}
-        <div className="relative mb-10 pl-28">
-          <div className="absolute -left-14 w-28 top-0 bg-[#08488b] text-white font-bold text-sm">
-            <div className="w-full relative  px-2 py-1">
-              <div className="absolute w-full top-[-6px]  left-0 bg-[#08488b] h-3 z-0" style={{ transform: "skew(0deg, -5deg)" }}></div>
-              <div className="w-full relative z-2">
-                <Typography
-                  as="span"
-                  align="center"
-                  styleCase="uppercase"
-                  shadow="sm"
-                  weight="bold"
-                  color={"default"}
-                  className="text-[14px] block"
-                >
-                  Leçon
-                </Typography>
-                <Typography as="h1" className="bg-gradient-to-r from-[#FA4616] to-[#FF7F32] bg-clip-text !text-transparent" weight={"bold"} shadow={"sm"} align="center" styleCase={"uppercase"}>
-                  2
-                </Typography>
-              </div>
+            <div className="space-y-3">
+              {lesson.games.map((game) => (
+                <LessonItem
+                  key={game.id}
+                  image={game.coverUrl}
+                  title={game.title}
+                  status={game.status}
+                  onGameClick={() => handleGameClick(game.id)}
+                />
+              ))}
             </div>
           </div>
-
-          <div className="space-y-3">
-            <LessonItem
-              image="/assets/images/cards/fig-1.png"
-              title="ADDITION EXPRESS"
-              status="TERMINÉ"
-            />
-            <LessonItem
-              image="/assets/images/cards/fig-2.png"
-              title="MISSION +1"
-              status="TERMINÉ"
-            />
-            <LessonItem
-              image="/assets/images/cards/fig-3.png"
-              title="LES CHIFFRES MAGIQUES"
-              status="À DÉCOUVRIR"
-            />
-          </div>
-        </div>
-
+        ))}
       </div>
     </div>
   );
@@ -184,39 +168,50 @@ function ModuleDetailPage() {
 type LessonItemProps = {
   image: string;
   title: string;
-  status: 'TERMINÉ' | 'À DÉCOUVRIR' | 'EN COURS';
+  status: 'completed' | 'blocked' | 'available' | 'in_progress';
+  onGameClick?: () => void;
 };
 
-function LessonItem({ image, title, status }: LessonItemProps) {
-  const statusColor = {
-    TERMINÉ: 'bg-green-500',
-    'À DÉCOUVRIR': 'bg-blue-800',
-    'EN COURS': 'bg-orange-500',
+function LessonItem({ image, title, status, onGameClick }: LessonItemProps) {
+  const { t } = useTranslation();
+  
+  const statusColor: Record<LessonItemProps['status'], string> = {
+    completed: 'bg-[#00AF42] text-white',
+    blocked: 'bg-[#FF0000] text-white',
+    in_progress: 'bg-[#FF7F32] text-white',
+    available: 'bg-[#000F4799] text-white',
+  };
+  const statusKeyMap: Record<LessonItemProps['status'], `modules.detail.gameStatus.${LessonItemProps['status']}`> = {
+    completed: 'modules.detail.gameStatus.completed',
+    blocked: 'modules.detail.gameStatus.blocked',
+    in_progress: 'modules.detail.gameStatus.in_progress',
+    available: 'modules.detail.gameStatus.available',
+  };
+
+  const getStatusText = (status: LessonItemProps['status']) => {
+    return t(statusKeyMap[status]);
   };
 
   return (
-
     <Card style={{ boxShadow: "rgb(255 255 255 / 19%) 0px -1px 1px" }}>
       <CardContent className="p-2">
         <div className="flex items-center gap-4 pe-3">
-          <img src={image} alt={title} className="w-[120px] h-[120px] object-cover rounded rounded-xl" />
+          <img src={image} alt={title} className="w-[120px] h-[120px] object-cover rounded-xl" />
           <div className="flex-1">
             <h3 className="font-bold text-white text-sm">{title}</h3>
             <span className={`inline-block ${statusColor[status]} px-2 py-0.5 rounded text-xs`}>
-              {status}
+              {getStatusText(status)}
             </span>
           </div>
 
-          <Button>
+          <Button onClick={onGameClick}>
             <Typography as="span" styleCase={"uppercase"} shadow={"sm"} weight={"bold"}>
-              LANCER
+              {t('modules.detail.launch')}
             </Typography>
           </Button>
         </div>
       </CardContent>
     </Card>
-
-
   );
 }
 

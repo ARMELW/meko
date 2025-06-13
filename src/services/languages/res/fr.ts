@@ -72,7 +72,8 @@ const fr = {
 		home: 'Accueil',
 		changeProfile: 'Changer de profil',
 		changeAvatar: "Changer d'avatar",
-		search: 'Rechercher'
+		search: 'Rechercher',
+		back: 'Retour'
 	},
 	menu: {
 		childOptions: {
@@ -133,6 +134,27 @@ const fr = {
 			not_started: 'À DÉCOUVRIR',
 			in_progress: 'EN COURS',
 			completed: 'TERMINÉ'
+		},
+		detail: {
+			notFound: 'Module non trouvé',
+			totalLessons: 'Leçons totales',
+			totalGames: 'Jeux totaux',
+			completedGames: 'Jeux terminés',
+			progress: 'Progression',
+			overallProgress: 'Progression générale',
+			completed: 'terminés',
+			completedAt: 'Terminé le',
+			lesson: 'Leçon',
+			lessons: 'LEÇONS',
+			games: 'JEUX',
+			completedCount: 'TERMINÉS',
+			launch: 'LANCER',
+			gameStatus: {
+				completed: 'TERMINÉ',
+				available: 'À DÉCOUVRIR',
+				blocked: 'BLOQUÉ',
+				in_progress: 'EN COURS'
+			}
 		}
 	},
 	form: {

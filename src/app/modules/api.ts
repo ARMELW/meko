@@ -7,7 +7,7 @@ export class ModulesServiceImpl extends BaseServiceImpl<Module, never> {
     base: API_ENDPOINTS.modules.base,
     create: API_ENDPOINTS.modules.create,
     list: (qs: string) => `${API_ENDPOINTS.modules.base}?${qs}`,
-    detail: (id: string) => API_ENDPOINTS.modules.detail(id),
+    detail: (id: string) => `${API_ENDPOINTS.modules.base}/${id}`,
     update: (id: string) => API_ENDPOINTS.modules.update(id),
     delete: (id: string) => API_ENDPOINTS.modules.delete(id),
   };
