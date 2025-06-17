@@ -168,7 +168,7 @@ function ModuleDetailPage() {
 type LessonItemProps = {
   image: string;
   title: string;
-  status: 'completed' | 'locked' | 'in_progress';
+  status: 'completed' | 'blocked' | 'in_progress' | 'avalaible';
   onGameClick?: () => void;
 };
 
@@ -177,12 +177,13 @@ function LessonItem({ image, title, status, onGameClick }: LessonItemProps) {
   
   const statusColor = {
     not_started: 'bg-[#000F4799] text-white',
-    completed: 'bg-[#00AF42] text-white',
-    locked: 'bg-[#7EDAFD] text-white',
-    in_progress: 'bg-[#FF7F32] text-white',
+    completed: 'bg-[#00AF42] text-whisste',
+    blocked: 'bg-[#7EDAFD] text-white',
+    avalaible: 'bg-[#000F4799] text-white',
+    in_progress: 'bg-[#FF7F32] text-white'
   };
 
-  const getStatusText = (status: 'completed' | 'locked' | 'in_progress') => {
+  const getStatusText = (status: 'completed' | 'blocked' | 'in_progress' | 'avalaible') => {
     return t(`modules.detail.gameStatus.${status}`) as string;
   };
 
@@ -192,7 +193,7 @@ function LessonItem({ image, title, status, onGameClick }: LessonItemProps) {
         <div className="flex items-center gap-4 pe-3">
           <img src={image} alt={title} className="w-[120px] h-[120px] object-cover rounded-xl" />
           <div className="flex-1">
-            <h3 className="font-bold text-white text-sm">{title}</h3>
+            <h3 className="font-bold text-white text-sm uppercase">{title}</h3>
             <span className={`inline-block ${statusColor[status]} px-2 py-0.5 rounded text-xs`}>
               {getStatusText(status)}
             </span>

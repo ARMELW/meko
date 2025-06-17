@@ -152,7 +152,8 @@ const en = {
          description: 'Dive into the world of additions and through interactive lessons and fun games, learn to add with ease while taking on fun challenges. Ready to become a master of additions?',
          gameStatus: {
             completed: 'COMPLETED',
-            locked: 'TO DISCOVER',
+            blocked: 'LOCKED',
+				avalaible: 'TO DISCOVER',
             in_progress: 'IN PROGRESS'
          }
       }
