@@ -11,10 +11,7 @@ function ChooseProfilePage() {
   const { data: avatars, isLoading } = useChildren();
   const login = useSession(state => state.login);
   const { t } = useTranslation();
-  if(!avatars || !avatars.data || avatars.data.length === 0){
-     navigate("/profile/create-child");
-     return null;
-  }
+  
   const handleChoice = (child: { id: string; firstname: string; lastname: string; avatarUrl?: string }) => {
     if (!child) {
       return;
@@ -30,13 +27,17 @@ function ChooseProfilePage() {
     navigate("/home");
   };
 
-
   if (isLoading) {
     return (
       <div className="w-full h-screen flex items-center justify-center">
         <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-primary-500"></div>
       </div>
     );
+  }
+
+  if(!avatars || !avatars.data || avatars.data.length === 0){
+     navigate("/profile/create-child");
+     return null;
   }
   return <div className="flex flex-col justify-center items-center py-29 w-full">
     <div className="w-[50%]">
