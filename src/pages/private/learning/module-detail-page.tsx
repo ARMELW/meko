@@ -130,11 +130,11 @@ function ModuleDetailPage() {
           return (
             <div key={lesson.id} className="relative mb-10 pl-20">
               <div className={`absolute -left-12 w-24 top-0 text-white font-bold text-sm z-10 ${
-                isLessonBlocked ? 'bg-gray-600' : 'bg-[#08488b]'
+                isLessonBlocked ? 'bg-[#08488b] opacity-75' : 'bg-[#08488b] '
               }`}>
                 <div className="w-full relative px-2 py-1">
                   <div className={`absolute w-full top-[-6px] left-0 h-3 z-0 ${
-                    isLessonBlocked ? 'bg-gray-600' : 'bg-[#08488b]'
+                    isLessonBlocked ? 'bg-[#08488b] opacity-75' : 'bg-[#08488b]'
                   }`} style={{ transform: "skew(0deg, -5deg)" }}></div>
                   <div className="w-full relative z-10">
                     <Typography
