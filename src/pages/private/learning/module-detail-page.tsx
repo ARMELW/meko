@@ -1,10 +1,11 @@
-import { Button, Card, CardContent, Typography } from "@/components";
+import { Card, CardContent, Typography } from "@/components";
 import { useParams, useNavigate } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { ArrowLeft } from 'lucide-react';
 import { useModuleDetail } from '@/app/modules/hooks/use-module-detail';
 import { useSession as useChildrenSession } from '@/services/session/store';
 import { LoadingDisplay, ErrorDisplay } from '@/app/modules/components/display-states';
+import { LoadingButton } from "@/components/atoms/actions/loading-button";
 
 function ModuleDetailPage() {
   const { t } = useTranslation();
@@ -142,8 +143,7 @@ function ModuleDetailPage() {
                       styleCase="uppercase"
                       shadow="sm"
                       weight="bold"
-                      color={"default"}
-                      className={`text-[12px] block ${isLessonBlocked ? 'opacity-50' : ''}`}
+                      className={`text-[12px] block ${isLessonBlocked ? 'opacity-50 text-[#0040B6]' : 'bg-gradient-to-r from-[#FA4616] to-[#FF7F32] bg-clip-text !text-transparent'}`}
                     >
                       {t('modules.detail.lesson')}
                     </Typography>
@@ -151,7 +151,7 @@ function ModuleDetailPage() {
                       as="h1" 
                       className={`text-lg ${
                         isLessonBlocked 
-                          ? 'text-gray-400 opacity-50' 
+                          ? 'text-[#0040B6] opacity-50' 
                           : 'bg-gradient-to-r from-[#FA4616] to-[#FF7F32] bg-clip-text !text-transparent'
                       }`} 
                       weight={"bold"} 
@@ -213,13 +213,11 @@ function LessonItem({ image, title, status, onGameClick }: LessonItemProps) {
             src={image} 
             alt={title} 
             className={`w-[120px] h-[120px] object-cover rounded-xl ${
-              status === 'blocked' ? 'grayscale opacity-50' : ''
+              status === 'blocked' ? 'grayscale opacity-50 bg-[#0040B6]' : ''
             }`} 
           />
           <div className="flex-1">
-            <h3 className={`font-bold text-sm uppercase ${
-              status === 'blocked' ? 'text-gray-400' : 'text-white'
-            }`}>
+            <h3 className={`font-bold text-sm uppercase text-white`}>
               {title}
             </h3>
             <span className={`inline-block ${statusColor[status]} px-2 py-0.5 rounded text-xs`}>
@@ -227,7 +225,8 @@ function LessonItem({ image, title, status, onGameClick }: LessonItemProps) {
             </span>
           </div>
 
-          <Button 
+          <LoadingButton
+            variant={status === 'blocked' ? 'disable' : 'primary'}
             onClick={onGameClick} 
             disabled={status === 'blocked'}
             className={status === 'blocked' ? 'opacity-75 cursor-not-allowed relative' : ''}
@@ -243,7 +242,7 @@ function LessonItem({ image, title, status, onGameClick }: LessonItemProps) {
             <Typography as="span" styleCase={"uppercase"} shadow={"sm"} weight={"bold"}>
               {t('modules.detail.launch')}
             </Typography>
-          </Button>
+          </LoadingButton>
         </div>
       </CardContent>
     </Card>
