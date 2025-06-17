@@ -153,7 +153,7 @@ const fr = {
 			gameStatus: {
 				completed: 'TERMINÉ',
 				blocked: 'BLOQUÉ',
-				avalaible: 'À DÉCOUVRIR',
+				available: 'À DÉCOUVRIR',
 				in_progress: 'EN COURS'
 			}
 		}

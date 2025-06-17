@@ -168,7 +168,7 @@ function ModuleDetailPage() {
 type LessonItemProps = {
   image: string;
   title: string;
-  status: 'completed' | 'blocked' | 'in_progress' | 'avalaible';
+  status: 'completed' | 'blocked' | 'in_progress' | 'available';
   onGameClick?: () => void;
 };
 
@@ -179,11 +179,11 @@ function LessonItem({ image, title, status, onGameClick }: LessonItemProps) {
     not_started: 'bg-[#000F4799] text-white',
     completed: 'bg-[#00AF42] text-whisste',
     blocked: 'bg-[#7EDAFD] text-white',
-    avalaible: 'bg-[#000F4799] text-white',
+    available: 'bg-[#000F4799] text-white',
     in_progress: 'bg-[#FF7F32] text-white'
   };
 
-  const getStatusText = (status: 'completed' | 'blocked' | 'in_progress' | 'avalaible') => {
+  const getStatusText = (status: 'completed' | 'blocked' | 'in_progress' | 'available') => {
     return t(`modules.detail.gameStatus.${status}`) as string;
   };
 
