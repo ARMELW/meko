@@ -122,13 +122,13 @@ function ModuleDetailPage() {
         </div>
       </div>
 
-      <div className="relative border-l-8 border-[#08488b]">
+      <div className="relative border-l-8 border-[#08488b] ml-6">
         {moduleDetail.lessons.map((lesson) => (
-          <div key={lesson.id} className="relative mb-10 pl-28">
-            <div className="absolute -left-14 w-28 top-0 bg-[#08488b] text-white font-bold text-sm">
+          <div key={lesson.id} className="relative mb-10 pl-20">
+            <div className="absolute -left-12 w-24 top-0 bg-[#08488b] text-white font-bold text-sm z-10">
               <div className="w-full relative px-2 py-1">
                 <div className="absolute w-full top-[-6px] left-0 bg-[#08488b] h-3 z-0" style={{ transform: "skew(0deg, -5deg)" }}></div>
-                <div className="w-full relative z-2">
+                <div className="w-full relative z-10">
                   <Typography
                     as="span"
                     align="center"
@@ -136,19 +136,18 @@ function ModuleDetailPage() {
                     shadow="sm"
                     weight="bold"
                     color={"default"}
-                    className="text-[14px] block"
+                    className="text-[12px] block"
                   >
                     {t('modules.detail.lesson')}
                   </Typography>
-                  <Typography as="h1" className="bg-gradient-to-r from-[#FA4616] to-[#FF7F32] bg-clip-text !text-transparent" weight={"bold"} shadow={"sm"} align="center" styleCase={"uppercase"}>
+                  <Typography as="h1" className="bg-gradient-to-r from-[#FA4616] to-[#FF7F32] bg-clip-text !text-transparent text-lg" weight={"bold"} shadow={"sm"} align="center" styleCase={"uppercase"}>
                     {lesson.order}
                   </Typography>
                 </div>
               </div>
             </div>
 
-            <div className="space-y-3">
-              {lesson.games.map((game) => (
+            <div className="space-y-3">{lesson.games.map((game) => (
                 <LessonItem
                   key={game.id}
                   image={game.coverUrl}
