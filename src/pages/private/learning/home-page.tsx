@@ -23,16 +23,7 @@ function HomePage() {
     goToPage,
     changeLimit
   } = useModulesWithParams();
-  const mapModuleStatusToCardStatus = (status: string) => {
-    switch (status) {
-      case 'completed':
-        return 'completed';
-      case 'in_progress':
-        return 'in_progress';
-      case 'not_started':
-        return 'not_started';
-    }
-  };
+
   const handleModuleClick = (moduleId: string) => {
     navigate(`/learning/modules/${moduleId}`);
   };
@@ -57,7 +48,7 @@ function HomePage() {
             key={module.id}
             image={module.coverUrl}
             title={module.name}
-            status={mapModuleStatusToCardStatus(module.status)}
+            status={module.status}
             progress={module.status === 'in_progress' ? `${module.completedGames}/${module.totalGames}` : undefined}
             onClick={() => handleModuleClick(module.id)}
           />

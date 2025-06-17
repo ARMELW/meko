@@ -176,9 +176,10 @@ function LessonItem({ image, title, status, onGameClick }: LessonItemProps) {
   const { t } = useTranslation();
   
   const statusColor = {
-    completed: 'bg-green-500',
-    locked: 'bg-blue-800',
-    in_progress: 'bg-orange-500',
+    not_started: 'bg-[#000F4799] text-white',
+    completed: 'bg-[#00AF42] text-white',
+    locked: 'bg-[#7EDAFD] text-white',
+    in_progress: 'bg-[#FF7F32] text-white',
   };
 
   const getStatusText = (status: 'completed' | 'locked' | 'in_progress') => {
