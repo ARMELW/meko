@@ -123,31 +123,49 @@ function ModuleDetailPage() {
       </div>
 
       <div className="relative border-l-8 border-[#08488b] ml-6">
-        {moduleDetail.lessons.map((lesson) => (
-          <div key={lesson.id} className="relative mb-10 pl-20">
-            <div className="absolute -left-12 w-24 top-0 bg-[#08488b] text-white font-bold text-sm z-10">
-              <div className="w-full relative px-2 py-1">
-                <div className="absolute w-full top-[-6px] left-0 bg-[#08488b] h-3 z-0" style={{ transform: "skew(0deg, -5deg)" }}></div>
-                <div className="w-full relative z-10">
-                  <Typography
-                    as="span"
-                    align="center"
-                    styleCase="uppercase"
-                    shadow="sm"
-                    weight="bold"
-                    color={"default"}
-                    className="text-[12px] block"
-                  >
-                    {t('modules.detail.lesson')}
-                  </Typography>
-                  <Typography as="h1" className="bg-gradient-to-r from-[#FA4616] to-[#FF7F32] bg-clip-text !text-transparent text-lg" weight={"bold"} shadow={"sm"} align="center" styleCase={"uppercase"}>
-                    {lesson.order}
-                  </Typography>
+        {moduleDetail.lessons.map((lesson) => {
+          const isLessonBlocked = lesson.games.every(game => game.status === 'blocked');
+          
+          return (
+            <div key={lesson.id} className="relative mb-10 pl-20">
+              <div className={`absolute -left-12 w-24 top-0 text-white font-bold text-sm z-10 ${
+                isLessonBlocked ? 'bg-gray-600' : 'bg-[#08488b]'
+              }`}>
+                <div className="w-full relative px-2 py-1">
+                  <div className={`absolute w-full top-[-6px] left-0 h-3 z-0 ${
+                    isLessonBlocked ? 'bg-gray-600' : 'bg-[#08488b]'
+                  }`} style={{ transform: "skew(0deg, -5deg)" }}></div>
+                  <div className="w-full relative z-10">
+                    <Typography
+                      as="span"
+                      align="center"
+                      styleCase="uppercase"
+                      shadow="sm"
+                      weight="bold"
+                      color={"default"}
+                      className={`text-[12px] block ${isLessonBlocked ? 'opacity-50' : ''}`}
+                    >
+                      {t('modules.detail.lesson')}
+                    </Typography>
+                    <Typography 
+                      as="h1" 
+                      className={`text-lg ${
+                        isLessonBlocked 
+                          ? 'text-gray-400 opacity-50' 
+                          : 'bg-gradient-to-r from-[#FA4616] to-[#FF7F32] bg-clip-text !text-transparent'
+                      }`} 
+                      weight={"bold"} 
+                      shadow={"sm"} 
+                      align="center" 
+                      styleCase={"uppercase"}
+                    >
+                      {lesson.order}
+                    </Typography>
+                  </div>
                 </div>
               </div>
-            </div>
 
-            <div className="space-y-3">{lesson.games.map((game) => (
+              <div className="space-y-3">{lesson.games.map((game) => (
                 <LessonItem
                   key={game.id}
                   image={game.coverUrl}
@@ -158,7 +176,8 @@ function ModuleDetailPage() {
               ))}
             </div>
           </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );
@@ -190,15 +209,36 @@ function LessonItem({ image, title, status, onGameClick }: LessonItemProps) {
     <Card style={{ boxShadow: "rgb(255 255 255 / 19%) 0px -1px 1px" }}>
       <CardContent className="p-2">
         <div className="flex items-center gap-4 pe-3">
-          <img src={image} alt={title} className="w-[120px] h-[120px] object-cover rounded-xl" />
+          <img 
+            src={image} 
+            alt={title} 
+            className={`w-[120px] h-[120px] object-cover rounded-xl ${
+              status === 'blocked' ? 'grayscale opacity-50' : ''
+            }`} 
+          />
           <div className="flex-1">
-            <h3 className="font-bold text-white text-sm uppercase">{title}</h3>
+            <h3 className={`font-bold text-sm uppercase ${
+              status === 'blocked' ? 'text-gray-400' : 'text-white'
+            }`}>
+              {title}
+            </h3>
             <span className={`inline-block ${statusColor[status]} px-2 py-0.5 rounded text-xs`}>
               {getStatusText(status)}
             </span>
           </div>
 
-          <Button onClick={onGameClick}>
+          <Button 
+            onClick={onGameClick} 
+            disabled={status === 'blocked'}
+            className={status === 'blocked' ? 'opacity-75 cursor-not-allowed relative' : ''}
+          >
+            {status === 'blocked' && (
+              <img 
+                src="/assets/images/icons/lock.png" 
+                alt="Locked" 
+                className="absolute top-1 right-1 w-4 h-4 z-10" 
+              />
+            )}
             <Typography as="span" styleCase={"uppercase"} shadow={"sm"} weight={"bold"}>
               {t('modules.detail.launch')}
             </Typography>
