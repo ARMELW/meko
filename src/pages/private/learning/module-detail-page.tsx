@@ -235,7 +235,7 @@ function LessonItem({ image, title, status, onGameClick }: LessonItemProps) {
               <img 
                 src="/assets/images/icons/lock.png" 
                 alt="Locked" 
-                className="absolute top-1 -right-2 w-12 h-12 z-10" 
+                className="absolute top-1 -right-4 w-12 h-12 z-10" 
               />
             )}
             
