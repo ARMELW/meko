@@ -149,11 +149,11 @@ const en = {
          games: 'GAMES',
          completedCount: 'COMPLETED',
          launch: 'LAUNCH',
+         description: 'Dive into the world of additions and through interactive lessons and fun games, learn to add with ease while taking on fun challenges. Ready to become a master of additions?',
          gameStatus: {
             completed: 'COMPLETED',
-            available: 'TO DISCOVER',
-            blocked:  'BLOCKED',
-            in_progress: 'IN PROGRESS',
+            locked: 'TO DISCOVER',
+            in_progress: 'IN PROGRESS'
          }
       }
    },

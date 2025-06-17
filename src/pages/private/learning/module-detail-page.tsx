@@ -63,7 +63,7 @@ function ModuleDetailPage() {
             {moduleDetail.progressPercentage === 100 ? t('modules.status.completed') : moduleDetail.progressPercentage > 0 ? t('modules.status.in_progress') : t('modules.status.not_started')}
           </Typography>
           <p className="text-sm leading-relaxed">
-             {moduleDetail.moduleDescription}
+            {moduleDetail.moduleDescription || t('modules.detail.description')}
           </p>
 
           <div className="flex gap-4 mt-2 bg-[#000F4726] justify-center py-3">
@@ -168,28 +168,21 @@ function ModuleDetailPage() {
 type LessonItemProps = {
   image: string;
   title: string;
-  status: 'completed' | 'blocked' | 'available' | 'in_progress';
+  status: 'completed' | 'locked' | 'in_progress';
   onGameClick?: () => void;
 };
 
 function LessonItem({ image, title, status, onGameClick }: LessonItemProps) {
   const { t } = useTranslation();
   
-  const statusColor: Record<LessonItemProps['status'], string> = {
-    completed: 'bg-[#00AF42] text-white',
-    blocked: 'bg-[#FF0000] text-white',
-    in_progress: 'bg-[#FF7F32] text-white',
-    available: 'bg-[#000F4799] text-white',
-  };
-  const statusKeyMap: Record<LessonItemProps['status'], `modules.detail.gameStatus.${LessonItemProps['status']}`> = {
-    completed: 'modules.detail.gameStatus.completed',
-    blocked: 'modules.detail.gameStatus.blocked',
-    in_progress: 'modules.detail.gameStatus.in_progress',
-    available: 'modules.detail.gameStatus.available',
+  const statusColor = {
+    completed: 'bg-green-500',
+    locked: 'bg-blue-800',
+    in_progress: 'bg-orange-500',
   };
 
-  const getStatusText = (status: LessonItemProps['status']) => {
-    return t(statusKeyMap[status]);
+  const getStatusText = (status: 'completed' | 'locked' | 'in_progress') => {
+    return t(`modules.detail.gameStatus.${status}`) as string;
   };
 
   return (

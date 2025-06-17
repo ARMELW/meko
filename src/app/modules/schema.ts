@@ -42,7 +42,7 @@ export const modulesResponseSchema = z.object({
 export const gameSchema = z.object({
   id: z.string(),
   title: z.string(),
-  status: z.enum(["available", "completed", "blocked", "in_progress"]),
+  status: z.enum(["locked", "completed", "in_progress"]),
   completedAt: z.string().optional(),
   prerequisitesMet: z.boolean(),
   coverUrl: z.string().url()

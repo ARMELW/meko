@@ -149,10 +149,10 @@ const fr = {
 			games: 'JEUX',
 			completedCount: 'TERMINÉS',
 			launch: 'LANCER',
+			description: 'Plonge toi dans le monde des additions et à travers des leçons interactives et des jeux amusants, apprends à additionner avec facilité tout en relevant des défis ludiques. Prêt à devenir un maître des additions ?',
 			gameStatus: {
 				completed: 'TERMINÉ',
-				available: 'À DÉCOUVRIR',
-				blocked: 'BLOQUÉ',
+				locked: 'À DÉCOUVRIR',
 				in_progress: 'EN COURS'
 			}
 		}
