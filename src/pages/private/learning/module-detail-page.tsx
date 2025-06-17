@@ -196,7 +196,7 @@ function LessonItem({ image, title, status, onGameClick }: LessonItemProps) {
   const statusColor = {
     not_started: 'bg-[#000F4799] text-white',
     completed: 'bg-[#00AF42] text-whisste',
-    blocked: 'bg-[#7EDAFD] text-white',
+    blocked: 'bg-red-500 text-white',
     available: 'bg-[#000F4799] text-white',
     in_progress: 'bg-[#FF7F32] text-white'
   };
@@ -236,9 +236,10 @@ function LessonItem({ image, title, status, onGameClick }: LessonItemProps) {
               <img 
                 src="/assets/images/icons/lock.png" 
                 alt="Locked" 
-                className="absolute top-1 right-1 w-4 h-4 z-10" 
+                className="absolute top-1 -right-2 w-12 h-12 z-10" 
               />
             )}
+            
             <Typography as="span" styleCase={"uppercase"} shadow={"sm"} weight={"bold"}>
               {t('modules.detail.launch')}
             </Typography>
