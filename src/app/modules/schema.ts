@@ -10,7 +10,7 @@ export const moduleSchema = z.object({
   availableGames: z.number(),
   blockedGames: z.number(),
   progressPercentage: z.number(),
-  status: z.enum(["not_started", "in_progress", "completed"])
+  status: z.enum(["not_started", "in_progress", "completed", "blocked"])
 });
 
 export const paginationSchema = z.object({
@@ -69,5 +69,6 @@ export const moduleDetailSchema = z.object({
   totalGames: z.number(),
   completedGames: z.number(),
   progressPercentage: z.number(),
+  status: z.enum(["not_started", "in_progress", "completed", "blocked"]),
   lessons: z.array(lessonSchema)
 });

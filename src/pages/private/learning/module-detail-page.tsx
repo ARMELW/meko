@@ -30,6 +30,17 @@ function ModuleDetailPage() {
   if (error) return <ErrorDisplay message={t('modules.error')} />;
   if (!moduleDetail) return <ErrorDisplay message={t('modules.detail.notFound')} />;
 
+  const moduleStatus = moduleDetail.status;
+  const isModuleNotStarted = moduleStatus === 'not_started';
+  const isModuleBlocked = moduleStatus === 'blocked';
+  
+  const statusColors = {
+    'not_started': 'bg-[#000F4799] text-white',
+    'completed': 'bg-[#00AF42] text-white',
+    'in_progress': 'bg-[#FF7F32] text-white',
+    'blocked': 'bg-[#FF0000] text-white'
+  };
+
   return (
     <div className="min-h-screen text-white sm:w-full lg:w-[70%] mx-auto">
       <div className="flex items-center space-x-4">
@@ -60,8 +71,12 @@ function ModuleDetailPage() {
           <Typography as="h3" shadow={null}>
             {moduleDetail.moduleName}
           </Typography>
-          <Typography as="span" styleCase={"uppercase"} className="inline-block bg-[#FF7F32] px-2 py-0.5 text-xs font-semibold">
-            {moduleDetail.progressPercentage === 100 ? t('modules.status.completed') : moduleDetail.progressPercentage > 0 ? t('modules.status.in_progress') : t('modules.status.not_started')}
+          <Typography 
+            as="span" 
+            styleCase={"uppercase"} 
+            className={`inline-block px-2 py-0.5 text-xs font-semibold ${statusColors[moduleStatus]}`}
+          >
+            {t(`modules.status.${moduleStatus}`)}
           </Typography>
           <p className="text-sm leading-relaxed">
             {moduleDetail.moduleDescription || t('modules.detail.description')}
@@ -129,13 +144,9 @@ function ModuleDetailPage() {
           
           return (
             <div key={lesson.id} className="relative mb-10 pl-20">
-              <div className={`absolute -left-12 w-24 top-0 text-white font-bold text-sm z-10 ${
-                isLessonBlocked ? 'bg-[#08488b] opacity-75' : 'bg-[#08488b] '
-              }`}>
+              <div className={`absolute -left-12 w-24 top-0 ${isLessonBlocked ? 'text-[#0040B6]': 'text-white'} font-bold text-sm z-10 bg-[#08488b]`}>
                 <div className="w-full relative px-2 py-1">
-                  <div className={`absolute w-full top-[-6px] left-0 h-3 z-0 ${
-                    isLessonBlocked ? 'bg-[#08488b] opacity-75' : 'bg-[#08488b]'
-                  }`} style={{ transform: "skew(0deg, -5deg)" }}></div>
+                  <div className={`absolute w-full top-[-6px] left-0 h-3 z-0 bg-[#08488b]`} style={{ transform: "skew(0deg, -5deg)" }}></div>
                   <div className="w-full relative z-10">
                     <Typography
                       as="span"
@@ -172,6 +183,8 @@ function ModuleDetailPage() {
                   title={game.title}
                   status={game.status}
                   onGameClick={() => handleGameClick(game.id)}
+                  isModuleNotStarted={isModuleNotStarted}
+                  isModuleBlocked={isModuleBlocked}
                 />
               ))}
             </div>
@@ -188,9 +201,11 @@ type LessonItemProps = {
   title: string;
   status: 'completed' | 'blocked' | 'in_progress' | 'available';
   onGameClick?: () => void;
+  isModuleNotStarted: boolean;
+  isModuleBlocked: boolean;
 };
 
-function LessonItem({ image, title, status, onGameClick }: LessonItemProps) {
+function LessonItem({ image, title, status, onGameClick, isModuleNotStarted, isModuleBlocked }: LessonItemProps) {
   const { t } = useTranslation();
   
   const statusColor = {

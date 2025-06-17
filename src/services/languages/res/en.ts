@@ -133,7 +133,8 @@ const en = {
       status: {
          not_started: 'TO DISCOVER',
          in_progress: 'IN PROGRESS',
-         completed: 'COMPLETED'
+         completed: 'COMPLETED',
+         blocked: 'BLOCKED'
       },
       detail: {
          notFound: 'Module not found',
