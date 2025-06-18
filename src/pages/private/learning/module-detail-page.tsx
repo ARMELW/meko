@@ -6,6 +6,8 @@ import { useModuleDetail } from '@/app/modules/hooks/use-module-detail';
 import { useSession as useChildrenSession } from '@/services/session/store';
 import { LoadingDisplay, ErrorDisplay } from '@/app/modules/components/display-states';
 import { LoadingButton } from "@/components/atoms/actions/loading-button";
+import { GameSimulationModal } from '@/app/game-sessions/components/game-simulation-modal';
+import { useState } from 'react';
 
 function ModuleDetailPage() {
   const { t } = useTranslation();
@@ -13,13 +15,35 @@ function ModuleDetailPage() {
   const { moduleId } = useParams<{ moduleId: string }>();
   const { selectedChild } = useChildrenSession();
 
+  const [gameModalState, setGameModalState] = useState<{
+    isOpen: boolean;
+    gameId: string;
+    gameTitle: string;
+  }>({
+    isOpen: false,
+    gameId: '',
+    gameTitle: ''
+  });
+
   const { data: moduleDetail, isLoading, error } = useModuleDetail(
     selectedChild?.id || '',
     moduleId || ''
   );
 
-  const handleGameClick = (gameId: string) => {
-    console.log('Starting game:', gameId);
+  const handleGameClick = (gameId: string, gameTitle: string) => {
+    /**setGameModalState({
+      isOpen: true,
+      gameId,
+      gameTitle
+    });**/
+  };
+
+  const handleCloseModal = () => {
+    setGameModalState({
+      isOpen: false,
+      gameId: '',
+      gameTitle: ''
+    });
   };
 
   const handleGoBack = () => {
@@ -33,7 +57,7 @@ function ModuleDetailPage() {
   const moduleStatus = moduleDetail.status;
   const isModuleNotStarted = moduleStatus === 'not_started';
   const isModuleBlocked = moduleStatus === 'blocked';
-  
+
   const statusColors = {
     'not_started': 'bg-[#000F4799] text-white',
     'completed': 'bg-[#00AF42] text-white',
@@ -139,7 +163,7 @@ function ModuleDetailPage() {
       </div>
 
       <div className="relative border-l-8 border-[#08488b] ml-6">
-        {moduleDetail.lessons.map((lesson) => {
+        {moduleDetail.lessons.map((lesson, lessonIndex) => {
           const isLessonBlocked = lesson.games.every(game => game.status === 'blocked');
           
           return (
@@ -176,22 +200,34 @@ function ModuleDetailPage() {
                 </div>
               </div>
 
-              <div className="space-y-3">{lesson.games.map((game) => (
-                <LessonItem
-                  key={game.id}
-                  image={game.coverUrl}
-                  title={game.title}
-                  status={game.status}
-                  onGameClick={() => handleGameClick(game.id)}
-                  isModuleNotStarted={isModuleNotStarted}
-                  isModuleBlocked={isModuleBlocked}
-                />
-              ))}
+              <div className="space-y-3">{lesson.games.map((game, gameIndex) => {
+                const isFirstGame = lessonIndex === 0 && gameIndex === 0;
+                
+                return (
+                  <LessonItem
+                    key={game.id}
+                    image={game.coverUrl}
+                    title={game.title}
+                    status={game.status}
+                    onGameClick={() => handleGameClick(game.id, game.title)}
+                    isModuleNotStarted={isModuleNotStarted}
+                    isModuleBlocked={isModuleBlocked}
+                    isFirstGame={isFirstGame}
+                  />
+                );
+              })}
             </div>
           </div>
           );
         })}
       </div>
+
+      <GameSimulationModal
+        isOpen={gameModalState.isOpen}
+        onClose={handleCloseModal}
+        gameId={gameModalState.gameId}
+        gameTitle={gameModalState.gameTitle}
+      />
     </div>
   );
 }
@@ -203,14 +239,15 @@ type LessonItemProps = {
   onGameClick?: () => void;
   isModuleNotStarted: boolean;
   isModuleBlocked: boolean;
+  isFirstGame?: boolean;
 };
 
-function LessonItem({ image, title, status, onGameClick, isModuleNotStarted, isModuleBlocked }: LessonItemProps) {
+function LessonItem({ image, title, status, onGameClick, isModuleNotStarted, isModuleBlocked, isFirstGame = false }: LessonItemProps) {
   const { t } = useTranslation();
   
   const statusColor = {
     not_started: 'bg-[#000F4799] text-white',
-    completed: 'bg-[#00AF42] text-whisste',
+    completed: 'bg-[#00AF42] text-white',
     blocked: 'bg-red-500 text-white',
     available: 'bg-[#000F4799] text-white',
     in_progress: 'bg-[#FF7F32] text-white'
@@ -220,6 +257,9 @@ function LessonItem({ image, title, status, onGameClick, isModuleNotStarted, isM
     return t(`modules.detail.gameStatus.${status}`) as string;
   };
 
+  // Le premier jeu n'est jamais bloqué, même si le module n'est pas commencé
+  const isGameBlocked = isFirstGame ? false : (status === 'blocked');
+
   return (
     <Card style={{ boxShadow: "rgb(255 255 255 / 19%) 0px -1px 1px" }}>
       <CardContent className="p-2">
@@ -228,11 +268,13 @@ function LessonItem({ image, title, status, onGameClick, isModuleNotStarted, isM
             src={image} 
             alt={title} 
             className={`w-[120px] h-[120px] object-cover rounded-xl ${
-              status === 'blocked' ? 'grayscale opacity-50 bg-[#0040B6]' : ''
+              isGameBlocked ? 'grayscale opacity-50' : ''
             }`} 
           />
           <div className="flex-1">
-            <h3 className={`font-bold text-sm uppercase text-white`}>
+            <h3 className={`font-bold text-sm uppercase ${
+              isGameBlocked ? 'text-gray-400' : 'text-white'
+            }`}>
               {title}
             </h3>
             <span className={`inline-block ${statusColor[status]} px-2 py-0.5 rounded text-xs`}>
@@ -241,19 +283,17 @@ function LessonItem({ image, title, status, onGameClick, isModuleNotStarted, isM
           </div>
 
           <LoadingButton
-            variant={status === 'blocked' ? 'disable' : 'primary'}
             onClick={onGameClick} 
-            disabled={status === 'blocked'}
-            className={status === 'blocked' ? 'opacity-75 cursor-not-allowed relative' : ''}
+            disabled={isGameBlocked}
+            className={isGameBlocked ? 'opacity-75 cursor-not-allowed relative' : ''}
           >
-            {status === 'blocked' && (
+            {isGameBlocked && (
               <img 
                 src="/assets/images/icons/lock.png" 
                 alt="Locked" 
                 className="absolute top-1 -right-4 w-12 h-12 z-10" 
               />
             )}
-            
             <Typography as="span" styleCase={"uppercase"} shadow={"sm"} weight={"bold"}>
               {t('modules.detail.launch')}
             </Typography>

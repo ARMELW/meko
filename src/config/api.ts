@@ -24,5 +24,22 @@ export const API_ENDPOINTS = {
     create: `${prefix}/v1/modules`,
     update: (id: string) => `${prefix}/v1/modules/${id}`,
     delete: (id: string) => `${prefix}/v1/modules/${id}`
+  },
+  gameSessions: {
+    // Créer une nouvelle session
+    start: `${prefix}/v1/game-sessions/start`,
+    // Lister toutes les sessions (paginées)
+    list: (qs: string) => `${prefix}/v1/game-sessions?${qs}`,
+    // Lister les sessions d'un enfant spécifique
+    listByChild: (childId: string, qs: string) => `${prefix}/v1/children/${childId}/game-sessions?${qs}`,
+    // Détail d'une session spécifique
+    detail: (sessionId: string) => `${prefix}/v1/game-sessions/${sessionId}`,
+    // Terminer une session
+    complete: (sessionId: string) => `${prefix}/v1/game-sessions/${sessionId}/complete`,
+    // Abandonner une session
+    abandon: (sessionId: string) => `${prefix}/v1/game-sessions/${sessionId}/abandon`,
+    // Ancien endpoint pour la compatibilité (si nécessaire)
+    saveProgress: (childId: string, sessionId: string) => `${prefix}/v1/children/${childId}/sessions/${sessionId}/progress`,
+    history: (childId: string, qs: string) => `${prefix}/v1/children/${childId}/sessions?${qs}`
   }
 } as const;

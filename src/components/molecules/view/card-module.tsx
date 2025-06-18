@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 type CardModuleProps = {
   image: string;
   title: string;
-  status:  'not_started' | 'completed' | 'in_progress';
+  status:  'not_started' | 'completed' | 'in_progress' | 'blocked';
   progress?: string;
   onClick?: () => void;
 };
@@ -17,6 +17,7 @@ function CardModule({ image, title, status, progress, onClick }: CardModuleProps
     'not_started': 'bg-[#000F4799] text-white',
     'completed': 'bg-[#00AF42] text-white',
     'in_progress': 'bg-[#FF7F32] text-white',
+    'blocked': 'bg-red-500 text-white'
   };
 
   return <div className="w-full home-wrapper cursor-pointer" onClick={onClick}>

@@ -159,6 +159,36 @@ const fr = {
 			}
 		}
 	},
+	games: {
+		session: {
+			started: 'Session de jeu démarrée avec succès',
+			progressSaved: 'Progression sauvegardée',
+			completed: 'Jeu terminé avec succès !',
+			abandoned: 'Session de jeu abandonnée',
+			error: 'Une erreur est survenue',
+			modal: {
+				title: 'Simulation de Jeu',
+				currentSession: 'Session en cours',
+				noSession: 'Aucune session active',
+				status: 'Statut',
+				progress: 'Progression',
+				score: 'Score',
+				startTime: 'Début',
+				actions: {
+					start: 'Démarrer le jeu',
+					saveProgress: 'Sauvegarder',
+					complete: 'Terminer le jeu',
+					quit: 'Quitter',
+					close: 'Fermer'
+				},
+				simulation: {
+					title: 'Simulation du jeu',
+					description: 'Cette simulation montre le cycle de vie d\'une session de jeu.',
+					autoProgress: 'Progression automatique activée'
+				}
+			}
+		}
+	},
 	form: {
 		'date-picker': {
 			placeholder: 'Sélectionner une date'

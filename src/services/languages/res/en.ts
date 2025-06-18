@@ -159,6 +159,36 @@ const en = {
          }
       }
    },
+   games: {
+      session: {
+         started: 'Game session started successfully',
+         progressSaved: 'Progress saved',
+         completed: 'Game completed successfully!',
+         abandoned: 'Game session abandoned',
+         error: 'An error occurred',
+         modal: {
+            title: 'Game Simulation',
+            currentSession: 'Current session',
+            noSession: 'No active session',
+            status: 'Status',
+            progress: 'Progress',
+            score: 'Score',
+            startTime: 'Start time',
+            actions: {
+               start: 'Start game',
+               saveProgress: 'Save progress',
+               complete: 'Complete game',
+               quit: 'Quit',
+               close: 'Close'
+            },
+            simulation: {
+               title: 'Game simulation',
+               description: 'This simulation shows the lifecycle of a game session.',
+               autoProgress: 'Auto-progress enabled'
+            }
+         }
+      }
+   },
    form: {
 		'date-picker': {
 			placeholder: 'Select a date'
