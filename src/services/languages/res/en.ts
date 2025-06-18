@@ -73,7 +73,9 @@ const en = {
       changeProfile: 'Change profile',
       changeAvatar: 'Change avatar',
       search: 'Search',
-      back: 'Back'
+      back: 'Back',
+      lastActivity: 'Last Activity',
+      statistics: 'Statistics'
 	},
 	menu: {
 		childOptions: {
@@ -185,6 +187,17 @@ const en = {
                title: 'Game simulation',
                description: 'This simulation shows the lifecycle of a game session.',
                autoProgress: 'Auto-progress enabled'
+            },
+            lastActivity: {
+               title: 'Last Activity',
+               module: 'Module',
+               lesson: 'Lesson',
+               duration: 'Game Duration',
+               minutes: 'minutes',
+               relaunch: 'Relaunch',
+               noActivity: 'No recent activity',
+               loading: 'Loading...',
+               error: 'Error loading last activity'
             }
          }
       }

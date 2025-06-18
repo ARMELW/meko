@@ -12,6 +12,8 @@ import { Input } from '@/components/atoms/forms/input';
 import { NavItem } from '@/components/atoms/actions/nav-item';
 import { LastActivityIcon } from '@/components/atoms/icons/last-activity-icon';
 import { StatisticIcon } from '@/components/atoms/icons/statistic-icon';
+import { LastActivityModal, useLastActivity } from '@/app/game-sessions';
+import { GameSimulationModal } from '@/app/game-sessions';
 
 export function Header() {
     const { t } = useTranslation();
@@ -21,7 +23,48 @@ export function Header() {
     const logout = useChildrenSession(state => state.logout);
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const [isLoggingOut, setIsLoggingOut] = useState(false);
+    const [isLastActivityModalOpen, setIsLastActivityModalOpen] = useState(false);
+    const [gameModalState, setGameModalState] = useState<{
+        isOpen: boolean;
+        gameId: string;
+        gameTitle: string;
+    }>({
+        isOpen: false,
+        gameId: '',
+        gameTitle: ''
+    });
+    
     const isAuthenticated = !!session;
+
+    const { data: lastActivityData } = useLastActivity(sessionChild?.id || '');
+
+
+    const handleOpenLastActivityModal = () => {
+        setIsLastActivityModalOpen(true);
+    };
+
+    const handleCloseLastActivityModal = () => {
+        setIsLastActivityModalOpen(false);
+    };
+
+    const handleRelaunchGame = () => {
+        if (lastActivityData?.data) {
+            setGameModalState({
+                isOpen: true,
+                gameId: lastActivityData.data.game.id,
+                gameTitle: lastActivityData.data.game.title
+            });
+            setIsLastActivityModalOpen(false);
+        }
+    };
+
+    const handleCloseGameModal = () => {
+        setGameModalState({
+            isOpen: false,
+            gameId: '',
+            gameTitle: ''
+        });
+    };
 
     const displayName = sessionChild ? sessionChild.firstname + " " + sessionChild.lastname : session?.user?.name || 'User';
     const displayImage = sessionChild ? sessionChild.avatarUrl : session?.user?.image;
@@ -74,7 +117,6 @@ export function Header() {
                             sideOffset={5}
                             align="end"
                         >
-                            {/* Menu pour les parents */}
                             {!sessionChild && (
                                 <>
                                     <DropdownMenu.Item
@@ -287,7 +329,6 @@ export function Header() {
                                 placeholder={t('common.search')}
                                 className="ml-4 w-64 bg-meko-blue-transparent-2 text-white focus:border-meko-blue-light-1 focus:border-2 outline-none rounded-lg px-3 py-1"
                                 onChange={(e) => {
-                                    // Handle search input change
                                     console.log(e.target.value);
                                 }}
                             />
@@ -297,8 +338,12 @@ export function Header() {
                 <div className='flex flex-row items-center gap-8 cursor-pointer'>
                     {(sessionChild && isAuthenticated) && (
                         <div className="flex flex-row gap-10 items-center">
-                            <NavItem label="Dernière activité" icon={<LastActivityIcon />} />
-                            <NavItem label="Statistiques" icon={<StatisticIcon />} />
+                            <NavItem 
+                            label={t('common.lastActivity')} 
+                            icon={<LastActivityIcon />} 
+                            //onClick={handleOpenLastActivityModal} 
+                            />
+                            <NavItem label={t('common.statistics')} icon={<StatisticIcon />} />
                         </div>
                     )}
                     {renderAuthOptions()}
@@ -329,6 +374,19 @@ export function Header() {
                     {renderMobileAuthOptions()}
                 </div>
             )}
+
+            <LastActivityModal
+                isOpen={isLastActivityModalOpen}
+                onClose={handleCloseLastActivityModal}
+                onRelaunch={handleRelaunchGame}
+                lastActivity={lastActivityData?.data || null}
+            />
+            <GameSimulationModal
+                isOpen={gameModalState.isOpen}
+                onClose={handleCloseGameModal}
+                gameId={gameModalState.gameId}
+                gameTitle={gameModalState.gameTitle}
+            />
         </div>
     );
 }

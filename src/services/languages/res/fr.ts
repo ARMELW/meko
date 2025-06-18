@@ -73,7 +73,9 @@ const fr = {
 		changeProfile: 'Changer de profil',
 		changeAvatar: "Changer d'avatar",
 		search: 'Rechercher',
-		back: 'Retour'
+		back: 'Retour',
+		lastActivity: 'Dernière activité',
+		statistics: 'Statistiques'
 	},
 	menu: {
 		childOptions: {
@@ -185,6 +187,17 @@ const fr = {
 					title: 'Simulation du jeu',
 					description: 'Cette simulation montre le cycle de vie d\'une session de jeu.',
 					autoProgress: 'Progression automatique activée'
+				},
+				lastActivity: {
+					title: 'Dernière activité',
+					module: 'Module',
+					lesson: 'Leçon',
+					duration: 'Durée de jeu',
+					minutes: 'minutes',
+					relaunch: 'Relancer',
+					noActivity: 'Aucune activité récente',
+					loading: 'Chargement...',
+					error: 'Erreur lors du chargement de la dernière activité'
 				}
 			}
 		}

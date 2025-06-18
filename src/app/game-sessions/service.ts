@@ -124,6 +124,15 @@ export class GameSessionServiceImpl extends BaseServiceImpl<GameSession, CreateG
   }
 
   /**
+   * Récupère la dernière activité d'un enfant
+   */
+  async getLastActivity(childId: string): Promise<import('./types').LastActivityResponse> {
+    return this.get<import('./types').LastActivityResponse>(
+      API_ENDPOINTS.gameSessions.lastActivity(childId)
+    );
+  }
+
+  /**
    * Récupère l'historique des sessions (ancien endpoint pour la compatibilité)
    */
   async getHistory(

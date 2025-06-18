@@ -40,3 +40,37 @@ export type GameSessionHistoryResponse = z.infer<typeof gameSessionHistoryRespon
 
 // Types d'énumération
 export type GameSessionStatus = 'in_progress' | 'completed' | 'abandoned';
+
+// Type pour la dernière activité
+export interface LastActivity {
+  id: string;
+  childId: string;
+  startedAt: string;
+  endedAt?: string;
+  success?: boolean;
+  status: 'in_progress' | 'completed' | 'blocked' | 'abandoned';
+  sessionDate?: string;
+  totalTime?: number;
+  game: {
+    id: string;
+    title: string;
+    coverUrl?: string;
+  };
+  lesson: {
+    id: string;
+    title: string;
+    order: number;
+  };
+  module: {
+    id: string;
+    name: string;
+    coverUrl?: string;
+  };
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface LastActivityResponse {
+  success: boolean;
+  data: LastActivity | null;
+}

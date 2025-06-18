@@ -1,5 +1,6 @@
 // Composants
 export { GameSimulationModal } from './components/game-simulation-modal';
+export { LastActivityModal } from './components/last-activity-modal';
 
 // Hooks
 export { useGameSession } from './hooks/use-game-session';
@@ -8,6 +9,7 @@ export {
   useChildGameSessions, 
   useGameSessionDetail 
 } from './hooks/use-game-session-list';
+export { useLastActivity } from './hooks/use-last-activity';
 
 // Types
 export type { 

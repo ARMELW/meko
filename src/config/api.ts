@@ -38,6 +38,8 @@ export const API_ENDPOINTS = {
     complete: (sessionId: string) => `${prefix}/v1/game-sessions/${sessionId}/complete`,
     // Abandonner une session
     abandon: (sessionId: string) => `${prefix}/v1/game-sessions/${sessionId}/abandon`,
+    // Dernière activité d'un enfant
+    lastActivity: (childId: string) => `${prefix}/v1/children/${childId}/last-session`,
     // Ancien endpoint pour la compatibilité (si nécessaire)
     saveProgress: (childId: string, sessionId: string) => `${prefix}/v1/children/${childId}/sessions/${sessionId}/progress`,
     history: (childId: string, qs: string) => `${prefix}/v1/children/${childId}/sessions?${qs}`
