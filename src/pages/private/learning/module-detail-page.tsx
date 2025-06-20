@@ -31,11 +31,11 @@ function ModuleDetailPage() {
   );
 
   const handleGameClick = (gameId: string, gameTitle: string) => {
-    /**setGameModalState({
+    setGameModalState({
       isOpen: true,
       gameId,
       gameTitle
-    });**/
+    });
   };
 
   const handleCloseModal = () => {

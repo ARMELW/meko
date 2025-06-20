@@ -341,7 +341,7 @@ export function Header() {
                             <NavItem 
                             label={t('common.lastActivity')} 
                             icon={<LastActivityIcon />} 
-                            //onClick={handleOpenLastActivityModal} 
+                            onClick={handleOpenLastActivityModal} 
                             />
                             <NavItem label={t('common.statistics')} icon={<StatisticIcon />} />
                         </div>

@@ -357,13 +357,6 @@ export function GameSimulationModal({
               {/* Actions */}
               <div className="flex gap-2 justify-center">
                 <button
-                  onClick={handleSaveProgress}
-                  disabled={saveProgress.isPending}
-                  className="px-4 py-2 bg-gray-500 text-white rounded text-sm"
-                >
-                  Sauvegarder
-                </button>
-                <button
                   onClick={handleAbandonSession}
                   className="px-4 py-2 bg-red-500 text-white rounded text-sm"
                 >
@@ -381,10 +374,10 @@ export function GameSimulationModal({
               </Typography>
               
               <div className="bg-purple-500 p-4 rounded mb-6">
-                <Typography className="text-xl mb-2">
+                <Typography className="text-xl mb-2 mx-2">
                   Score: {gameState.score}/5
                 </Typography>
-                <Typography className="text-sm text-gray-600">
+                <Typography className="text-sm text-gray-600 mx-2">
                   Temps: <span className="transition-all duration-300 font-mono">{displayedTime}</span>s | Essais: {gameState.totalAttempts}
                 </Typography>
               </div>
@@ -392,17 +385,16 @@ export function GameSimulationModal({
               <div className="flex gap-3 justify-center">
                 <LoadingButton
                   onClick={handleCompleteSession}
-                  className="bg-green-500 hover:bg-green-600 text-white"
                   loading={completeSession.isPending}
                 >
                   Terminer
                 </LoadingButton>
-                <button
+                <LoadingButton
+                  variant="secondary"
                   onClick={handleClose}
-                  className="px-4 py-2 bg-gray-500 text-white rounded"
                 >
                   Fermer
-                </button>
+                </LoadingButton>
               </div>
             </div>
           )}
