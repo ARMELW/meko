@@ -106,14 +106,13 @@ export function LastActivityModal({
               </div>
             </div>
           ) : (
-            <div className="text-center py-8">
+            <div className="text-center py-8 flex flex-col items-center justify-center">
               <Typography className="text-white mb-4">
                 {t('games.session.modal.lastActivity.noActivity')}
               </Typography>
               <LoadingButton
                 size={'small'}
                 onClick={onClose}
-                className="bg-gray-500 hover:bg-gray-600 text-white px-6 py-2 rounded"
               >
                 {t('games.session.modal.actions.close')}
               </LoadingButton>
