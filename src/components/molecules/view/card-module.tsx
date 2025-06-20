@@ -28,7 +28,7 @@ function CardModule({ image, title, status, progress, onClick }: CardModuleProps
         </div>
         <div className="card-title">
 
-          <Typography as="p" align={"center"} styleCase={"uppercase"} weight={"bold"} className="p-4">
+          <Typography as="p" align={"center"} styleCase={"uppercase"} weight={"bold"} className="p-4 truncate">
             {title}
           </Typography>
         </div>
