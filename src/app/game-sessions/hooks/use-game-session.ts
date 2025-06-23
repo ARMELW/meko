@@ -3,16 +3,20 @@ import { gameSessionService } from '../service';
 import { SaveProgressPayload, CompleteGameSessionPayload } from '../types';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
+import { useLastActivityActions } from './use-last-activity-actions';
 
 export const useGameSession = () => {
   const { t } = useTranslation();
   const queryClient = useQueryClient();
+  const { invalidateLastActivity } = useLastActivityActions();
 
   const startSession = useMutation({
     mutationFn: ({ childId, gameId }: { childId: string; gameId: string }) =>
       gameSessionService.startSession({ childId, gameId }),
-    onSuccess: () => {
+    onSuccess: (_, variables) => {
       toast.success(t('games.session.started'));
+      // Invalider la cache de la dernière activité pour l'enfant qui commence une session
+      invalidateLastActivity(variables.childId);
     },
     onError: (error: Error) => {
       toast.error(t('games.session.error'));
@@ -27,8 +31,10 @@ export const useGameSession = () => {
       data: SaveProgressPayload 
     }) =>
       gameSessionService.saveProgress(childId, sessionId, data),
-    onSuccess: () => {
+    onSuccess: (_, variables) => {
       toast.success(t('games.session.progressSaved'));
+      // Invalider la cache de la dernière activité pour l'enfant spécifique
+      invalidateLastActivity(variables.childId);
     },
     onError: (error: Error) => {
       toast.error(t('games.session.error'));
@@ -52,6 +58,14 @@ export const useGameSession = () => {
       // Invalider les caches pour mettre à jour les données
       queryClient.invalidateQueries({ queryKey: ['modules'] });
       queryClient.invalidateQueries({ queryKey: ['game-sessions'] });
+      
+      // Si on a l'ID de l'enfant dans la réponse, l'utiliser pour invalider spécifiquement
+      if (response.data?.childId) {
+        invalidateLastActivity(response.data.childId);
+      } else {
+        // Sinon invalider toutes les dernières activités
+        invalidateLastActivity();
+      }
     },
     onError: (error: Error) => {
       toast.error(t('games.session.error'));

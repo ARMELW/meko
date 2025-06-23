@@ -10,6 +10,8 @@ export {
   useGameSessionDetail 
 } from './hooks/use-game-session-list';
 export { useLastActivity } from './hooks/use-last-activity';
+export { useLastActivityActions } from './hooks/use-last-activity-actions';
+export { useUpdateLastActivity } from './hooks/use-update-last-activity';
 
 // Types
 export type { 
