@@ -12,16 +12,17 @@ function ChooseAvatarPage() {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const location = useLocation();
-  const signUp = location.state?.signUp || false; 
   const { data: avatars, isLoading } = useAvatars();
   const { select } = useAvatarActions();
   const sessionChild = useChildrenSession(state => state.selectedChild);
   const selectedChild = useChildrenStore(state => state.currentChild);
+
+   const signUp = location.state?.signUp || selectedChild; 
   const login = useChildrenSession(state => state.login);
   const clearCurrentChild = useChildrenStore(state => state.clearCurrentChild);
 
   useEffect(() => {
-    if (!signUp || !selectedChild) {
+    if (!signUp) {
       navigate("/profile/choose");
     }
   }, [selectedChild, navigate]);
