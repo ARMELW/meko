@@ -1,7 +1,6 @@
 import { Avatar, AvatarPayload } from './types';
 import { avatarService } from './query';
 import { API_ENDPOINTS } from '@/config/api';
-import { generateUrl } from '@/utils/utils';
 
 export const AvatarService = {
   getAll: async (): Promise<Avatar[]> => {
@@ -13,10 +12,6 @@ export const AvatarService = {
     }
     const avatars = data.items as Avatar[];
   
-    avatars.map((avatar) => {
-      avatar.url = generateUrl(avatar.url);
-      return avatar;
-    });
     return avatars;
   },
 
