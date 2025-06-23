@@ -8,6 +8,7 @@ import EditChild from "./components/edit-child";
 import { DeleteChildDialog } from "@/app/children/components";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
+import { truncateText } from "@/utils/text";
 
 
 function ChildMonitoringPage() {
@@ -52,9 +53,16 @@ function ChildMonitoringPage() {
                 <UserAvatar avatarUrl={children.avatarUrl} size={50} username={`${children.firstname} ${children.lastname}`} alt={`Avatar ${index + 1}`} />
 
               </div>
-              <div>
-                <Typography as="span" styleCase={"uppercase"} weight={"bold"} color={"secondary"} className="text-sm">
-                  {children.firstname + " " + children.lastname}
+              <div className="text-center max-w-[70px]">
+                <Typography 
+                  as="span" 
+                  styleCase={"uppercase"} 
+                  weight={"bold"} 
+                  color={"secondary"} 
+                  className="text-sm truncate block"
+                  title={`${children.firstname} ${children.lastname}`}
+                >
+                  {truncateText(`${children.firstname} ${children.lastname}`, 12)}
                 </Typography>
               </div>
             </div>

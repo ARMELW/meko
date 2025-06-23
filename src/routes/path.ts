@@ -26,6 +26,11 @@ export const appPath = {
 		monitoring: {
 			root: "/monitoring",
 			search: "/monitoring/search",
+			child: {
+				root: "/monitoring/child/subscriptions",
+				add: "/monitoring/child/add",
+				settings: "/monitoring/child/settings"
+			},
 		},
 		settings: "/settings",
 		subscription: {

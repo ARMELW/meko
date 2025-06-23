@@ -1,6 +1,7 @@
 import { Card, CardContent, CardFooter } from '@/components';
 import { Typography } from '@/components';
 import { useTranslation } from 'react-i18next';
+import { truncateText } from '@/utils/text';
 
 type CardModuleProps = {
   image: string;
@@ -27,9 +28,15 @@ function CardModule({ image, title, status, progress, onClick }: CardModuleProps
           <img src={image} alt={title} className="w-full h-[186px] object-cover rounded-xl" />
         </div>
         <div className="card-title">
-
-          <Typography as="p" align={"center"} styleCase={"uppercase"} weight={"bold"} className="p-4 truncate">
-            {title}
+          <Typography 
+            as="p" 
+            align={"center"} 
+            styleCase={"uppercase"} 
+            weight={"bold"} 
+            className="p-4 truncate" 
+            title={title}
+          >
+            {truncateText(title, 25)}
           </Typography>
         </div>
 

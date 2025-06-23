@@ -4,6 +4,7 @@ import {
 	statusVariants,
 } from "@/components/atoms/view/status-variant";
 import { cn } from "@/utils/style";
+import { truncateText } from "@/utils/text";
 
 interface Props {
 	src: string;
@@ -36,8 +37,10 @@ export function ModuleCard({
 						styleCase="uppercase"
 						color="default"
 						weight="bold"
+						className="truncate px-2"
+						title={title}
 					>
-						{title}
+						{truncateText(title, 20)}
 					</Typography>
 				</div>
 			</CardContent>

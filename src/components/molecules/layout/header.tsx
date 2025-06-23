@@ -14,6 +14,7 @@ import { LastActivityIcon } from '@/components/atoms/icons/last-activity-icon';
 import { StatisticIcon } from '@/components/atoms/icons/statistic-icon';
 import { LastActivityModal, useLastActivity } from '@/app/game-sessions';
 import { GameSimulationModal } from '@/app/game-sessions';
+import { formatDisplayName } from '@/utils/text';
 
 export function Header() {
     const { t } = useTranslation();
@@ -66,7 +67,15 @@ export function Header() {
         });
     };
 
-    const displayName = sessionChild ? sessionChild.firstname + " " + sessionChild.lastname : session?.user?.name || 'User';
+    const displayName = sessionChild 
+        ? formatDisplayName(sessionChild.firstname, sessionChild.lastname, 25)
+        : session?.user?.name || 'User';
+    const shortDisplayName = sessionChild 
+        ? formatDisplayName(sessionChild.firstname, sessionChild.lastname, 15)
+        : session?.user?.name || 'User';
+    const mobileDisplayName = sessionChild 
+        ? formatDisplayName(sessionChild.firstname, sessionChild.lastname, 12)
+        : session?.user?.name || 'User';
     const displayImage = sessionChild ? sessionChild.avatarUrl : session?.user?.image;
 
     const toggleMobileMenu = () => {
@@ -96,18 +105,43 @@ export function Header() {
             return (
                 <DropdownMenu.Root>
                     <DropdownMenu.Trigger asChild>
-                        <button className="flex flex-row items-center gap-3 focus:outline-none cursor-pointer">
-                            <Typography
-                                as="h3"
-                                styleCase="uppercase"
-                                weight="bold"
-                                variant="small"
-                                color={"default"}
-                            >
-                                {displayName}
-                            </Typography>
-                            <UserAvatar avatarUrl={displayImage || ''} className="border border-white rounded-full w-12 h-12" size={50} username={displayName} alt={'Avatar'} />
-
+                        <button 
+                            className="flex flex-row items-center gap-3 focus:outline-none cursor-pointer max-w-xs"
+                            title={sessionChild ? `${sessionChild.firstname} ${sessionChild.lastname}` : displayName}
+                        >
+                            <div className="min-w-0 flex-shrink">
+                                <Typography
+                                    as="h3"
+                                    styleCase="uppercase"
+                                    weight="bold"
+                                    variant="small"
+                                    color={"default"}
+                                    className="truncate text-right hidden xl:block"
+                                >
+                                    {displayName}
+                                </Typography>
+                                <Typography
+                                    as="h3"
+                                    styleCase="uppercase"
+                                    weight="bold"
+                                    variant="small"
+                                    color={"default"}
+                                    className="truncate text-right hidden lg:block xl:hidden"
+                                >
+                                    {shortDisplayName}
+                                </Typography>
+                                <Typography
+                                    as="h3"
+                                    styleCase="uppercase"
+                                    weight="bold"
+                                    variant="small"
+                                    color={"default"}
+                                    className="truncate text-right lg:hidden"
+                                >
+                                    {mobileDisplayName}
+                                </Typography>
+                            </div>
+                            <UserAvatar avatarUrl={displayImage || ''} className="border border-white rounded-full w-12 h-12 flex-shrink-0" size={50} username={displayName} alt={'Avatar'} />
                         </button>
                     </DropdownMenu.Trigger>
 
@@ -203,14 +237,16 @@ export function Header() {
                     <img
                         src={displayImage || "https://i.pravatar.cc/300"}
                         alt="Avatar"
-                        className="border-2 border-white rounded-full w-20 h-20"
+                        className="border-2 border-white rounded-full w-16 h-16 lg:w-20 lg:h-20"
+                        title={sessionChild ? `${sessionChild.firstname} ${sessionChild.lastname}` : displayName}
                     />
                     <Typography
                         as="h3"
                         weight="bold"
                         color={"default"}
+                        className="text-center truncate max-w-xs"
                     >
-                        {displayName}
+                        {shortDisplayName}
                     </Typography>
 
                     <MenuOption
@@ -287,13 +323,13 @@ export function Header() {
                         
                         <DropdownMenu.Item
                             className="flex text-meko-blue-light-1 uppercase items-center hover:bg-meko-blue-transparent-1 px-4 py-2 text-xs cursor-pointer"
-                            onSelect={() => navigate('/monitoring/child')}
+                            onSelect={() => navigate('/monitoring/child/subscriptions')}
                         >
                             {t('menu.childOptions.subscriptions')}
                         </DropdownMenu.Item>
                         <DropdownMenu.Item
                             className="flex text-meko-blue-light-1 uppercase items-center hover:bg-meko-blue-transparent-1 px-4 py-2 text-xs cursor-pointer"
-                            onSelect={() => navigate('/monitoring/child')}
+                            onSelect={() => navigate('/monitoring/child/add')}
                         >
                             {t('menu.childOptions.addChild')}
                         </DropdownMenu.Item>
@@ -327,7 +363,7 @@ export function Header() {
                                 size='small'
                                 name="search"
                                 placeholder={t('common.search')}
-                                className="ml-4 w-64 bg-meko-blue-transparent-2 text-white focus:border-meko-blue-light-1 focus:border-2 outline-none rounded-lg px-3 py-1"
+                                className="ml-4 w-48 lg:w-64 bg-meko-blue-transparent-2 text-white focus:border-meko-blue-light-1 focus:border-2 outline-none rounded-lg px-3 py-1"
                                 onChange={(e) => {
                                     console.log(e.target.value);
                                 }}
@@ -335,15 +371,15 @@ export function Header() {
                         </div>
                     )}
                 </div>
-                <div className='flex flex-row items-center gap-8 cursor-pointer'>
+                <div className='flex flex-row items-center gap-4 lg:gap-8 cursor-pointer min-w-0'>
                     {(sessionChild && isAuthenticated) && (
-                        <div className="flex flex-row gap-10 items-center">
+                        <div className="flex flex-row gap-6 lg:gap-10 items-center">
                             <NavItem 
                             label={t('common.lastActivity')} 
                             icon={<LastActivityIcon />} 
                             onClick={handleOpenLastActivityModal} 
                             />
-                            <NavItem label={t('common.statistics')} icon={<StatisticIcon />} />
+                            <NavItem label={t('common.statistics')} icon={<StatisticIcon />} onClick={() => navigate('/monitoring')}/>
                         </div>
                     )}
                     {renderAuthOptions()}

@@ -85,6 +85,30 @@ const en = {
 			settings: 'Settings'
 		}
 	},
+	settings: {
+		title: 'Settings',
+		general: 'General',
+		currency: {
+			title: 'Currency used',
+			euro: 'Euro (€)',
+			chf: 'Swiss Franc (CHF)'
+		},
+		language: {
+			title: 'Language',
+			french: 'Français',
+			english: 'English'
+		},
+		account: {
+			title: 'Child Account',
+			active: 'Active child account',
+			changeProfile: 'Change profile'
+		},
+		actions: {
+			save: 'Save',
+			saving: 'Saving...',
+			saved: 'Settings saved'
+		}
+	},
    auth: {
       login: 'Login',
       success: 'A login code has been sent to your email address',

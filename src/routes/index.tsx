@@ -17,6 +17,10 @@ import { LessonPage } from "@/pages/private/learning/lesson-page";
 
 import { ChildMonitoringPage } from "@/pages/private/monitoring/child-monitoring-page";
 import { ResultSearchPage } from "@/pages/private/monitoring/result-search-page";
+import { AddChildPage } from "@/pages/private/monitoring/add-child-page";
+import { ChildSettingsPage } from "@/pages/private/monitoring/child-settings-page";
+import { SubscriptionManagementPage } from "@/pages/private/monitoring/subscription-management-page";
+import { ChildStatisticsPage } from "@/pages/private/monitoring/child-statistics-page";
 
 import { SettingPage } from "@/pages/private/settings/setting-page";
 
@@ -97,6 +101,23 @@ const privateRoutes: RouteObject[] = [
 			{
 				path: "search",
 				element: <ResultSearchPage />,
+			},
+			{
+				path: "child",
+				children: [
+					{
+						path: "subscriptions",
+						element: <SubscriptionManagementPage />,
+					},
+					{
+						path: "add",
+						element: <AddChildPage />,
+					},
+					{
+						path: "settings",
+						element: <ChildSettingsPage />,
+					},
+				],
 			},
 		],
 	},

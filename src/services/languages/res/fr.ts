@@ -85,6 +85,30 @@ const fr = {
 			settings: 'Paramètres'
 		}
 	},
+	settings: {
+		title: 'Paramètres',
+		general: 'Général',
+		currency: {
+			title: 'Devise utilisée',
+			euro: 'Euro (€)',
+			chf: 'Franc suisse (SFr.)'
+		},
+		language: {
+			title: 'Langue',
+			french: 'Français',
+			english: 'English'
+		},
+		account: {
+			title: 'Compte Enfant',
+			active: 'Compte enfant actif',
+			changeProfile: 'Changer de profil'
+		},
+		actions: {
+			save: 'Sauvegarder',
+			saving: 'Sauvegarde...',
+			saved: 'Paramètres sauvegardés'
+		}
+	},
 	auth: {
       login: 'Connexion',
       success: 'Un code de connexion a été envoyé à votre adresse email',
