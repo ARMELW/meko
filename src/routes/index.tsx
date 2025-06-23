@@ -23,6 +23,7 @@ import { SubscriptionManagementPage } from "@/pages/private/monitoring/subscript
 import { ChildStatisticsPage } from "@/pages/private/monitoring/child-statistics-page";
 
 import { SettingPage } from "@/pages/private/settings/setting-page";
+import { ChangeAvatarPage } from "@/pages/private/settings/change-avatar-page";
 
 import { ChooseSubscriptionPage } from "@/pages/private/subscription/choose-subscription-page";
 import { SubscriptionSettingPage } from "@/pages/private/subscription/subscription-setting-page";
@@ -55,6 +56,14 @@ const privateRoutes: RouteObject[] = [
 				element: <ChooseAvatarPage />,
 			}
 		],
+	},
+	{
+		path: "/child/statistic",
+		element: <ChildStatisticsPage />,
+	},
+	{
+		path: "/profile/change-avatar",
+		element: <ChangeAvatarPage />,
 	},
 	{
 		path: "/home",

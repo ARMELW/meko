@@ -185,7 +185,7 @@ export function Header() {
                                     </DropdownMenu.Item>
                                     <DropdownMenu.Item
                                         className="flex text-meko-blue-light-1 uppercase items-center hover:bg-meko-blue-transparent-1 px-4 py-2 rounded  text-xs cursor-pointer"
-                                        onSelect={() => navigate('/profile/avatar')}
+                                        onSelect={() => navigate('/profile/change-avatar')}
                                     >
                                         {t('common.changeAvatar')}
                                     </DropdownMenu.Item>
