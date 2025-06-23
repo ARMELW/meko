@@ -70,7 +70,7 @@ export function LastActivityModal({
                 <Table>
                   <TableBody>
                     <TableRow>
-                      <TableCell styleCase="uppercase" asChild color="primary" align="left">
+                      <TableCell styleCase="uppercase"  color="primary" align="left">
                         {t('games.session.modal.lastActivity.module')}
                       </TableCell>
                       <TableCell weight="default" align="right">
@@ -78,18 +78,18 @@ export function LastActivityModal({
                       </TableCell>
                     </TableRow>
                     <TableRow>
-                      <TableCell styleCase="uppercase" asChild color="primary" align="left">
+                      <TableCell styleCase="uppercase"  color="primary" align="left">
                         {t('games.session.modal.lastActivity.lesson')}
                       </TableCell>
-                      <TableCell weight="default" asChild align="right">
+                      <TableCell weight="default"  align="right">
                         {lastActivity.lesson.order}
                       </TableCell>
                     </TableRow>
                     <TableRow>
-                      <TableCell styleCase="uppercase" asChild color="primary" align="left">
+                      <TableCell styleCase="uppercase"  color="primary" align="left">
                         {t('games.session.modal.lastActivity.duration')}
                       </TableCell>
-                      <TableCell weight="default" asChild align="right">
+                      <TableCell weight="default"  align="right">
                         {formatDuration(lastActivity.totalTime)}
                       </TableCell>
                     </TableRow>
