@@ -1,15 +1,17 @@
 
-import { useOtpAuth } from "@/app/auth";
+import { useOtpAuth, useCheckEmail } from "@/app/auth";
 import { signUpSchema } from "@/app/auth/schema";
 import { SignUpFormData } from "@/app/auth/types";
 import { Label, Typography } from "@/components";
 import { LoadingButton } from "@/components/atoms/actions/loading-button";
 import { ControlledTextInput } from "@/components/molecules/form/controlled-input";
+import { handleSimpleApiError } from "@/utils/error-handler";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { Link, useNavigate } from "react-router";
+import { toast } from "sonner";
 const defaultValues: SignUpFormData = {
   email: "",
   firstName: "",
@@ -20,6 +22,7 @@ function CreateParentAccountPage() {
   const { t } = useTranslation();
   const [isSubmitted, setIsSubmitted] = useState(false);
   const { loading, initiateOtpLogin } = useOtpAuth();
+  const { checkEmail, loading: checkingEmail } = useCheckEmail();
   const {
     control,
     handleSubmit
@@ -30,6 +33,22 @@ function CreateParentAccountPage() {
   });
   const onSubmit = async (data: SignUpFormData) => {
     try {
+      // Vérifier si l'email existe déjà
+      const { exists } = await checkEmail({ email: data.email });
+      
+      if (exists) {
+        // Email déjà utilisé, afficher un message et rediriger vers login
+        toast.error(t('auth.errors.email.alreadyExists'));
+        navigate("/login", {
+          state: {
+            email: data.email,
+            message: t('auth.errors.email.alreadyExists')
+          }
+        });
+        return;
+      }
+
+      // Email disponible, procéder à la création du compte
       await initiateOtpLogin({
         email: data.email
       });
@@ -44,8 +63,7 @@ function CreateParentAccountPage() {
         },
       });
     } catch (error) {
-
-      console.error("Sign Up error:", error);
+      handleSimpleApiError(error);
     }
   }
   return <div className="flex flex-col justify-center items-center w-full h-screen">
@@ -122,7 +140,7 @@ function CreateParentAccountPage() {
 
         <div className="flex justify-center w-full">
           <LoadingButton
-            loading={loading}
+            loading={loading || checkingEmail}
             type="submit"
             size="small"
             color="secondary"

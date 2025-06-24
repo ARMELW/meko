@@ -125,7 +125,8 @@ const en = {
       errors: {
          email: {
             required: 'Email is required',
-            invalid: 'Invalid email format'
+            invalid: 'Invalid email format',
+            alreadyExists: 'This email is already in use. Please log in instead.'
          },
          firstName: {
             required: 'name is required'

@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form";
 import { useLocation, useNavigate } from "react-router";
 import ControlledOtpInput from "@/components/molecules/form/controlled-otp-input";
 import { LoadingButton } from "@/components/atoms/actions/loading-button";
+import { handleSimpleApiError } from "@/utils/error-handler";
 import { useState } from "react";
 const defaultValues: OtpFormData = {
   otp: "",
@@ -53,7 +54,7 @@ function VerifyOtpPage() {
       
     } catch (error) {
       setLoading(false);
-      console.error("Verify tokenn error:", error);
+      handleSimpleApiError(error);
     }
   };
 

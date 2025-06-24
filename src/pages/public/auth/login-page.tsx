@@ -3,29 +3,46 @@ import { LoginFormData, loginSchema, } from "@/app/auth";
 import { useOtpAuth } from "@/app/auth/hooks/use-otp-auth";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Card, Typography } from "@/components";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import { ControlledTextInput } from "@/components/molecules/form/controlled-input";
 import { useTranslation } from "react-i18next";
 import { LoadingButton } from "@/components/atoms/actions/loading-button";
-const defaultValues: LoginFormData = {
-  email: "",
-};
+import { handleSimpleApiError } from "@/utils/error-handler";
+import { toast } from "sonner";
 function LoginPage() {
   const navigate = useNavigate();
+  const location = useLocation();
   const { t } = useTranslation();
   const [isSubmitted, setIsSubmitted] = useState(false);
   const { loading, initiateOtpLogin } = useOtpAuth();
 
+  // Récupérer l'email et le message depuis l'état de navigation
+  const stateEmail = location.state?.email || "";
+  const stateMessage = location.state?.message;
+
   const {
     control,
-    handleSubmit
+    handleSubmit,
+    setValue
   } = useForm<LoginFormData>({
-    defaultValues,
+    defaultValues: {
+      email: stateEmail
+    },
     resolver: zodResolver(loginSchema),
     mode: "onSubmit",
   });
+
+  // Afficher le message si présent
+  useEffect(() => {
+    if (stateMessage) {
+      toast.info(stateMessage);
+    }
+    if (stateEmail) {
+      setValue("email", stateEmail);
+    }
+  }, [stateMessage, stateEmail, setValue]);
   const onSubmit = async (data: LoginFormData) => {
     try {
       await initiateOtpLogin({
@@ -39,8 +56,7 @@ function LoginPage() {
         },
       });
     } catch (error) {
-
-      console.error("Login error:", error);
+      handleSimpleApiError(error);
     }
   };
 

@@ -1,6 +1,8 @@
 const prefix = 'api';
 export const API_ENDPOINTS = {
-
+  auth: {
+    checkEmail: `${prefix}/v1/auth/check-email`
+  },
   children: {
     base: `${prefix}/v1/children`,
     create: `${prefix}/v1/children`,

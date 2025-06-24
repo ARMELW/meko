@@ -1,4 +1,3 @@
-
 export type {
     LoginOtpData,
     LoginFormData,
@@ -20,10 +19,18 @@ export {
 } from './api/verify-otp'
 
 export {
+    checkEmailExists
+} from './api/check-email'
+
+export {
     useOtpAuth,
 } from './hooks/use-otp-auth'
 
 export {
     useVerifyOtpAuth,
 } from './hooks/use-verify-otp-auth'
+
+export {
+    useCheckEmail,
+} from './hooks/use-check-email'
 

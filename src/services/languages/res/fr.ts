@@ -125,7 +125,8 @@ const fr = {
       errors: {
          email: {
             required: 'L\'email est requis',
-            invalid: 'Format d\'email invalide'
+            invalid: 'Format d\'email invalide',
+            alreadyExists: 'Cet email est déjà utilisé. Connectez-vous à la place.'
          },
          firstName: {
             required: 'Le nom est requis'
