@@ -10,14 +10,15 @@ import { DeleteChildDialog } from "@/app/children/components";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
 import { truncateText } from "@/utils/text";
+import { useChildMonitoringSwitch } from "./hooks/use-child-monitoring-switch";
 
 
 function ChildMonitoringPage() {
   const { data: avatars, invalidate } = useChildren();
   const { selectedChild } = useChildrenSession();
   const currentChild = useChildrenStore(state => state.currentChild);
-  const setCurrentChild = useChildrenStore((state) => state.setCurrentChild);
   const clearCurrentChild = useChildrenStore((state) => state.clearCurrentChild);
+  const { switchCurrentChild } = useChildMonitoringSwitch();
 
   const handleCloseEdit = () => {
     clearCurrentChild();
@@ -38,17 +39,17 @@ function ChildMonitoringPage() {
         // Mettre à jour l'enfant actuel s'il existe déjà
         const updatedChild = formatted.find(child => child.id === currentChild.id);
         if (updatedChild) {
-          setCurrentChild(updatedChild);
+          switchCurrentChild(updatedChild);
         }
       } else {
         // Par défaut, sélectionner l'enfant de la session, sinon le premier
         const defaultChild = selectedChild 
           ? formatted.find(child => child.id === selectedChild.id) || formatted[0]
           : formatted[0];
-        setCurrentChild(defaultChild);
+        switchCurrentChild(defaultChild);
       }
     }
-  }, [formatted, currentChild, selectedChild, setCurrentChild]);
+  }, [formatted, currentChild, selectedChild, switchCurrentChild]);
 
   return <div className="min-h-screen text-white p-4 md:p-8">
     <div className="flex flex-col md:flex-row gap-6">
@@ -56,7 +57,7 @@ function ChildMonitoringPage() {
         <div className="child-item-wrapper flex flex-col items-center justify-center">
           {formatted.map((children: Children, index: number) => (
             <div className="mb-5  flex flex-col items-center justify-center">
-              <div key={index} onClick={() => setCurrentChild(children)} className={`shadow-lg rounded-full w-[50px] overflow-hidden cursor-pointer ${children.id == currentChild?.id ? 'border-2 border-white' : ''}`}>
+              <div key={index} onClick={() => switchCurrentChild(children)} className={`shadow-lg rounded-full w-[50px] overflow-hidden cursor-pointer ${children.id == currentChild?.id ? 'border-2 border-white' : ''}`}>
                 <UserAvatar avatarUrl={children.avatarUrl} size={50} username={`${children.firstname} ${children.lastname}`} alt={`Avatar ${index + 1}`} />
 
               </div>
@@ -123,7 +124,7 @@ function ChildMonitoringPage() {
               {currentChild && (
                 <EditChild
                   childToEdit={currentChild}
-                  setChildToEdit={setCurrentChild}
+                  setChildToEdit={switchCurrentChild}
                   onClose={handleCloseEdit}
                 />
               )}

@@ -1,7 +1,7 @@
 import { useChildren } from "@/app/children";
 import { Typography } from "@/components";
 import UserAvatar from "@/components/atoms/view/user-avatar";
-import { useSession } from "@/services/session/store";
+import { useProfileSwitch } from "@/services/session";
 import { useNavigate } from "react-router";
 import { useTranslation } from "react-i18next";
 
@@ -9,18 +9,18 @@ import { useTranslation } from "react-i18next";
 function ChooseProfilePage() {
   const navigate = useNavigate();
   const { data: avatars, isLoading } = useChildren();
-  const login = useSession(state => state.login);
+  const { switchProfile } = useProfileSwitch();
   const { t } = useTranslation();
   
-  const handleChoice = (child: { id: string; firstname: string; lastname: string; avatarUrl?: string }) => {
+  const handleChoice = (child: { id: string; firstname: string; lastname?: string; avatarUrl?: string }) => {
     if (!child) {
       return;
     }
 
-    login({
+    switchProfile({
       id: child.id,
       firstname: child.firstname,
-      lastname: child.lastname,
+      lastname: child.lastname || '',
       avatarUrl: child.avatarUrl
     });
 

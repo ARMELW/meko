@@ -14,7 +14,6 @@ import {
 import { LoadingButton } from '@/components/atoms/actions/loading-button';
 import ChildrenForm from './child-form';
 import { DialogTrigger } from '@radix-ui/react-dialog';
-import { useChildrenStore } from '@/app/children/store';
 const defaultValues: ChildrenPayload = {
     firstname: "",
     birthday: "",
@@ -27,7 +26,6 @@ interface EditChildProps {
 
 const EditChild = ({ childToEdit, setChildToEdit, onClose }: EditChildProps) => {
     const { update, isUpdating, invalidate } = useChildrenActions();
-    const setCurrentChild = useChildrenStore((state) => state.setCurrentChild);
     const { open, mode, openUpdate, close } = useModalStore();
     const makeOpen = !!(open && mode == 'update')
     const {
@@ -53,17 +51,12 @@ const EditChild = ({ childToEdit, setChildToEdit, onClose }: EditChildProps) => 
             id: childToEdit.id,
             data
         });
-        //TODO: recuperer l'information depuis l'update pour mettre a jour le children edit
         setChildToEdit({
             id: childToEdit.id,
             ...data
         })
         
         invalidate(["children", 'avatars']);
-        setCurrentChild({
-            id: childToEdit.id,
-            ...data
-        })
         reset();
         close();
         onClose?.();
