@@ -7,7 +7,7 @@ import { LoadingButton } from "@/components/atoms/actions/loading-button";
 import { ControlledTextInput } from "@/components/molecules/form/controlled-input";
 import { handleSimpleApiError } from "@/utils/error-handler";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { Link, useNavigate } from "react-router";
@@ -21,8 +21,9 @@ function CreateParentAccountPage() {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
   const { loading, initiateOtpLogin } = useOtpAuth();
-  const { checkEmail, loading: checkingEmail } = useCheckEmail();
+  const { checkEmail, loading: checkingEmail, clearCache } = useCheckEmail();
   const {
     control,
     handleSubmit
@@ -31,7 +32,14 @@ function CreateParentAccountPage() {
     resolver: zodResolver(signUpSchema),
     mode: "onSubmit",
   });
-  const onSubmit = async (data: SignUpFormData) => {
+  const onSubmit = useCallback(async (data: SignUpFormData) => {
+    // Éviter les soumissions multiples
+    if (isProcessing || loading || checkingEmail) {
+      return;
+    }
+
+    setIsProcessing(true);
+    
     try {
       // Vérifier si l'email existe déjà
       const { exists } = await checkEmail({ email: data.email });
@@ -39,12 +47,16 @@ function CreateParentAccountPage() {
       if (exists) {
         // Email déjà utilisé, afficher un message et rediriger vers login
         toast.error(t('auth.errors.email.alreadyExists'));
-        navigate("/login", {
-          state: {
-            email: data.email,
-            message: t('auth.errors.email.alreadyExists')
-          }
-        });
+        
+        // Attendre un petit délai pour que l'utilisateur puisse voir le toast
+        setTimeout(() => {
+          navigate("/login", {
+            state: {
+              email: data.email,
+              message: t('auth.errors.email.alreadyExists')
+            }
+          });
+        }, 1500);
         return;
       }
 
@@ -52,8 +64,9 @@ function CreateParentAccountPage() {
       await initiateOtpLogin({
         email: data.email
       });
+      
       setIsSubmitted(true);
-      //TODO: il faut que l'on assure le state soit bien recuperer coté verification
+      
       navigate("/verify-otp", {
         state: {
           email: data.email,
@@ -64,8 +77,10 @@ function CreateParentAccountPage() {
       });
     } catch (error) {
       handleSimpleApiError(error);
+    } finally {
+      setIsProcessing(false);
     }
-  }
+  }, [isProcessing, loading, checkingEmail, checkEmail, t, navigate, initiateOtpLogin]);
   return <div className="flex flex-col justify-center items-center w-full h-screen">
 
     <div>
@@ -92,7 +107,7 @@ function CreateParentAccountPage() {
               control={control}
               placeholder="Nom"
               size="w-full"
-              disabled={isSubmitted}
+              disabled={isSubmitted || isProcessing}
             />
           </div>
           <div className="input-container w-[50%]">
@@ -106,7 +121,7 @@ function CreateParentAccountPage() {
               control={control}
               placeholder="Prénom"
               size="w-full"
-              disabled={isSubmitted}
+              disabled={isSubmitted || isProcessing}
             />
           </div>
         </div>
@@ -126,7 +141,7 @@ function CreateParentAccountPage() {
                 autoComplete="off"
                 placeholder="mekoacademy@email.com"
                 size="w-full"
-                disabled={isSubmitted}
+                disabled={isSubmitted || isProcessing}
               />
             </div>
           </div>
@@ -140,7 +155,7 @@ function CreateParentAccountPage() {
 
         <div className="flex justify-center w-full">
           <LoadingButton
-            loading={loading || checkingEmail}
+            loading={loading || checkingEmail || isProcessing}
             type="submit"
             size="small"
             color="secondary"
