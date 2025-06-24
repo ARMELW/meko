@@ -77,7 +77,7 @@ export const useGameSession = () => {
     mutationFn: ({ sessionId }: { sessionId: string }) =>
       gameSessionService.abandonSession(sessionId),
     onSuccess: () => {
-      toast.info(t('games.session.abandoned'));
+      // Ne plus afficher le toast ici car il est affiché immédiatement dans le composant
       // Invalider les caches pour mettre à jour les données
       queryClient.invalidateQueries({ queryKey: ['modules'] });
       queryClient.invalidateQueries({ queryKey: ['game-sessions'] });

@@ -4,7 +4,13 @@ import { Card, CardContent, Typography } from '@/components';
 import { LoadingButton } from '@/components/atoms/actions/loading-button';
 import { useGameSession } from '../hooks/use-game-session';
 import { useSession as useChildrenSession } from '@/services/session/store';
+import { useTranslation } from 'react-i18next';
+import { toast } from 'sonner';
+import { useQueryClient } from '@tanstack/react-query';
+import { useUpdateLastActivity } from '../hooks/use-update-last-activity';
 import type { GameSession } from '../types';
+import { modulesKeys } from '@/app/modules/config';
+import type { ModuleDetail } from '@/app/modules/types';
 
 interface GameQuestion {
   id: number;
@@ -31,6 +37,7 @@ interface GameSimulationModalProps {
   onClose: () => void;
   gameId: string;
   gameTitle?: string;
+  moduleId?: string; // Ajouter l'ID du module pour invalider sa cache
 }
 
 // Générer une addition simple (2 nombres entre 1 et 10)
@@ -69,10 +76,14 @@ export function GameSimulationModal({
   isOpen,
   onClose,
   gameId,
-  gameTitle = 'Jeu d\'additions'
+  gameTitle = 'Jeu d\'additions',
+  moduleId
 }: GameSimulationModalProps) {
+  const { t } = useTranslation();
+  const queryClient = useQueryClient();
   const { selectedChild } = useChildrenSession();
-  const { startSession, saveProgress, completeSession, abandonSession } = useGameSession();
+  const { startSession, completeSession, abandonSession } = useGameSession();
+  const { updateLastActivity } = useUpdateLastActivity();
 
   const [currentSession, setCurrentSession] = useState<GameSession | null>(null);
   const [gameState, setGameState] = useState<GameState>({
@@ -170,28 +181,6 @@ export function GameSimulationModal({
     }, 1500);
   };
 
-  const handleSaveProgress = async () => {
-    if (!currentSession || !selectedChild) return;
-
-    try {
-      const timeSpent = Math.floor((performance.now() - gameState.startTime) / 1000);
-      await saveProgress.mutateAsync({
-        childId: selectedChild.id,
-        sessionId: currentSession.id,
-        data: {
-          score: gameState.score,
-          data: {
-            progress: ((gameState.currentQuestionIndex + 1) / gameState.questions.length) * 100,
-            currentQuestion: gameState.currentQuestionIndex + 1,
-            timeSpent
-          }
-        }
-      });
-    } catch (error) {
-      console.error('Error saving progress:', error);
-    }
-  };
-
   const handleCompleteSession = async () => {
     if (!currentSession || !selectedChild) return;
 
@@ -204,6 +193,40 @@ export function GameSimulationModal({
           timeSpent
         }
       });
+      
+      // Mise à jour optimiste de la cache du détail du module
+      if (moduleId) {
+        const moduleDetailKey = modulesKeys.detail(`${selectedChild.id}-${moduleId}`);
+        
+        queryClient.setQueryData(moduleDetailKey, (oldData: ModuleDetail | undefined) => {
+          if (!oldData) return oldData;
+          
+          // Mettre à jour le statut du jeu à "completed" après complétion
+          const updatedLessons = oldData.lessons.map((lesson) => ({
+            ...lesson,
+            games: lesson.games.map((game) => {
+              if (game.id === gameId) {
+                return {
+                  ...game,
+                  status: 'completed' as const
+                };
+              }
+              return game;
+            })
+          }));
+          
+          // Mettre à jour le nombre de jeux complétés
+          const completedGamesCount = updatedLessons
+            .flatMap(lesson => lesson.games)
+            .filter(game => game.status === 'completed').length;
+          
+          return {
+            ...oldData,
+            lessons: updatedLessons,
+            completedGames: completedGamesCount
+          };
+        });
+      }
       
       setGameState({
         questions: [],
@@ -221,25 +244,56 @@ export function GameSimulationModal({
   };
 
   const handleAbandonSession = async () => {
-    if (!currentSession) return;
-
-    try {
-      await abandonSession.mutateAsync({
-        sessionId: currentSession.id
-      });
+    if (!currentSession || !selectedChild) return;
+    
+    // Mise à jour optimiste de la cache du détail du module
+    if (moduleId) {
+      const moduleDetailKey = modulesKeys.detail(`${selectedChild.id}-${moduleId}`);
       
-      setCurrentSession(null);
-      setGameState({
-        questions: [],
-        currentQuestionIndex: 0,
-        score: 0,
-        totalAttempts: 0,
-        startTime: 0,
-        isGameStarted: false,
-        isGameCompleted: false
+      queryClient.setQueryData(moduleDetailKey, (oldData: ModuleDetail | undefined) => {
+        if (!oldData) return oldData;
+        
+        // Mettre à jour le statut du jeu à "available" ou "not_started" après abandon
+        const updatedLessons = oldData.lessons.map((lesson) => ({
+          ...lesson,
+          games: lesson.games.map((game) => {
+            if (game.id === gameId) {
+              return {
+                ...game,
+                status: 'in_progress' as const // ou 'not_started' selon votre logique métier
+              };
+            }
+            return game;
+          })
+        }));
+        
+        return {
+          ...oldData,
+          lessons: updatedLessons
+        };
       });
-    } catch (error) {
-      console.error('Error abandoning session:', error);
+    }
+
+    await abandonSession.mutateAsync({
+        sessionId: currentSession.id
+     });
+    setCurrentSession(null);
+    setGameState({
+      questions: [],
+      currentQuestionIndex: 0,
+      score: 0,
+      totalAttempts: 0,
+      startTime: 0,
+      isGameStarted: false,
+      isGameCompleted: false
+    });
+
+    // Afficher immédiatement le toast de confirmation
+    toast.info(t('games.session.abandoned'));
+
+    // Invalider immédiatement la cache de la dernière activité
+    if (selectedChild?.id) {
+      updateLastActivity(selectedChild.id);
     }
   };
 

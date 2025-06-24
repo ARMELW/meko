@@ -227,6 +227,7 @@ function ModuleDetailPage() {
         onClose={handleCloseModal}
         gameId={gameModalState.gameId}
         gameTitle={gameModalState.gameTitle}
+        moduleId={moduleId}
       />
     </div>
   );
