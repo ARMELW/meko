@@ -1,5 +1,6 @@
 import { Children, useChildren } from "@/app/children";
 import { useChildrenStore } from "@/app/children/store";
+import { useSession as useChildrenSession } from '@/services/session/store';
 import { Card, CardContent, CardTitle, Typography } from "@/components";
 import UserAvatar from "@/components/atoms/view/user-avatar";
 import { useEffect, useMemo } from "react";
@@ -13,6 +14,7 @@ import { truncateText } from "@/utils/text";
 
 function ChildMonitoringPage() {
   const { data: avatars, invalidate } = useChildren();
+  const { selectedChild } = useChildrenSession();
   const currentChild = useChildrenStore(state => state.currentChild);
   const setCurrentChild = useChildrenStore((state) => state.setCurrentChild);
   const clearCurrentChild = useChildrenStore((state) => state.clearCurrentChild);
@@ -33,15 +35,20 @@ function ChildMonitoringPage() {
   useEffect(() => {
     if (formatted.length > 0) {
       if (currentChild) {
+        // Mettre à jour l'enfant actuel s'il existe déjà
         const updatedChild = formatted.find(child => child.id === currentChild.id);
         if (updatedChild) {
           setCurrentChild(updatedChild);
         }
       } else {
-        setCurrentChild(formatted[0]);
+        // Par défaut, sélectionner l'enfant de la session, sinon le premier
+        const defaultChild = selectedChild 
+          ? formatted.find(child => child.id === selectedChild.id) || formatted[0]
+          : formatted[0];
+        setCurrentChild(defaultChild);
       }
     }
-  }, [formatted, currentChild, setCurrentChild]);
+  }, [formatted, currentChild, selectedChild, setCurrentChild]);
 
   return <div className="min-h-screen text-white p-4 md:p-8">
     <div className="flex flex-col md:flex-row gap-6">
@@ -60,9 +67,9 @@ function ChildMonitoringPage() {
                   weight={"bold"} 
                   color={"secondary"} 
                   className="text-sm truncate block"
-                  title={`${children.firstname} ${children.lastname}`}
+                  title={children.firstname}
                 >
-                  {truncateText(`${children.firstname} ${children.lastname}`, 12)}
+                  {truncateText(children.firstname, 12)}
                 </Typography>
               </div>
             </div>
@@ -86,27 +93,17 @@ function ChildMonitoringPage() {
           <Card className="text-white px-8 py-4 flex" style={{ boxShadow: "rgb(255 255 255 / 19%) 0px -1px 1px" }}>
             <div className="flex items-center space-x-4 flex-1">
               {currentChild && (
-                <UserAvatar avatarUrl={currentChild?.avatarUrl} size={100} username={`${currentChild.firstname} ${currentChild.lastname}`} alt={`Avatar`} />
+                <UserAvatar avatarUrl={currentChild?.avatarUrl} size={100} username={currentChild.firstname} alt={`Avatar`} />
               )}
 
               <div className="space-y-2 flex-1 px-4">
-                <div className="w-full flex space-x-8">
-                  <div className="w-[50%]">
-                    <Typography as="span" className="block text-sm" color={"secondary"} styleCase={"uppercase"} weight={"bold"}>
-                      Nom
-                    </Typography>
-                    <p className="bg-meko-blue-transparent-2 rounded-xl focus:border-meko-blue-light-1 focus:border-2 outline-none py-2 px-5">
-                      {currentChild?.lastname || ''}
-                    </p>
-                  </div>
-                  <div className="w-[50%]">
-                    <Typography as="span" className="block text-sm" color={"secondary"} styleCase={"uppercase"} weight={"bold"}>
-                      Prénom
-                    </Typography>
-                    <p className="bg-meko-blue-transparent-2 rounded-xl focus:border-meko-blue-light-1 focus:border-2 outline-none py-2 px-5">
-                      {currentChild?.firstname || ''}
-                    </p>
-                  </div>
+                <div className="w-full">
+                  <Typography as="span" className="block text-sm" color={"secondary"} styleCase={"uppercase"} weight={"bold"}>
+                    Prénom
+                  </Typography>
+                  <p className="bg-meko-blue-transparent-2 rounded-xl focus:border-meko-blue-light-1 focus:border-2 outline-none py-2 px-5">
+                    {currentChild?.firstname || ''}
+                  </p>
                 </div>
                 <div className="w-full">
                   <Typography as="span" className="block text-sm" color={"secondary"} styleCase={"uppercase"} weight={"bold"}>

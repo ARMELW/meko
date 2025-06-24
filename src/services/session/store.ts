@@ -5,7 +5,7 @@ import { createJSONStorage, persist } from "zustand/middleware";
 interface Child {
 	id: string;
 	firstname: string;
-	lastname: string;
+	lastname?: string;
 	avatarUrl?: string;
 }
 
@@ -25,7 +25,10 @@ export const useSession = create<Store>()(
 			selectedChild: null,
 			login: (selectedChild) => {
 				set({
-					selectedChild: selectedChild
+					selectedChild: {
+						...selectedChild,
+						lastname: selectedChild.lastname || '',
+					}
 				});
 			},
 			logout: () => {

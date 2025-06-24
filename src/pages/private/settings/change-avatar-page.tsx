@@ -5,7 +5,6 @@ import { useNavigate } from "react-router";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
 import { useSession as useChildrenSession } from '@/services/session/store';
-import { formatDisplayName } from "@/utils/text";
 
 function ChangeAvatarPage() {
   const { t } = useTranslation();
@@ -61,7 +60,6 @@ function ChangeAvatarPage() {
     );
   }
 
-  const displayName = formatDisplayName(sessionChild.firstname, sessionChild.lastname, 30);
 
   return (
     <div className="flex flex-col justify-center items-center w-full h-full min-h-screen">

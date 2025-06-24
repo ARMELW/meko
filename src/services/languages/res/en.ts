@@ -6,11 +6,11 @@ const en = {
       children: {
          create: {
             title: "Create child account",
-            firstName: "Child's first name",
+            firstName: "Child's name",
             lastName: "Child's last name",
             birthday: "Date of birth",
             placeholders: {
-               firstName: "Enter first name",
+               firstName: "Enter name",
                lastName: "Enter last name"
             },
             submit: "Create account",
@@ -54,11 +54,11 @@ const en = {
       createChild: {
          title: "Create child account",
          subtitle: "Enter the child's information",
-         firstName: "First name",
+         firstName: "Name",
          lastName: "Last name",
          birthday: "Date of birth",
          placeholders: {
-            firstName: "Enter first name",
+            firstName: "Enter name",
             lastName: "Enter last name"
          },
          submit: "Create account"
@@ -114,7 +114,7 @@ const en = {
       success: 'A login code has been sent to your email address',
       createAccount: 'Create parent account',
       provideInfo: 'Enter your information',
-      firstName: 'First name',
+      firstName: 'name',
       lastName: 'Last name',
       email: 'Email',
       termsAgreement: 'By creating an account, you agree to Meko Academy\'s',
@@ -128,7 +128,7 @@ const en = {
             invalid: 'Invalid email format'
          },
          firstName: {
-            required: 'First name is required'
+            required: 'name is required'
          },
          lastName: {
             required: 'Last name is required'

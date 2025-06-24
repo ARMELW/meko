@@ -210,8 +210,6 @@ function ModuleDetailPage() {
                     title={game.title}
                     status={game.status}
                     onGameClick={() => handleGameClick(game.id, game.title)}
-                    isModuleNotStarted={isModuleNotStarted}
-                    isModuleBlocked={isModuleBlocked}
                     isFirstGame={isFirstGame}
                   />
                 );
@@ -238,12 +236,10 @@ type LessonItemProps = {
   title: string;
   status: 'completed' | 'blocked' | 'in_progress' | 'available';
   onGameClick?: () => void;
-  isModuleNotStarted: boolean;
-  isModuleBlocked: boolean;
   isFirstGame?: boolean;
 };
 
-function LessonItem({ image, title, status, onGameClick, isModuleNotStarted, isModuleBlocked, isFirstGame = false }: LessonItemProps) {
+function LessonItem({ image, title, status, onGameClick, isFirstGame = false }: LessonItemProps) {
   const { t } = useTranslation();
   
   const statusColor = {

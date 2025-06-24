@@ -32,7 +32,7 @@ export function ChildStatisticsPage() {
     );
   }
 
-  const displayName = formatDisplayName(sessionChild.firstname, sessionChild.lastname, 30);
+  const displayName = formatDisplayName(sessionChild.firstname, '', 30);
 
   return (
     <div className="min-h-screen text-white p-4 md:p-8">

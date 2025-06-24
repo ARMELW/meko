@@ -68,13 +68,13 @@ export function Header() {
     };
 
     const displayName = sessionChild 
-        ? formatDisplayName(sessionChild.firstname, sessionChild.lastname, 25)
+        ? formatDisplayName(sessionChild.firstname, '' , 25)
         : session?.user?.name || 'User';
     const shortDisplayName = sessionChild 
-        ? formatDisplayName(sessionChild.firstname, sessionChild.lastname, 15)
+        ? formatDisplayName(sessionChild.firstname, '', 15)
         : session?.user?.name || 'User';
     const mobileDisplayName = sessionChild 
-        ? formatDisplayName(sessionChild.firstname, sessionChild.lastname, 12)
+        ? formatDisplayName(sessionChild.firstname, '', 12)
         : session?.user?.name || 'User';
     const displayImage = sessionChild ? sessionChild.avatarUrl : session?.user?.image;
 

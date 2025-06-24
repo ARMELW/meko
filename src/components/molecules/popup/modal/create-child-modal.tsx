@@ -8,12 +8,8 @@ import { ControlledDateTimePicker } from '../../form/controlled-date-picker';
 
 type ChilCreationForm = {
   firstName: string;
-  lastName: string;
   birthDate: string;
 };
-
-
-
 
 function CloseCard() {
   return (
@@ -28,16 +24,13 @@ function CloseCard() {
   )
 }
 
-
 function CreateChildModal() {
-
   const {
     control,
     handleSubmit
   } = useForm<ChilCreationForm>({
     defaultValues: {
       firstName: '',
-      lastName: '',
       birthDate: ''
     },
     mode: "onSubmit",
@@ -77,20 +70,7 @@ function CreateChildModal() {
                 <div className="input-container w-full">
                   <Label uppercase>
                     <span className="text-[13px]">
-                      Nom de l’enfant
-                    </span>
-                  </Label>
-                  <ControlledTextInput
-                    name="lastName"
-                    control={control}
-                    size="w-full"
-                  />
-                </div>
-
-                <div className="input-container w-full">
-                  <Label uppercase>
-                    <span className="text-[13px]">
-                      Prenom de l’enfant
+                      Prénom de l'enfant
                     </span>
                   </Label>
                   <ControlledTextInput

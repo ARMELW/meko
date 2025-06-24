@@ -17,7 +17,6 @@ import { DialogTrigger } from '@radix-ui/react-dialog';
 import { useChildrenStore } from '@/app/children/store';
 const defaultValues: ChildrenPayload = {
     firstname: "",
-    lastname: "",
     birthday: "",
 };
 interface EditChildProps {
@@ -45,7 +44,6 @@ const EditChild = ({ childToEdit, setChildToEdit, onClose }: EditChildProps) => 
     useEffect(() => {
         if (childToEdit) {
             setValue("firstname", childToEdit.firstname);
-            setValue("lastname", childToEdit.lastname);
             const formattedDate = new Date(childToEdit.birthday).toISOString().split('T')[0];
             setValue("birthday", formattedDate);
         }

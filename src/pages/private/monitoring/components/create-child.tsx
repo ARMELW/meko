@@ -17,7 +17,6 @@ import { LoadingButton } from '@/components/atoms/actions/loading-button';
 import ChildrenForm from './child-form';
 const defaultValues: ChildrenPayload = {
     firstname: "",
-    lastname: "",
     birthday: "",
 };
 const CreateChild = () => {

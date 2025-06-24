@@ -3,8 +3,6 @@ export const addChildrenSchema = z.object({
   firstname: z
     .string()
     .min(1, "auth.errors.firstName.required"),
-  lastname: z
-    .string(),
   birthday: z
     .string()
     .min(1, "birthday.required")
@@ -16,7 +14,8 @@ export const childrenSchema = z.object({
     .string()
     .min(1, "auth.errors.firstName.required"),
   lastname: z
-    .string(),
+    .string()
+    .optional(),
   birthday: z
     .string()
     .min(1, "birthday.required"),

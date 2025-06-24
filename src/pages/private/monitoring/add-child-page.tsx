@@ -13,7 +13,6 @@ import { ControlledDateTimePicker } from "@/components/molecules/form/controlled
 
 const defaultValues: ChildrenPayload = {
     firstname: "",
-    lastname: "",
     birthday: "",
 };
 function AddChildPage() {
@@ -53,7 +52,7 @@ function AddChildPage() {
                     {t('onboarding.createChild.subtitle')}
                 </Typography>
 
-                <div className="grid  grid-cols-2 gap-4">
+                <div className="w-full">
                     <div className="input-container">
                         <Label uppercase>
                             <span className="text-[13px]">
@@ -65,20 +64,6 @@ function AddChildPage() {
                             size="small"
                             control={control}
                             placeholder={t('onboarding.createChild.placeholders.firstName')}
-                            disabled={isCreating}
-                        />
-                    </div>
-                    <div className="input-container">
-                        <Label uppercase>
-                            <span className="text-[13px]">
-                                {t('onboarding.createChild.lastName')}
-                            </span>
-                        </Label>
-                        <ControlledTextInput
-                            name="lastname"
-                            size="small"
-                            control={control}
-                            placeholder={t('onboarding.createChild.placeholders.lastName')}
                             disabled={isCreating}
                         />
                     </div>
