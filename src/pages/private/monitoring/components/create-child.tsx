@@ -37,12 +37,21 @@ const CreateChild = () => {
     });
 
     const onSubmit = async (data: ChildrenPayload) => {
-        await create(data);
-        invalidate(["avatars"]);
-        invalidateChildren(); // Invalide le cache des enfants du parent
-        reset();
-        close();
-        navigate('/profile/avatar');
+        await create(data, {
+            onSuccess: (child) => {
+                invalidate(["avatars"]);
+                invalidateChildren();
+                reset();
+                close();
+                if (child && child.id && child.firstname) {
+                    navigate("/profile/avatar", { state: { 
+                        signUp: true,
+                        id: child.id,
+                        firstname: child.firstname
+                    } });
+                }
+            }
+        });
     };
 
     const handleOpenChange = (isOpen: boolean) => {

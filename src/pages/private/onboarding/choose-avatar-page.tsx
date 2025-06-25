@@ -23,6 +23,9 @@ function ChooseAvatarPage() {
   const login = useChildrenSession(state => state.login);
   const clearCurrentChild = useChildrenStore(state => state.clearCurrentChild);
 
+  const childId = location.state?.id || sessionChild?.id || '';
+  const childFirstname = location.state?.firstname || sessionChild?.firstname || '';
+
   useEffect(() => {
     if (!signUp) {
       navigate("/profile/choose");
@@ -30,18 +33,20 @@ function ChooseAvatarPage() {
   }, [selectedChild, navigate]);
 
   const handleChoice = async (avatar: Avatar) => {
-    if (!sessionChild) {
+    if (!childId) {
       return;
     }
     try {
       await select({
-        id: sessionChild?.id || '',
+        id: childId,
         avatarUrl: avatar.url
       });
       // Met à jour la session seulement si l'enfant n'a pas d'avatar ou si l'avatar change
-      if (!sessionChild.avatarUrl || sessionChild.avatarUrl !== avatar.url) {
+      if (!sessionChild?.avatarUrl || sessionChild.avatarUrl !== avatar.url) {
         login({
           ...sessionChild,
+          id: childId,
+          firstname: childFirstname,
           avatarUrl: avatar.url
         });
       }
@@ -55,7 +60,9 @@ function ChooseAvatarPage() {
         icon: '✅'
       })
      clearCurrentChild(); 
-     navigate("/profile/choose");
+     setTimeout(() => {
+       navigate("/profile/choose");
+     }, 0);
     } catch (error) {
       console.error('Erreur lors de la sélection de l\'avatar:', error);
     }
