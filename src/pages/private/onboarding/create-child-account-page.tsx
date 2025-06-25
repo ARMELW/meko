@@ -55,20 +55,14 @@ function CreateChildAccountPage() {
         </Typography>
 
         <div className="w-full">
-          <div className="input-container">
-            <Label uppercase>
-              <span className="text-[13px]">
-                {t('onboarding.createChild.placeholders.lastName')}
-              </span>
-            </Label>
             <ControlledTextInput
               name="firstname"
               size="small"
+              className="w-full"
               control={control}
               placeholder={t('onboarding.createChild.placeholders.lastName')}
               disabled={isCreating}
             />
-          </div>
         </div>
 
         <div className="w-full">

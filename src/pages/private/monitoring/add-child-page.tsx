@@ -61,6 +61,7 @@ function AddChildPage() {
                         <ControlledTextInput
                             name="firstname"
                             size="small"
+                            className="w-full"
                             control={control}
                             placeholder={t('onboarding.createChild.placeholders.lastName')}
                             disabled={isCreating}

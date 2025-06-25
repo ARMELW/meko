@@ -110,7 +110,7 @@ function CreateParentAccountPage() {
               disabled={isSubmitted || isProcessing}
             />
           </div>
-          <div className="input-container w-[50%]">
+          <div className="input-container">
             <Label uppercase>
               <span className="text-[13px]">
                 {t('auth.lastName')}
