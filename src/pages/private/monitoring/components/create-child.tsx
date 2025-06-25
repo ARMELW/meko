@@ -15,12 +15,14 @@ import {
 } from "@/components";
 import { LoadingButton } from '@/components/atoms/actions/loading-button';
 import ChildrenForm from './child-form';
+import { useNavigate } from 'react-router';
 const defaultValues: ChildrenPayload = {
     firstname: "",
     birthday: "",
 };
 const CreateChild = () => {
     const { t } = useTranslation();
+    const navigate = useNavigate();
     const { create, isCreating, invalidate } = useChildrenActions();
     const { open, mode, openCreate, close } = useModalStore();
     const makeOpen = !!(open && mode == 'create')
@@ -39,6 +41,7 @@ const CreateChild = () => {
         invalidate(["avatars"]);
         reset();
         close();
+        navigate('/profile/avatar');
     };
 
     const handleOpenChange = (isOpen: boolean) => {

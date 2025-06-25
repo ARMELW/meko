@@ -35,6 +35,7 @@ function VerifyOtpPage() {
   const onSubmit = async (data: OtpFormData) => {
     try {
       setLoading(true);
+      
       await initiateVerifyOtpLogin({
         email: email,
         otp: data.otp,
@@ -42,19 +43,20 @@ function VerifyOtpPage() {
         isSignUp,
         firstName,
         lastName
-      }).then(() => {
+      });
+      
+      // Navigation seulement si la vérification a réussi
       if (isSignUp) {
         navigate("/profile/create-child");
       } else {
         navigate("/profile/choose");
       }
-      setLoading(false);
-      });
-      
       
     } catch (error) {
-      setLoading(false);
+      // En cas d'erreur, ne pas naviguer et afficher l'erreur
       handleSimpleApiError(error);
+    } finally {
+      setLoading(false);
     }
   };
 

@@ -17,7 +17,7 @@ const ChildrenForm = ({ control, isLoading }: ChildrenFormProps) => {
       <div className="w-full">
         <Label uppercase>
           <span className="text-[13px] uppercase">
-            {t('monitoring.children.create.firstName')}
+            {t('monitoring.children.create.lastName')}
           </span>
         </Label>
         <ControlledTextInput
@@ -25,7 +25,7 @@ const ChildrenForm = ({ control, isLoading }: ChildrenFormProps) => {
           size="small"
           control={control}
           className="custom-input w-full"
-          placeholder={t('monitoring.children.create.placeholders.firstName')}
+          placeholder={t('monitoring.children.create.placeholders.lastName')}
           disabled={isLoading}
         />
       </div>

@@ -58,14 +58,14 @@ function CreateChildAccountPage() {
           <div className="input-container">
             <Label uppercase>
               <span className="text-[13px]">
-                {t('onboarding.createChild.firstName')}
+                {t('onboarding.createChild.placeholders.lastName')}
               </span>
             </Label>
             <ControlledTextInput
               name="firstname"
               size="small"
               control={control}
-              placeholder={t('onboarding.createChild.placeholders.firstName')}
+              placeholder={t('onboarding.createChild.placeholders.lastName')}
               disabled={isCreating}
             />
           </div>

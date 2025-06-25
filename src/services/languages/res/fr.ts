@@ -122,6 +122,13 @@ const fr = {
       connect: 'Se connecter',
 	  signUp: 'Créer un compte',
       alreadyHaveAccount: 'Vous avez déjà un compte ?',
+      verification: {
+         success: {
+            signup: 'Compte créé avec succès !',
+            login: 'Connexion réussie !',
+            description: 'Bienvenue sur Meko Academy'
+         }
+      },
       errors: {
          email: {
             required: 'L\'email est requis',

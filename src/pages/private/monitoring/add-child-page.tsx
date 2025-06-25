@@ -7,7 +7,6 @@ import { useForm } from "react-hook-form";
 import { useChildrenActions } from '../../../app/children/hooks/use-children-actions';
 import { LoadingButton } from "@/components/atoms/actions/loading-button";
 import { useNavigate } from "react-router";
-import { useChildrenStore } from "@/app/children/store";
 import { useTranslation } from "react-i18next";
 import { ControlledDateTimePicker } from "@/components/molecules/form/controlled-date-picker";
 
@@ -56,14 +55,14 @@ function AddChildPage() {
                     <div className="input-container">
                         <Label uppercase>
                             <span className="text-[13px]">
-                                {t('onboarding.createChild.firstName')}
+                                {t('onboarding.createChild.lastName')}
                             </span>
                         </Label>
                         <ControlledTextInput
                             name="firstname"
                             size="small"
                             control={control}
-                            placeholder={t('onboarding.createChild.placeholders.firstName')}
+                            placeholder={t('onboarding.createChild.placeholders.lastName')}
                             disabled={isCreating}
                         />
                     </div>
