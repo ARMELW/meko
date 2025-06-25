@@ -7,11 +7,19 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { API_ENDPOINTS } from "@/config/api";
 import { toast } from "sonner";
 import { useChildrenStore } from "../store";
+import { useLastActivityActions } from '@/app/game-sessions/hooks/use-last-activity-actions';
+import { useNavigate } from 'react-router';
+import { useSession } from '@/services/session/store';
 
 export const useChildrenActions = () => {
     const { t } = useTranslation();
     const currentChild = useChildrenStore(state => state.currentChild);
     const queryClient = useQueryClient();
+    const { invalidateLastActivity } = useLastActivityActions();
+    const clearCurrentChild = useChildrenStore((state) => state.clearCurrentChild);
+    const { logout } = useSession();
+    const navigate = useNavigate();
+
     const mutations = useMutations<Children, ChildrenPayload>({
         service: childrenService,
         queryKeys: childrenKeys,
@@ -33,6 +41,14 @@ export const useChildrenActions = () => {
         }
     });
 
+
+    const handleAfterDelete = (deletedChildId?: string) => {
+        invalidateLastActivity(deletedChildId);
+        logout();
+        clearCurrentChild();
+        navigate('/profile/choose');
+    };
+
     const { mutate: verifyAndDelete, isPending: isVerifyingDelete } = useMutation({
         mutationFn: async (payload: DeleteVerificationPayload) => {
             const response = await childrenService.delete(API_ENDPOINTS.children.verifyDelete(currentChild?.id || ''), { data: payload });
@@ -41,6 +57,7 @@ export const useChildrenActions = () => {
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: childrenKeys.lists() });
             toast.success(t('monitoring.children.confirmDelete.success'));
+            handleAfterDelete(currentChild?.id);
         },
         onError: () => {
             toast.error(t('monitoring.children.confirmDelete.error'));
