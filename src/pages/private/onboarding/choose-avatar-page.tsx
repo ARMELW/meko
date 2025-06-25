@@ -41,8 +41,8 @@ function ChooseAvatarPage() {
         id: childId,
         avatarUrl: avatar.url
       });
-      // Met à jour la session seulement si l'enfant n'a pas d'avatar ou si l'avatar change
-      if (!sessionChild?.avatarUrl || sessionChild.avatarUrl !== avatar.url) {
+      // Met à jour la session seulement si l'enfant n'a pas d'avatar ou si l'avatar change, et si ce n'est pas un sign up
+      if (!signUp && (!sessionChild?.avatarUrl || sessionChild.avatarUrl !== avatar.url)) {
         login({
           ...sessionChild,
           id: childId,
