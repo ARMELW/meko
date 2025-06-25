@@ -17,7 +17,7 @@ function ChooseAvatarPage() {
   const sessionChild = useChildrenSession(state => state.selectedChild);
   const selectedChild = useChildrenStore(state => state.currentChild);
 
-   const signUp = location.state?.signUp || selectedChild; 
+   const signUp = location.state?.signUp || selectedChild ; 
   const login = useChildrenSession(state => state.login);
   const clearCurrentChild = useChildrenStore(state => state.clearCurrentChild);
 

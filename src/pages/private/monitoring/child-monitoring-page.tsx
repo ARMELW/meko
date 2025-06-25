@@ -123,6 +123,7 @@ function ChildMonitoringPage() {
             <div className="flex items-center space-x-2">
               {currentChild && (
                 <EditChild
+                  key={currentChild.id}
                   childToEdit={currentChild}
                   setChildToEdit={switchCurrentChild}
                   onClose={handleCloseEdit}
