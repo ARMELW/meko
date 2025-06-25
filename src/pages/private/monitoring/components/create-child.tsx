@@ -1,8 +1,7 @@
-
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Plus } from 'lucide-react';
-import { addChildrenSchema, ChildrenPayload, useChildrenActions } from '@/app/children';
+import { addChildrenSchema, ChildrenPayload, useChildrenActions, useChildren } from '@/app/children';
 import useModalStore from '@/app/children/modal';
 import { useTranslation } from 'react-i18next';
 import {
@@ -25,6 +24,7 @@ const CreateChild = () => {
     const navigate = useNavigate();
     const { create, isCreating, invalidate } = useChildrenActions();
     const { open, mode, openCreate, close } = useModalStore();
+    const { invalidate: invalidateChildren } = useChildren();
     const makeOpen = !!(open && mode == 'create')
     const {
         control,
@@ -39,6 +39,7 @@ const CreateChild = () => {
     const onSubmit = async (data: ChildrenPayload) => {
         await create(data);
         invalidate(["avatars"]);
+        invalidateChildren(); // Invalide le cache des enfants du parent
         reset();
         close();
         navigate('/profile/avatar');

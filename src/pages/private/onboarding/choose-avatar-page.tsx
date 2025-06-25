@@ -7,6 +7,7 @@ import { useEffect } from "react";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
 import { useSession as useChildrenSession } from '@/services/session/store';
+import { useChildren } from "@/app/children";
 
 function ChooseAvatarPage() {
   const { t } = useTranslation();
@@ -16,7 +17,8 @@ function ChooseAvatarPage() {
   const { select } = useAvatarActions();
   const sessionChild = useChildrenSession(state => state.selectedChild);
   const selectedChild = useChildrenStore(state => state.currentChild);
-
+  const { invalidate } = useChildren();
+  
    const signUp = location.state?.signUp || selectedChild ; 
   const login = useChildrenSession(state => state.login);
   const clearCurrentChild = useChildrenStore(state => state.clearCurrentChild);
@@ -31,16 +33,21 @@ function ChooseAvatarPage() {
     if (!sessionChild) {
       return;
     }
-    console.log('Avatar selected:', avatar);
     try {
       await select({
         id: sessionChild?.id || '',
         avatarUrl: avatar.url
       });
-      login({
-        ...sessionChild,
-        avatarUrl: avatar.url
-      });
+      // Met à jour la session seulement si l'enfant n'a pas d'avatar ou si l'avatar change
+      if (!sessionChild.avatarUrl || sessionChild.avatarUrl !== avatar.url) {
+        login({
+          ...sessionChild,
+          avatarUrl: avatar.url
+        });
+      }
+      if (typeof invalidate === 'function') {
+        invalidate(); // Invalide le cache des enfants pour forcer le refresh
+      }
       toast(t('onboarding.avatar.success'), {
         position: 'bottom-right',
         description: t('onboarding.avatar.successDescription'),
