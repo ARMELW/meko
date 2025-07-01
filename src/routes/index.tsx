@@ -34,6 +34,7 @@ import { UiPage } from "@/pages/ui-page";
 import { VerifyOtpPage } from "@/pages/public/auth/verify-otp-page";
 import { Header } from "@/components/molecules/layout/header";
 import Footer from '@/components/molecules/layout/footer';
+import GameSearchPage from '@/pages/private/game-search-page';
 
 const privateRoutes: RouteObject[] = [
 	{
@@ -151,6 +152,10 @@ const privateRoutes: RouteObject[] = [
 			},
 		],
 	},
+	{
+		path: "/games/search",
+		element: <GameSearchPage />,
+	}
 
 
 ];

@@ -1,9 +1,5 @@
-import { useNavigate } from 'react-router';
 import { useTranslation } from 'react-i18next';
-import { Card, CardContent, Typography } from '@/components';
-import { LoadingButton } from '@/components/atoms/actions/loading-button';
-import { Separator } from '@radix-ui/react-select';
-
+import { Typography } from '@/components';
 export function SubscriptionManagementPage() {
   const { t } = useTranslation();
 

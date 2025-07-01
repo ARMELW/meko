@@ -8,13 +8,13 @@ import { useSession as useChildrenSession } from '@/services/session/store';
 import { Typography } from '@/components/atoms/typography/typography';
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 import UserAvatar from '@/components/atoms/view/user-avatar';
-import { Input } from '@/components/atoms/forms/input';
 import { NavItem } from '@/components/atoms/actions/nav-item';
 import { LastActivityIcon } from '@/components/atoms/icons/last-activity-icon';
 import { StatisticIcon } from '@/components/atoms/icons/statistic-icon';
 import { LastActivityModal, useLastActivity } from '@/app/game-sessions';
 import { GameSimulationModal } from '@/app/game-sessions';
 import { formatDisplayName } from '@/utils/text';
+import { SearchInput } from '@/components/molecules/form/search-input';
 
 export function Header() {
     const { t } = useTranslation();
@@ -358,16 +358,7 @@ export function Header() {
                     {(sessionChild && isAuthenticated) && (
                         <div className="flex flex-row">
                             {renderChildrenOptions()}
-                            <Input
-                                type="text"
-                                size='small'
-                                name="search"
-                                placeholder={t('common.search')}
-                                className="ml-4 w-48 lg:w-64 bg-meko-blue-transparent-2 text-white focus:border-meko-blue-light-1 focus:border-2 outline-none rounded-lg px-3 py-1"
-                                onChange={(e) => {
-                                    console.log(e.target.value);
-                                }}
-                            />
+                            <SearchInput />
                         </div>
                     )}
                 </div>

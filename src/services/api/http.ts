@@ -20,6 +20,26 @@ export interface BaseService<T, TPayload> {
   modify(id: string, payload: Partial<TPayload>): Promise<ApiResponse<T>>;
   remove(id: string): Promise<ApiResponse>;
 }
+export async function fetchApi<R>(url: string, options: RequestInit): Promise<R> {
+  const response = await fetch(`${import.meta.env.VITE_APP_SERVER_URL || 'https://dev-api.meko.ac'}/${url}`, {
+    ...options,
+    credentials: 'include',
+  });
+
+  if (!response.ok) {
+    try {
+      const errorData = await response.json();
+      throw new Error(
+        errorData.message ||
+        `Request failed with status ${response.status}: ${response.statusText}`
+      );
+    } catch {
+      throw new Error(`Request failed with status ${response.status}: ${response.statusText}`);
+    }
+  }
+
+  return response.json();
+}
 
 export abstract class BaseServiceImpl<T, TPayload> implements BaseService<T, TPayload> {
   protected abstract endpoints: ResourceEndpoints;
@@ -27,26 +47,7 @@ export abstract class BaseServiceImpl<T, TPayload> implements BaseService<T, TPa
   protected abstract serializeParams(filter: Filter): string;
 
   protected async fetchData<R>(url: string, options: RequestInit): Promise<R> {
-    const response = await fetch(`${import.meta.env.VITE_APP_SERVER_URL || 'https://dev-api.meko.ac'}/${url}`, {
-      ...options,
-      credentials: 'include',
-
-    });
-
-    if (!response.ok) {
-      try {
-        const errorData = await response.json();
-        throw new Error(
-          errorData.message ||
-          `Request failed with status ${response.status}: ${response.statusText}`
-        );
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      } catch (err) {
-        throw new Error(`Request failed with status ${response.status}: ${response.statusText}`);
-      }
-    }
-
-    return response.json();
+    return fetchApi<R>(url, options);
   }
 
   get<R>(endpoint: string): Promise<R> {

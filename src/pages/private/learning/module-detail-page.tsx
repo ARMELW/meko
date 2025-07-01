@@ -55,8 +55,6 @@ function ModuleDetailPage() {
   if (!moduleDetail) return <ErrorDisplay message={t('modules.detail.notFound')} />;
 
   const moduleStatus = moduleDetail.status;
-  const isModuleNotStarted = moduleStatus === 'not_started';
-  const isModuleBlocked = moduleStatus === 'blocked';
 
   const statusColors = {
     'not_started': 'bg-[#000F4799] text-white',
@@ -95,9 +93,9 @@ function ModuleDetailPage() {
           <Typography as="h3" shadow={null}>
             {moduleDetail.moduleName}
           </Typography>
-          <Typography 
-            as="span" 
-            styleCase={"uppercase"} 
+          <Typography
+            as="span"
+            styleCase={"uppercase"}
             className={`inline-block px-2 py-0.5 text-xs font-semibold ${statusColors[moduleStatus]}`}
           >
             {t(`modules.status.${moduleStatus}`)}
@@ -165,10 +163,10 @@ function ModuleDetailPage() {
       <div className="relative border-l-8 border-[#08488b] ml-6">
         {moduleDetail.lessons.map((lesson, lessonIndex) => {
           const isLessonBlocked = lesson.games.every(game => game.status === 'blocked');
-          
+
           return (
             <div key={lesson.id} className="relative mb-10 pl-20">
-              <div className={`absolute -left-12 w-24 top-0 ${isLessonBlocked ? 'text-[#0040B6]': 'text-white'} font-bold text-sm z-10 bg-[#08488b]`}>
+              <div className={`absolute -left-12 w-24 top-0 ${isLessonBlocked ? 'text-[#0040B6]' : 'text-white'} font-bold text-sm z-10 bg-[#08488b]`}>
                 <div className="w-full relative px-2 py-1">
                   <div className={`absolute w-full top-[-6px] left-0 h-3 z-0 bg-[#08488b]`} style={{ transform: "skew(0deg, -5deg)" }}></div>
                   <div className="w-full relative z-10">
@@ -182,16 +180,15 @@ function ModuleDetailPage() {
                     >
                       {t('modules.detail.lesson')}
                     </Typography>
-                    <Typography 
-                      as="h1" 
-                      className={`text-lg ${
-                        isLessonBlocked 
-                          ? 'text-[#0040B6] opacity-50' 
-                          : 'bg-gradient-to-r from-[#FA4616] to-[#FF7F32] bg-clip-text !text-transparent'
-                      }`} 
-                      weight={"bold"} 
-                      shadow={"sm"} 
-                      align="center" 
+                    <Typography
+                      as="h1"
+                      className={`text-lg ${isLessonBlocked
+                        ? 'text-[#0040B6] opacity-50'
+                        : 'bg-gradient-to-r from-[#FA4616] to-[#FF7F32] bg-clip-text !text-transparent'
+                        }`}
+                      weight={"bold"}
+                      shadow={"sm"}
+                      align="center"
                       styleCase={"uppercase"}
                     >
                       {lesson.order}
@@ -202,7 +199,7 @@ function ModuleDetailPage() {
 
               <div className="space-y-3">{lesson.games.map((game, gameIndex) => {
                 const isFirstGame = lessonIndex === 0 && gameIndex === 0;
-                
+
                 return (
                   <LessonItem
                     key={game.id}
@@ -214,8 +211,8 @@ function ModuleDetailPage() {
                   />
                 );
               })}
+              </div>
             </div>
-          </div>
           );
         })}
       </div>
@@ -237,11 +234,13 @@ type LessonItemProps = {
   status: 'completed' | 'blocked' | 'in_progress' | 'available';
   onGameClick?: () => void;
   isFirstGame?: boolean;
+  moduleTitle?: string;
+  lessonOrder?: number;
 };
 
-function LessonItem({ image, title, status, onGameClick, isFirstGame = false }: LessonItemProps) {
+export function LessonItem({ image, title, status, onGameClick, isFirstGame = false, moduleTitle, lessonOrder }: LessonItemProps) {
   const { t } = useTranslation();
-  
+
   const statusColor = {
     not_started: 'bg-[#000F4799] text-white',
     completed: 'bg-[#00AF42] text-white',
@@ -261,34 +260,54 @@ function LessonItem({ image, title, status, onGameClick, isFirstGame = false }: 
     <Card style={{ boxShadow: "rgb(255 255 255 / 19%) 0px -1px 1px" }}>
       <CardContent className="p-2">
         <div className="flex items-center gap-4 pe-3">
-          <img 
-            src={image} 
-            alt={title} 
-            className={`w-[120px] h-[120px] object-cover rounded-xl ${
-              isGameBlocked ? 'grayscale opacity-50' : ''
-            }`} 
+          <img
+            src={image}
+            alt={title}
+            className={`w-[120px] h-[120px] object-cover rounded-xl ${isGameBlocked ? 'grayscale opacity-50' : ''
+              }`}
           />
           <div className="flex-1">
-            <h3 className={`font-bold text-sm uppercase ${
-              isGameBlocked ? 'text-gray-400' : 'text-white'
-            }`}>
+            <h3 className={`font-bold text-sm uppercase ${isGameBlocked ? 'text-gray-400' : 'text-white'
+              }`}>
               {title}
             </h3>
             <span className={`inline-block ${statusColor[status]} px-2 py-0.5 rounded text-xs`}>
               {getStatusText(status)}
             </span>
+            <div className="flex flex-col  mt-2">
+              <div className="flex flex-row">
+                <h3  className="text-meko-blue-light-3 text-sm">
+                  Module :
+                </h3>
+                {moduleTitle && (
+                  <Typography as="p" className="text-white px-2 text-sm">
+                    {moduleTitle}
+                  </Typography>
+                )}
+              </div>
+              <div className="flex flex-row">
+                <h3 className="text-meko-blue-light-3 text-sm">
+                  Lécon :
+                </h3>
+                {lessonOrder && (
+                  <Typography as="p" className="text-white px-2 text-sm">
+                    {lessonOrder}
+                  </Typography>
+                )}
+              </div>
+            </div>
           </div>
 
           <LoadingButton
-            onClick={onGameClick} 
+            onClick={onGameClick}
             disabled={isGameBlocked}
             className={isGameBlocked ? 'opacity-75 cursor-not-allowed relative' : ''}
           >
             {isGameBlocked && (
-              <img 
-                src="/assets/images/icons/lock.png" 
-                alt="Locked" 
-                className="absolute top-1 -right-4 w-12 h-12 z-10" 
+              <img
+                src="/assets/images/icons/lock.png"
+                alt="Locked"
+                className="absolute top-1 -right-4 w-12 h-12 z-10"
               />
             )}
             <Typography as="span" styleCase={"uppercase"} shadow={"sm"} weight={"bold"}>

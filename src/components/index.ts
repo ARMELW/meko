@@ -61,6 +61,7 @@ import { CardSample } from "./atoms/view/card-sample";
 import { PopoverSample } from "./atoms/floating/popover-sample";
 import { DialogSample } from "./atoms/floating/dialog-sample";
 import { NavItem } from "./atoms/actions/nav-item";
+export * from './controlled-text-input';
 
 export const Sample = {
 	Table: {
