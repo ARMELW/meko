@@ -11,6 +11,14 @@ import { format } from "date-fns";
 import { fr } from "date-fns/locale";
 import { truncateText } from "@/utils/text";
 import { useChildMonitoringSwitch } from "./hooks/use-child-monitoring-switch";
+import { useLastActivity } from '@/app/game-sessions';
+import { LastActivitySummary } from '@/app/game-sessions/components/last-activity-summary';
+import { useProgressSummary } from '@/app/children/hooks/use-progress-summary';
+import { CircularProgress } from '@/components/atoms/view/circular-progress';
+import { useGamesStats } from '@/app/children/hooks/use-games-stats';
+import { useTranslation } from 'react-i18next';
+import StatusPieChart, { StatusPieData } from '@/components/atoms/view/progress-pie-chart';
+import ChildStatsSection from '@/app/children/components/child-stats-section';
 
 
 function ChildMonitoringPage() {
@@ -22,7 +30,7 @@ function ChildMonitoringPage() {
 
   const handleCloseEdit = () => {
     clearCurrentChild();
-    invalidate(); 
+    invalidate();
   };
 
   const formatted = useMemo(() => {
@@ -43,7 +51,7 @@ function ChildMonitoringPage() {
         }
       } else {
         // Par défaut, sélectionner l'enfant de la session, sinon le premier
-        const defaultChild = selectedChild 
+        const defaultChild = selectedChild
           ? formatted.find(child => child.id === selectedChild.id) || formatted[0]
           : formatted[0];
         switchCurrentChild(defaultChild);
@@ -51,22 +59,48 @@ function ChildMonitoringPage() {
     }
   }, [formatted, currentChild, selectedChild, switchCurrentChild]);
 
+  const { data: lastActivityData } = useLastActivity(currentChild?.id || '');
+  const { data: progressSummary } = useProgressSummary(currentChild?.id);
+  const { data: gamesStats } = useGamesStats(currentChild?.id);
+  const { t } = useTranslation();
+
+  // Mapping des statuts pour le pie chart
+  const statusColors = {
+    blocked: '#f87171',
+    completed: '#60a5fa',
+    in_progress: '#fbbf24',
+    not_started: '#a3a3a3'
+  };
+  const statusLabels = {
+    blocked: t('modules.status.blocked', 'Bloqué'),
+    completed: t('modules.status.completed', 'Terminé'),
+    in_progress: t('modules.status.in_progress', 'En cours'),
+    not_started: t('modules.status.not_started', 'Non commencé')
+  };
+  const pieData: StatusPieData[] = gamesStats?.data?.byStatus
+    ? Object.entries(gamesStats.data.byStatus).map(([name, value]) => ({
+      name,
+      value: Number(value),
+      color: statusColors[name as keyof typeof statusColors] || '#ccc',
+      label: statusLabels[name as keyof typeof statusLabels] || name
+    }))
+    : [];
+
   return <div className="min-h-screen text-white p-4 md:p-8">
     <div className="flex flex-col md:flex-row gap-6">
       <aside className="w-20 md:w-32 flex flex-col items-center gap-4 ">
         <div className="child-item-wrapper flex flex-col items-center justify-center">
           {formatted.map((children: Children, index: number) => (
-            <div className="mb-5  flex flex-col items-center justify-center">
-              <div key={index} onClick={() => switchCurrentChild(children)} className={`shadow-lg rounded-full w-[50px] overflow-hidden cursor-pointer ${children.id == currentChild?.id ? 'border-2 border-white' : ''}`}>
+            <div key={children.id} className="mb-5  flex flex-col items-center justify-center">
+              <div onClick={() => switchCurrentChild(children)} className={`shadow-lg rounded-full w-[50px] overflow-hidden cursor-pointer ${children.id == currentChild?.id ? 'border-2 border-white' : ''}`}>
                 <UserAvatar avatarUrl={children.avatarUrl} size={50} username={`${children.firstname} ${children.lastname}`} alt={`Avatar ${index + 1}`} />
-
               </div>
               <div className="text-center max-w-[70px]">
-                <Typography 
-                  as="span" 
-                  styleCase={"uppercase"} 
-                  weight={"bold"} 
-                  color={"secondary"} 
+                <Typography
+                  as="span"
+                  styleCase={"uppercase"}
+                  weight={"bold"}
+                  color={"secondary"}
                   className="text-sm truncate block"
                   title={children.firstname}
                 >
@@ -139,50 +173,56 @@ function ChildMonitoringPage() {
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mt-4">
           <Card className="bg-[#000F4799] p-4">
             <Typography as="span" styleCase={"uppercase"} color={"secondary"} weight={"bold"}>
-              Jeux terminés
+              {t('monitoring.children.progress.gamesCompleted')}
             </Typography>
             <Typography as="span" color={"default"} weight={"bold"} className="block text-[20px]">
-              12
+              {progressSummary?.data?.gamesCompleted ?? '-'}
             </Typography>
           </Card>
           <Card className="bg-[#000F4799] p-4">
             <Typography as="span" styleCase={"uppercase"} color={"secondary"} weight={"bold"}>
-              Jeux en cours
+              {t('monitoring.children.progress.gamesInProgress')}
             </Typography>
             <Typography as="span" color={"default"} weight={"bold"} className="block text-[20px]">
-              5
+              {progressSummary?.data?.gamesInProgress ?? '-'}
             </Typography>
+          </Card>
+          <Card className="bg-[#000F4799] p-4 flex flex-col items-center justify-center">
+            <Typography as="span" styleCase={"uppercase"} color={"secondary"} weight={"bold"}>
+              {t('monitoring.children.progress.progressPercent')}
+            </Typography>
+            <div className="flex items-center justify-center mt-2">
+              {progressSummary?.data?.progressPercent != null ? `${progressSummary.data.progressPercent}%` : '-'}
+            </div>
           </Card>
           <Card className="bg-[#000F4799] p-4">
             <Typography as="span" styleCase={"uppercase"} color={"secondary"} weight={"bold"}>
-              Progression
+              {t('monitoring.children.progress.totalTimeSpent')}
             </Typography>
-            <Typography as="span" color={"default"} weight={"bold"} className="block text-[20px]">
-              8.5%
-            </Typography>
-          </Card>
-          <Card className="bg-[#000F4799] p-4">
-            <Typography as="span" styleCase={"uppercase"} color={"secondary"} weight={"bold"}>
-              Temps passé
-            </Typography>
-            <Typography as="span" color={"default"} weight={"bold"} className="block text-[20px]">
-              32h 30mn
-            </Typography>
+            <div className="flex items-center justify-center mt-2">
+              {progressSummary?.data?.totalTimeSpent != null ? `${progressSummary.data.totalTimeSpent} min` : '-'}
+
+            </div>
           </Card>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-          <Card className="w-full bg-[#0040B6] transition-all duration-300">
+          <Card className="w-full bg-meko-blue-darker transition-all duration-300">
             <CardTitle
               title={"Dernière activité"}
               className="flex  justify-between items-center text-sm"
               titleColor={"default"}
             />
-
             <CardContent className="flex flex-col justify-center">
-
+              {lastActivityData?.data ? (
+                <LastActivitySummary
+                  lastActivity={lastActivityData.data}
+                  showActions={true}
+                />
+              ) : (
+                <Typography className="text-white text-center py-8">Aucune activité récente</Typography>
+              )}
             </CardContent>
-
           </Card>
           <Card className="w-full bg-[#0040B6] transition-all duration-300">
             <CardTitle
@@ -193,6 +233,7 @@ function ChildMonitoringPage() {
 
             <CardContent className="flex flex-col justify-center">
 
+              <StatusPieChart data={pieData} />
             </CardContent>
 
           </Card>
@@ -201,16 +242,7 @@ function ChildMonitoringPage() {
         </div>
 
         <Card className="bg-[#000F4799] p-4 mt-4">
-          <div className="flex flex-wrap justify-between text-sm">
-            <div className="mb-2">Modules terminés: 2</div>
-            <div className="mb-2">Leçons complétées: 8</div>
-            <div className="mb-2">Réussite aux jeux: 80%</div>
-            <div className="mb-2">Jeux joués: 36</div>
-            <div className="mb-2">Temps de jeu: 8h 21m</div>
-            <div className="mb-2">Temps moyen par jeu: 31m</div>
-            <div className="mb-2">Nb. sessions: 3</div>
-            <div className="mb-2">Durée moyenne session: 2h 05m</div>
-          </div>
+          <ChildStatsSection />
         </Card>
 
         <Card className="w-full bg-[#0040B6] transition-all duration-300 mt-4">
@@ -219,17 +251,14 @@ function ChildMonitoringPage() {
             className="flex  justify-between items-center text-sm"
             titleColor={"default"}
           />
-
           <CardContent className="flex flex-col justify-center">
-
+            {/* ...contenu progression par module... */}
           </CardContent>
-
         </Card>
+
 
       </main>
     </div>
-
-
   </div>;
 }
 

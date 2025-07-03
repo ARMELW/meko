@@ -32,6 +32,12 @@ const en = {
             verify: "Verify",
             verifying: "Verifying...",
             message: "Please confirm that you want to delete this account"
+         },
+         progress: {
+            gamesCompleted: "Games completed",
+            gamesInProgress: "Games in progress",
+            progressPercent: "Progress",
+            totalTimeSpent: "Time spent"
          }
       }
    },

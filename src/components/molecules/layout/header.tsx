@@ -1,6 +1,6 @@
 import { Button } from '@/components/atoms/actions/button';
 import { MenuOption } from '@/components/atoms/actions/menu-option';
-import { Link, useNavigate } from 'react-router';
+import { Link, useNavigate, useLocation } from 'react-router';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { authClient, useSession } from '@/config/auth';
@@ -19,6 +19,7 @@ import { SearchInput } from '@/components/molecules/form/search-input';
 export function Header() {
     const { t } = useTranslation();
     const navigate = useNavigate();
+    const location = useLocation();
     const { data: session } = useSession();
     const sessionChild = useChildrenSession(state => state.selectedChild);
     const logout = useChildrenSession(state => state.logout);
@@ -315,12 +316,18 @@ export function Header() {
                         sideOffset={5}
                         align="end"
                     >
+
                         <div className="bg-meko-blue-transparent-2 py-3 px-4 border-b border-meko-blue-transparent-1">
                             <Typography variant="small" weight="bold" styleCase="uppercase" color="default">
                                 {t('menu.childOptions.title')}
                             </Typography>
                         </div>
-                        
+                        <DropdownMenu.Item
+                            className="flex text-meko-blue-light-1 uppercase items-center hover:bg-meko-blue-transparent-1 px-4 py-2 text-xs cursor-pointer"
+                            onSelect={() => navigate('/monitoring')}
+                        >
+                            Tableau de bord
+                        </DropdownMenu.Item>
                         <DropdownMenu.Item
                             className="flex text-meko-blue-light-1 uppercase items-center hover:bg-meko-blue-transparent-1 px-4 py-2 text-xs cursor-pointer"
                             onSelect={() => navigate('/monitoring/child/subscriptions')}
@@ -343,6 +350,19 @@ export function Header() {
                 </DropdownMenu.Portal>
             </DropdownMenu.Root>
         );
+    }
+    // Liste des routes où le header doit être masqué
+    const hideHeaderRoutes = [
+        '/profile/choose',
+        '/profile/welcome',
+        '/profile/avatar',
+        '/profile/create-child',
+        '/onboarding/profile',
+        '/onboarding/welcome',
+        '/onboarding/avatar',
+    ];
+    if (hideHeaderRoutes.includes(location.pathname)) {
+        return null;
     }
     return (
         <div className="z-50 w-full">

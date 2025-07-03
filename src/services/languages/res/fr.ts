@@ -32,6 +32,12 @@ const fr = {
 				verify: "Vérifier",
 				verifying: "Vérification...",
 				message: "Veuillez confirmer la suppression de ce compte"
+			},
+			progress: {
+				gamesCompleted: "Jeux terminés",
+				gamesInProgress: "Jeux en cours",
+				progressPercent: "Progression",
+				totalTimeSpent: "Temps passé"
 			}
 		}
 	},
