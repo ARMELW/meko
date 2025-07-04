@@ -20,6 +20,8 @@ import StatusPieChart, { StatusPieData } from '@/components/atoms/view/progress-
 import ChildStatsSection from '@/app/children/components/child-stats-section';
 import { useChildActivityStats } from '@/app/children/hooks/use-child-activity-stats';
 import { LoadingSpinner } from '@/components/atoms/loading-spinner';
+import ModuleProgressTable from '@/app/children/components/module-progress-table';
+import { useModules } from '@/app/modules/hooks/use-modules';
 
 
 function ChildMonitoringPage() {
@@ -30,6 +32,7 @@ function ChildMonitoringPage() {
   const { switchCurrentChild } = useChildMonitoringSwitch();
   const [period, setPeriod] = useState<'7d' | '30d' | '6m'>('7d');
   const { data: activityStats, isLoading: isStatsLoading } = useChildActivityStats(currentChild?.id, period);
+  const { data: modulesData, isLoading: isModulesLoading } = useModules(currentChild?.id || '');
 
   const handleCloseEdit = () => {
     clearCurrentChild();
@@ -280,7 +283,24 @@ function ChildMonitoringPage() {
             titleColor={"default"}
           />
           <CardContent className="flex flex-col justify-center">
-            {/* ...contenu progression par module... */}
+            {isModulesLoading ? (
+              <div className="flex justify-center items-center py-8">
+                <LoadingSpinner size={32} />
+              </div>
+            ) : (
+              <ModuleProgressTable
+                modules={
+                  modulesData?.modules?.map((mod) => ({
+                    name: mod.name,
+                    coverUrl: mod.coverUrl,
+                    availableGames: mod.availableGames,
+                    inProgressGames: mod.inProgressGames ?? 0,
+                    completedGames: mod.completedGames,
+                    progressPercentage: mod.progressPercentage,
+                  })) || []
+                }
+              />
+            )}
           </CardContent>
         </Card>
 

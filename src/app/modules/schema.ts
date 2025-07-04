@@ -7,6 +7,7 @@ export const moduleSchema = z.object({
   description: z.string(),
   totalGames: z.number(),
   completedGames: z.number(),
+  inProgressGames: z.number(),
   availableGames: z.number(),
   blockedGames: z.number(),
   progressPercentage: z.number(),
