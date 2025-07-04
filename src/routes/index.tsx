@@ -1,4 +1,6 @@
-import { Outlet, RouteObject, useLocation } from "react-router";
+import { RouteObject } from "react-router";
+import PublicLayout from './public-layout';
+import PrivateLayout from './private-layout';
 
 import { LandingPage } from "@/pages/public/landing/landing-page";
 import { CreateParentAccountPage } from "@/pages/public/auth/create-parent-account-page";
@@ -32,30 +34,7 @@ import { NotFoundPage } from "@/pages/not-found-page";
 import { ProtectedLayout } from "./components/protected-layout";
 import { UiPage } from "@/pages/ui-page";
 import { VerifyOtpPage } from "@/pages/public/auth/verify-otp-page";
-import { Header } from "@/components/molecules/layout/header";
-import Footer from '@/components/molecules/layout/footer';
 import GameSearchPage from '@/pages/private/game-search-page';
-
-const hideFooterRoutes = [
-  '/profile/choose',
-  '/profile/welcome',
-  '/profile/avatar',
-  '/profile/create-child',
-  '/onboarding/profile',
-  '/onboarding/welcome',
-  '/onboarding/avatar',
-];
-
-function LayoutWithFooter({ children }: { children: React.ReactNode }) {
-  const location = useLocation();
-  if (hideFooterRoutes.includes(location.pathname)) {
-    return <>{children}</>;
-  }
-  return <>
-    {children}
-    <Footer />
-  </>;
-}
 
 const privateRoutes: RouteObject[] = [
 	{
@@ -181,64 +160,59 @@ const privateRoutes: RouteObject[] = [
 
 ];
 
-const routes: RouteObject[] = [
+const publicRoutes: RouteObject[] = [
 	{
-		element: (
-			<LayoutWithFooter>
-				<div className="px-4 lg:px-32 xl:px-32 min-h-screen">
-					<Header />
-					<div className="z-10 relative w-full h-full">
-						<Outlet />
-					</div>
-				</div>
-			</LayoutWithFooter>
-		),
+		path: '/ui',
+		element: <UiPage />,
+	},
+	{
+		path: '/',
 		children: [
 			{
-				path: "/ui",
-				element: <UiPage />,
+				index: true,
+				element: <LandingPage />,
 			},
 			{
-				path: "/",
-				children: [
-					{
-						index: true,
-						element: <LandingPage />,
-					},
-					{
-						path: "register",
-						element: <CreateParentAccountPage />,
-					},
-					{
-						path: "login",
-						element: <LoginPage />,
-					},
-					{
-						path: 'verify-otp',
-						element: <VerifyOtpPage />
-					},
-					{
-						path: "forgot-password",
-						element: <ForgotPasswordPage />,
-					},
-					{
-						path: "reset-password",
-						element: <CreateNewPasswordPage />,
-					},
-				],
+				path: 'register',
+				element: <CreateParentAccountPage />,
 			},
 			{
-				element: <ProtectedLayout />,
-				loader: async () => {
-					console.log("call loader");
-					await new Promise((resolve) => setTimeout(resolve, 3000));
-				},
-				children: privateRoutes,
+				path: 'login',
+				element: <LoginPage />,
 			},
-			// Optional: Catch-all route for unmatched top-level paths
+			{
+				path: 'verify-otp',
+				element: <VerifyOtpPage />,
+			},
+			{
+				path: 'forgot-password',
+				element: <ForgotPasswordPage />,
+			},
+			{
+				path: 'reset-password',
+				element: <CreateNewPasswordPage />,
+			},
+		],
+	},
+];
+
+const routes: RouteObject[] = [
+	{
+		element: <PublicLayout />, 
+		children: [
+			...publicRoutes,
 			{
 				path: "*",
 				element: <NotFoundPage />,
+			},
+		],
+	},
+	{
+		element: <ProtectedLayout />,
+		children: [
+			{
+				element: <PrivateLayout />,
+				children: privateRoutes,
 			},
 		],
 	},

@@ -37,7 +37,11 @@ const en = {
             gamesCompleted: "Games completed",
             gamesInProgress: "Games in progress",
             progressPercent: "Progress",
-            totalTimeSpent: "Time spent"
+            totalTimeSpent: "Time spent",
+            modules: "Module progress"
+         },
+         lastActivity: {
+            none: "No recent activity"
          }
       }
    },
@@ -78,7 +82,7 @@ const en = {
       home: 'Home',
       changeProfile: 'Change profile',
       changeAvatar: 'Change avatar',
-      search: 'Search',
+      search: 'Search game',
       back: 'Back',
       lastActivity: 'Last Activity',
       statistics: 'Statistics'
