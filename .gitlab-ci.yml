@@ -62,5 +62,5 @@ deploy-k8s:
         docker images --format '{{.Repository}} {{.ID}}' |grep '^registry.meko.ac/meko-academy-front-office' | awk '{print $2}' | xargs -r docker rmi -f # effacement ciblé des images in'util generer par docker pour le repos meko-backend
         docker buildx prune -f # effacement des caches
       EOF
-  only:
+  only: 
     - develop
