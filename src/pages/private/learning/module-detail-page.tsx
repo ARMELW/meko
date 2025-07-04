@@ -1,5 +1,5 @@
 import { Card, CardContent, Typography } from "@/components";
-import { useParams, useNavigate } from 'react-router';
+import { useParams, useNavigate, useLocation } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { ArrowLeft } from 'lucide-react';
 import { useModuleDetail } from '@/app/modules/hooks/use-module-detail';
@@ -7,13 +7,14 @@ import { useSession as useChildrenSession } from '@/services/session/store';
 import { LoadingDisplay, ErrorDisplay } from '@/app/modules/components/display-states';
 import { LoadingButton } from "@/components/atoms/actions/loading-button";
 import { GameSimulationModal } from '@/app/game-sessions/components/game-simulation-modal';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 function ModuleDetailPage() {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { moduleId } = useParams<{ moduleId: string }>();
   const { selectedChild } = useChildrenSession();
+  const location = useLocation();
 
   const [gameModalState, setGameModalState] = useState<{
     isOpen: boolean;
@@ -49,6 +50,19 @@ function ModuleDetailPage() {
   const handleGoBack = () => {
     navigate(-1);
   };
+
+  useEffect(() => {
+    const scrollToGameId = location.state?.scrollToGameId;
+    if (scrollToGameId && moduleDetail) {
+      // Cherche l'élément du jeu et scroll dessus
+      setTimeout(() => {
+        const el = document.getElementById(`game-${scrollToGameId}`);
+        if (el) {
+          el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      }, 300);
+    }
+  }, [location.state, moduleDetail]);
 
   if (isLoading) return <LoadingDisplay message={t('modules.loading')} />;
   if (error) return <ErrorDisplay message={t('modules.error')} />;
@@ -203,11 +217,14 @@ function ModuleDetailPage() {
                 return (
                   <LessonItem
                     key={game.id}
+                    gameId={game.id}
                     image={game.coverUrl}
                     title={game.title}
                     status={game.status}
                     onGameClick={() => handleGameClick(game.id, game.title)}
                     isFirstGame={isFirstGame}
+                    moduleTitle={moduleDetail.moduleName}
+                    lessonOrder={lesson.order}
                   />
                 );
               })}
@@ -238,7 +255,7 @@ type LessonItemProps = {
   lessonOrder?: number;
 };
 
-export function LessonItem({ image, title, status, onGameClick, isFirstGame = false, moduleTitle, lessonOrder }: LessonItemProps) {
+export function LessonItem({ image, title, status, onGameClick, isFirstGame = false, moduleTitle, lessonOrder, gameId }: LessonItemProps & { gameId: string }) {
   const { t } = useTranslation();
 
   const statusColor = {
@@ -257,7 +274,7 @@ export function LessonItem({ image, title, status, onGameClick, isFirstGame = fa
   const isGameBlocked = isFirstGame ? false : (status === 'blocked');
 
   return (
-    <Card style={{ boxShadow: "rgb(255 255 255 / 19%) 0px -1px 1px" }}>
+    <Card id={`game-${gameId}`} style={{ boxShadow: "rgb(255 255 255 / 19%) 0px -1px 1px" }}>
       <CardContent className="p-2">
         <div className="flex items-center gap-4 pe-3">
           <img

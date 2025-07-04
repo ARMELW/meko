@@ -101,6 +101,14 @@ export function Header() {
         }
     };
 
+    const handleGoToLastActivity = () => {
+        if (lastActivityData?.data) {
+            const moduleId = lastActivityData.data.module.id;
+            const gameId = lastActivityData.data.game.id;
+            navigate(`/modules/${moduleId}`, { state: { scrollToGameId: gameId } });
+        }
+    };
+
     const renderAuthOptions = () => {
         if (isAuthenticated) {
             return (
@@ -386,9 +394,9 @@ export function Header() {
                     {(sessionChild && isAuthenticated) && (
                         <div className="flex flex-row gap-6 lg:gap-10 items-center">
                             <NavItem 
-                            label={t('common.lastActivity')} 
-                            icon={<LastActivityIcon />} 
-                            onClick={handleOpenLastActivityModal} 
+                                label={t('common.lastActivity')} 
+                                icon={<LastActivityIcon />} 
+                                onClick={handleGoToLastActivity} 
                             />
                             <NavItem label={t('common.statistics')} icon={<StatisticIcon />} onClick={() => navigate('/monitoring')}/>
                         </div>
