@@ -35,7 +35,7 @@ export function Header() {
         gameId: '',
         gameTitle: ''
     });
-    
+
     const isAuthenticated = !!session;
 
     const { data: lastActivityData } = useLastActivity(sessionChild?.id || '');
@@ -68,13 +68,13 @@ export function Header() {
         });
     };
 
-    const displayName = sessionChild 
-        ? formatDisplayName(sessionChild.firstname, '' , 25)
+    const displayName = sessionChild
+        ? formatDisplayName(sessionChild.firstname, '', 25)
         : session?.user?.name || 'User';
-    const shortDisplayName = sessionChild 
+    const shortDisplayName = sessionChild
         ? formatDisplayName(sessionChild.firstname, '', 15)
         : session?.user?.name || 'User';
-    const mobileDisplayName = sessionChild 
+    const mobileDisplayName = sessionChild
         ? formatDisplayName(sessionChild.firstname, '', 12)
         : session?.user?.name || 'User';
     const displayImage = sessionChild ? sessionChild.avatarUrl : session?.user?.image;
@@ -86,13 +86,8 @@ export function Header() {
     const handleLogout = async () => {
         setIsLoggingOut(true);
         try {
-            if (sessionChild) {
-                logout();
-                navigate('/profile/choose');
-            } else {
-                await authClient.signOut();
-                navigate('/');
-            }
+            await authClient.signOut();
+            navigate('/');
 
         } catch (error) {
             console.error('Logout failed:', error);
@@ -114,7 +109,7 @@ export function Header() {
             return (
                 <DropdownMenu.Root>
                     <DropdownMenu.Trigger asChild>
-                        <button 
+                        <button
                             className="flex flex-row items-center gap-3 focus:outline-none cursor-pointer max-w-xs"
                             title={sessionChild ? `${sessionChild.firstname} ${sessionChild.lastname}` : displayName}
                         >
@@ -393,12 +388,12 @@ export function Header() {
                 <div className='flex flex-row items-center gap-4 lg:gap-8 cursor-pointer min-w-0'>
                     {(sessionChild && isAuthenticated) && (
                         <div className="flex flex-row gap-6 lg:gap-10 items-center">
-                            <NavItem 
-                                label={t('common.lastActivity')} 
-                                icon={<LastActivityIcon />} 
-                                onClick={handleGoToLastActivity} 
+                            <NavItem
+                                label={t('common.lastActivity')}
+                                icon={<LastActivityIcon />}
+                                onClick={handleGoToLastActivity}
                             />
-                            <NavItem label={t('common.statistics')} icon={<StatisticIcon />} onClick={() => navigate('/monitoring')}/>
+                            <NavItem label={t('common.statistics')} icon={<StatisticIcon />} onClick={() => navigate('/monitoring')} />
                         </div>
                     )}
                     {renderAuthOptions()}
