@@ -3,7 +3,7 @@ import { useChildrenStore } from "@/app/children/store";
 import { useSession as useChildrenSession } from '@/services/session/store';
 import { Card, CardContent, CardTitle, Typography } from "@/components";
 import UserAvatar from "@/components/atoms/view/user-avatar";
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import CreateChild from "./components/create-child";
 import EditChild from "./components/edit-child";
 import { DeleteChildDialog } from "@/app/children/components";
@@ -14,11 +14,12 @@ import { useChildMonitoringSwitch } from "./hooks/use-child-monitoring-switch";
 import { useLastActivity } from '@/app/game-sessions';
 import { LastActivitySummary } from '@/app/game-sessions/components/last-activity-summary';
 import { useProgressSummary } from '@/app/children/hooks/use-progress-summary';
-import { CircularProgress } from '@/components/atoms/view/circular-progress';
 import { useGamesStats } from '@/app/children/hooks/use-games-stats';
 import { useTranslation } from 'react-i18next';
 import StatusPieChart, { StatusPieData } from '@/components/atoms/view/progress-pie-chart';
 import ChildStatsSection from '@/app/children/components/child-stats-section';
+import { useChildActivityStats } from '@/app/children/hooks/use-child-activity-stats';
+import { LoadingSpinner } from '@/components/atoms/loading-spinner';
 
 
 function ChildMonitoringPage() {
@@ -27,6 +28,8 @@ function ChildMonitoringPage() {
   const currentChild = useChildrenStore(state => state.currentChild);
   const clearCurrentChild = useChildrenStore((state) => state.clearCurrentChild);
   const { switchCurrentChild } = useChildMonitoringSwitch();
+  const [period, setPeriod] = useState<'7d' | '30d' | '6m'>('7d');
+  const { data: activityStats, isLoading: isStatsLoading } = useChildActivityStats(currentChild?.id, period);
 
   const handleCloseEdit = () => {
     clearCurrentChild();
@@ -85,6 +88,10 @@ function ChildMonitoringPage() {
       label: statusLabels[name as keyof typeof statusLabels] || name
     }))
     : [];
+
+  const handlePeriodChange = (p: string) => {
+    if (p === '7d' || p === '30d' || p === '6m') setPeriod(p);
+  };
 
   return <div className="min-h-screen text-white p-4 md:p-8">
     <div className="flex flex-col md:flex-row gap-6">
@@ -242,7 +249,28 @@ function ChildMonitoringPage() {
         </div>
 
         <Card className="bg-[#000F4799] p-4 mt-4">
-          <ChildStatsSection />
+          {isStatsLoading ? (
+            <div className="flex justify-center items-center py-8">
+              <LoadingSpinner size={32} />
+            </div>
+          ) : (
+            <ChildStatsSection
+              period={period}
+              onPeriodChange={handlePeriodChange}
+              topStats={[
+                { label: 'Modules terminés', value: activityStats ? String(activityStats.completedModules) : '-' },
+                { label: 'Leçons complétées', value: activityStats ? String(activityStats.completedLessons) : '-' },
+                { label: 'Réussite aux jeux', value: activityStats ? `${activityStats.successRate ?? '-'}%` : '-' },
+                { label: 'Jeux joués', value: activityStats ? String(activityStats.gamesPlayed) : '-' },
+              ]}
+              bottomStats={[
+                { label: 'Temps de jeu (moy/jour)', value: activityStats ? `${activityStats.avgTimePerDay ?? '-'} min` : '-' },
+                { label: 'Nb. sessions', value: activityStats ? String(activityStats.sessionsCount) : '-' },
+                { label: 'Durée moyenne session', value: activityStats ? `${activityStats.avgSessionDuration ?? '-'} min` : '-' },
+                { label: '', value: '' },
+              ]}
+            />
+          )}
         </Card>
 
         <Card className="w-full bg-[#0040B6] transition-all duration-300 mt-4">

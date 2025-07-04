@@ -1,4 +1,4 @@
-import { Outlet, RouteObject } from "react-router";
+import { Outlet, RouteObject, useLocation } from "react-router";
 
 import { LandingPage } from "@/pages/public/landing/landing-page";
 import { CreateParentAccountPage } from "@/pages/public/auth/create-parent-account-page";
@@ -35,6 +35,27 @@ import { VerifyOtpPage } from "@/pages/public/auth/verify-otp-page";
 import { Header } from "@/components/molecules/layout/header";
 import Footer from '@/components/molecules/layout/footer';
 import GameSearchPage from '@/pages/private/game-search-page';
+
+const hideFooterRoutes = [
+  '/profile/choose',
+  '/profile/welcome',
+  '/profile/avatar',
+  '/profile/create-child',
+  '/onboarding/profile',
+  '/onboarding/welcome',
+  '/onboarding/avatar',
+];
+
+function LayoutWithFooter({ children }: { children: React.ReactNode }) {
+  const location = useLocation();
+  if (hideFooterRoutes.includes(location.pathname)) {
+    return <>{children}</>;
+  }
+  return <>
+    {children}
+    <Footer />
+  </>;
+}
 
 const privateRoutes: RouteObject[] = [
 	{
@@ -163,15 +184,14 @@ const privateRoutes: RouteObject[] = [
 const routes: RouteObject[] = [
 	{
 		element: (
-			<>
+			<LayoutWithFooter>
 				<div className="px-4 lg:px-32 xl:px-32 min-h-screen">
 					<Header />
 					<div className="z-10 relative w-full h-full">
 						<Outlet />
 					</div>
 				</div>
-				<Footer />
-			</>
+			</LayoutWithFooter>
 		),
 		children: [
 			{
