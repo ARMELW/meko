@@ -390,11 +390,13 @@ export function Header() {
                 <div className='flex flex-row items-center gap-4 lg:gap-8 cursor-pointer min-w-0'>
                     {(sessionChild && isAuthenticated) && (
                         <div className="flex flex-row gap-6 lg:gap-10 items-center">
-                            <NavItem
-                                label={t('common.lastActivity')}
-                                icon={<LastActivityIcon />}
-                                onClick={handleGoToLastActivity}
-                            />
+                            {lastActivityData?.data && (
+                                <NavItem
+                                    label={t('common.lastActivity')}
+                                    icon={<LastActivityIcon />}
+                                    onClick={handleGoToLastActivity}
+                                />
+                            )}
                             <NavItem label={t('common.statistics')} icon={<StatisticIcon />} onClick={() => navigate('/monitoring')} />
                         </div>
                     )}
