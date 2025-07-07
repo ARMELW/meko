@@ -14,9 +14,10 @@ interface LastActivitySummaryProps {
 export function LastActivitySummary({ lastActivity, onRelaunch }: LastActivitySummaryProps) {
   const { t } = useTranslation();
   if (!lastActivity) return null;
-  const formatDuration = (minutes?: number) => {
-    if (!minutes) return '';
-    return `${minutes} ${t('games.session.modal.lastActivity.minutes')}`;
+  const formatDuration = (duration: number): string => {
+    const minutes = Math.floor(duration / 60);
+    const seconds = duration % 60;
+    return `${minutes}m ${seconds}s`;
   };
 
   return (
@@ -63,7 +64,7 @@ export function LastActivitySummary({ lastActivity, onRelaunch }: LastActivitySu
                 {t('games.session.modal.lastActivity.duration')}
               </TableCell>
               <TableCell weight="default"  align="right">
-                {formatDuration(lastActivity.duration)}
+                {formatDuration(Number(lastActivity.duration))}
               </TableCell>
             </TableRow>
           </TableBody>
