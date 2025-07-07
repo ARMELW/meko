@@ -338,7 +338,7 @@ function ChildMonitoringPage() {
               className="flex justify-between items-center text-sm"
               titleColor={"default"}
             />
-            <CardContent className="flex flex-col justify-center">
+            <CardContent className="flex flex-col items-center justify-center">
               {lastActivityData?.data ? (
                 <LastActivitySummary
                   lastActivity={lastActivityData.data}

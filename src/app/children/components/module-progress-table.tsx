@@ -28,7 +28,7 @@ const ModuleProgressTable: React.FC<ModuleProgressTableProps> = ({ modules }) =>
         {modules.map((mod) => (
           <TableRow key={mod.name}>
             <TableCell>
-              <div className="flex items-center gap-4">
+              <div className="flex  gap-4">
                 <img
                   src={mod.coverUrl}
                   alt={mod.name}
