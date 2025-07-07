@@ -26,6 +26,8 @@ function ModuleDetailPage() {
     gameTitle: ''
   });
 
+  const [highlightedGameId, setHighlightedGameId] = useState<string | null>(null);
+
   const { data: moduleDetail, isLoading, error } = useModuleDetail(
     selectedChild?.id || '',
     moduleId || ''
@@ -53,6 +55,8 @@ function ModuleDetailPage() {
 
   useEffect(() => {
     const scrollToGameId = location.state?.scrollToGameId;
+    const highlightGameId = location.state?.highlightGameId;
+    
     if (scrollToGameId && moduleDetail) {
       // Cherche l'élément du jeu et scroll dessus
       setTimeout(() => {
@@ -61,6 +65,14 @@ function ModuleDetailPage() {
           el.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
       }, 300);
+    }
+
+    if (highlightGameId) {
+      setHighlightedGameId(highlightGameId);
+      // Supprimer le highlight après 3 secondes
+      setTimeout(() => {
+        setHighlightedGameId(null);
+      }, 3000);
     }
   }, [location.state, moduleDetail]);
 
@@ -225,6 +237,7 @@ function ModuleDetailPage() {
                     isFirstGame={isFirstGame}
                     moduleTitle={moduleDetail.moduleName}
                     lessonOrder={lesson.order}
+                    isHighlighted={highlightedGameId === game.id}
                   />
                 );
               })}
@@ -253,9 +266,10 @@ type LessonItemProps = {
   isFirstGame?: boolean;
   moduleTitle?: string;
   lessonOrder?: number;
+  isHighlighted?: boolean;
 };
 
-export function LessonItem({ image, title, status, onGameClick, isFirstGame = false, moduleTitle, lessonOrder, gameId }: LessonItemProps & { gameId: string }) {
+export function LessonItem({ image, title, status, onGameClick, isFirstGame = false, moduleTitle, lessonOrder, gameId, isHighlighted = false }: LessonItemProps & { gameId: string }) {
   const { t } = useTranslation();
 
   const statusColor = {
@@ -274,7 +288,15 @@ export function LessonItem({ image, title, status, onGameClick, isFirstGame = fa
   const isGameBlocked = isFirstGame ? false : (status === 'blocked');
 
   return (
-    <Card id={`game-${gameId}`} style={{ boxShadow: "rgb(255 255 255 / 19%) 0px -1px 1px" }}>
+    <Card 
+      id={`game-${gameId}`} 
+      style={{ boxShadow: "rgb(255 255 255 / 19%) 0px -1px 1px" }}
+      className={`transition-all duration-300 ${
+        isHighlighted 
+          ? 'highlight-game' 
+          : ''
+      }`}
+    >
       <CardContent className="p-2">
         <div className="flex items-center gap-4 pe-3">
           <img

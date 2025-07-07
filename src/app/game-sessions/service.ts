@@ -45,7 +45,7 @@ export class GameSessionServiceImpl extends BaseServiceImpl<GameSession, CreateG
     status?: string;
   } = {}): Promise<GameSessionListResponse> {
     const queryParams = new URLSearchParams();
-    
+
     if (params.page) queryParams.append('page', params.page.toString());
     if (params.limit) queryParams.append('limit', params.limit.toString());
     if (params.status) queryParams.append('status', params.status);
@@ -67,7 +67,7 @@ export class GameSessionServiceImpl extends BaseServiceImpl<GameSession, CreateG
     } = {}
   ): Promise<ChildGameSessionListResponse> {
     const queryParams = new URLSearchParams();
-    
+
     if (params.page) queryParams.append('page', params.page.toString());
     if (params.limit) queryParams.append('limit', params.limit.toString());
     if (params.gameId) queryParams.append('gameId', params.gameId);
@@ -90,22 +90,22 @@ export class GameSessionServiceImpl extends BaseServiceImpl<GameSession, CreateG
    * Termine une session de jeu
    */
   async completeSession(
-    sessionId: string, 
+    sessionId: string,
     data: CompleteGameSessionPayload
   ): Promise<GameSessionResponse> {
     return this.patch<GameSessionResponse>(
       API_ENDPOINTS.gameSessions.complete(sessionId),
-      data
+      { ...data, duration: data.timeSpent }
     );
   }
 
   /**
    * Abandonne une session de jeu
    */
-  async abandonSession(sessionId: string): Promise<AbandonGameSessionResponse> {
+  async abandonSession(sessionId: string, timeSpent?: number): Promise<AbandonGameSessionResponse> {
     return this.patch<AbandonGameSessionResponse>(
       API_ENDPOINTS.gameSessions.abandon(sessionId),
-      {}
+      timeSpent !== undefined ? { duration: timeSpent } : {}
     );
   }
 
@@ -113,8 +113,8 @@ export class GameSessionServiceImpl extends BaseServiceImpl<GameSession, CreateG
    * Sauvegarde le progrès d'une session (ancien endpoint pour la compatibilité)
    */
   async saveProgress(
-    childId: string, 
-    sessionId: string, 
+    childId: string,
+    sessionId: string,
     data: SaveProgressPayload
   ): Promise<void> {
     return this.put<void>(
@@ -144,7 +144,7 @@ export class GameSessionServiceImpl extends BaseServiceImpl<GameSession, CreateG
     } = {}
   ): Promise<GameSessionHistoryResponse> {
     const queryParams = new URLSearchParams();
-    
+
     if (params.gameId) queryParams.append('gameId', params.gameId);
     if (params.page) queryParams.append('page', params.page.toString());
     if (params.limit) queryParams.append('limit', params.limit.toString());

@@ -74,8 +74,8 @@ export const useGameSession = () => {
   });
 
   const abandonSession = useMutation({
-    mutationFn: ({ sessionId }: { sessionId: string }) =>
-      gameSessionService.abandonSession(sessionId),
+    mutationFn: ({ sessionId, timeSpent }: { sessionId: string; timeSpent: number }) =>
+      gameSessionService.abandonSession(sessionId, timeSpent),
     onSuccess: () => {
       // Ne plus afficher le toast ici car il est affiché immédiatement dans le composant
       // Invalider les caches pour mettre à jour les données

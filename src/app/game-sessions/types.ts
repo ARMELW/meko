@@ -66,6 +66,7 @@ export interface LastActivity {
     name: string;
     coverUrl?: string;
   };
+  duration: string;
   createdAt: string;
   updatedAt: string;
 }

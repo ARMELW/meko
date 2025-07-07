@@ -41,10 +41,7 @@ export function Header() {
     const { data: lastActivityData } = useLastActivity(sessionChild?.id || '');
 
 
-    const handleOpenLastActivityModal = () => {
-        setIsLastActivityModalOpen(true);
-    };
-
+   
     const handleCloseLastActivityModal = () => {
         setIsLastActivityModalOpen(false);
     };
@@ -100,7 +97,12 @@ export function Header() {
         if (lastActivityData?.data) {
             const moduleId = lastActivityData.data.module.id;
             const gameId = lastActivityData.data.game.id;
-            navigate(`/modules/${moduleId}`, { state: { scrollToGameId: gameId } });
+            navigate(`/modules/${moduleId}`, { 
+                state: { 
+                    scrollToGameId: gameId,
+                    highlightGameId: gameId
+                } 
+            });
         }
     };
 

@@ -7,6 +7,7 @@ interface Props extends Omit<ComponentProps<"p">, "color">, TypoVariantProps {
 	children: ReactNode;
 	className?: string;
 	as?: "h1" | "h2" | "h3" | "p" | "span";
+	label?: string;
 }
 
 export function Typography({
@@ -19,6 +20,8 @@ export function Typography({
 	shadow,
 	styleCase,
 	weight,
+	label,
+	...props
 }: Props) {
 	const Component = as;
 	const _styleCase = useMemo(() => {
@@ -51,6 +54,7 @@ export function Typography({
 			className={clsx(
 				className,
 				typographyVariant({
+
 					variant: _variant,
 					align,
 					color,
@@ -59,6 +63,8 @@ export function Typography({
 					styleCase: _styleCase,
 				})
 			)}
+			aria-label={label}
+			{...props}
 		>
 			{children}
 		</Component>

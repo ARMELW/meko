@@ -63,7 +63,7 @@ export function LastActivitySummary({ lastActivity, onRelaunch }: LastActivitySu
                 {t('games.session.modal.lastActivity.duration')}
               </TableCell>
               <TableCell weight="default"  align="right">
-                {formatDuration(lastActivity.totalTime)}
+                {formatDuration(lastActivity.duration)}
               </TableCell>
             </TableRow>
           </TableBody>

@@ -3,7 +3,7 @@ import { useChildrenStore } from "@/app/children/store";
 import { useSession as useChildrenSession } from '@/services/session/store';
 import { Card, CardContent, CardTitle, Typography } from "@/components";
 import UserAvatar from "@/components/atoms/view/user-avatar";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import CreateChild from "./components/create-child";
 import EditChild from "./components/edit-child";
 import { DeleteChildDialog } from "@/app/children/components";
@@ -33,11 +33,19 @@ function ChildMonitoringPage() {
   const [period, setPeriod] = useState<'7d' | '30d' | '6m'>('7d');
   const { data: activityStats, isLoading: isStatsLoading } = useChildActivityStats(currentChild?.id, period);
   const { data: modulesData, isLoading: isModulesLoading } = useModules(currentChild?.id || '');
+  const { t } = useTranslation();
 
-  const handleCloseEdit = () => {
+  const handleChildSwitch = useCallback((child: Children) => {
+    // Éviter les changements inutiles si c'est déjà l'enfant sélectionné
+    if (currentChild?.id !== child.id) {
+      switchCurrentChild(child);
+    }
+  }, [currentChild?.id, switchCurrentChild]);
+
+  const handleCloseEdit = useCallback(() => {
     clearCurrentChild();
     invalidate();
-  };
+  }, [clearCurrentChild, invalidate]);
 
   const formatted = useMemo(() => {
     const data = avatars?.data ? avatars.data : [];
@@ -49,61 +57,92 @@ function ChildMonitoringPage() {
 
   useEffect(() => {
     if (formatted.length > 0) {
-      if (currentChild) {
-        // Mettre à jour l'enfant actuel s'il existe déjà
-        const updatedChild = formatted.find(child => child.id === currentChild.id);
-        if (updatedChild) {
-          switchCurrentChild(updatedChild);
+      // Éviter les re-renders inutiles en vérifiant si l'enfant courant existe déjà dans la liste
+      const currentChildExists = currentChild && formatted.some(child => child.id === currentChild.id);
+      
+      if (!currentChildExists) {
+        // Sélectionner l'enfant de la session, sinon le premier disponible
+        const targetChild = selectedChild 
+          ? formatted.find(child => child.id === selectedChild.id) 
+          : null;
+        
+        const defaultChild = targetChild || formatted[0];
+        
+        if (defaultChild && defaultChild.id !== currentChild?.id) {
+          switchCurrentChild(defaultChild);
         }
-      } else {
-        // Par défaut, sélectionner l'enfant de la session, sinon le premier
-        const defaultChild = selectedChild
-          ? formatted.find(child => child.id === selectedChild.id) || formatted[0]
-          : formatted[0];
-        switchCurrentChild(defaultChild);
       }
     }
-  }, [formatted, currentChild, selectedChild, switchCurrentChild]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [formatted.length, currentChild?.id, selectedChild?.id]);
 
   const { data: lastActivityData } = useLastActivity(currentChild?.id || '');
   const { data: progressSummary } = useProgressSummary(currentChild?.id);
   const { data: gamesStats } = useGamesStats(currentChild?.id);
-  const { t } = useTranslation();
 
-  // Mapping des statuts pour le pie chart
-  const statusColors = {
-    blocked: '#f87171',
-    completed: '#60a5fa',
-    in_progress: '#fbbf24',
-    not_started: '#a3a3a3'
-  };
-  const statusLabels = {
-    blocked: t('modules.status.blocked', 'Bloqué'),
-    completed: t('modules.status.completed', 'Terminé'),
-    in_progress: t('modules.status.in_progress', 'En cours'),
-    not_started: t('modules.status.not_started', 'Non commencé')
-  };
-  const pieData: StatusPieData[] = gamesStats?.data?.byStatus
-    ? Object.entries(gamesStats.data.byStatus).map(([name, value]) => ({
+  // Mapping des statuts pour le pie chart - Mémorisé pour éviter les re-renders
+  const statusConfig = useMemo(() => ({
+    colors: {
+      blocked: '#f87171',
+      completed: '#60a5fa',
+      in_progress: '#fbbf24',
+      not_started: '#a3a3a3'
+    },
+    labels: {
+      blocked: t('modules.status.blocked', 'Bloqué'),
+      completed: t('modules.status.completed', 'Terminé'),
+      in_progress: t('modules.status.in_progress', 'En cours'),
+      not_started: t('modules.status.not_started', 'Non commencé')
+    }
+  }), [t]);
+
+  const pieData: StatusPieData[] = useMemo(() => {
+    if (!gamesStats?.data?.byStatus) return [];
+
+    return Object.entries(gamesStats.data.byStatus).map(([name, value]) => ({
       name,
       value: Number(value),
-      color: statusColors[name as keyof typeof statusColors] || '#ccc',
-      label: statusLabels[name as keyof typeof statusLabels] || name
-    }))
-    : [];
+      color: statusConfig.colors[name as keyof typeof statusConfig.colors] || '#ccc',
+      label: statusConfig.labels[name as keyof typeof statusConfig.labels] || name
+    }));
+  }, [gamesStats?.data?.byStatus, statusConfig]);
 
-  const handlePeriodChange = (p: string) => {
+  const handlePeriodChange = useCallback((p: string) => {
     if (p === '7d' || p === '30d' || p === '6m') setPeriod(p);
-  };
+  }, []);
+
+  // Utilitaire pour formater les durées en secondes en format humain (ex: 1h 12m 5s)
+  const formatDuration = useCallback((seconds?: number | string) => {
+    if (!seconds || isNaN(Number(seconds))) return '-';
+    const s = Number(seconds);
+    const h = Math.floor(s / 3600);
+    const m = Math.floor((s % 3600) / 60);
+    const sec = s % 60;
+    return [
+      h > 0 ? `${h} h` : null,
+      m > 0 ? `${m} m` : null,
+      sec > 0 || (h === 0 && m === 0) ? `${sec} s` : null
+    ].filter(Boolean).join(' ');
+  }, []);
 
   return <div className="min-h-screen text-white p-4 md:p-8">
     <div className="flex flex-col md:flex-row gap-6">
-      <aside className="w-20 md:w-32 flex flex-col items-center gap-4 ">
+      <aside className="w-20 md:w-32 flex flex-col items-center gap-4">
         <div className="child-item-wrapper flex flex-col items-center justify-center">
           {formatted.map((children: Children, index: number) => (
-            <div key={children.id} className="mb-5  flex flex-col items-center justify-center">
-              <div onClick={() => switchCurrentChild(children)} className={`shadow-lg rounded-full w-[50px] overflow-hidden cursor-pointer ${children.id == currentChild?.id ? 'border-2 border-white' : ''}`}>
-                <UserAvatar avatarUrl={children.avatarUrl} size={50} username={`${children.firstname} ${children.lastname}`} alt={`Avatar ${index + 1}`} />
+            <div key={`child-${children.id}`} className="mb-5 flex flex-col items-center justify-center">
+              <div
+                onClick={() => handleChildSwitch(children)}
+                className={`shadow-lg rounded-full w-[50px] overflow-hidden cursor-pointer ${children.id === currentChild?.id ? 'border-2 border-white' : ''
+                  }`}
+              >
+                <UserAvatar
+                  key={`avatar-${children.id}`}
+                  avatarUrl={children.avatarUrl}
+                  size={50}
+                  username={`${children.firstname} ${children.lastname}`}
+                  alt={`Avatar ${index + 1}`}
+                />
               </div>
               <div className="text-center max-w-[70px]">
                 <Typography
@@ -113,6 +152,7 @@ function ChildMonitoringPage() {
                   color={"secondary"}
                   className="text-sm truncate block"
                   title={children.firstname}
+                  label={`Sélectionner ${children.firstname}`}
                 >
                   {truncateText(children.firstname, 12)}
                 </Typography>
@@ -120,12 +160,17 @@ function ChildMonitoringPage() {
             </div>
           ))}
 
-
-
           <div className="flex flex-col items-center">
             <CreateChild />
             <div className="account-label text-center">
-              <Typography as="span" styleCase={"uppercase"} weight={"bold"} color={"secondary"} className="text-sm">
+              <Typography
+                as="span"
+                styleCase={"uppercase"}
+                weight={"bold"}
+                color={"secondary"}
+                className="text-sm"
+                label="Ajouter un enfant"
+              >
                 Ajouter
               </Typography>
             </div>
@@ -134,85 +179,155 @@ function ChildMonitoringPage() {
       </aside>
 
       <main className="flex-1">
-        {currentChild && (
-          <Card className="text-white px-8 py-4 flex" style={{ boxShadow: "rgb(255 255 255 / 19%) 0px -1px 1px" }}>
-            <div className="flex items-center space-x-4 flex-1">
-              {currentChild && (
-                <UserAvatar avatarUrl={currentChild?.avatarUrl} size={100} username={currentChild.firstname} alt={`Avatar`} />
-              )}
+        {!currentChild ? (
+          <div className="text-center py-8">
+            <Typography className="text-white" label="Message de sélection d'enfant">
+              Sélectionnez un enfant pour voir ses statistiques
+            </Typography>
+          </div>
+        ) : (
+          <>
+            <Card className="text-white px-8 py-4 flex" style={{ boxShadow: "rgb(255 255 255 / 19%) 0px -1px 1px" }}>
+              <div className="flex items-center space-x-4 flex-1">
+                <UserAvatar
+                  key={`main-avatar-${currentChild.id}`}
+                  avatarUrl={currentChild.avatarUrl}
+                  size={100}
+                  username={currentChild.firstname}
+                  alt={`Avatar de ${currentChild.firstname}`}
+                />
 
-              <div className="space-y-2 flex-1 px-4">
-                <div className="w-full">
-                  <Typography as="span" className="block text-sm" color={"secondary"} styleCase={"uppercase"} weight={"bold"}>
-                    Prénom
-                  </Typography>
-                  <p className="bg-meko-blue-transparent-2 rounded-xl focus:border-meko-blue-light-1 focus:border-2 outline-none py-2 px-5">
-                    {currentChild?.firstname || ''}
-                  </p>
-                </div>
-                <div className="w-full">
-                  <Typography as="span" className="block text-sm" color={"secondary"} styleCase={"uppercase"} weight={"bold"}>
-                    Date de naissance
-                  </Typography>
-                  <p className="bg-meko-blue-transparent-2 rounded-xl focus:border-meko-blue-light-1 focus:border-2 outline-none py-2 px-5">
-                    {currentChild?.birthday
-                      ? format(new Date(currentChild.birthday), 'dd MMMM yyyy', { locale: fr })
-                      : ''}
-                  </p>
+                <div className="space-y-2 flex-1 px-4">
+                  <div className="w-full">
+                    <Typography
+                      as="span"
+                      className="block text-sm"
+                      color={"secondary"}
+                      styleCase={"uppercase"}
+                      weight={"bold"}
+                      label="Prénom de l'enfant"
+                    >
+                      Prénom
+                    </Typography>
+                    <p className="bg-meko-blue-transparent-2 rounded-xl focus:border-meko-blue-light-1 focus:border-2 outline-none py-2 px-5">
+                      {currentChild.firstname || ''}
+                    </p>
+                  </div>
+                  <div className="w-full">
+                    <Typography
+                      as="span"
+                      className="block text-sm"
+                      color={"secondary"}
+                      styleCase={"uppercase"}
+                      weight={"bold"}
+                      label="Date de naissance de l'enfant"
+                    >
+                      Date de naissance
+                    </Typography>
+                    <p className="bg-meko-blue-transparent-2 rounded-xl focus:border-meko-blue-light-1 focus:border-2 outline-none py-2 px-5">
+                      {currentChild.birthday
+                        ? format(new Date(currentChild.birthday), 'dd MMMM yyyy', { locale: fr })
+                        : ''}
+                    </p>
+                  </div>
                 </div>
               </div>
 
-            </div>
-
-            <div className="flex items-center space-x-2">
-              {currentChild && (
+              <div className="flex items-center space-x-2">
                 <EditChild
                   key={currentChild.id}
                   childToEdit={currentChild}
                   setChildToEdit={switchCurrentChild}
                   onClose={handleCloseEdit}
                 />
-              )}
-              <DeleteChildDialog
-                childId={currentChild?.id || ''}
-              />
-            </div>
-          </Card>
-        )}
+                <DeleteChildDialog
+                  childId={currentChild.id}
+                />
+              </div>
 
+            </Card>
+          </>
+        )}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mt-4">
           <Card className="bg-[#000F4799] p-4">
-            <Typography as="span" styleCase={"uppercase"} color={"secondary"} weight={"bold"}>
+            <Typography
+              as="span"
+              styleCase={"uppercase"}
+              color={"secondary"}
+              weight={"bold"}
+              label="Nombre de jeux terminés"
+            >
               {t('monitoring.children.progress.gamesCompleted')}
             </Typography>
-            <Typography as="span" color={"default"} weight={"bold"} className="block text-[20px]">
+            <Typography
+              as="span"
+              color={"default"}
+              weight={"bold"}
+              className="block text-[20px]"
+              label={`${progressSummary?.data?.gamesCompleted || 0} jeux terminés`}
+            >
               {progressSummary?.data?.gamesCompleted ?? '-'}
             </Typography>
           </Card>
           <Card className="bg-[#000F4799] p-4">
-            <Typography as="span" styleCase={"uppercase"} color={"secondary"} weight={"bold"}>
+            <Typography
+              as="span"
+              styleCase={"uppercase"}
+              color={"secondary"}
+              weight={"bold"}
+              label="Nombre de jeux en cours"
+            >
               {t('monitoring.children.progress.gamesInProgress')}
             </Typography>
-            <Typography as="span" color={"default"} weight={"bold"} className="block text-[20px]">
+            <Typography
+              as="span"
+              color={"default"}
+              weight={"bold"}
+              className="block text-[20px]"
+              label={`${progressSummary?.data?.gamesInProgress || 0} jeux en cours`}
+            >
               {progressSummary?.data?.gamesInProgress ?? '-'}
             </Typography>
           </Card>
           <Card className="bg-[#000F4799] p-4 flex flex-col items-center justify-center">
-            <Typography as="span" styleCase={"uppercase"} color={"secondary"} weight={"bold"}>
+            <Typography
+              as="span"
+              styleCase={"uppercase"}
+              color={"secondary"}
+              weight={"bold"}
+              label="Pourcentage de progression global"
+            >
               {t('monitoring.children.progress.progressPercent')}
             </Typography>
-            <div className="flex items-center justify-center mt-2">
+            <Typography
+              as="span"
+              color={"default"}
+              weight={"bold"}
+              className="block text-[20px]"
+              label={`${progressSummary?.data?.progressPercent || 0}% de progression`}
+            >
               {progressSummary?.data?.progressPercent != null ? `${progressSummary.data.progressPercent}%` : '-'}
-            </div>
+            </Typography>
           </Card>
           <Card className="bg-[#000F4799] p-4">
-            <Typography as="span" styleCase={"uppercase"} color={"secondary"} weight={"bold"}>
+            <Typography
+              as="span"
+              styleCase={"uppercase"}
+              color={"secondary"}
+              weight={"bold"}
+              label="Temps total passé à jouer"
+            >
               {t('monitoring.children.progress.totalTimeSpent')}
             </Typography>
-            <div className="flex items-center justify-center mt-2">
-              {progressSummary?.data?.totalTimeSpent != null ? `${progressSummary.data.totalTimeSpent} min` : '-'}
-
-            </div>
+            <Typography
+              as="span"
+              color={"default"}
+              weight={"bold"}
+              className="block text-[20px]"
+              label={`Temps total: ${formatDuration(progressSummary?.data?.totalTimeSpent)}`}
+            >
+              {progressSummary?.data?.totalTimeSpent != null ? `${formatDuration(progressSummary.data.totalTimeSpent)}` : '-'}
+            </Typography>
           </Card>
         </div>
 
@@ -220,7 +335,7 @@ function ChildMonitoringPage() {
           <Card className="w-full bg-meko-blue-darker transition-all duration-300">
             <CardTitle
               title={"Dernière activité"}
-              className="flex  justify-between items-center text-sm"
+              className="flex justify-between items-center text-sm"
               titleColor={"default"}
             />
             <CardContent className="flex flex-col justify-center">
@@ -230,25 +345,25 @@ function ChildMonitoringPage() {
                   showActions={true}
                 />
               ) : (
-                <Typography className="text-white text-center py-8">Aucune activité récente</Typography>
+                <Typography
+                  className="text-white text-center py-8"
+                  label="Aucune activité récente trouvée"
+                >
+                  {t('monitoring.children.lastActivity.none', 'Aucune activité récente')}
+                </Typography>
               )}
             </CardContent>
           </Card>
           <Card className="w-full bg-[#0040B6] transition-all duration-300">
             <CardTitle
               title={"Taux de progression"}
-              className="flex  justify-between items-center text-sm"
+              className="flex justify-between items-center text-sm"
               titleColor={"default"}
             />
-
             <CardContent className="flex flex-col justify-center">
-
-              <StatusPieChart data={pieData} />
+              <StatusPieChart data={pieData} showPercentLabels={true} />
             </CardContent>
-
           </Card>
-
-
         </div>
 
         <Card className="bg-[#000F4799] p-4 mt-4">
@@ -267,9 +382,9 @@ function ChildMonitoringPage() {
                 { label: 'Jeux joués', value: activityStats ? String(activityStats.gamesPlayed) : '-' },
               ]}
               bottomStats={[
-                { label: 'Temps de jeu (moy/jour)', value: activityStats ? `${activityStats.avgTimePerDay ?? '-'} min` : '-' },
+                { label: 'Temps de jeu (moy/jour)', value: activityStats ? formatDuration(activityStats.avgTimePerDay) : '-' },
                 { label: 'Nb. sessions', value: activityStats ? String(activityStats.sessionsCount) : '-' },
-                { label: 'Durée moyenne session', value: activityStats ? `${activityStats.avgSessionDuration ?? '-'} min` : '-' },
+                { label: 'Durée moyenne session', value: activityStats ? formatDuration(activityStats.avgSessionDuration) : '-' },
                 { label: '', value: '' },
               ]}
             />
@@ -278,8 +393,8 @@ function ChildMonitoringPage() {
 
         <Card className="w-full bg-[#0040B6] transition-all duration-300 mt-4">
           <CardTitle
-            title={"Progression par module"}
-            className="flex  justify-between items-center text-sm"
+            title={t('monitoring.children.progress.modules', 'Progression par module')}
+            className="flex justify-between items-center text-sm"
             titleColor={"default"}
           />
           <CardContent className="flex flex-col justify-center">
@@ -303,7 +418,6 @@ function ChildMonitoringPage() {
             )}
           </CardContent>
         </Card>
-
 
       </main>
     </div>

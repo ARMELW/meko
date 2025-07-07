@@ -190,9 +190,17 @@ export function GameSimulationModal({
         sessionId: currentSession.id,
         data: {
           score: gameState.score,
-          timeSpent
+          timeSpent, 
+          success: gameState.score >= 3
         }
       });
+
+      // Mettre à jour la dernière activité
+      if (selectedChild?.id) {
+        updateLastActivity(selectedChild.id);
+      }
+
+      toast.success(t('games.session.completed')); 
       
       // Mise à jour optimiste de la cache du détail du module
       if (moduleId) {
@@ -245,14 +253,12 @@ export function GameSimulationModal({
 
   const handleAbandonSession = async () => {
     if (!currentSession || !selectedChild) return;
-    
+    const timeSpent = Math.floor((performance.now() - gameState.startTime) / 1000);
     // Mise à jour optimiste de la cache du détail du module
     if (moduleId) {
       const moduleDetailKey = modulesKeys.detail(`${selectedChild.id}-${moduleId}`);
-      
       queryClient.setQueryData(moduleDetailKey, (oldData: ModuleDetail | undefined) => {
         if (!oldData) return oldData;
-        
         // Mettre à jour le statut du jeu à "available" ou "not_started" après abandon
         const updatedLessons = oldData.lessons.map((lesson) => ({
           ...lesson,
@@ -266,17 +272,16 @@ export function GameSimulationModal({
             return game;
           })
         }));
-        
         return {
           ...oldData,
           lessons: updatedLessons
         };
       });
     }
-
     await abandonSession.mutateAsync({
-        sessionId: currentSession.id
-     });
+      sessionId: currentSession.id,
+      timeSpent // envoyé en secondes
+    });
     setCurrentSession(null);
     setGameState({
       questions: [],
@@ -287,10 +292,8 @@ export function GameSimulationModal({
       isGameStarted: false,
       isGameCompleted: false
     });
-
     // Afficher immédiatement le toast de confirmation
     toast.info(t('games.session.abandoned'));
-
     // Invalider immédiatement la cache de la dernière activité
     if (selectedChild?.id) {
       updateLastActivity(selectedChild.id);

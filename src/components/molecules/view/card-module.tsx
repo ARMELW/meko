@@ -35,8 +35,9 @@ function CardModule({ image, title, status, progress, onClick }: CardModuleProps
             weight={"bold"} 
             className="p-4 truncate" 
             title={title}
+            label={title} 
           >
-            {truncateText(title, 25)}
+            {truncateText(title, 40)}
           </Typography>
         </div>
 

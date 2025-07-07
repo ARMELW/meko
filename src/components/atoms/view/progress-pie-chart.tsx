@@ -80,8 +80,8 @@ export default function StatusPieChart({
               innerRadius="60%"
               outerRadius="92%"
               stroke="none"
-              isAnimationActive={false}
-              labelLine={false}
+              isAnimationActive={true}
+              labelLine={true}
               label={showPercentLabels ? renderCustomizedLabel : undefined}
             >
               {data.map((entry) => (

@@ -38,6 +38,7 @@ export const gameSessionResponseSchema = z.object({
 // Schema pour terminer une session
 export const completeGameSessionSchema = z.object({
   score: z.number(),
+  success: z.boolean().optional(), // Indique si la session est considérée comme réussie
   timeSpent: z.number()
 });
 
