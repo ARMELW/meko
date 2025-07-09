@@ -39,6 +39,9 @@ export const appPath = {
 			settings: "/subscription/settings",
 			payment: "/subscription/payment",
 		},
+		child: {
+			dashboard: "/child/dashboard",
+		},
 	},
 	notFound: "*",
 };

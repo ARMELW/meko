@@ -23,6 +23,7 @@ import { AddChildPage } from "@/pages/private/monitoring/add-child-page";
 import { ChildSettingsPage } from "@/pages/private/monitoring/child-settings-page";
 import { SubscriptionManagementPage } from "@/pages/private/monitoring/subscription-management-page";
 import { ChildStatisticsPage } from "@/pages/private/monitoring/child-statistics-page";
+import { ChildDashboardPage } from "@/pages/private/child/child-dashboard-page";
 
 import { SettingPage } from "@/pages/private/settings/setting-page";
 import { ChangeAvatarPage } from "@/pages/private/settings/change-avatar-page";
@@ -155,6 +156,10 @@ const privateRoutes: RouteObject[] = [
 	{
 		path: "/games/search",
 		element: <GameSearchPage />,
+	},
+	{
+		path: "/child/dashboard",
+		element: <ChildDashboardPage />,
 	}
 
 

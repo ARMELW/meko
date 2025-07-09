@@ -1,4 +1,3 @@
-
 import { LoginFormData, loginSchema, } from "@/app/auth";
 import { useOtpAuth } from "@/app/auth/hooks/use-otp-auth";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -23,6 +22,7 @@ function LoginPage() {
   const { t } = useTranslation();
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [showManualEntry, setShowManualEntry] = useState(false);
+  const [quickLoginLoadingIndex, setQuickLoginLoadingIndex] = useState<number | null>(null);
   const { loading, initiateOtpLogin } = useOtpAuth();
 
   // Récupérer l'email et le message depuis l'état de navigation
@@ -101,12 +101,11 @@ function LoginPage() {
     }
   };
 
-  const handleSavedSessionLogin = async (email: string) => {
+  const handleSavedSessionLogin = async (email: string, idx: number) => {
     try {
+      setQuickLoginLoadingIndex(idx);
       await initiateOtpLogin({ email });
-
       saveSession(email);
-
       setIsSubmitted(true);
       navigate("/verify-otp", {
         state: {
@@ -116,6 +115,8 @@ function LoginPage() {
       });
     } catch (error) {
       handleSimpleApiError(error);
+    } finally {
+      setQuickLoginLoadingIndex(null);
     }
   };
 
@@ -141,8 +142,8 @@ function LoginPage() {
               {savedSessions.map((session, index) => (
                 <div
                   key={index}
-                  onClick={() => handleSavedSessionLogin(session.email)}
-                  className="flex items-center gap-3 p-3 border border-meko-blue-flat rounded-lg cursor-pointer hover:bg-meko-blue-darker transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  onClick={() => !loading && !isSubmitted && quickLoginLoadingIndex === null && handleSavedSessionLogin(session.email, index)}
+                  className={`flex items-center gap-3 p-3 border border-meko-blue-flat rounded-lg cursor-pointer hover:bg-meko-blue-darker transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${quickLoginLoadingIndex === index ? 'opacity-60' : ''}`}
                   style={{ opacity: loading || isSubmitted ? 0.5 : 1 }}
                 >
                   <div className="w-8 h-8 bg-meko-blue-darker rounded-full flex items-center justify-center">
@@ -155,8 +156,12 @@ function LoginPage() {
                       {session.email}
                     </Typography>
                   </div>
-                  <div className="text-xs text-meko-orange">
-                    {new Date(session.lastUsed).toLocaleDateString()}
+                  <div className="text-xs text-meko-orange flex items-center gap-2">
+                    {quickLoginLoadingIndex === index ? (
+                      <span className="loader border-2 border-meko-blue-light-1 border-t-transparent rounded-full w-4 h-4 animate-spin"></span>
+                    ) : (
+                      new Date(session.lastUsed).toLocaleDateString()
+                    )}
                   </div>
                 </div>
               ))}

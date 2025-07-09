@@ -397,7 +397,7 @@ export function Header() {
                                     onClick={handleGoToLastActivity}
                                 />
                             )}
-                            <NavItem label={t('common.statistics')} icon={<StatisticIcon />} onClick={() => navigate('/monitoring')} />
+                            <NavItem label={t('common.statistics')} icon={<StatisticIcon />} onClick={() => navigate('/child/dashboard')} />
                         </div>
                     )}
                     {renderAuthOptions()}

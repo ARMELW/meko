@@ -59,6 +59,7 @@ function ChooseProfilePage() {
           {avatars?.data.map((avatar, index) => (
             <div className="flex flex-col items-center avatar-item" key={index}>
               <div onClick={() => handleChoice(avatar)} className="shadow-lg rounded-full w-[70px] h-[70px] overflow-hidden cursor-pointer">
+                
                 <UserAvatar avatarUrl={avatar.avatarUrl}   size={70} username={`${avatar.firstname} ${avatar.lastname}`} alt={'Avatar'} />
               </div>
               <Typography as="span" align={"center"} className="uppercase">
