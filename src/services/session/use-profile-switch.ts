@@ -1,5 +1,6 @@
 import { useSession } from './store';
 import { useLastActivityActions } from '@/app/game-sessions/hooks/use-last-activity-actions';
+import { useChildren } from '@/app/children';
 
 interface Child {
   id: string;
@@ -16,16 +17,22 @@ export const useProfileSwitch = () => {
   const login = useSession(state => state.login);
   const logout = useSession(state => state.logout);
   const { invalidateLastActivity } = useLastActivityActions();
+  const { data: childrenData } = useChildren();
 
   /**
    * Change de profil et invalide automatiquement le cache des activités récentes
    */
   const switchProfile = (child: Child) => {
-    // Invalider toutes les activités récentes avant de changer de profil
+    // Chercher l'enfant complet (avec avatarUrl) si possible
+    let fullChild = child;
+    if (childrenData?.data) {
+      const found = childrenData.data.find((c) => c.id === child.id);
+      if (found) {
+        fullChild = { ...found };
+      }
+    }
     invalidateLastActivity();
-    
-    // Changer de profil
-    login(child);
+    login(fullChild);
   };
 
   /**

@@ -22,7 +22,6 @@ export function Header() {
     const location = useLocation();
     const { data: session } = useSession();
     const sessionChild = useChildrenSession(state => state.selectedChild);
-    const logout = useChildrenSession(state => state.logout);
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const [isLoggingOut, setIsLoggingOut] = useState(false);
     const [isLastActivityModalOpen, setIsLastActivityModalOpen] = useState(false);

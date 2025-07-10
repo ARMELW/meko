@@ -204,6 +204,11 @@ const fr = {
 		}
 	},
 	games: {
+		search: {
+			loading: 'Recherche en cours...',
+			noResults: 'Aucun jeu trouvé',
+			suggestions: 'Suggestions'
+		},
 		session: {
 			started: 'Session de jeu démarrée avec succès',
 			progressSaved: 'Progression sauvegardée',

@@ -197,6 +197,11 @@ const en = {
       }
    },
    games: {
+      search: {
+         loading: 'Searching...',
+         noResults: 'No games found',
+         suggestions: 'Suggestions'
+      },
       session: {
          started: 'Game session started successfully',
          progressSaved: 'Progress saved',

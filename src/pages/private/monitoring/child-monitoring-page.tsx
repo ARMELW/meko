@@ -382,7 +382,6 @@ function ChildMonitoringPage() {
                 { label: 'Jeux joués', value: activityStats ? String(activityStats.gamesPlayed) : '-' },
               ]}
               bottomStats={[
-                { label: 'Temps de jeu (moy/jour)', value: activityStats ? formatDuration(activityStats.avgTimePerDay) : '-' },
                 { label: 'Nb. sessions', value: activityStats ? String(activityStats.sessionsCount) : '-' },
                 { label: 'Durée moyenne session', value: activityStats ? formatDuration(activityStats.avgSessionDuration) : '-' },
                 { label: '', value: '' },
