@@ -8,9 +8,12 @@ export const useChildren = () => {
   const query = useQuery({
     queryKey: childrenKeys.lists(),
     queryFn: () => childrenService.list({ page: 1, limit: 10 }),
-    staleTime: 0, // Toujours considérer les données comme périmées
-    refetchOnMount: true, // Rafraîchir à chaque montage
-    refetchOnWindowFocus: true // Rafraîchir quand la fenêtre reprend le focus
+    staleTime: 5 * 60 * 1000, // 5 minutes - considérer les données comme fraîches pendant 5 min
+    gcTime: 10 * 60 * 1000, // 10 minutes - garder en cache pendant 10 min
+    refetchOnMount: false, // Ne pas rafraîchir automatiquement au montage
+    refetchOnWindowFocus: false, // Ne pas rafraîchir quand la fenêtre reprend le focus
+    retry: 2, // Retry 2 fois en cas d'erreur
+    retryDelay: 1000 // Délai de 1 seconde entre les retries
   });
 
   const invalidate = () => {
