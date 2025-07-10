@@ -246,6 +246,7 @@ export function GameSimulationModal({
         isGameCompleted: false
       });
       setCurrentSession(null);
+      onClose(); // Fermer le modal après la complétion
     } catch (error) {
       console.error('Error completing session:', error);
     }
