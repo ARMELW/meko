@@ -233,7 +233,9 @@ function ChildDashboardPage() {
                                 { label: t('monitoring.children.progress.progressPercent', 'Progression'), value: progressSummary?.data?.progressPercent != null ? `${progressSummary.data.progressPercent}%` : '-' },
                                 { label: t('monitoring.children.progress.totalTimeSpent', 'Temps de jeu'), value: progressSummary?.data?.totalTimeSpent != null ? formatDuration(progressSummary.data.totalTimeSpent) : '-' },
                             ]}
-                            bottomStats={[]}
+                            bottomStats={[
+
+                            ]}
                         />
                     </Card>
                 </div>
@@ -252,8 +254,10 @@ function ChildDashboardPage() {
                                 </div>
                             ) : (
                                 <ModuleProgressTable
+                                    expandable={false}
                                     modules={
                                         modulesData?.modules?.map((mod) => ({
+                                            id: mod.id,
                                             name: mod.name,
                                             coverUrl: mod.coverUrl,
                                             availableGames: mod.availableGames,

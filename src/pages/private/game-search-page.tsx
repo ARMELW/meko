@@ -50,6 +50,7 @@ export default function GameSearchPage() {
                     {data?.games?.map((game) => (
                         <LessonItem 
                             key={game.id} 
+                            gameId={game.id}
                             title={game.title} 
                             image={game.coverUrl} 
                             status={game.status} 

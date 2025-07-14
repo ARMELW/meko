@@ -61,6 +61,7 @@ import { CardSample } from "./atoms/view/card-sample";
 import { PopoverSample } from "./atoms/floating/popover-sample";
 import { DialogSample } from "./atoms/floating/dialog-sample";
 import { NavItem } from "./atoms/actions/nav-item";
+import { ExpandableTableRow } from "./molecules/table";
 export * from './controlled-text-input';
 
 export const Sample = {
@@ -130,4 +131,5 @@ export {
 	Section,
 	LabeledSection,
 	NavItem,
+	ExpandableTableRow,
 };

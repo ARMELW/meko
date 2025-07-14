@@ -403,8 +403,10 @@ function ChildMonitoringPage() {
               </div>
             ) : (
               <ModuleProgressTable
+                expandable={true}
                 modules={
                   modulesData?.modules?.map((mod) => ({
+                    id: mod.id,
                     name: mod.name,
                     coverUrl: mod.coverUrl,
                     availableGames: mod.availableGames,
