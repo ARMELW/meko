@@ -5,6 +5,7 @@ import { Typography } from '@/components';
 import { useQueryState, parseAsString } from 'nuqs';
 import { LessonItem } from './learning/module-detail-page';
 import { useNavigate } from 'react-router';
+import { GameSimulationModal } from '@/app/game-sessions/components/game-simulation-modal';
 
 export default function GameSearchPage() {
     const { selectedChild } = useSession();
@@ -14,12 +15,42 @@ export default function GameSearchPage() {
     const [searchParam] = useQueryState('search', parseAsString.withDefault(''));
     const navigate = useNavigate();
 
+    const [gameModalState, setGameModalState] = useState<{
+        isOpen: boolean;
+        gameId: string;
+        gameTitle: string;
+        moduleId?: string;
+    }>({
+        isOpen: false,
+        gameId: '',
+        gameTitle: '',
+        moduleId: ''
+    });
+
 
     const canSearch = !!childId && searchParam.trim() !== '';
     const { data, isLoading, error } = useGameSearch(
         canSearch ? childId : '',
         { search: searchParam, page, limit }
     );
+
+    const handleGameClick = (gameId: string, gameTitle: string, moduleId?: string) => {
+        setGameModalState({
+            isOpen: true,
+            gameId,
+            gameTitle,
+            moduleId
+        });
+    };
+
+    const handleCloseModal = () => {
+        setGameModalState({
+            isOpen: false,
+            gameId: '',
+            gameTitle: '',
+            moduleId: ''
+        });
+    };
 
 
     const handlePrev = () => setPage((p) => Math.max(1, p - 1));
@@ -56,9 +87,7 @@ export default function GameSearchPage() {
                             status={game.status} 
                             moduleTitle={game.moduleTitle}
                             lessonOrder={game.lessonOrder}
-                            onGameClick={() => {
-
-                            }} 
+                            onGameClick={() => handleGameClick(game.id, game.title, game.moduleId)} 
                         />
                     ))}
                 </div>
@@ -85,6 +114,15 @@ export default function GameSearchPage() {
                   </footer>
                 )}
             </div>
+
+            {/* Modal de simulation de jeu */}
+            <GameSimulationModal
+                isOpen={gameModalState.isOpen}
+                onClose={handleCloseModal}
+                gameId={gameModalState.gameId}
+                gameTitle={gameModalState.gameTitle}
+                moduleId={gameModalState.moduleId}
+            />
         </div>
 
     );

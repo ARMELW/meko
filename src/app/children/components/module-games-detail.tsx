@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Typography, Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components';
 import GameStatus from './game-status';
 import { Lesson } from '../hooks/use-module-games';
+import { GameSimulationModal } from '@/app/game-sessions/components/game-simulation-modal';
+import { LoadingButton } from '@/components/atoms/actions/loading-button';
 
 export interface ModuleGamesDetailProps {
   lessons: Lesson[];
@@ -12,6 +14,31 @@ const ModuleGamesDetail: React.FC<ModuleGamesDetailProps> = ({
   lessons, 
   isLoading 
 }) => {
+  const [gameModalState, setGameModalState] = useState<{
+    isOpen: boolean;
+    gameId: string;
+    gameTitle: string;
+  }>({
+    isOpen: false,
+    gameId: '',
+    gameTitle: ''
+  });
+
+  const handleGameClick = (gameId: string, gameTitle: string) => {
+    setGameModalState({
+      isOpen: true,
+      gameId,
+      gameTitle
+    });
+  };
+
+  const handleCloseModal = () => {
+    setGameModalState({
+      isOpen: false,
+      gameId: '',
+      gameTitle: ''
+    });
+  };
 
   if (isLoading) {
     return (
@@ -45,6 +72,7 @@ const ModuleGamesDetail: React.FC<ModuleGamesDetailProps> = ({
                 <TableHead className="p-2">Nom du jeu</TableHead>
                 <TableHead className="text-center p-2">Statut</TableHead>
                 <TableHead className="text-center p-2">Date de completion</TableHead>
+                <TableHead className="text-center p-2">Action</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -81,12 +109,30 @@ const ModuleGamesDetail: React.FC<ModuleGamesDetailProps> = ({
                       </Typography>
                     )}
                   </TableCell>
+                  <TableCell className="text-center p-2">
+                    <LoadingButton
+                      onClick={() => handleGameClick(game.id, game.title)}
+                      disabled={game.status === 'blocked'}
+                      size="small"
+                      className="text-xs"
+                    >
+                      LANCER
+                    </LoadingButton>
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>
           </Table>
         </div>
       ))}
+
+      {/* Modal de simulation de jeu */}
+      <GameSimulationModal
+        isOpen={gameModalState.isOpen}
+        onClose={handleCloseModal}
+        gameId={gameModalState.gameId}
+        gameTitle={gameModalState.gameTitle}
+      />
     </div>
   );
 };
