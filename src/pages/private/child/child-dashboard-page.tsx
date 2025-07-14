@@ -234,7 +234,8 @@ function ChildDashboardPage() {
                                 { label: t('monitoring.children.progress.totalTimeSpent', 'Temps de jeu'), value: progressSummary?.data?.totalTimeSpent != null ? formatDuration(progressSummary.data.totalTimeSpent) : '-' },
                             ]}
                             bottomStats={[
-
+                                  { label: t('monitoring.children.progress.totalSessions', 'Sessions totales'), value: progressSummary?.data?.totalSessions != null ? String(progressSummary.data.totalSessions) : '-' },
+                                  { label: t('monitoring.children.progress.avgSessionDuration', 'Durée moyenne des sessions'), value: progressSummary?.data?.avgSessionDuration != null ? formatDuration(progressSummary.data.avgSessionDuration) : '-' },
                             ]}
                         />
                     </Card>

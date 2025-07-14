@@ -5,6 +5,8 @@ export interface ProgressSummary {
   gamesInProgress: number;
   progressPercent: number;
   totalTimeSpent: number;
+  totalSessions: number;
+  avgSessionDuration: number;
   statusPie: Record<string, number>;
 }
 

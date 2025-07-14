@@ -54,7 +54,7 @@ const ExpandableTableRow: React.FC<ExpandableTableRowProps> = ({
             colSpan={6} 
             asChild 
             className="p-0 w-full"
-            containerClassName="p-0 min-h-0 block w-full"
+            containerClassName="px-12 min-h-0 block w-full"
           >
             <div className="w-full p-2">
               {expandedContent}
