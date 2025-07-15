@@ -61,7 +61,7 @@ export default function StatusPieChart({
   // Mapping des couleurs et labels traduits pour la légende
   const legendConfig: Record<string, { color: string; label: string }> = {
     available: { color: 'rgba(0, 15, 71, 0.6)', label: 'À découvrir' },
-    abandoned: { color: 'rgba(255, 127, 50, 1)', label: 'En cours' },
+    in_progress: { color: 'rgba(255, 193, 7, 1)', label: 'En cours' },
     completed: { color: 'rgba(0, 175, 66, 1)', label: 'Terminés' },
     blocked: { color: 'rgba(211, 40, 40, 1)', label: 'Bloqués' },
   };
