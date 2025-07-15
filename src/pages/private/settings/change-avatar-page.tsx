@@ -5,6 +5,7 @@ import { useNavigate } from "react-router";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
 import { useSession as useChildrenSession } from '@/services/session/store';
+import { useChildren } from "@/app/children";
 
 function ChangeAvatarPage() {
   const { t } = useTranslation();
@@ -12,33 +13,37 @@ function ChangeAvatarPage() {
   const { data: avatars, isLoading } = useAvatars();
   const { select } = useAvatarActions();
   const sessionChild = useChildrenSession(state => state.selectedChild);
+  const { invalidate } = useChildren();
   const login = useChildrenSession(state => state.login);
 
   const handleChoice = async (avatar: Avatar) => {
     if (!sessionChild) {
       return;
     }
-    
+
     console.log('Avatar changed:', avatar);
     try {
       await select({
         id: sessionChild.id,
         avatarUrl: avatar.url
       });
-      
-      // Mettre à jour la session avec le nouveau avatar
-      login({
-        ...sessionChild,
-        avatarUrl: avatar.url
-      });
-      
+
+      // Met à jour la session seulement si l'enfant n'a pas d'avatar ou si l'avatar change, et si ce n'est pas un sign up
+      if (!sessionChild?.avatarUrl || sessionChild.avatarUrl !== avatar.url) {
+        login({
+          ...sessionChild,
+          avatarUrl: avatar.url
+        });
+      }
+      if (typeof invalidate === 'function') {
+        invalidate(); // Invalide le cache des enfants pour forcer le refresh
+      }
       toast(t('onboarding.avatar.success'), {
         position: 'bottom-right',
         description: t('onboarding.avatar.successDescription'),
         duration: 5000,
         icon: '✅'
       });
-      
       // Retourner à l'accueil après le changement
       navigate("/home");
     } catch (error) {
@@ -89,20 +94,20 @@ function ChangeAvatarPage() {
         <div className="avatar-grid p-6 w-full">
           <div className="gap-6 grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 justify-items-center">
             {avatars?.map((avatar, index) => (
-              <div 
-                key={index} 
-                onClick={() => handleChoice(avatar)} 
+              <div
+                key={index}
+                onClick={() => handleChoice(avatar)}
                 className={`
                   shadow-lg rounded-full w-[70px] h-[70px] overflow-hidden cursor-pointer 
                   transition-all duration-200 hover:scale-110 hover:shadow-xl
                   ${sessionChild.avatarUrl === avatar.url ? 'ring-4 ring-blue-400' : ''}
                 `}
               >
-                <img 
-                  src={avatar.url} 
-                  alt={`Avatar ${index + 1}`} 
-                  className="w-full h-full object-cover" 
-                />                           
+                <img
+                  src={avatar.url}
+                  alt={`Avatar ${index + 1}`}
+                  className="w-full h-full object-cover"
+                />
               </div>
             ))}
           </div>

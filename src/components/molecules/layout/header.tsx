@@ -240,7 +240,7 @@ export function Header() {
             return (
                 <div className="flex flex-col items-center gap-4">
                     <img
-                        src={displayImage || "https://i.pravatar.cc/300"}
+                        src={displayImage || ""}
                         alt="Avatar"
                         className="border-2 border-white rounded-full w-16 h-16 lg:w-20 lg:h-20"
                         title={sessionChild ? `${sessionChild.firstname} ${sessionChild.lastname}` : displayName}
