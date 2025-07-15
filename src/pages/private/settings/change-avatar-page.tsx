@@ -35,9 +35,8 @@ function ChangeAvatarPage() {
           avatarUrl: avatar.url
         });
       }
-      if (typeof invalidate === 'function') {
-        invalidate(); // Invalide le cache des enfants pour forcer le refresh
-      }
+      invalidate();
+
       toast(t('onboarding.avatar.success'), {
         position: 'bottom-right',
         description: t('onboarding.avatar.successDescription'),
