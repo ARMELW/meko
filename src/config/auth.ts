@@ -12,7 +12,10 @@ export const authClient = createAuthClient({
             user: {
                 isAdmin: { type: 'boolean' },
                 firstname: { type: 'string'},
-                lastname: { type: 'string'}
+                lastname: { type: 'string'},
+                isTrialActive: { type: 'boolean' },
+                trialStartDate: { type: 'string' },
+                trialEndDate: { type: 'string' }
             },
         }),
         emailOTPClient()

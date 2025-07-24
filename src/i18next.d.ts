@@ -11,6 +11,13 @@ declare module "i18next" {
     // custom resources type
     resources: {
       translation: typeof en;
+      subscription: {
+        trialActive: string;
+        trialInactive: string;
+        trialStart: string;
+        trialEnd: string;
+        trialCta: string;
+      };
     };
     // other
   }

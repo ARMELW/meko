@@ -1,8 +1,9 @@
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { fetchApi } from '@/services/api/http';
 
 interface SubscriptionCreatePayload {
-  priceId: string;
+  planId: string;
+  interval: 'month' | 'year';
   successUrl: string;
   cancelUrl: string;
 }
@@ -14,6 +15,7 @@ interface SubscriptionCreateResponse {
 }
 
 export function useSubscriptionCreate() {
+  const queryClient = useQueryClient();
   return useMutation<SubscriptionCreateResponse, Error, SubscriptionCreatePayload>({
     mutationFn: async (payload) => {
       const res = await fetchApi<SubscriptionCreateResponse>('api/v1/subscription/create', {
@@ -22,6 +24,9 @@ export function useSubscriptionCreate() {
         body: JSON.stringify(payload)
       });
       return res;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['currentSubscription'] });
     }
   });
 }

@@ -31,6 +31,8 @@ import { ChangeAvatarPage } from "@/pages/private/settings/change-avatar-page";
 import { ChooseSubscriptionPage } from "@/pages/private/subscription/choose-subscription-page";
 import { SubscriptionSettingPage } from "@/pages/private/subscription/subscription-setting-page";
 import { PaymentPage } from "@/pages/private/subscription/payment-page";
+import PaymentSuccessPage from '@/pages/private/subscription/payment-success';
+import PaymentCancelPage from '@/pages/private/subscription/payment-cancel';
 import { NotFoundPage } from "@/pages/not-found-page";
 import { ProtectedLayout } from "./components/protected-layout";
 import { UiPage } from "@/pages/ui-page";
@@ -150,6 +152,14 @@ const privateRoutes: RouteObject[] = [
 			{
 				path: "payment",
 				element: <PaymentPage />,
+			},
+			{
+				path: "payment-success",
+				element: <PaymentSuccessPage />,
+			},
+			{
+				path: "payment-cancel",
+				element: <PaymentCancelPage />,
 			},
 		],
 	},

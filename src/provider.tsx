@@ -6,12 +6,14 @@ const queryClient = new QueryClient()
 import { LangProvider } from "./services/languages/provider";
 
 export function Provider({ children }: PropsWithChildren) {
-	return (<LangProvider>
-		<NuqsAdapter>
-			<QueryClientProvider client={queryClient} >
-				{children}
-			</QueryClientProvider>
-		</NuqsAdapter>
-
-	</LangProvider>);
+	return (
+		<LangProvider>
+			<NuqsAdapter>
+				<QueryClientProvider client={queryClient} >
+					{children}
+					{/**<ReactQueryDevtools initialIsOpen={false} />*/}
+				</QueryClientProvider>
+			</NuqsAdapter>
+		</LangProvider>
+	);
 }

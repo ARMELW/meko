@@ -120,9 +120,11 @@ body::before {
 .meko-bg {
 	background: linear-gradient(180deg, #006eb6 0%, #0040b6 100%);
 }
+
 .rdp-vhidden {
-  @apply hidden;
+	@apply hidden;
 }
+
 input.custom-input {
 	outline: none;
 	border-bottom: solid 1px rgba(255, 255, 255, 0.3);
@@ -131,41 +133,59 @@ input.custom-input {
 }
 
 .calendar-wrapper {
-  isolation: isolate;
-  pointer-events: auto;
+	isolation: isolate;
+	pointer-events: auto;
 }
 
 .calendar-wrapper * {
-  pointer-events: auto;
+	pointer-events: auto;
 }
 
 /* Animation pour le jeu d'additions */
 @keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+	from {
+		opacity: 0;
+		transform: translateY(10px);
+	}
+
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
 }
 
 .animate-fade-in {
-  animation: fadeIn 0.5s ease-out;
+	animation: fadeIn 0.5s ease-out;
 }
 
 @keyframes highlight-pulse {
-  0%, 100% {
-    box-shadow: 0 0 0 0px rgba(255, 255, 0, 0.7);
-  }
-  50% {
-    box-shadow: 0 0 0 10px rgba(255, 255, 0, 0);
-  }
+
+	0%,
+	100% {
+		box-shadow: 0 0 0 0px rgba(255, 255, 0, 0.7);
+	}
+
+	50% {
+		box-shadow: 0 0 0 10px rgba(255, 255, 0, 0);
+	}
 }
 
 .highlight-game {
-  animation: highlight-pulse 1.5s infinite;
-  border: 2px solid #fbbf24;
-  background: linear-gradient(135deg, rgba(251, 191, 36, 0.1), rgba(251, 191, 36, 0.05));
+	animation: highlight-pulse 1.5s infinite;
+	border: 2px solid #fbbf24;
+	background: linear-gradient(135deg, rgba(251, 191, 36, 0.1), rgba(251, 191, 36, 0.05));
+}
+
+@keyframes shine {
+	0% {
+		transform: translateX(-100%) skewX(-12deg);
+	}
+
+	100% {
+		transform: translateX(200%) skewX(-12deg);
+	}
+}
+
+.animate-shine {
+	animation: shine 3s ease-in-out infinite;
 }

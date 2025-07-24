@@ -10,12 +10,8 @@ import { useTranslation } from "react-i18next";
 import { LoadingButton } from "@/components/atoms/actions/loading-button";
 import { handleSimpleApiError } from "@/utils/error-handler";
 import { toast } from "sonner";
+import { useSavedSessions } from '@/app/auth/hooks/use-saved-sessions';
 
-interface SavedSession {
-  email: string;
-  lastUsed: string;
-  name?: string;
-}
 function LoginPage() {
   const navigate = useNavigate();
   const location = useLocation();
@@ -25,40 +21,10 @@ function LoginPage() {
   const [quickLoginLoadingIndex, setQuickLoginLoadingIndex] = useState<number | null>(null);
   const { loading, initiateOtpLogin } = useOtpAuth();
 
-  // Récupérer l'email et le message depuis l'état de navigation
   const stateEmail = location.state?.email || "";
   const stateMessage = location.state?.message;
 
-  const getSavedSessions = (): SavedSession[] => {
-    try {
-      const saved = localStorage.getItem('meko_saved_sessions');
-      return saved ? JSON.parse(saved) : [];
-    } catch {
-      return [];
-    }
-  };
-
-  const saveSession = (email: string) => {
-    const sessions = getSavedSessions();
-    const existingIndex = sessions.findIndex(s => s.email === email);
-
-    const newSession: SavedSession = {
-      email,
-      lastUsed: new Date().toISOString(),
-      name: email.split('@')[0]
-    };
-
-    if (existingIndex >= 0) {
-      sessions[existingIndex] = newSession;
-    } else {
-      sessions.unshift(newSession);
-    }
-
-    const limitedSessions = sessions.slice(0, 5);
-    localStorage.setItem('meko_saved_sessions', JSON.stringify(limitedSessions));
-  };
-
-  const [savedSessions] = useState<SavedSession[]>(getSavedSessions());
+  const { savedSessions, saveSession } = useSavedSessions();
 
   const {
     control,
@@ -72,7 +38,6 @@ function LoginPage() {
     mode: "onSubmit",
   });
 
-  // Afficher le message si présent
   useEffect(() => {
     if (stateMessage) {
       toast.info(stateMessage);

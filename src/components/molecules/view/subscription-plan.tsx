@@ -6,22 +6,21 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSubscriptionPlans } from '@/app/subscription-plan/hooks/use-subscription-plans';
 import { mapApiPlanToUI, PlanUI } from '@/app/subscription-plan/types';
+import { useSubscriptionPurchase } from '@/app/subscription-plan/hooks/use-subscription-purchase';
 
-// PlanUI importé
 
 interface PriceTagProps {
     price: number;
     billingCycle: string; // 'monthly' | 'annual'
 }
-
-interface PlanItemProps {
+type PlanItemProps = {
     plan: PlanUI;
-    billingCycle: string; // 'monthly' | 'annual'
-    handlePlanSelect: (planId: string) => void;
+    billingCycle: 'monthly' | 'annual';
     isSelected?: boolean;
-}
+    onPurchase: (planId: string, interval: 'month' | 'year') => void;
+    isPurchasing?: boolean;
+};
 
-// Schéma et mapping déplacés dans /app/subscription-plan
 
 function PriceTag({ price }: PriceTagProps) {
     const { t } = useTranslation();
@@ -38,7 +37,7 @@ function PriceTag({ price }: PriceTagProps) {
     );
 }
 
-export function PlanItem({ plan, billingCycle, handlePlanSelect, isSelected = false }: PlanItemProps) {
+export function PlanItem({ plan, billingCycle, isSelected = false, onPurchase, isPurchasing }: PlanItemProps) {
     const { t } = useTranslation();
     return (
         <Card
@@ -71,11 +70,15 @@ export function PlanItem({ plan, billingCycle, handlePlanSelect, isSelected = fa
                 <div className="w-full">
                 <Button
                     size="small"
-                    onClick={() => handlePlanSelect(plan.id)}
+                    onClick={() => {
+                        const interval = billingCycle === 'monthly' ? 'month' : 'year';
+                        onPurchase(plan.id, interval);
+                    }}
                     className="w-full uppercase"
                     innerClassName="flex flex-row justify-center items-center"
+                    disabled={isPurchasing}
                 >
-                    {t('landing.buyPlan')}
+                    {isPurchasing ? t('common.loading', 'Chargement...') : t('landing.buyPlan', 'Souscrire')}
                 </Button>
             </div>
         </CardContent>
@@ -85,21 +88,20 @@ export function PlanItem({ plan, billingCycle, handlePlanSelect, isSelected = fa
 
 export default function SubscriptionPlanDemo() {
     const [billingCycle, setBillingCycle] = useState<'monthly' | 'annual'>('monthly');
-    const [selectedPlan, setSelectedPlan] = useState<string | null>(null);
+    // Removed unused selectedPlan state
     const { t } = useTranslation();
     const { data, isLoading, error } = useSubscriptionPlans();
     const plans: PlanUI[] = data ? data.map(mapApiPlanToUI) : [];
+    const { purchase, isLoading: isPurchasing } = useSubscriptionPurchase();
 
     const handleBillingToggle = () => {
         setBillingCycle(billingCycle === 'monthly' ? 'annual' : 'monthly');
     };
 
-    const handlePlanSelect = (planId: string) => {
-        const plan = plans.find(p => p.id === planId);
-        if (plan) {
-            setSelectedPlan(planId);
-            alert(`Plan ${plan.title} sélectionné en mode ${billingCycle === 'monthly' ? 'mensuel' : 'annuel'} à ${billingCycle === 'monthly' ? plan.monthlyPrice : plan.annualMonthlyPrice}€/mois`);
-        }
+    // Removed handlePlanSelect, no longer needed
+
+    const handlePurchase = (planId: string, interval: 'month' | 'year') => {
+        purchase({ planId, interval });
     };
 
     return (
@@ -142,12 +144,22 @@ export default function SubscriptionPlanDemo() {
 
                 {isLoading && (
                     <div className="flex justify-center items-center py-8">
-                        <Typography>{t('common.loading')}</Typography>
+                        <Typography>{t('common.loading', 'Chargement...')}</Typography>
                     </div>
                 )}
                 {error && (
                     <div className="flex justify-center items-center py-8">
-                        <Typography color="error">{t('common.error')}</Typography>
+                        <Typography color="error">{t('common.error', 'Une erreur est survenue')}</Typography>
+                {isLoading && (
+                    <div className="flex justify-center items-center py-8">
+                        <Typography>{t('common.loading', 'Chargement...')}</Typography>
+                    </div>
+                )}
+                {error && (
+                    <div className="flex justify-center items-center py-8">
+                        <Typography color="error">{t('common.error', 'Erreur')}</Typography>
+                    </div>
+                )}
                     </div>
                 )}
                 {!isLoading && !error && (
@@ -157,8 +169,8 @@ export default function SubscriptionPlanDemo() {
                                 key={plan.id}
                                 plan={plan}
                                 billingCycle={billingCycle}
-                                handlePlanSelect={handlePlanSelect}
-                                isSelected={selectedPlan === plan.id}
+                                onPurchase={handlePurchase}
+                                isPurchasing={isPurchasing}
                             />
                         ))}
                     </div>

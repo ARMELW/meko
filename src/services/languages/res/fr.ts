@@ -55,13 +55,16 @@ const fr = {
 			noChildren: "Vous n'avez pas encore ajouté d'enfant à votre compte."
 		},
 		avatar: {
-			title: "Choisis ton avatar",
-			description: "Commence par choisir ton avatar. Tu pourras toujours le changer plus tard si tu le souhaites.",
-			noAvatars: "Aucun avatar disponible pour le moment.",
-			success: "Avatar sélectionné avec succès",
-			successDescription: "Tu peux le changer à tout moment dans les paramètres de ton profil."
-		},
-		createChild: {
+	landing: {
+		heroTitle: "Apprendre les maths en s'amusant !",
+		heroDescription: "Avec Meko Academy, l'apprentissage des maths devient un jeu ! Grâce à une interface immersive et des défis interactifs, votre enfant progresse en addition, soustraction, multiplication et division tout en s'amusant.",
+		discover: 'DÉCOUVREZ MEKO ACADEMY EN ACTION !',
+		planTitle: "CHOISISSEZ L'ABONNEMENT QUI VOUS CONVIENT",
+		mensual: 'Mensuel',
+		annual: 'Annuel',
+		switchPlan: 'Changer de cycle de facturation',
+		buyPlan: "Acheter l'offre"
+	},
 			title: "Création compte enfant",
 			subtitle: "Renseignez les informations concernant l'enfant",
 			firstName: "Nom",
@@ -85,7 +88,9 @@ const fr = {
 		search: 'Rechercher un jeu',
 		back: 'Retour',
 		lastActivity: 'Dernière activité',
-		statistics: 'Statistiques'
+		statistics: 'Statistiques',
+		loading: 'Chargement...',
+		error: 'Une erreur est survenue',
 	},
 	menu: {
 		childOptions: {
@@ -169,6 +174,16 @@ const fr = {
 		annual: 'Annuel',
 		switchPlan: 'Changer de cycle de facturation',
 		buyPlan: "Acheter l'offre"
+	},
+	subscription: {
+		trialActive: "Essai gratuit actif",
+		trialInactive: "Essai gratuit expiré",
+		trialStart: "Début de l'essai : {{date}}",
+		trialEnd: "Fin de l'essai : {{date}}",
+		trialCta: "Activer l'abonnement",
+		daysLeft: "jours restants",
+		trialInfoActive: "Profitez de l'essai gratuit. À la fin, vous pourrez choisir un abonnement pour continuer à utiliser Meko Academy.",
+		trialInfoInactive: "Votre essai gratuit est terminé. Veuillez choisir un abonnement pour continuer à utiliser Meko Academy."
 	},
 	modules: {
 		loading: 'Chargement des modules...',

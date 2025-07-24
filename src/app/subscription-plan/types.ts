@@ -1,3 +1,4 @@
+
 import type { SubscriptionPlan } from './schema';
 
 export interface PlanUI {
@@ -8,6 +9,7 @@ export interface PlanUI {
   monthlyPrice: number;
   annualPrice: number;
   annualMonthlyPrice: number;
+  stripeIds?: SubscriptionPlan['stripeIds'];
 }
 
 export function mapApiPlanToUI(plan: SubscriptionPlan): PlanUI {
@@ -19,5 +21,6 @@ export function mapApiPlanToUI(plan: SubscriptionPlan): PlanUI {
     monthlyPrice: plan.priceMonthly,
     annualPrice: plan.priceYearly,
     annualMonthlyPrice: Math.round(plan.priceYearly / 12),
+    stripeIds: plan.stripeIds,
   };
 }

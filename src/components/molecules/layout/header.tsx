@@ -36,11 +36,35 @@ export function Header() {
     });
 
     const isAuthenticated = !!session;
-
     const { data: lastActivityData } = useLastActivity(sessionChild?.id || '');
 
 
-   
+    // Parent trial info (when no child selected)
+    const parentTrial = isAuthenticated ? {
+        isTrialActive: session?.user?.isTrialActive,
+        trialStartDate: session?.user?.trialStartDate,
+        trialEndDate: session?.user?.trialEndDate
+    } : null;
+
+    // Format trial dates
+    const formatDate = (dateStr?: string) => {
+        if (!dateStr) return '';
+        const d = new Date(dateStr);
+        return d.toLocaleDateString();
+    };
+
+    // Days left in trial
+    const getDaysLeft = (start?: string, end?: string) => {
+        if (!start || !end) return null;
+        const now = new Date();
+        const endDate = new Date(end);
+        const diff = Math.ceil((endDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
+        return diff > 0 ? diff : 0;
+    };
+    const daysLeft = parentTrial?.isTrialActive ? getDaysLeft(parentTrial.trialStartDate, parentTrial.trialEndDate) : null;
+
+    // Trial progress (0-100)
+
     const handleCloseLastActivityModal = () => {
         setIsLastActivityModalOpen(false);
     };
@@ -96,11 +120,11 @@ export function Header() {
         if (lastActivityData?.data) {
             const moduleId = lastActivityData.data.module.id;
             const gameId = lastActivityData.data.game.id;
-            navigate(`/modules/${moduleId}`, { 
-                state: { 
+            navigate(`/modules/${moduleId}`, {
+                state: {
                     scrollToGameId: gameId,
                     highlightGameId: gameId
-                } 
+                }
             });
         }
     };
@@ -370,6 +394,24 @@ export function Header() {
     }
     return (
         <div className="z-50 w-full">
+            {parentTrial &&  parentTrial.isTrialActive && (
+                <div className="bg-meko-blue-light-2 text-meko-blue-darker px-2 py-0.5 flex flex-row items-center justify-center text-xs min-h-[36px]">
+                    <button
+                        type="button"
+                        onClick={() => navigate('/monitoring/child/subscriptions')}
+                        className="flex justify-center items-center gap-2 flex-1 min-w-0 px-2 py-2 bg-gradient-to-r from-meko-blue-dark via-meko-blue-light-1 to-meko-blue-dark cursor-pointer focus:outline-none rounded-xl  text-xs"
+                        aria-label="Voir abonnement"
+                    >
+                            <span className="flex items-center gap-2">
+                                <span className="w-4 h-4 flex items-center justify-center rounded-full bg-green-500 text-white">
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M12 8v4l3 2" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/><circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2"/></svg>
+                                </span>
+                                <span className="font-bold">Essai gratuit Meko Academy&nbsp;:</span>
+                                <span className="font-normal">{daysLeft} jours restants</span>
+                            </span>
+                    </button>
+                </div>
+            )}
             <div className="hidden md:flex flex-row justify-between items-center px-4 lg:px-6 py-2">
                 <div className="flex items-center gap-3">
                     <Link to={(sessionChild && isAuthenticated) ? "/home" : "/"} className="flex items-center">

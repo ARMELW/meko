@@ -19,6 +19,9 @@ const en = {
          add: "Add",
          edit: "Edit",
          delete: "Delete",
+         daysLeft: "days left",
+         trialInfoActive: "Enjoy your free trial. At the end, you can choose a subscription to continue using Meko Academy.",
+         trialInfoInactive: "Your free trial has ended. Please choose a subscription to continue using Meko Academy.",
          confirmDelete: {
             title: "Delete child account",
             description: "Are you sure you want to delete this account?",
@@ -75,10 +78,10 @@ const en = {
       }
    },
    common: {
-		trial: '7-day free trial',
+      trial: '7-day free trial',
       month: 'Month',
       dashboard: 'Dashboard',
-      ready:  'Get Started Now!',
+      ready: 'Get Started Now!',
       home: 'Home',
       changeProfile: 'Change profile',
       changeAvatar: 'Change avatar',
@@ -86,39 +89,39 @@ const en = {
       back: 'Back',
       lastActivity: 'Last Activity',
       statistics: 'Statistics'
-	},
-	menu: {
-		childOptions: {
-			title: 'Manage child account',
-			subscriptions: 'Subscriptions',
-			addChild: 'Add child',
-			settings: 'Settings'
-		}
-	},
-	settings: {
-		title: 'Settings',
-		general: 'General',
-		currency: {
-			title: 'Currency used',
-			euro: 'Euro (€)',
-			chf: 'Swiss Franc (CHF)'
-		},
-		language: {
-			title: 'Language',
-			french: 'Français',
-			english: 'English'
-		},
-		account: {
-			title: 'Child Account',
-			active: 'Active child account',
-			changeProfile: 'Change profile'
-		},
-		actions: {
-			save: 'Save',
-			saving: 'Saving...',
-			saved: 'Settings saved'
-		}
-	},
+   },
+   menu: {
+      childOptions: {
+         title: 'Manage child account',
+         subscriptions: 'Subscriptions',
+         addChild: 'Add child',
+         settings: 'Settings'
+      }
+   },
+   settings: {
+      title: 'Settings',
+      general: 'General',
+      currency: {
+         title: 'Currency used',
+         euro: 'Euro (€)',
+         chf: 'Swiss Franc (CHF)'
+      },
+      language: {
+         title: 'Language',
+         french: 'Français',
+         english: 'English'
+      },
+      account: {
+         title: 'Child Account',
+         active: 'Active child account',
+         changeProfile: 'Change profile'
+      },
+      actions: {
+         save: 'Save',
+         saving: 'Saving...',
+         saved: 'Settings saved'
+      }
+   },
    auth: {
       login: 'Login',
       success: 'A login code has been sent to your email address',
@@ -191,7 +194,7 @@ const en = {
          gameStatus: {
             completed: 'COMPLETED',
             blocked: 'LOCKED',
-				available: 'TO DISCOVER',
+            available: 'TO DISCOVER',
             in_progress: 'IN PROGRESS'
          }
       }
@@ -243,10 +246,10 @@ const en = {
       }
    },
    form: {
-		'date-picker': {
-			placeholder: 'Select a date'
-		},
-	},
+      'date-picker': {
+         placeholder: 'Select a date'
+      },
+   },
 };
 
 export default en;
