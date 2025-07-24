@@ -1,20 +1,13 @@
-
 import { Button } from '@/components/atoms/actions/button';
 import { Switch } from '@/components/atoms/forms/switch';
 import { Typography } from '@/components/atoms/typography/typography';
 import { Card, CardContent, CardTitle } from '@/components/atoms/view/card';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useSubscriptionPlans } from '@/app/subscription-plan/hooks/use-subscription-plans';
+import { mapApiPlanToUI, PlanUI } from '@/app/subscription-plan/types';
 
-interface Plan {
-    id: string;
-    type: string;
-    title: string;
-    subtitle: string;
-    monthlyPrice: number;
-    annualPrice: number;
-    annualMonthlyPrice: number;
-}
+// PlanUI importé
 
 interface PriceTagProps {
     price: number;
@@ -22,11 +15,13 @@ interface PriceTagProps {
 }
 
 interface PlanItemProps {
-    plan: Plan;
+    plan: PlanUI;
     billingCycle: string; // 'monthly' | 'annual'
     handlePlanSelect: (planId: string) => void;
     isSelected?: boolean;
 }
+
+// Schéma et mapping déplacés dans /app/subscription-plan
 
 function PriceTag({ price }: PriceTagProps) {
     const { t } = useTranslation();
@@ -92,26 +87,8 @@ export default function SubscriptionPlanDemo() {
     const [billingCycle, setBillingCycle] = useState<'monthly' | 'annual'>('monthly');
     const [selectedPlan, setSelectedPlan] = useState<string | null>(null);
     const { t } = useTranslation();
-    const plans: Plan[] = [
-        {
-            id: 'individual',
-            type: 'INDIVIDUELLE',
-            title: 'INDIVIDUELLE',
-            subtitle: 'pour un enfant',
-            monthlyPrice: 35,
-            annualPrice: 420,
-            annualMonthlyPrice: 29,
-        },
-        {
-            id: 'family',
-            type: 'FAMILIALE',
-            title: 'FAMILIALE',
-            subtitle: 'jusqu\'à 3 enfants',
-            monthlyPrice: 55,
-            annualPrice: 660,
-            annualMonthlyPrice: 45,
-        }
-    ];
+    const { data, isLoading, error } = useSubscriptionPlans();
+    const plans: PlanUI[] = data ? data.map(mapApiPlanToUI) : [];
 
     const handleBillingToggle = () => {
         setBillingCycle(billingCycle === 'monthly' ? 'annual' : 'monthly');
@@ -163,18 +140,29 @@ export default function SubscriptionPlanDemo() {
                     </Typography>
                 </div>
 
-                <div className="flex sm:flex-row flex-col justify-center items-center gap-6 w-full">
-                    {plans.map((plan) => (
-                        <PlanItem
-                            key={plan.id}
-                            plan={plan}
-                            billingCycle={billingCycle}
-                            handlePlanSelect={handlePlanSelect}
-                            isSelected={selectedPlan === plan.id}
-                        />
-                    ))}
-                </div>
-
+                {isLoading && (
+                    <div className="flex justify-center items-center py-8">
+                        <Typography>{t('common.loading')}</Typography>
+                    </div>
+                )}
+                {error && (
+                    <div className="flex justify-center items-center py-8">
+                        <Typography color="error">{t('common.error')}</Typography>
+                    </div>
+                )}
+                {!isLoading && !error && (
+                    <div className="flex sm:flex-row flex-col justify-center items-center gap-6 w-full">
+                        {plans.map((plan) => (
+                            <PlanItem
+                                key={plan.id}
+                                plan={plan}
+                                billingCycle={billingCycle}
+                                handlePlanSelect={handlePlanSelect}
+                                isSelected={selectedPlan === plan.id}
+                            />
+                        ))}
+                    </div>
+                )}
             </div>
         </section>
     );
