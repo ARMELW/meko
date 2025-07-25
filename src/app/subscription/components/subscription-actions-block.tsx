@@ -1,24 +1,29 @@
 import { useCancelSubscription } from '@/app/subscription/hooks/use-cancel-subscription';
 import { CurrentSubscription } from '@/app/subscription/api/current-subscription';
+import { Button } from '@/components/atoms/actions/button';
+import { useNavigate } from 'react-router';
 
-export function SubscriptionActionsBlock({ subscription, onShowPlanSelector }: { subscription: CurrentSubscription; onShowPlanSelector: () => void }) {
+export function SubscriptionActionsBlock({ subscription }: { subscription: CurrentSubscription }) {
 	const { mutate: cancel, isPending: isCancelling } = useCancelSubscription();
+	const navigate = useNavigate();
 	return (
-		<div className="flex flex-row gap-1 justify-center mt-1">
-			<button
-				className="bg-orange-500 hover:bg-orange-600 text-white font-bold py-1 px-2 rounded shadow text-xs transition"
-				onClick={onShowPlanSelector}
+		<div className="flex flex-row gap-1 justify-center my-2">
+			<Button
+				variant='primary'
+				size='small'
+				onClick={() => navigate('/subscription/change')}
 				disabled={subscription.isCanceled}
 			>
 				CHANGER D'OFFRE
-			</button>
-			<button
-				className="bg-meko-blue-light-1 hover:bg-meko-blue-light-2 text-white font-bold py-1 px-2 rounded shadow text-xs transition disabled:opacity-60"
+			</Button>
+			<Button
+				variant='secondary'
+				size='small'
 				onClick={() => cancel()}
 				disabled={isCancelling || subscription.isCanceled}
 			>
 				{isCancelling ? 'Annulation...' : 'ANNULER'}
-			</button>
+			</Button>
 		</div>
 	);
 }

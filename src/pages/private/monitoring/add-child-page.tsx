@@ -9,7 +9,7 @@ import { LoadingButton } from "@/components/atoms/actions/loading-button";
 import { useNavigate } from "react-router";
 import { useTranslation } from "react-i18next";
 import { ControlledDateTimePicker } from "@/components/molecules/form/controlled-date-picker";
-import { signUp } from "@/config/auth";
+import { SubscriptionRequiredGuard } from "@/routes/components/subscription-required-guard";
 
 const defaultValues: ChildrenPayload = {
     firstname: "",
@@ -42,6 +42,7 @@ function AddChildPage() {
         );
     };
     return (
+        <SubscriptionRequiredGuard>
         <div className="w-full h-screen flex flex-col justify-center items-center">
             <div className="w-[35%]">
                 <form action="" className="w-full space-y-4" onSubmit={handleSubmit(onSubmit)}>
@@ -95,6 +96,7 @@ function AddChildPage() {
                 </form>
             </div>
         </div>
+        </SubscriptionRequiredGuard>
     );
 }
 

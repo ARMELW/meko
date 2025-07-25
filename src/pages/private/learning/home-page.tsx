@@ -6,6 +6,7 @@ import {
   ModulesPagination
 } from '@/app/modules';
 import { CardModule } from '@/components/molecules/view/card-module';
+import { SubscriptionRequiredGuard } from '@/routes/components/subscription-required-guard';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
 
@@ -41,32 +42,36 @@ function HomePage() {
   }
 
   return (
-    <div className="w-full home-wrapper px-36">
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 p-4">
-        {modulesData.modules.map((module) => (
-          <CardModule
-            key={module.id}
-            image={module.coverUrl}
-            title={module.name}
-            status={module.status}
-            progress={module.status === 'in_progress' ? `${module.completedGames}/${module.totalGames}` : undefined}
-            onClick={() => handleModuleClick(module.id)}
-          />
-        ))}
-      </div>
+    <SubscriptionRequiredGuard>
+      <div className="w-full home-wrapper px-36">
 
-      {modulesData.pagination && (
-        <ModulesPagination
-          pagination={modulesData.pagination}
-          currentPage={currentPage}
-          totalPages={totalPages}
-          hasNextPage={hasNextPage}
-          hasPrevPage={hasPrevPage}
-          onPageChange={goToPage}
-          onLimitChange={changeLimit}
-        />
-      )}
-    </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 p-4">
+          {modulesData.modules.map((module) => (
+            <CardModule
+              key={module.id}
+              image={module.coverUrl}
+              title={module.name}
+              status={module.status}
+              progress={module.status === 'in_progress' ? `${module.completedGames}/${module.totalGames}` : undefined}
+              onClick={() => handleModuleClick(module.id)}
+            />
+          ))}
+        </div>
+
+        {modulesData.pagination && (
+          <ModulesPagination
+            pagination={modulesData.pagination}
+            currentPage={currentPage}
+            totalPages={totalPages}
+            hasNextPage={hasNextPage}
+            hasPrevPage={hasPrevPage}
+            onPageChange={goToPage}
+            onLimitChange={changeLimit}
+          />
+        )}
+
+      </div>
+    </SubscriptionRequiredGuard>
   );
 }
 

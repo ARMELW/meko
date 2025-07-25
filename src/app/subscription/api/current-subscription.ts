@@ -9,6 +9,9 @@ export type CurrentSubscription = {
   trialDaysLeft?: number;
   isCanceled?: boolean;
   accessEndsAt?: string;
+  isExpired: boolean;
+  currentChildrenCount: number;
+  interval: 'month' | 'year';
 };
 
 type CurrentSubscriptionApiResponse = {

@@ -45,9 +45,8 @@ function VerifyOtpPage() {
         lastName
       });
       
-      // Navigation seulement si la vérification a réussi
       if (isSignUp) {
-        navigate("/profile/create-child");
+        navigate("/subscription");
       } else {
         navigate("/profile/choose");
       }

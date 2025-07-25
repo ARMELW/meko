@@ -3,7 +3,6 @@ import PublicLayout from './public-layout';
 import PrivateLayout from './private-layout';
 
 import { LandingPage } from "@/pages/public/landing/landing-page";
-import { CreateParentAccountPage } from "@/pages/public/auth/create-parent-account-page";
 import { LoginPage } from "@/pages/public/auth/login-page";
 import { ForgotPasswordPage } from "@/pages/public/auth/forgot-password-page";
 import { CreateNewPasswordPage } from "@/pages/public/auth/create-new-password-page";
@@ -15,10 +14,8 @@ import { ChooseAvatarPage } from "@/pages/private/onboarding/choose-avatar-page"
 
 import { HomePage } from "@/pages/private/learning/home-page";
 import { ModuleDetailPage } from "@/pages/private/learning/module-detail-page";
-import { LessonPage } from "@/pages/private/learning/lesson-page";
 
 import { ChildMonitoringPage } from "@/pages/private/monitoring/child-monitoring-page";
-import { ResultSearchPage } from "@/pages/private/monitoring/result-search-page";
 import { AddChildPage } from "@/pages/private/monitoring/add-child-page";
 import { ChildSettingsPage } from "@/pages/private/monitoring/child-settings-page";
 import { SubscriptionManagementPage } from "@/pages/private/monitoring/subscription-management-page";
@@ -33,11 +30,14 @@ import { SubscriptionSettingPage } from "@/pages/private/subscription/subscripti
 import { PaymentPage } from "@/pages/private/subscription/payment-page";
 import PaymentSuccessPage from '@/pages/private/subscription/payment-success';
 import PaymentCancelPage from '@/pages/private/subscription/payment-cancel';
+import ChangeSubscriptionPage from '@/pages/private/subscription/change-subscription';
 import { NotFoundPage } from "@/pages/not-found-page";
 import { ProtectedLayout } from "./components/protected-layout";
 import { UiPage } from "@/pages/ui-page";
 import { VerifyOtpPage } from "@/pages/public/auth/verify-otp-page";
-import GameSearchPage from '@/pages/private/game-search-page';
+import GameSearchPage from '@/pages/private/learning/game-search-page';
+import SubscriptionPage from "@/pages/private/subscription/subscription-page";
+import { CreateParentAccountPage } from "@/pages/public/auth/create-parent-account-page";
 
 const privateRoutes: RouteObject[] = [
 	{
@@ -96,24 +96,11 @@ const privateRoutes: RouteObject[] = [
 		],
 	},
 	{
-		path: "/lessons",
-		children: [
-			{
-				path: ":lessonId",
-				element: <LessonPage />,
-			},
-		],
-	},
-	{
 		path: "/monitoring",
 		children: [
 			{
 				index: true,
 				element: <ChildMonitoringPage />,
-			},
-			{
-				path: "search",
-				element: <ResultSearchPage />,
 			},
 			{
 				path: "child",
@@ -129,7 +116,7 @@ const privateRoutes: RouteObject[] = [
 					{
 						path: "settings",
 						element: <ChildSettingsPage />,
-					},
+					}
 				],
 			},
 		],
@@ -138,31 +125,35 @@ const privateRoutes: RouteObject[] = [
 		path: "/settings",
 		element: <SettingPage />,
 	},
-	{
-		path: "/subscription",
-		children: [
-			{
-				path: "choose",
-				element: <ChooseSubscriptionPage />,
-			},
-			{
-				path: "settings",
-				element: <SubscriptionSettingPage />,
-			},
-			{
-				path: "payment",
-				element: <PaymentPage />,
-			},
-			{
-				path: "payment-success",
-				element: <PaymentSuccessPage />,
-			},
-			{
-				path: "payment-cancel",
-				element: <PaymentCancelPage />,
-			},
-		],
-	},
+	   {
+		   path: "/subscription",
+		   children: [
+			   {
+				   path: "choose",
+				   element: <ChooseSubscriptionPage />,
+			   },
+			   {
+				   path: "settings",
+				   element: <SubscriptionSettingPage />,
+			   },
+			   {
+				   path: "payment",
+				   element: <PaymentPage />,
+			   },
+			   {
+				   path: "payment-success",
+				   element: <PaymentSuccessPage />,
+			   },
+			   {
+				   path: "payment-cancel",
+				   element: <PaymentCancelPage />,
+			   },
+			   {
+				   path: "change",
+				   element: <ChangeSubscriptionPage />,
+			   },
+		   ],
+	   },
 	{
 		path: "/games/search",
 		element: <GameSearchPage />,
@@ -207,13 +198,18 @@ const publicRoutes: RouteObject[] = [
 				path: 'reset-password',
 				element: <CreateNewPasswordPage />,
 			},
+
+			{
+				path: '/subscription',
+				element: <SubscriptionPage />,
+			},
 		],
 	},
 ];
 
 const routes: RouteObject[] = [
 	{
-		element: <PublicLayout />, 
+		element: <PublicLayout />,
 		children: [
 			...publicRoutes,
 			{

@@ -11,6 +11,7 @@ export interface Invoice {
   status: string;
   paidAt?: string | null;
   invoiceUrl: string;
+  interval: 'month' | 'year';
 }
 
 export function useInvoices() {

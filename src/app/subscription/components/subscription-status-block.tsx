@@ -2,7 +2,7 @@ import { CurrentSubscription } from '@/app/subscription/api/current-subscription
 
 export function SubscriptionStatusBlock({ subscription }: { subscription: CurrentSubscription }) {
 	return (
-		<div className="text-xs text-white text-center mt-1">
+		<div className="text-sm text-white text-center my-2">
 			{subscription.isCanceled ? (
 				<span>
 					Abonnement annulé.<br />
@@ -14,7 +14,7 @@ export function SubscriptionStatusBlock({ subscription }: { subscription: Curren
 					Vous pouvez souscrire une nouvelle offre à tout moment depuis cette page.
 				</span>
 			) : subscription.isTrial
-				? "Profitez de l'essai gratuit avant de choisir une offre d'abonnement."
+				? ""
 				: `Votre abonnement sera renouvelé automatiquement le ${new Date(subscription.activeUntil).toLocaleDateString('fr-FR', { day: '2-digit', month: 'long', year: 'numeric' })}.`}
 		</div>
 	);

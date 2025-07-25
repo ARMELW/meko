@@ -5,6 +5,7 @@ import UserAvatar from "@/components/atoms/view/user-avatar";
 import { useNavigate } from "react-router";
 import { appPath } from "@/routes/path";
 import { formatDisplayName } from "@/utils/text";
+import { SubscriptionRequiredGuard } from "@/routes/components/subscription-required-guard";
 
 export function ChildStatisticsPage() {
   const { t } = useTranslation();
@@ -35,6 +36,7 @@ export function ChildStatisticsPage() {
   const displayName = formatDisplayName(sessionChild.firstname, '', 30);
 
   return (
+    <SubscriptionRequiredGuard>
     <div className="min-h-screen text-white p-4 md:p-8">
       <div className="max-w-7xl mx-auto">
         {/* Header avec informations de l'enfant */}
@@ -281,5 +283,6 @@ export function ChildStatisticsPage() {
         </Card>
       </div>
     </div>
+    </SubscriptionRequiredGuard>
   );
 }

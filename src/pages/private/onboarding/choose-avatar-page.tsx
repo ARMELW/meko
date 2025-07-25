@@ -8,6 +8,7 @@ import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
 import { useSession as useChildrenSession } from '@/services/session/store';
 import { useChildren } from "@/app/children";
+import { SubscriptionRequiredGuard } from "@/routes/components/subscription-required-guard";
 
 function ChooseAvatarPage() {
   const { t } = useTranslation();
@@ -18,8 +19,8 @@ function ChooseAvatarPage() {
   const sessionChild = useChildrenSession(state => state.selectedChild);
   const selectedChild = useChildrenStore(state => state.currentChild);
   const { invalidate } = useChildren();
-  
-   const signUp = location.state?.signUp || selectedChild ; 
+
+  const signUp = location.state?.signUp || selectedChild;
   const login = useChildrenSession(state => state.login);
   const clearCurrentChild = useChildrenStore(state => state.clearCurrentChild);
 
@@ -59,10 +60,10 @@ function ChooseAvatarPage() {
         duration: 5000,
         icon: '✅'
       })
-     clearCurrentChild(); 
-     setTimeout(() => {
-       navigate("/profile/choose");
-     }, 0);
+      clearCurrentChild();
+      setTimeout(() => {
+        navigate("/profile/choose");
+      }, 0);
     } catch (error) {
       console.error('Erreur lors de la sélection de l\'avatar:', error);
     }
@@ -76,47 +77,51 @@ function ChooseAvatarPage() {
     );
   }
 
-  return <div className="flex flex-col justify-center items-center w-full h-full">
-    <div className="w-[50%]">
+  return (
+    <SubscriptionRequiredGuard>
+      <div className="flex flex-col justify-center items-center w-full h-full">
+        <div className="w-[50%]">
 
-      <div className="flex justify-center w-full typo-container">
-        <Typography as="h3" align={"center"}>
-          {t('onboarding.avatar.title')}
-        </Typography>
-      </div>
+          <div className="flex justify-center w-full typo-container">
+            <Typography as="h3" align={"center"}>
+              {t('onboarding.avatar.title')}
+            </Typography>
+          </div>
 
-      <div className="flex justify-center items-center p-5 w-full">
-        <div className="avatar-profil">
-          <img src="/assets/images/avatars/frame_26088240.png" alt="" className="w-[70px] h-[70px] avatar-profile" />
-        </div>
-      </div>
-
-      <div className="flex justify-center w-full typo-container">
-        <Typography as="p" align={"center"} className="w-[91%]">
-          {t('onboarding.avatar.description')}
-        </Typography>
-      </div>
-      {avatars?.length === 0 && (
-        <div className="flex justify-center items-center w-full p-5">
-          <Typography as="p" align={"center"} className="text-red-500">
-            {t('onboarding.avatar.noAvatars')}
-          </Typography>
-        </div>
-      )}
-
-      <div className="avatar-grid p-12 w-full">
-        <div className="gap-12 grid grid-cols-4">
-
-          {avatars?.map((avatar, index) => (
-            <div key={index} onClick={() => handleChoice(avatar)} className="shadow-lg rounded-full w-[70px] h-[70px] overflow-hidden cursor-pointer">
-              <img src={avatar.url} alt={`Avatar ${index + 1}`} className="w-full h-full object-cover" />                           
+          <div className="flex justify-center items-center p-5 w-full">
+            <div className="avatar-profil">
+              <img src="/assets/images/avatars/frame_26088240.png" alt="" className="w-[70px] h-[70px] avatar-profile" />
             </div>
-          ))}
+          </div>
+
+          <div className="flex justify-center w-full typo-container">
+            <Typography as="p" align={"center"} className="w-[91%]">
+              {t('onboarding.avatar.description')}
+            </Typography>
+          </div>
+          {avatars?.length === 0 && (
+            <div className="flex justify-center items-center w-full p-5">
+              <Typography as="p" align={"center"} className="text-red-500">
+                {t('onboarding.avatar.noAvatars')}
+              </Typography>
+            </div>
+          )}
+
+          <div className="avatar-grid p-12 w-full">
+            <div className="gap-12 grid grid-cols-4">
+
+              {avatars?.map((avatar, index) => (
+                <div key={index} onClick={() => handleChoice(avatar)} className="shadow-lg rounded-full w-[70px] h-[70px] overflow-hidden cursor-pointer">
+                  <img src={avatar.url} alt={`Avatar ${index + 1}`} className="w-full h-full object-cover" />
+                </div>
+              ))}
+            </div>
+          </div>
+
         </div>
       </div>
-
-    </div>
-  </div>;
+    </SubscriptionRequiredGuard>
+  );
 }
 
 export { ChooseAvatarPage };

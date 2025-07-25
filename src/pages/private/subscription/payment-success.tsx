@@ -11,8 +11,8 @@ export default function PaymentSuccessPage() {
   <Typography variant="p" className="mb-6">
         {t('subscription.payment.success.message', 'Votre paiement a été validé. Merci pour votre confiance !')}
       </Typography>
-      <a href="/dashboard" className="meko-btn-primary">
-        {t('common.dashboard', 'Aller au tableau de bord')}
+      <a href="/profile/create-child" className="meko-btn-primary">
+         Créer vos premiers enfants
       </a>
     </div>
   );

@@ -22,6 +22,7 @@ import { useChildActivityStats } from '@/app/children/hooks/use-child-activity-s
 import { LoadingSpinner } from '@/components/atoms/loading-spinner';
 import ModuleProgressTable from '@/app/children/components/module-progress-table';
 import { useModules } from '@/app/modules/hooks/use-modules';
+import { SubscriptionRequiredGuard } from "@/routes/components/subscription-required-guard";
 
 
 function ChildMonitoringPage() {
@@ -125,7 +126,9 @@ function ChildMonitoringPage() {
     ].filter(Boolean).join(' ');
   }, []);
 
-  return <div className="min-h-screen text-white p-4 md:p-8">
+  return(
+  <SubscriptionRequiredGuard>
+  <div className="min-h-screen text-white p-4 md:p-8">
     <div className="flex flex-col md:flex-row gap-6">
       <aside className="w-20 md:w-32 flex flex-col items-center gap-4">
         <div className="child-item-wrapper flex flex-col items-center justify-center">
@@ -422,7 +425,9 @@ function ChildMonitoringPage() {
 
       </main>
     </div>
-  </div>;
+  </div>
+  </SubscriptionRequiredGuard>
+  );
 }
 
 export { ChildMonitoringPage };

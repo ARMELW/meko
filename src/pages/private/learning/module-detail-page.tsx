@@ -8,6 +8,7 @@ import { LoadingDisplay, ErrorDisplay } from '@/app/modules/components/display-s
 import { LoadingButton } from "@/components/atoms/actions/loading-button";
 import { GameSimulationModal } from '@/app/game-sessions/components/game-simulation-modal';
 import { useState, useEffect } from 'react';
+import { SubscriptionRequiredGuard } from "@/routes/components/subscription-required-guard";
 
 function ModuleDetailPage() {
   const { t } = useTranslation();
@@ -90,7 +91,9 @@ function ModuleDetailPage() {
   };
 
   return (
+     <SubscriptionRequiredGuard>
     <div className="min-h-screen text-white sm:w-full lg:w-[70%] mx-auto">
+     
       <div className="flex items-center space-x-4">
         <button
           onClick={handleGoBack}
@@ -255,6 +258,8 @@ function ModuleDetailPage() {
         moduleId={moduleId}
       />
     </div>
+
+      </SubscriptionRequiredGuard>
   );
 }
 
