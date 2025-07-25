@@ -1,12 +1,10 @@
-import { Typography } from '@/components/atoms/typography/typography';
+
 import SubscriptionPlanDemo from '@/components/molecules/view/subscription-plan';
 import { useSession } from '@/config/auth';
 import { useNavigate } from 'react-router';
-import { useTranslation } from 'react-i18next';
 import { useEffect } from 'react';
 
 export default function ChangeSubscriptionPage() {
-    const { t } = useTranslation();
     const { data: session, isPending } = useSession();
     const navigate = useNavigate();
 
