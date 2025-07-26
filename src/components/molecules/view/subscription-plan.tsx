@@ -116,13 +116,14 @@ export default function SubscriptionPlanDemo({
     const [billingCycle, setBillingCycle] = useState<'monthly' | 'annual'>('monthly');
     const { t } = useTranslation();
     const { data, isLoading, error } = useSubscriptionPlans();
+    console.log('data',data);
     const plans: PlanUI[] = data ? data.map(mapApiPlanToUI) : [];
     const { data: session } = useSession();
     const { data: currentSubscription } = useCurrentSubscription();
     const navigate = useNavigate();
     const changeMutation = useChangeSubscription();
     const purchaseMutation = useSubscriptionPurchase();
-
+    console.log('error',error);
     const handleBillingToggle = () => {
         setBillingCycle(billingCycle === 'monthly' ? 'annual' : 'monthly');
     };
@@ -151,7 +152,6 @@ export default function SubscriptionPlanDemo({
             purchaseMutation.purchase({ planId, interval });
         }
     };
-
     return (
         <section className="p-4 sm:p-6 w-full">
             <div className="mx-auto max-w-5xl text-white">
