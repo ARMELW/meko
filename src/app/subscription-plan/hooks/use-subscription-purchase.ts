@@ -12,8 +12,8 @@ export function useSubscriptionPurchase() {
   const { selectedChild } = useSession();
   const createSubscription = useSubscriptionCreate();
 
-  const successUrl = `${window.location.origin}/subscription/payment-success`;
-  const cancelUrl = `${window.location.origin}/subscription/payment-cancel`;
+  const successUrl = `https://dev.meko.ac/subscription/payment-success`;
+  const cancelUrl = `https://dev.meko.ac/subscription/payment-cancel`;
 
   const purchase = async ({ planId, interval }: PurchaseOptions) => {
     if (!selectedChild) {
