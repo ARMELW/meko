@@ -21,34 +21,39 @@ function CardModule({ image, title, status, progress, onClick }: CardModuleProps
     'blocked': 'bg-red-500 text-white'
   };
 
-  return <div className="w-full home-wrapper cursor-pointer" onClick={onClick}>
-    <Card style={{ boxShadow: "rgb(255 255 255 / 19%) 0px -1px 1px" }}>
-      <CardContent className="p-2">
-        <div className="w-full card-image">
-          <img src={image} alt={title} className="w-full h-[186px] object-cover rounded-xl" />
-        </div>
-        <div className="card-title">
-          <Typography 
-            as="p" 
-            align={"center"} 
-            styleCase={"uppercase"} 
-            weight={"bold"} 
-            className="p-4 truncate" 
-            title={title}
-            label={title} 
-          >
-            {truncateText(title, 40)}
+  return (
+    <div className="w-full cursor-pointer" onClick={onClick}>
+      <Card style={{ boxShadow: "rgb(255 255 255 / 19%) 0px -1px 1px" }}>
+        <CardContent className="p-1 sm:p-2 md:p-3">
+          <div className="w-full card-image">
+            <img 
+              src={image} 
+              alt={title} 
+              className="w-full h-36 sm:h-44 md:h-48 lg:h-52 object-cover rounded-xl transition-transform duration-200 hover:scale-105" 
+            />
+          </div>
+          <div className="card-title">
+            <Typography 
+              as="p" 
+              align="center" 
+              styleCase="uppercase" 
+              weight="bold" 
+              className="py-2 px-1 sm:py-4 sm:px-2 truncate text-base sm:text-lg md:text-xl" 
+              title={title}
+              label={title} 
+            >
+              {truncateText(title, 40)}
+            </Typography>
+          </div>
+        </CardContent>
+        <CardFooter className={`${statusColors[status]}`}> 
+          <Typography as="p" align="center" styleCase="uppercase" weight="bold" className="text-xs sm:text-sm md:text-base" shadow="sm">
+            {status === 'in_progress' && progress ? `${t(`modules.status.${status}`)} ${progress}` : t(`modules.status.${status}`)}
           </Typography>
-        </div>
-
-      </CardContent>
-      <CardFooter className={`${statusColors[status]}`}>
-        <Typography as="p" align={"center"} styleCase={"uppercase"} weight={"bold"} className="text-sm" shadow={"sm"}>
-          {status === 'in_progress' && progress ? `${t(`modules.status.${status}`)} ${progress}` : t(`modules.status.${status}`)}
-        </Typography>
-      </CardFooter>
-    </Card>
-  </div>
+        </CardFooter>
+      </Card>
+    </div>
+  );
 }
 
 export { CardModule };

@@ -43,9 +43,9 @@ function HomePage() {
 
   return (
     <SubscriptionRequiredGuard>
-      <div className="w-full home-wrapper px-36">
+      <div className="w-full home-wrapper px-2 sm:px-4 md:px-8 lg:px-16 xl:px-36">
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 p-4">
+        <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 md:gap-8 p-2 sm:p-4">
           {modulesData.modules.map((module) => (
             <CardModule
               key={module.id}

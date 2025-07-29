@@ -66,17 +66,17 @@ function ChangeAvatarPage() {
 
 
   return (
-    <div className="flex flex-col justify-center items-center w-full h-full min-h-screen">
-      <div className="w-full max-w-2xl px-4">
+    <div className="flex flex-col justify-center items-center w-full min-h-screen bg-white px-2 sm:px-4">
+      <div className="w-full max-w-lg sm:max-w-xl md:max-w-2xl lg:max-w-3xl xl:max-w-4xl mx-auto flex flex-col gap-6 sm:gap-8 md:gap-10 bg-white rounded-xl shadow-md p-4 sm:p-8 md:p-12">
         {/* Header avec informations de l'enfant */}
-        <div className="flex justify-center w-full mb-6">
-          <Typography as="h3" align="center" weight="bold" className="text-xl">
+        <div className="flex justify-center w-full mb-4 sm:mb-6">
+          <Typography as="h3" align="center" weight="bold" className="text-xl sm:text-2xl md:text-3xl lg:text-4xl">
             {t('common.changeAvatar')}
           </Typography>
         </div>
 
-        <div className="flex justify-center w-full mb-8">
-          <Typography as="p" align="center" className="w-[91%] max-w-md">
+        <div className="flex justify-center w-full mb-6 sm:mb-8">
+          <Typography as="p" align="center" className="w-full max-w-2xl text-base sm:text-lg md:text-xl text-meko-blue-dark">
             {t('onboarding.avatar.description')}
           </Typography>
         </div>
@@ -90,14 +90,14 @@ function ChangeAvatarPage() {
         )}
 
         {/* Grille d'avatars */}
-        <div className="avatar-grid p-6 w-full">
-          <div className="gap-6 grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 justify-items-center">
+        <div className="avatar-grid w-full py-6 sm:py-8">
+          <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 gap-6 sm:gap-8 md:gap-10 justify-items-center">
             {avatars?.map((avatar, index) => (
               <div
                 key={index}
                 onClick={() => handleChoice(avatar)}
                 className={`
-                  shadow-lg rounded-full w-[70px] h-[70px] overflow-hidden cursor-pointer 
+                  shadow-lg rounded-full w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 overflow-hidden cursor-pointer 
                   transition-all duration-200 hover:scale-110 hover:shadow-xl
                   ${sessionChild.avatarUrl === avatar.url ? 'ring-4 ring-blue-400' : ''}
                 `}
