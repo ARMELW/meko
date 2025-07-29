@@ -44,72 +44,52 @@ function CreateChildAccountPage() {
   return (
     <SubscriptionRequiredGuard>
       <ChildLimitGuard>
-        <div className="w-full min-h-screen flex flex-col justify-center items-center p-4">
-          <div className="w-full max-w-[90%] sm:max-w-[440px] md:max-w-[480px]">
-            <form 
-              className="w-full space-y-6" 
-              onSubmit={handleSubmit(onSubmit)}
-            >
-              <div className="space-y-2">
-                <Typography 
-                  as="h3" 
-                  align="center"
-                  className="text-lg sm:text-xl md:text-2xl"
-                >
-                  {t('onboarding.createChild.title')}
-                </Typography>
-                <Typography 
-                  as="p" 
-                  align="center"
-                  className="text-sm sm:text-base text-gray-400"
-                >
-                  {t('onboarding.createChild.subtitle')}
-                </Typography>
-              </div>
-
-              <div className="space-y-4">
+      <div className="w-full h-screen flex flex-col justify-center items-center">
+        <div className="w-[35%]">
+          <form action="" className="w-full space-y-4" onSubmit={handleSubmit(onSubmit)}>
+            <Typography as="h3" align={"center"}>
+              {t('onboarding.createChild.title')}
+            </Typography>
+            <Typography as="p" align={"left"}>
+              {t('onboarding.createChild.subtitle')}
+            </Typography>
+            <div className="w-full">
+              <ControlledTextInput
+                name="firstname"
+                size="small"
+                className="w-full"
+                control={control}
+                placeholder={t('onboarding.createChild.placeholders.lastName')}
+                disabled={isCreating}
+              />
+            </div>
+            <div className="w-full">
+              <div className="input-container">
                 <div className="w-full">
-                  <ControlledTextInput
-                    name="firstname"
-                    size="small"
-                    className="w-full"
+                  <Label uppercase>
+                    <span className="text-[13px}" >
+                      {t('onboarding.createChild.birthday')}
+                    </span>
+                  </Label>
+                  <ControlledDateTimePicker
+                    name="birthday"
                     control={control}
-                    placeholder={t('onboarding.createChild.placeholders.lastName')}
                     disabled={isCreating}
                   />
                 </div>
-
-                <div className="w-full">
-                  <div className="space-y-2">
-                    <Label uppercase>
-                      <span className="text-xs sm:text-sm">
-                        {t('onboarding.createChild.birthday')}
-                      </span>
-                    </Label>
-                    <ControlledDateTimePicker
-                      name="birthday"
-                      control={control}
-                      disabled={isCreating}
-                      className="w-full"
-                    />
-                  </div>
-                </div>
               </div>
-
-              <div className="flex justify-center pt-4">
-                <LoadingButton 
-                  type="submit"
-                  loading={isCreating}
-                  size="small"
-                  color="secondary"
-                  className="w-full sm:w-auto min-w-[200px]"
-                >
-                  {t('onboarding.createChild.submit')}
-                </LoadingButton>
-              </div>
-            </form>
-          </div>
+            </div>
+            <div className="w-full flex justify-center">
+              <LoadingButton type="submit"
+                loading={isCreating}
+                size="small"
+                color="secondary">
+                {t('onboarding.createChild.submit')}
+              </LoadingButton>
+            </div>
+          </form>
         </div>
+      </div>
       </ChildLimitGuard>
     </SubscriptionRequiredGuard>
   );

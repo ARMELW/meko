@@ -37,17 +37,17 @@ export function ChildStatisticsPage() {
 
   return (
     <SubscriptionRequiredGuard>
-    <div className="min-h-screen text-white p-2 sm:p-4 md:p-8 bg-white">
-      <div className="w-full max-w-7xl mx-auto flex flex-col gap-6 sm:gap-8 md:gap-10">
+    <div className="min-h-screen text-white p-4 md:p-8">
+      <div className="max-w-7xl mx-auto">
         {/* Header avec informations de l'enfant */}
-        <Card className="mb-6 p-4 sm:p-6">
-          <div className="flex flex-col sm:flex-row items-center gap-4 mb-4">
+        <Card className="mb-6 p-6">
+          <div className="flex items-center gap-4 mb-4">
             <UserAvatar 
               avatarUrl={sessionChild.avatarUrl || ''} 
               size={80} 
               username={`${sessionChild.firstname} ${sessionChild.lastname}`}
               alt="Avatar enfant"
-              className="border-2 border-white rounded-full flex-shrink-0 w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28"
+              className="border-2 border-white rounded-full flex-shrink-0"
             />
             <div className="min-w-0 flex-1">
               <Typography 
@@ -66,7 +66,7 @@ export function ChildStatisticsPage() {
         </Card>
 
         {/* Statistiques principales */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
           <Card className="bg-[#000F4799] p-4">
             <Typography 
               as="span" 
@@ -149,7 +149,7 @@ export function ChildStatisticsPage() {
         </div>
 
         {/* Graphiques et détails */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 mb-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
           <Card className="bg-[#0040B6] p-6">
             <CardTitle
               title="Activité hebdomadaire"
@@ -182,13 +182,13 @@ export function ChildStatisticsPage() {
         </div>
 
         {/* Statistiques détaillées */}
-        <Card className="bg-[#000F4799] p-4 sm:p-6 mb-6">
+        <Card className="bg-[#000F4799] p-6 mb-6">
           <CardTitle
             title="Statistiques détaillées"
             className="mb-4"
             titleColor="default"
           />
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 text-sm">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-sm">
             <div className="bg-meko-blue-transparent-2 p-3 rounded">
               <Typography color="secondary" className="mb-1">
                 Modules terminés
@@ -241,15 +241,15 @@ export function ChildStatisticsPage() {
         </Card>
 
         {/* Progression par module */}
-        <Card className="bg-[#0040B6] p-4 sm:p-6">
+        <Card className="bg-[#0040B6] p-6">
           <CardTitle
             title="Progression par module"
             className="mb-4"
             titleColor="default"
           />
           <CardContent>
-            <div className="space-y-4 sm:space-y-6">
-              <div className="bg-meko-blue-transparent-2 p-3 sm:p-4 rounded">
+            <div className="space-y-4">
+              <div className="bg-meko-blue-transparent-2 p-4 rounded">
                 <div className="flex justify-between items-center mb-2">
                   <Typography weight="bold">Module 1: Les Formes</Typography>
                   <Typography color="secondary">100%</Typography>
@@ -259,7 +259,7 @@ export function ChildStatisticsPage() {
                 </div>
               </div>
               
-              <div className="bg-meko-blue-transparent-2 p-3 sm:p-4 rounded">
+              <div className="bg-meko-blue-transparent-2 p-4 rounded">
                 <div className="flex justify-between items-center mb-2">
                   <Typography weight="bold">Module 2: Les Couleurs</Typography>
                   <Typography color="secondary">75%</Typography>
@@ -269,7 +269,7 @@ export function ChildStatisticsPage() {
                 </div>
               </div>
               
-              <div className="bg-meko-blue-transparent-2 p-3 sm:p-4 rounded">
+              <div className="bg-meko-blue-transparent-2 p-4 rounded">
                 <div className="flex justify-between items-center mb-2">
                   <Typography weight="bold">Module 3: Les Nombres</Typography>
                   <Typography color="secondary">25%</Typography>
