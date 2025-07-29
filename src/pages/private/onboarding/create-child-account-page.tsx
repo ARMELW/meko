@@ -11,6 +11,7 @@ import { useNavigate } from "react-router";
 import { useChildrenStore } from "@/app/children/store";
 import { useTranslation } from "react-i18next";
 import { ControlledDateTimePicker } from "@/components/molecules/form/controlled-date-picker";
+import { ChildLimitGuard } from '@/app/subscription/components/child-limit-guard';
 
 const defaultValues: ChildrenPayload = {
   firstname: "",
@@ -42,72 +43,74 @@ function CreateChildAccountPage() {
   };
   return (
     <SubscriptionRequiredGuard>
-      <div className="w-full min-h-screen flex flex-col justify-center items-center p-4">
-        <div className="w-full max-w-[90%] sm:max-w-[440px] md:max-w-[480px]">
-          <form 
-            className="w-full space-y-6" 
-            onSubmit={handleSubmit(onSubmit)}
-          >
-            <div className="space-y-2">
-              <Typography 
-                as="h3" 
-                align="center"
-                className="text-lg sm:text-xl md:text-2xl"
-              >
-                {t('onboarding.createChild.title')}
-              </Typography>
-              <Typography 
-                as="p" 
-                align="center"
-                className="text-sm sm:text-base text-gray-400"
-              >
-                {t('onboarding.createChild.subtitle')}
-              </Typography>
-            </div>
-
-            <div className="space-y-4">
-              <div className="w-full">
-                <ControlledTextInput
-                  name="firstname"
-                  size="small"
-                  className="w-full"
-                  control={control}
-                  placeholder={t('onboarding.createChild.placeholders.lastName')}
-                  disabled={isCreating}
-                />
+      <ChildLimitGuard>
+        <div className="w-full min-h-screen flex flex-col justify-center items-center p-4">
+          <div className="w-full max-w-[90%] sm:max-w-[440px] md:max-w-[480px]">
+            <form 
+              className="w-full space-y-6" 
+              onSubmit={handleSubmit(onSubmit)}
+            >
+              <div className="space-y-2">
+                <Typography 
+                  as="h3" 
+                  align="center"
+                  className="text-lg sm:text-xl md:text-2xl"
+                >
+                  {t('onboarding.createChild.title')}
+                </Typography>
+                <Typography 
+                  as="p" 
+                  align="center"
+                  className="text-sm sm:text-base text-gray-400"
+                >
+                  {t('onboarding.createChild.subtitle')}
+                </Typography>
               </div>
 
-              <div className="w-full">
-                <div className="space-y-2">
-                  <Label uppercase>
-                    <span className="text-xs sm:text-sm">
-                      {t('onboarding.createChild.birthday')}
-                    </span>
-                  </Label>
-                  <ControlledDateTimePicker
-                    name="birthday"
-                    control={control}
-                    disabled={isCreating}
+              <div className="space-y-4">
+                <div className="w-full">
+                  <ControlledTextInput
+                    name="firstname"
+                    size="small"
                     className="w-full"
+                    control={control}
+                    placeholder={t('onboarding.createChild.placeholders.lastName')}
+                    disabled={isCreating}
                   />
                 </div>
-              </div>
-            </div>
 
-            <div className="flex justify-center pt-4">
-              <LoadingButton 
-                type="submit"
-                loading={isCreating}
-                size="small"
-                color="secondary"
-                className="w-full sm:w-auto min-w-[200px]"
-              >
-                {t('onboarding.createChild.submit')}
-              </LoadingButton>
-            </div>
-          </form>
+                <div className="w-full">
+                  <div className="space-y-2">
+                    <Label uppercase>
+                      <span className="text-xs sm:text-sm">
+                        {t('onboarding.createChild.birthday')}
+                      </span>
+                    </Label>
+                    <ControlledDateTimePicker
+                      name="birthday"
+                      control={control}
+                      disabled={isCreating}
+                      className="w-full"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex justify-center pt-4">
+                <LoadingButton 
+                  type="submit"
+                  loading={isCreating}
+                  size="small"
+                  color="secondary"
+                  className="w-full sm:w-auto min-w-[200px]"
+                >
+                  {t('onboarding.createChild.submit')}
+                </LoadingButton>
+              </div>
+            </form>
+          </div>
         </div>
-      </div>
+      </ChildLimitGuard>
     </SubscriptionRequiredGuard>
   );
 }

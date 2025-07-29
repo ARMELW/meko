@@ -250,6 +250,16 @@ const en = {
          placeholder: 'Select a date'
       },
    },
+   subscription: {
+      childLimit: {
+         reached: "Child limit reached",
+         message: "Your current subscription allows up to {{limit}} children. To add more children, please upgrade your subscription.",
+         upgrade: "Upgrade",
+         free: "Free subscription - 1 child maximum",
+         standard: "Standard subscription - 3 children maximum",
+         premium: "Premium subscription - Unlimited children"
+      },
+   },
 };
 
 export default en;

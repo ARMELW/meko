@@ -180,7 +180,12 @@ const fr = {
 		trialCta: "Activer l'abonnement",
 		daysLeft: "jours restants",
 		trialInfoActive: "Profitez de l'essai gratuit. À la fin, vous pourrez choisir un abonnement pour continuer à utiliser Meko Academy.",
-		trialInfoInactive: "Votre essai gratuit est terminé. Veuillez choisir un abonnement pour continuer à utiliser Meko Academy."
+		trialInfoInactive: "Votre essai gratuit est terminé. Veuillez choisir un abonnement pour continuer à utiliser Meko Academy.",
+		childLimit: {
+			reached: "Limite d'enfants atteinte",
+			message: "Votre abonnement actuel permet d'avoir jusqu'à {{limit}} enfants. Pour ajouter plus d'enfants, veuillez mettre à niveau votre abonnement.",
+			upgrade: "Mettre à niveau",
+		}
 	},
 	modules: {
 		loading: 'Chargement des modules...',
