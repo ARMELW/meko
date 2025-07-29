@@ -46,12 +46,7 @@ export function Header() {
         trialEndDate: session?.user?.trialEndDate
     } : null;
 
-    // Format trial dates
-    const formatDate = (dateStr?: string) => {
-        if (!dateStr) return '';
-        const d = new Date(dateStr);
-        return d.toLocaleDateString();
-    };
+    
 
     // Days left in trial
     const getDaysLeft = (start?: string, end?: string) => {
