@@ -13,7 +13,6 @@ export function CurrentSubscriptionBlock(props: { subscription: CurrentSubscript
   const [showPlanSelector, setShowPlanSelector] = useState(false);
   const navigate = useNavigate();
   const isMissing = !subscription;
-  console.log('subscription', subscription);
   const isExpired = !!subscription && (subscription.isExpired || subscription.isCanceled);
   const isInactive = !!subscription && (
     (!subscription.activeUntil && !subscription.accessEndsAt)

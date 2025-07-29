@@ -204,6 +204,7 @@ export default function SubscriptionPlanDemo({
                 )}
                 {!isLoading && !error && (
                     <div className="flex sm:flex-row flex-col justify-center items-center gap-6 w-full">
+                        
                         {plans.map((plan) => {
                             const isCurrent = currentSubscription && currentSubscription.planName === plan.title && ((billingCycle === 'monthly' && currentSubscription.interval === 'month') || (billingCycle === 'annual' && currentSubscription.interval === 'year'));
                             return (
