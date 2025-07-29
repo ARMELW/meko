@@ -184,12 +184,12 @@ function ControlledOtpInput<T extends FieldValues>({
 
 
 
+    // Modifier la taille des inputs et des séparateurs selon la taille d'écran
     const groupedInputs: React.ReactNode[] = [];
 
     for (let i = 0; i < inputCount; i++) {
         const isError = !!error && getErrors()[i];
 
-        //TODO: reglé le probleme de typage du ref
         const inputElement = (
             <OtpInput
                 key={`input-${i}`}
@@ -200,16 +200,14 @@ function ControlledOtpInput<T extends FieldValues>({
                 value={otpText[i] || ''}
                 maxLength={inputCellLength}
                 error={isError}
+                className="w-9 h-9 sm:w-12 sm:h-12 md:w-14 md:h-14 text-base sm:text-lg md:text-xl"
                 onFocus={() => onInputFocus(i)}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                     const inputValue = e.target.value;
                     onTextChange(inputValue, i);
                 }}
-
                 onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => onKeyDown(e, i)}
                 onPaste={(e: React.ClipboardEvent<HTMLInputElement>) => onPaste(e)}
-
-
                 {...inputProps}
             />
         );
@@ -219,15 +217,25 @@ function ControlledOtpInput<T extends FieldValues>({
         if ((i + 1) % groupSize === 0 && i < inputCount - 1) {
             groupedInputs.push(
                 <React.Fragment key={`separator-${i}`}>
-                    {separator}
+                    <span className="mx-1 sm:mx-2 text-white text-base sm:text-xl md:text-2xl">
+                        {separator}
+                    </span>
                 </React.Fragment>
             );
         }
     }
 
 
+    // Modifier le container principal pour une meilleure adaptation
     return (
-        <div className={`flex flex-row justify-between gap-3 items-center my-5 min-w-64 max-w-80 ${className}`}>
+        <div className={`
+            flex flex-row justify-center sm:justify-between 
+            items-center gap-1 sm:gap-2 md:gap-3 
+            w-full max-w-[280px] sm:max-w-[320px] md:max-w-[480px] 
+            mx-auto my-3 sm:my-4 md:my-5 
+            px-2 sm:px-0
+            ${className}
+        `}>
             {groupedInputs}
         </div>
     );

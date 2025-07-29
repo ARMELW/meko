@@ -1,4 +1,3 @@
-
 import { OtpFormData, otpSchema, useVerifyOtpAuth, } from "@/app/auth";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Card, Typography } from "@/components";
@@ -60,38 +59,50 @@ function VerifyOtpPage() {
   };
 
   return (
-    <div className="flex flex-col justify-center items-center h-full">
-
-      <form onSubmit={handleSubmit(onSubmit)}>
-
-        <div className="flex flex-col justify-center items-center">
-          <img src="/logo.svg" className="pb-10" />
-          <Card className="flex flex-col justify-center items-center p-8">
-
-            <div className="flex flex-col justify-center items-center gap-2">
-              <Typography variant='h1'>
+    <div className="flex flex-col justify-center items-center min-h-screen p-4 w-full">
+      <form onSubmit={handleSubmit(onSubmit)} className="w-full max-w-[90%] sm:max-w-[520px] md:max-w-[580px] mx-auto">
+        <div className="flex flex-col justify-center items-center w-full">
+          <img 
+            src="/logo.svg" 
+            className="w-32 sm:w-40 md:w-48 pb-6 sm:pb-8 md:pb-10" 
+            alt="Meko Academy"
+          />
+          
+          <Card className="w-full flex flex-col justify-center items-center p-4 sm:p-6 md:p-8">
+            <div className="flex flex-col justify-center items-center gap-2 w-full">
+              <Typography 
+                variant='h1' 
+                className="text-lg sm:text-xl md:text-2xl text-center"
+              >
                 CODE A 6 CHIFFRES
               </Typography>
-              <Typography align="center">
+              <Typography 
+                align="center" 
+                className="text-sm sm:text-base px-2 sm:px-4 text-gray-400"
+              >
                 Veuillez saisir le code envoyé à votre adresse email
               </Typography>
             </div>
-            <div className="flex flex-col gap-3 py-4 w-full">
-              <ControlledOtpInput name="otp" control={control} />
+
+            <div className="flex flex-col gap-3 py-8 w-full max-w-none sm:max-w-[400px] md:max-w-[480px]">
+              <ControlledOtpInput 
+                name="otp" 
+                control={control} 
+                className="w-full"
+              />
             </div>
+
             <LoadingButton
               loading={loading}
               type="submit"
               size="small"
               color="secondary"
+              className="w-full sm:w-[200px] md:w-[240px]"
             >
-              {"Valider"}
-
+              Valider
             </LoadingButton>
-
           </Card>
         </div>
-
       </form>
     </div>
   );
