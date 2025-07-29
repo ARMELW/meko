@@ -73,7 +73,7 @@ export function CurrentSubscriptionBlock(props: { subscription: CurrentSubscript
             </div>
           )}
           <SubscriptionStatusBlock subscription={subscription} />
-          <SubscriptionActionsBlock subscription={subscription} onShowPlanSelector={() => setShowPlanSelector(true)} />
+          <SubscriptionActionsBlock subscription={subscription} />
           <PlanSelectorModal show={showPlanSelector} onClose={() => setShowPlanSelector(false)} onConfirm={() => { setShowPlanSelector(false); refetchSubscription(); }} />
         </CardContent>
       </Card>
