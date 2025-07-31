@@ -15,6 +15,7 @@ import {
 import { LoadingButton } from '@/components/atoms/actions/loading-button';
 import ChildrenForm from './child-form';
 import { useNavigate } from 'react-router';
+import { ChildLimitGuard } from '@/app/subscription/components/child-limit-guard';
 const defaultValues: ChildrenPayload = {
     firstname: "",
     birthday: "",
@@ -74,6 +75,7 @@ const CreateChild = () => {
                     <DialogTitle title={t('monitoring.children.create.title')} />
                 </DialogHeader>
                 <DialogContent>
+                    <ChildLimitGuard>
                     <form className="w-full space-y-4" onSubmit={handleSubmit(onSubmit)}>
                         <ChildrenForm control={control} isLoading={isCreating} />
 
@@ -88,6 +90,7 @@ const CreateChild = () => {
                             </LoadingButton>
                         </div>
                     </form>
+                    </ChildLimitGuard>
                 </DialogContent>
             </DialogCard>
         </Dialog>

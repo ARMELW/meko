@@ -11,10 +11,9 @@ export function ChildLimitGuard({ children }: ChildLimitGuardProps) {
     const { t } = useTranslation();
     const navigate = useNavigate();
     const { hasReachedLimit, maxChildren } = useChildLimit();
-    console.log('ChildLimitGuard', { hasReachedLimit, maxChildren });
     if (hasReachedLimit) {
         return (
-            <div className="flex items-center justify-center min-h-screen p-4">
+            <div className="flex items-center flex-col justify-center min-h-screen p-4">
                 <Card className="w-full max-w-md p-6 text-center">
                     <Typography 
                         className="mb-4 text-meko-blue-light-1"
