@@ -10,6 +10,7 @@ import { useNavigate } from "react-router";
 import { useTranslation } from "react-i18next";
 import { ControlledDateTimePicker } from "@/components/molecules/form/controlled-date-picker";
 import { SubscriptionRequiredGuard } from "@/routes/components/subscription-required-guard";
+import { ChildLimitGuard } from "@/app/subscription/components/child-limit-guard";
 
 const defaultValues: ChildrenPayload = {
     firstname: "",
@@ -33,69 +34,73 @@ function AddChildPage() {
             { ...data },
             {
                 onSuccess: (child) => {
-                    navigate("/profile/avatar", { state: { 
-                        signUp: true,
-                        id: child.id, firstname: child.firstname 
-                    } });
+                    navigate("/profile/avatar", {
+                        state: {
+                            signUp: true,
+                            id: child.id, firstname: child.firstname
+                        }
+                    });
                 }
             }
         );
     };
     return (
         <SubscriptionRequiredGuard>
-        <div className="w-full h-screen flex flex-col justify-center items-center">
-            <div className="w-[35%]">
-                <form action="" className="w-full space-y-4" onSubmit={handleSubmit(onSubmit)}>
-                    <Typography as="h3" align={"center"}>
-                        {t('onboarding.createChild.title')}
-                    </Typography>
-                    <Typography as="p" align={"left"}>
-                        {t('onboarding.createChild.subtitle')}
-                    </Typography>
-                    <div className="w-full">
-                        <div className="input-container">
-                            <Label uppercase>
-                                <span className="text-[13px]">
-                                    {t('onboarding.createChild.lastName')}
-                                </span>
-                            </Label>
-                            <ControlledTextInput
-                                name="firstname"
-                                size="small"
-                                className="w-full"
-                                control={control}
-                                placeholder={t('onboarding.createChild.placeholders.lastName')}
-                                disabled={isCreating}
-                            />
-                        </div>
-                    </div>
-                    <div className="w-full">
-                        <div className="input-container">
+            <ChildLimitGuard>
+                <div className="w-full h-screen flex flex-col justify-center items-center">
+                    <div className="w-[35%]">
+                        <form action="" className="w-full space-y-4" onSubmit={handleSubmit(onSubmit)}>
+                            <Typography as="h3" align={"center"}>
+                                {t('onboarding.createChild.title')}
+                            </Typography>
+                            <Typography as="p" align={"left"}>
+                                {t('onboarding.createChild.subtitle')}
+                            </Typography>
                             <div className="w-full">
-                                <Label uppercase>
-                                    <span className="text-[13px}" >
-                                        {t('onboarding.createChild.birthday')}
-                                    </span>
-                                </Label>
-                                <ControlledDateTimePicker
-                                    name="birthday"
-                                    control={control}
-                                    disabled={isCreating}
-                                />
+                                <div className="input-container">
+                                    <Label uppercase>
+                                        <span className="text-[13px]">
+                                            {t('onboarding.createChild.lastName')}
+                                        </span>
+                                    </Label>
+                                    <ControlledTextInput
+                                        name="firstname"
+                                        size="small"
+                                        className="w-full"
+                                        control={control}
+                                        placeholder={t('onboarding.createChild.placeholders.lastName')}
+                                        disabled={isCreating}
+                                    />
+                                </div>
                             </div>
-                        </div>
+                            <div className="w-full">
+                                <div className="input-container">
+                                    <div className="w-full">
+                                        <Label uppercase>
+                                            <span className="text-[13px}" >
+                                                {t('onboarding.createChild.birthday')}
+                                            </span>
+                                        </Label>
+                                        <ControlledDateTimePicker
+                                            name="birthday"
+                                            control={control}
+                                            disabled={isCreating}
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="w-full flex justify-center">
+                                <LoadingButton type="submit"
+                                    loading={isCreating}
+                                    size="small"
+                                    color="secondary">
+                                    {t('onboarding.createChild.submit')}
+                                </LoadingButton>
+                            </div>
+                        </form>
                     </div>
-                    <div className="w-full flex justify-center">
-                        <LoadingButton type="submit"
-                            loading={isCreating}
-                            size="small"
-                            color="secondary">
-                            {t('onboarding.createChild.submit')}
-                        </LoadingButton>
-                    </div>
-                </form>
-            </div>
-        </div>
+                </div>
+            </ChildLimitGuard>
         </SubscriptionRequiredGuard>
     );
 }

@@ -11,7 +11,7 @@ export function ChildLimitGuard({ children }: ChildLimitGuardProps) {
     const { t } = useTranslation();
     const navigate = useNavigate();
     const { hasReachedLimit, maxChildren } = useChildLimit();
-
+    console.log('ChildLimitGuard', { hasReachedLimit, maxChildren });
     if (hasReachedLimit) {
         return (
             <div className="flex items-center justify-center min-h-screen p-4">

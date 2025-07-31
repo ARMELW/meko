@@ -504,7 +504,7 @@ const TimePickerInput = React.forwardRef<HTMLInputElement, TimePickerInputProps>
         onDateChange?.(setDateByType(tempDate, newValue, picker, period));
       }
     };
-
+    
     return (
       <Input
         ref={ref}

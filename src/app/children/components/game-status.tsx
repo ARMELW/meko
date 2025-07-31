@@ -1,9 +1,6 @@
 import React from 'react';
-import { Status, Typography } from '@/components';
+import { Status } from '@/components';
 import { useTranslation } from 'react-i18next';
-import { cn } from '@/utils/style';
-import { statusVariants } from '@/components/atoms/view/status-variant';
-
 export interface GameStatusProps {
   status: 'available' | 'completed' | 'blocked' | 'in_progress';
   size?: 'normal' | 'small';
