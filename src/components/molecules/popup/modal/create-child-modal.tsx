@@ -5,6 +5,7 @@ import { ControlledTextInput } from '../../form/controlled-input';
 import { useForm } from 'react-hook-form';
 import { Button } from '@/components/atoms/actions/button';
 import { ControlledDateTimePicker } from '../../form/controlled-date-picker';
+import { ChildLimitGuard } from '@/app/subscription/components/child-limit-guard';
 
 type ChilCreationForm = {
   firstName: string;
@@ -53,60 +54,61 @@ function CreateChildModal() {
         <Dialog.Overlay className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40" />
 
         <Dialog.Content className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2  p-0 rounded-md shadow-xl z-50 w-[90%] max-w-md">
-          <Card className="w-full bg-[#0040B6] transition-all duration-300">
-            <CardTitle
-              title={"Création compte enfant"}
-              className="flex  justify-between items-center text-sm"
-              titleColor={"default"}
-              actions={CloseCard()}
-            />
+          <ChildLimitGuard>
+            <Card className="w-full bg-[#0040B6] transition-all duration-300">
+              <CardTitle
+                title={"Création compte enfant"}
+                className="flex  justify-between items-center text-sm"
+                titleColor={"default"}
+                actions={CloseCard()}
+              />
 
-            <CardContent className="flex flex-col justify-center">
-              <form className="space-y-4 w-full" onSubmit={(e) => {
-                e.preventDefault();
-                handleSubmit(onSubmit);
-              }}>
+              <CardContent className="flex flex-col justify-center">
+                <form className="space-y-4 w-full" onSubmit={(e) => {
+                  e.preventDefault();
+                  handleSubmit(onSubmit);
+                }}>
 
-                <div className="input-container w-full">
-                  <Label uppercase>
-                    <span className="text-[13px]">
-                      Prénom de l'enfant
-                    </span>
-                  </Label>
-                  <ControlledTextInput
-                    name="firstName"
-                    control={control}
-                    size="w-full"
-                  />
-                </div>
+                  <div className="input-container w-full">
+                    <Label uppercase>
+                      <span className="text-[13px]">
+                        Prénom de l'enfant
+                      </span>
+                    </Label>
+                    <ControlledTextInput
+                      name="firstName"
+                      control={control}
+                      size="w-full"
+                    />
+                  </div>
 
-                <div className="input-container w-full">
-                  <Label uppercase>
-                    <span className="text-[13px]">
-                      Date de naissance
-                    </span>
-                  </Label>
-                  <ControlledDateTimePicker
-                    name="birthDate"
-                    control={control}
-                  />
-                </div>
+                  <div className="input-container w-full">
+                    <Label uppercase>
+                      <span className="text-[13px]">
+                        Date de naissance
+                      </span>
+                    </Label>
+                    <ControlledDateTimePicker
+                      name="birthDate"
+                      control={control}
+                    />
+                  </div>
 
-                <div className="flex justify-center w-full">
-                  <Button
-                    type="submit"
-                    size={"normal"}
-                    color="secondary"
-                  >
-                    creer
-                  </Button>
-                </div>
+                  <div className="flex justify-center w-full">
+                    <Button
+                      type="submit"
+                      size={"normal"}
+                      color="secondary"
+                    >
+                      creer
+                    </Button>
+                  </div>
 
-              </form>
-            </CardContent>
+                </form>
+              </CardContent>
 
-          </Card>
-
+            </Card>
+          </ChildLimitGuard>
         </Dialog.Content>
       </Dialog.Portal>
     </Dialog.Root>

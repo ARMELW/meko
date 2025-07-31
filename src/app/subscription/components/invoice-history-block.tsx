@@ -72,7 +72,7 @@ export function InvoiceHistoryBlock() {
                           {new Date(inv.periodStart).toLocaleDateString('fr-FR', { day: '2-digit', month: 'short', year: 'numeric' })}
                         </TableCell>
                         <TableCell className="text-right">
-                          {(inv.amount / 100).toFixed(2)}&nbsp;{inv.currency.toUpperCase()}
+                          {inv.amount}&nbsp;{inv.currency.toUpperCase()}
                         </TableCell>
                         <TableCell>
                           <a
