@@ -13,8 +13,8 @@ export function ChildLimitGuard({ children }: ChildLimitGuardProps) {
     const { hasReachedLimit, maxChildren } = useChildLimit();
     if (hasReachedLimit) {
         return (
-            <div className="flex items-center flex-col justify-center min-h-screen p-4">
-                <Card className="w-full max-w-md p-6 text-center">
+            <div className="flex items-center flex-col justify-center p-4">
+                <Card className="w-full max-w-md p-6 text-center flex items-center flex-col justify-center">
                     <Typography 
                         className="mb-4 text-meko-blue-light-1"
                     >
