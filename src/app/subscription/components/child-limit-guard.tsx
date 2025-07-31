@@ -27,7 +27,7 @@ export function ChildLimitGuard({ children }: ChildLimitGuardProps) {
 
                     <Button
                         color="secondary"
-                        onClick={() => navigate('/subscription/upgrade')}
+                        onClick={() => navigate('/subscription')}
                     >
                         {t('subscription.childLimit.upgrade')}
                     </Button>
