@@ -39,16 +39,14 @@ function PlanCardSkeleton() {
         </Card>
     );
 }
-function PriceTag({ price }: PriceTagProps) {
+function PriceTag({ price, billingCycle }: PriceTagProps) {
     const { t } = useTranslation();
-
     return (
         <div className="relative flex justify-center py-3 sm:py-4 md:py-5 text-white">
             <span className="text-5xl sm:text-6xl md:text-7xl">{price}</span>
-
             <div className="flex flex-col items-center mt-1 sm:mt-2 ml-1">
                 <span className="font-semibold text-3xl sm:text-4xl md:text-5xl">€</span>
-                <span className="pl-1 sm:pl-2 font-semibold text-meko-blue-light-1 text-xs sm:text-sm uppercase tracking-wide">/ {t('common.month')}</span>
+                <span className="pl-1 sm:pl-2 font-semibold text-meko-blue-light-1 text-xs sm:text-sm uppercase tracking-wide">/ {billingCycle === 'monthly' ? t('common.month', 'mois') : t('common.year', 'an')}</span>
             </div>
         </div>
     );
@@ -69,7 +67,7 @@ export function PlanItem({ plan, billingCycle, isSelected = false, onAction, isP
             />
             <CardContent className="flex flex-col justify-center">
                 <PriceTag
-                    price={billingCycle === 'monthly' ? plan.monthlyPrice : plan.annualMonthlyPrice}
+                    price={billingCycle === 'monthly' ? plan.monthlyPrice : plan.annualPrice}
                     billingCycle={billingCycle}
                 />
 
@@ -82,7 +80,7 @@ export function PlanItem({ plan, billingCycle, isSelected = false, onAction, isP
                 >
                     {billingCycle === 'monthly'
                         ? `Soit ${plan.annualPrice}€ l'année`
-                        : `Soit ${plan.annualMonthlyPrice * 12}€ l'année`}
+                        : `Soit ${plan.annualPrice}€ l'année`}
                 </Typography>
                 <div className="w-full">
                     <Button
@@ -114,16 +112,16 @@ export default function SubscriptionPlanDemo({
     onSuccess?: () => void;
 }) {
     const [billingCycle, setBillingCycle] = useState<'monthly' | 'annual'>('monthly');
+    const [processingPlanId, setProcessingPlanId] = useState<string | null>(null);
     const { t } = useTranslation();
     const { data, isLoading, error } = useSubscriptionPlans();
-    console.log('data',data);
     const plans: PlanUI[] = data ? data.map(mapApiPlanToUI) : [];
     const { data: session } = useSession();
     const { data: currentSubscription } = useCurrentSubscription();
     const navigate = useNavigate();
     const changeMutation = useChangeSubscription();
     const purchaseMutation = useSubscriptionPurchase();
-    console.log('error',error);
+
     const handleBillingToggle = () => {
         setBillingCycle(billingCycle === 'monthly' ? 'annual' : 'monthly');
     };
@@ -134,15 +132,18 @@ export default function SubscriptionPlanDemo({
             navigate('/login');
             return;
         }
+        setProcessingPlanId(planId);
         if (useChange) {
             changeMutation.mutate(
                 { planId, interval },
                 {
                     onSuccess: () => {
                         toast.success(t('subscription.change.success', 'Abonnement changé avec succès'));
+                        setProcessingPlanId(null);
                         onSuccess?.();
                     },
                     onError: (error: unknown) => {
+                        setProcessingPlanId(null);
                         const message = typeof error === 'object' && error && 'message' in error ? (error as Record<string, unknown>).message as string : undefined;
                         toast.error(message || t('common.error', "Erreur lors du changement d'abonnement"));
                     },
@@ -150,8 +151,15 @@ export default function SubscriptionPlanDemo({
             );
         } else {
             purchaseMutation.purchase({ planId, interval });
+            // Pour l'achat, on ne sait pas quand c'est fini ici, donc on laisse le loader jusqu'à reload ou navigation
         }
     };
+
+    // Reset le loader si mutation terminée (utile pour changement d'abonnement)
+    if (!changeMutation.isPending && processingPlanId && useChange) {
+        setProcessingPlanId(null);
+    }
+
     return (
         <section className="p-4 sm:p-6 w-full">
             <div className="mx-auto max-w-5xl text-white">
@@ -204,16 +212,16 @@ export default function SubscriptionPlanDemo({
                 )}
                 {!isLoading && !error && (
                     <div className="flex sm:flex-row flex-col justify-center items-center gap-6 w-full">
-                        
                         {plans.map((plan) => {
                             const isCurrent = currentSubscription && currentSubscription.planName === plan.title && ((billingCycle === 'monthly' && currentSubscription.interval === 'month') || (billingCycle === 'annual' && currentSubscription.interval === 'year'));
+                            const isProcessing = processingPlanId === plan.id && (useChange ? changeMutation.isPending : purchaseMutation.isLoading);
                             return (
                                 <PlanItem
                                     key={plan.id}
                                     plan={plan}
                                     billingCycle={billingCycle}
                                     onAction={handleAction}
-                                    isProcessing={useChange ? changeMutation.isPending : purchaseMutation.isLoading}
+                                    isProcessing={isProcessing}
                                     isSelected={isCurrent}
                                     actionLabel={useChange ? t('subscription.change.button', 'Changer') : undefined}
                                 />
