@@ -190,64 +190,66 @@ function ModuleDetailPage() {
       </div>
 
       <div className="relative border-l-8 border-[#08488b] ml-6">
-        {moduleDetail.lessons.map((lesson, lessonIndex) => {
-          const isLessonBlocked = lesson.games.every(game => game.status === 'blocked');
+        {moduleDetail.lessons
+          .filter(lesson => Array.isArray(lesson.games) && lesson.games.length > 0)
+          .map((lesson, lessonIndex) => {
+            const isLessonBlocked = lesson.games.every(game => game.status === 'blocked');
 
-          return (
-            <div key={lesson.id} className="relative mb-10 pl-20">
-              <div className={`absolute -left-12 w-24 top-0 ${isLessonBlocked ? 'text-[#0040B6]' : 'text-white'} font-bold text-sm z-10 bg-[#08488b]`}>
-                <div className="w-full relative px-2 py-1">
-                  <div className={`absolute w-full top-[-6px] left-0 h-3 z-0 bg-[#08488b]`} style={{ transform: "skew(0deg, -5deg)" }}></div>
-                  <div className="w-full relative z-10">
-                    <Typography
-                      as="span"
-                      align="center"
-                      styleCase="uppercase"
-                      shadow="sm"
-                      weight="bold"
-                      className={`text-[12px] block ${isLessonBlocked ? 'opacity-50 text-[#0040B6]' : 'bg-gradient-to-r from-[#FA4616] to-[#FF7F32] bg-clip-text !text-transparent'}`}
-                    >
-                      {t('modules.detail.lesson')}
-                    </Typography>
-                    <Typography
-                      as="h1"
-                      className={`text-lg ${isLessonBlocked
-                        ? 'text-[#0040B6] opacity-50'
-                        : 'bg-gradient-to-r from-[#FA4616] to-[#FF7F32] bg-clip-text !text-transparent'
-                        }`}
-                      weight={"bold"}
-                      shadow={"sm"}
-                      align="center"
-                      styleCase={"uppercase"}
-                    >
-                      {lesson.order}
-                    </Typography>
+            return (
+              <div key={lesson.id} className="relative mb-10 pl-20">
+                <div className={`absolute -left-12 w-24 top-0 ${isLessonBlocked ? 'text-[#0040B6]' : 'text-white'} font-bold text-sm z-10 bg-[#08488b]`}>
+                  <div className="w-full relative px-2 py-1">
+                    <div className={`absolute w-full top-[-6px] left-0 h-3 z-0 bg-[#08488b]`} style={{ transform: "skew(0deg, -5deg)" }}></div>
+                    <div className="w-full relative z-10">
+                      <Typography
+                        as="span"
+                        align="center"
+                        styleCase="uppercase"
+                        shadow="sm"
+                        weight="bold"
+                        className={`text-[12px] block ${isLessonBlocked ? 'opacity-50 text-[#0040B6]' : 'bg-gradient-to-r from-[#FA4616] to-[#FF7F32] bg-clip-text !text-transparent'}`}
+                      >
+                        {t('modules.detail.lesson')}
+                      </Typography>
+                      <Typography
+                        as="h1"
+                        className={`text-lg ${isLessonBlocked
+                          ? 'text-[#0040B6] opacity-50'
+                          : 'bg-gradient-to-r from-[#FA4616] to-[#FF7F32] bg-clip-text !text-transparent'
+                          }`}
+                        weight={"bold"}
+                        shadow={"sm"}
+                        align="center"
+                        styleCase={"uppercase"}
+                      >
+                        {lesson.order}
+                      </Typography>
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              <div className="space-y-3">{lesson.games.map((game, gameIndex) => {
-                const isFirstGame = lessonIndex === 0 && gameIndex === 0;
+                <div className="space-y-3">{lesson.games.map((game, gameIndex) => {
+                  const isFirstGame = lessonIndex === 0 && gameIndex === 0;
 
-                return (
-                  <LessonItem
-                    key={game.id}
-                    gameId={game.id}
-                    image={game.coverUrl}
-                    title={game.title}
-                    status={game.status}
-                    onGameClick={() => handleGameClick(game.id, game.title)}
-                    isFirstGame={isFirstGame}
-                    moduleTitle={moduleDetail.moduleName}
-                    lessonOrder={lesson.order}
-                    isHighlighted={highlightedGameId === game.id}
-                  />
-                );
-              })}
+                  return (
+                    <LessonItem
+                      key={game.id}
+                      gameId={game.id}
+                      image={game.coverUrl}
+                      title={game.title}
+                      status={game.status}
+                      onGameClick={() => handleGameClick(game.id, game.title)}
+                      isFirstGame={isFirstGame}
+                      moduleTitle={moduleDetail.moduleName}
+                      lessonOrder={lesson.order}
+                      isHighlighted={highlightedGameId === game.id}
+                    />
+                  );
+                })}
+                </div>
               </div>
-            </div>
-          );
-        })}
+            );
+          })}
       </div>
 
       <GameSimulationModal
