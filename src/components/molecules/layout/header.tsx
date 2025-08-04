@@ -46,7 +46,7 @@ export function Header() {
         trialEndDate: session?.user?.trialEndDate
     } : null;
 
-    
+
 
     // Days left in trial
     const getDaysLeft = (start?: string, end?: string) => {
@@ -389,7 +389,7 @@ export function Header() {
     }
     return (
         <div className="z-50 w-full">
-            {parentTrial &&  parentTrial.isTrialActive && (
+            {parentTrial && parentTrial.isTrialActive && (
                 <div className="bg-meko-blue-light-2 text-meko-blue-darker px-2 py-0.5 flex flex-row items-center justify-center text-xs min-h-[36px]">
                     <button
                         type="button"
@@ -397,13 +397,23 @@ export function Header() {
                         className="flex justify-center items-center gap-2 flex-1 min-w-0 px-2 py-2 bg-gradient-to-r from-meko-blue-dark via-meko-blue-light-1 to-meko-blue-dark cursor-pointer focus:outline-none rounded-xl  text-xs"
                         aria-label="Voir abonnement"
                     >
-                            <span className="flex items-center gap-2">
-                                <span className="w-4 h-4 flex items-center justify-center rounded-full bg-green-500 text-white">
-                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M12 8v4l3 2" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/><circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2"/></svg>
-                                </span>
-                                <span className="font-bold">Essai gratuit Meko Academy&nbsp;:</span>
-                                <span className="font-normal">{daysLeft} jours restants</span>
+                        <span className="flex items-center gap-2">
+                            <span className="w-4 h-4 flex items-center justify-center rounded-full bg-green-500 text-white">
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M12 8v4l3 2" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /><circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2" /></svg>
                             </span>
+                            {daysLeft == 0 ? (
+                                <>
+                                    <span className="font-bold">Essai gratuit Meko Academy&nbsp;:</span>
+                                    <span className="font-normal">Votre essai se termine aujourd'hui</span>
+                                </>
+                            ) : (
+                                <>
+                                    <span className="font-bold">Essai gratuit Meko Academy&nbsp;:</span>
+                                    <span className="font-normal">{daysLeft} jours restants</span>
+                                </>
+                            )}
+
+                        </span>
                     </button>
                 </div>
             )}

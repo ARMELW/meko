@@ -69,7 +69,12 @@ export function CurrentSubscriptionBlock(props: { subscription: CurrentSubscript
           <SubscriptionInfoBlock subscription={subscription} />
           {subscription.isTrial && (
             <div className="text-base text-white py-3 text-center">
-              Il vous reste <span className="font-bold">{subscription.trialDaysLeft} jours</span> d'essai gratuit.
+              {Number(subscription.trialDaysLeft) == 0 ? (
+                  <span>Votre essai gratuit se termine aujourd'hui.</span>
+              ): (
+                <span> Il vous reste <span className="font-bold">{subscription.trialDaysLeft} jours</span> d'essai gratuit.</span>
+              )}
+             
             </div>
           )}
           <SubscriptionStatusBlock subscription={subscription} />
