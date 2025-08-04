@@ -10,7 +10,6 @@ variables:
 
 build-image:
   stage: build
-  # image: docker:latest
   tags:
     - front
     
