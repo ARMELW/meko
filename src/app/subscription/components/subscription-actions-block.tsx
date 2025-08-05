@@ -31,7 +31,7 @@ export function SubscriptionActionsBlock({ subscription }: { subscription: Curre
 			return {
 				title: "Annuler l'essai gratuit",
 				message: "Êtes-vous sûr de vouloir annuler votre essai gratuit ? Cette action mettra fin immédiatement à votre accès aux contenus premium.",
-				confirmText: "Confirmer l'annulation de l'essai"
+				confirmText: "Confirmer l'annulation"
 			};
 		}
 		return {
