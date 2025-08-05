@@ -231,11 +231,10 @@ function ModuleDetailPage() {
                   <div className="space-y-3">
                     <Typography
                       as="span"
-                      align="center"
                       styleCase="uppercase"
                       shadow="sm"
                       weight="bold"
-                      className={`text-[12px] py-2 block ${isLessonBlocked ? 'opacity-50 text-white' : 'bg-gradient-to-r from-[#FA4616] to-[#FF7F32] bg-clip-text !text-transparent'}`}
+                      className={`text-[18px] py-2 block ${isLessonBlocked ? 'opacity-50 text-white' : 'bg-gradient-to-r from-[#FA4616] to-[#FF7F32] bg-clip-text !text-transparent'}`}
                     >
                       {lesson.title}
                     </Typography>
