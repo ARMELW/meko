@@ -3,7 +3,7 @@ import { MenuOption } from '@/components/atoms/actions/menu-option';
 import { Link, useNavigate, useLocation } from 'react-router';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { authClient, useSession } from '@/config/auth';
+import { useSession } from '@/config/auth';
 import { useSession as useChildrenSession } from '@/services/session/store';
 import { Typography } from '@/components/atoms/typography/typography';
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
@@ -15,6 +15,7 @@ import { LastActivityModal, useLastActivity } from '@/app/game-sessions';
 import { GameSimulationModal } from '@/app/game-sessions';
 import { formatDisplayName } from '@/utils/text';
 import { SearchInput } from '@/components/molecules/form/search-input';
+import { useLogout } from '@/hooks/use-logout';
 
 export function Header() {
     const { t } = useTranslation();
@@ -23,7 +24,7 @@ export function Header() {
     const { data: session } = useSession();
     const sessionChild = useChildrenSession(state => state.selectedChild);
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-    const [isLoggingOut, setIsLoggingOut] = useState(false);
+    const { logout: handleLogout, isLoggingOut } = useLogout();
     const [isLastActivityModalOpen, setIsLastActivityModalOpen] = useState(false);
     const [gameModalState, setGameModalState] = useState<{
         isOpen: boolean;
@@ -96,19 +97,6 @@ export function Header() {
 
     const toggleMobileMenu = () => {
         setMobileMenuOpen(!mobileMenuOpen);
-    };
-
-    const handleLogout = async () => {
-        setIsLoggingOut(true);
-        try {
-            await authClient.signOut();
-            navigate('/');
-
-        } catch (error) {
-            console.error('Logout failed:', error);
-        } finally {
-            setIsLoggingOut(false);
-        }
     };
 
     const handleGoToLastActivity = () => {
