@@ -130,7 +130,7 @@ export function Header() {
                 <DropdownMenu.Root>
                     <DropdownMenu.Trigger asChild>
                         <button
-                            className="flex flex-row items-center gap-3 focus:outline-none cursor-pointer max-w-xs"
+                            className="flex flex-row items-center gap-3 focus:outline-none cursor-pointer max-w-xs group"
                             title={sessionChild ? `${sessionChild.firstname} ${sessionChild.lastname}` : displayName}
                         >
                             <div className="min-w-0 flex-shrink">
@@ -165,7 +165,17 @@ export function Header() {
                                     {mobileDisplayName}
                                 </Typography>
                             </div>
-                            <UserAvatar avatarUrl={displayImage || ''} className="border border-white rounded-full w-12 h-12 flex-shrink-0" size={50} username={displayName} alt={'Avatar'} />
+                            <div className="flex items-center gap-2">
+                                <UserAvatar avatarUrl={displayImage || ''} className="border border-white rounded-full w-12 h-12 flex-shrink-0" size={50} username={displayName} alt={'Avatar'} />
+                                <svg 
+                                    className="w-4 h-4 text-white transition-transform duration-200 group-data-[state=open]:rotate-180" 
+                                    fill="none" 
+                                    stroke="currentColor" 
+                                    viewBox="0 0 24 24"
+                                >
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                                </svg>
+                            </div>
                         </button>
                     </DropdownMenu.Trigger>
 
@@ -328,8 +338,16 @@ export function Header() {
         return (
             <DropdownMenu.Root>
                 <DropdownMenu.Trigger asChild>
-                    <button className="flex items-center gap-2 ml-4 focus:outline-none cursor-pointer">
+                    <button className="flex items-center gap-2 ml-4 focus:outline-none cursor-pointer group">
                         <img src='/assets/images/icons/menu.png' alt="Enfants" className="w-6 h-6" />
+                        <svg 
+                            className="w-3 h-3 text-white transition-transform duration-200 group-data-[state=open]:rotate-180" 
+                            fill="none" 
+                            stroke="currentColor" 
+                            viewBox="0 0 24 24"
+                        >
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                        </svg>
                     </button>
                 </DropdownMenu.Trigger>
 

@@ -47,10 +47,10 @@ export default function PaymentSuccessPage() {
       <Button
         type="button"
         className="meko-btn-primary px-6 py-3 rounded-full shadow-lg text-lg font-semibold transition-transform duration-200 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-meko-blue-light-1 flex items-center gap-2"
-        aria-label={t('subscription.payment.success.cta', 'Créer vos premiers enfants')}
+        aria-label={t('subscription.payment.success.cta', 'Créer un compte enfant')}
         onClick={() => navigate('/profile/create-child')}
       >
-        👶 {t('subscription.payment.success.cta', 'Créer vos premiers enfants')}
+        👶 {t('subscription.payment.success.cta', 'Créer un compte enfant')}
       </Button>
     </div>
   );
