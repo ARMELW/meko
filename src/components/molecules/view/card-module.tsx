@@ -45,7 +45,7 @@ function CardModule({ image, title, status, progress, onClick }: CardModuleProps
               title={title}
               label={title} 
             >
-              {truncateText(title, 100)}
+              {truncateText(title, 70)}
             </Typography>
           </div>
         </CardContent>
