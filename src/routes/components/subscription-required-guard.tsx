@@ -1,11 +1,18 @@
 import { useCurrentSubscription } from '@/app/subscription/hooks/use-current-subscription';
+import { useSubscriptionFeatureEnabled } from '@/app/subscription/hooks/use-subscription-feature-enabled';
 import { useNavigate } from 'react-router';
 import { Card, Typography } from '@/components';
 import { Button } from '@/components/atoms/actions/button';
 
 export function SubscriptionRequiredGuard({ children }: { children: React.ReactNode }) {
   const { data: subscription, isLoading } = useCurrentSubscription();
+  const isSubscriptionEnabled = useSubscriptionFeatureEnabled();
   const navigate = useNavigate();
+  console.log('isSubscriptionEnabled',isSubscriptionEnabled);
+  if (!isSubscriptionEnabled) {
+    // Feature disabled: always allow access
+    return <>{children}</>;
+  }
 
   if (isLoading) return null;
 

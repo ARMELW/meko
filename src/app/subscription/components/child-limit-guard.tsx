@@ -1,5 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { useChildLimit } from '../hooks/use-child-limit';
+import { useSubscriptionFeatureEnabled } from '../hooks/use-subscription-feature-enabled';
 import { Typography, Button, Card } from '@/components';
 import { useNavigate } from 'react-router';
 
@@ -11,7 +12,8 @@ export function ChildLimitGuard({ children }: ChildLimitGuardProps) {
     const { t } = useTranslation();
     const navigate = useNavigate();
     const { hasReachedLimit, maxChildren } = useChildLimit();
-    if (hasReachedLimit) {
+    const isSubscriptionEnabled = useSubscriptionFeatureEnabled();
+    if (isSubscriptionEnabled && hasReachedLimit) {
         return (
             <div className="flex items-center flex-col justify-center p-4">
                 <Card className="w-full max-w-md p-6 text-center flex items-center flex-col justify-center">
