@@ -19,11 +19,6 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
     return { hasError: true, error };
   }
 
-  componentDidCatch(_error: Error, _errorInfo: any) {
-    // Optionally log error to an external service
-    // console.error(error, errorInfo);
-  }
-
   render() {
     if (this.state.hasError) {
       return (

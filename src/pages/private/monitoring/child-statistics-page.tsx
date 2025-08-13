@@ -17,10 +17,10 @@ export function ChildStatisticsPage() {
       <div className="min-h-screen text-white p-4 md:p-8 flex items-center justify-center">
         <Card className="p-8 text-center">
           <Typography variant="h2" weight="bold" className="mb-4">
-            Aucun enfant sélectionné
+            {t('monitoring.childStatistics.noChildTitle', 'Aucun enfant sélectionné')}
           </Typography>
           <Typography className="mb-4">
-            Veuillez sélectionner un enfant pour voir les statistiques
+            {t('monitoring.childStatistics.noChildDescription', 'Veuillez sélectionner un enfant pour voir les statistiques')}
           </Typography>
           <button 
             onClick={() => navigate(appPath.private.profile.choose)}
@@ -56,10 +56,10 @@ export function ChildStatisticsPage() {
                 className="mb-2"
                 title={`${sessionChild.firstname} ${sessionChild.lastname}`}
               >
-                Statistiques de {displayName}
+                {t('monitoring.childStatistics.title', { name: displayName })}
               </Typography>
               <Typography color="secondary">
-                Tableau de bord des performances
+                {t('monitoring.childStatistics.subtitle', 'Tableau de bord des performances')}
               </Typography>
             </div>
           </div>
@@ -75,7 +75,7 @@ export function ChildStatisticsPage() {
               weight="bold"
               className="text-sm"
             >
-              {t('common.dashboard')} - Jeux terminés
+              {t('monitoring.childStatistics.finishedGames', 'Jeux terminés')}
             </Typography>
             <Typography 
               as="span" 
@@ -95,7 +95,7 @@ export function ChildStatisticsPage() {
               weight="bold"
               className="text-sm"
             >
-              Jeux en cours
+              {t('monitoring.childStatistics.inProgressGames', 'Jeux en cours')}
             </Typography>
             <Typography 
               as="span" 
@@ -115,7 +115,7 @@ export function ChildStatisticsPage() {
               weight="bold"
               className="text-sm"
             >
-              Progression
+              {t('monitoring.childStatistics.progress', 'Progression')}
             </Typography>
             <Typography 
               as="span" 
@@ -135,7 +135,7 @@ export function ChildStatisticsPage() {
               weight="bold"
               className="text-sm"
             >
-              Temps passé
+              {t('monitoring.childStatistics.timeSpent', 'Temps passé')}
             </Typography>
             <Typography 
               as="span" 
@@ -151,30 +151,30 @@ export function ChildStatisticsPage() {
         {/* Graphiques et détails */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
           <Card className="bg-[#0040B6] p-6">
-            <CardTitle
-              title="Activité hebdomadaire"
-              className="mb-4"
-              titleColor="default"
-            />
+              <CardTitle
+                title={t('monitoring.childStatistics.weeklyActivity', 'Activité hebdomadaire')}
+                className="mb-4"
+                titleColor="default"
+              />
             <CardContent>
               <div className="h-48 flex items-center justify-center">
                 <Typography color="secondary">
-                  Graphique à venir
+                  {t('monitoring.childStatistics.chartComingSoon', 'Graphique à venir')}
                 </Typography>
               </div>
             </CardContent>
           </Card>
 
           <Card className="bg-[#0040B6] p-6">
-            <CardTitle
-              title="Taux de progression"
-              className="mb-4"
-              titleColor="default"
-            />
+              <CardTitle
+                title={t('monitoring.childStatistics.progressRate', 'Taux de progression')}
+                className="mb-4"
+                titleColor="default"
+              />
             <CardContent>
               <div className="h-48 flex items-center justify-center">
                 <Typography color="secondary">
-                  Graphique à venir
+                  {t('monitoring.childStatistics.chartComingSoon', 'Graphique à venir')}
                 </Typography>
               </div>
             </CardContent>
@@ -184,56 +184,56 @@ export function ChildStatisticsPage() {
         {/* Statistiques détaillées */}
         <Card className="bg-[#000F4799] p-6 mb-6">
           <CardTitle
-            title="Statistiques détaillées"
+            title={t('monitoring.childStatistics.detailedStats', 'Statistiques détaillées')}
             className="mb-4"
             titleColor="default"
           />
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-sm">
             <div className="bg-meko-blue-transparent-2 p-3 rounded">
               <Typography color="secondary" className="mb-1">
-                Modules terminés
+                {t('monitoring.childStatistics.finishedModules', 'Modules terminés')}
               </Typography>
               <Typography weight="bold">2</Typography>
             </div>
             <div className="bg-meko-blue-transparent-2 p-3 rounded">
               <Typography color="secondary" className="mb-1">
-                Leçons complétées
+                {t('monitoring.childStatistics.completedLessons', 'Leçons complétées')}
               </Typography>
               <Typography weight="bold">8</Typography>
             </div>
             <div className="bg-meko-blue-transparent-2 p-3 rounded">
               <Typography color="secondary" className="mb-1">
-                Taux de réussite
+                {t('monitoring.childStatistics.successRate', 'Taux de réussite')}
               </Typography>
               <Typography weight="bold">80%</Typography>
             </div>
             <div className="bg-meko-blue-transparent-2 p-3 rounded">
               <Typography color="secondary" className="mb-1">
-                Jeux joués
+                {t('monitoring.childStatistics.gamesPlayed', 'Jeux joués')}
               </Typography>
               <Typography weight="bold">36</Typography>
             </div>
             <div className="bg-meko-blue-transparent-2 p-3 rounded">
               <Typography color="secondary" className="mb-1">
-                Temps de jeu
+                {t('monitoring.childStatistics.playTime', 'Temps de jeu')}
               </Typography>
               <Typography weight="bold">8h 21m</Typography>
             </div>
             <div className="bg-meko-blue-transparent-2 p-3 rounded">
               <Typography color="secondary" className="mb-1">
-                Temps moyen par jeu
+                {t('monitoring.childStatistics.avgTimePerGame', 'Temps moyen par jeu')}
               </Typography>
               <Typography weight="bold">31m</Typography>
             </div>
             <div className="bg-meko-blue-transparent-2 p-3 rounded">
               <Typography color="secondary" className="mb-1">
-                Nb. sessions
+                {t('monitoring.childStatistics.sessionCount', 'Nb. sessions')}
               </Typography>
               <Typography weight="bold">3</Typography>
             </div>
             <div className="bg-meko-blue-transparent-2 p-3 rounded">
               <Typography color="secondary" className="mb-1">
-                Durée moyenne session
+                {t('monitoring.childStatistics.avgSessionDuration', 'Durée moyenne session')}
               </Typography>
               <Typography weight="bold">2h 05m</Typography>
             </div>
@@ -243,7 +243,7 @@ export function ChildStatisticsPage() {
         {/* Progression par module */}
         <Card className="bg-[#0040B6] p-6">
           <CardTitle
-            title="Progression par module"
+            title={t('monitoring.childStatistics.moduleProgress', 'Progression par module')}
             className="mb-4"
             titleColor="default"
           />
@@ -251,7 +251,7 @@ export function ChildStatisticsPage() {
             <div className="space-y-4">
               <div className="bg-meko-blue-transparent-2 p-4 rounded">
                 <div className="flex justify-between items-center mb-2">
-                  <Typography weight="bold">Module 1: Les Formes</Typography>
+                  <Typography weight="bold">{t('monitoring.childStatistics.module1', 'Module 1: Les Formes')}</Typography>
                   <Typography color="secondary">100%</Typography>
                 </div>
                 <div className="w-full bg-meko-blue-darker rounded-full h-2">
@@ -261,7 +261,7 @@ export function ChildStatisticsPage() {
               
               <div className="bg-meko-blue-transparent-2 p-4 rounded">
                 <div className="flex justify-between items-center mb-2">
-                  <Typography weight="bold">Module 2: Les Couleurs</Typography>
+                  <Typography weight="bold">{t('monitoring.childStatistics.module2', 'Module 2: Les Couleurs')}</Typography>
                   <Typography color="secondary">75%</Typography>
                 </div>
                 <div className="w-full bg-meko-blue-darker rounded-full h-2">
@@ -271,7 +271,7 @@ export function ChildStatisticsPage() {
               
               <div className="bg-meko-blue-transparent-2 p-4 rounded">
                 <div className="flex justify-between items-center mb-2">
-                  <Typography weight="bold">Module 3: Les Nombres</Typography>
+                  <Typography weight="bold">{t('monitoring.childStatistics.module3', 'Module 3: Les Nombres')}</Typography>
                   <Typography color="secondary">25%</Typography>
                 </div>
                 <div className="w-full bg-meko-blue-darker rounded-full h-2">

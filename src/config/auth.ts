@@ -3,6 +3,7 @@ import { emailOTPClient } from "better-auth/client/plugins"
 
 import {
     inferAdditionalFields,
+     adminClient
 } from 'better-auth/client/plugins'
 
 export const authClient = createAuthClient({
@@ -18,8 +19,12 @@ export const authClient = createAuthClient({
                 trialEndDate: { type: 'string' }
             },
         }),
-        emailOTPClient()
+        emailOTPClient(),
+         adminClient()
     ],
 })
 
 export const { signIn, signUp, useSession } = authClient
+export const admin = authClient.admin;
+export const impersonateUser = authClient.admin?.impersonateUser;
+export const stopImpersonating = authClient.admin?.stopImpersonating;
