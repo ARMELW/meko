@@ -510,6 +510,7 @@ const TimePickerInput = React.forwardRef<HTMLInputElement, TimePickerInputProps>
         ref={ref}
         id={id || picker}
         name={name || picker}
+        size="small"
         className={cn(
           'focus:bg-accent focus:text-accent-foreground w-[48px] text-center font-mono text-base tabular-nums caret-transparent [&::-webkit-inner-spin-button]:appearance-none',
           className,
@@ -525,7 +526,7 @@ const TimePickerInput = React.forwardRef<HTMLInputElement, TimePickerInputProps>
           onKeyDown?.(e);
           handleKeyDown(e);
         }}
-        {...props}
+        {...(props as Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size'>)}
       />
     );
   },

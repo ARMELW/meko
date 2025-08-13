@@ -1,5 +1,5 @@
 import { PieChart as RechartsPieChart, Pie, Cell, ResponsiveContainer } from "recharts";
-import React from "react";
+
 
 export interface StatusPieData {
   name: string;

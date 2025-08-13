@@ -23,7 +23,7 @@ function CreateParentAccountPage() {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
   const { loading, initiateOtpLogin } = useOtpAuth();
-  const { checkEmail, loading: checkingEmail, clearCache } = useCheckEmail();
+  const { checkEmail, loading: checkingEmail } = useCheckEmail();
   const {
     control,
     handleSubmit

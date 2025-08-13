@@ -144,7 +144,7 @@ export function useMutations<T extends HasId, P>(config: MutationConfig<T, P>) {
 
       const result = response.data;
       if (result && typeof result === 'object' && 'data' in result) {
-        return result.data as T;
+        return result.data as unknown as T;
       }
       return result as T;
     },
