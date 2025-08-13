@@ -39,6 +39,8 @@ import GameSearchPage from '@/pages/private/learning/game-search-page';
 import SubscriptionPage from "@/pages/private/subscription/subscription-page";
 import { CreateParentAccountPage } from "@/pages/public/auth/create-parent-account-page";
 
+import AdminUserListPage from '@/pages/private/admin/user-list';
+
 const privateRoutes: RouteObject[] = [
 	{
 		path: "/profile",
@@ -125,35 +127,35 @@ const privateRoutes: RouteObject[] = [
 		path: "/settings",
 		element: <SettingPage />,
 	},
-	   {
-		   path: "/subscription",
-		   children: [
-			   {
-				   path: "choose",
-				   element: <ChooseSubscriptionPage />,
-			   },
-			   {
-				   path: "settings",
-				   element: <SubscriptionSettingPage />,
-			   },
-			   {
-				   path: "payment",
-				   element: <PaymentPage />,
-			   },
-			   {
-				   path: "payment-success",
-				   element: <PaymentSuccessPage />,
-			   },
-			   {
-				   path: "payment-cancel",
-				   element: <PaymentCancelPage />,
-			   },
-			   {
-				   path: "change",
-				   element: <ChangeSubscriptionPage />,
-			   },
-		   ],
-	   },
+	{
+		path: "/subscription",
+		children: [
+			{
+				path: "choose",
+				element: <ChooseSubscriptionPage />,
+			},
+			{
+				path: "settings",
+				element: <SubscriptionSettingPage />,
+			},
+			{
+				path: "payment",
+				element: <PaymentPage />,
+			},
+			{
+				path: "payment-success",
+				element: <PaymentSuccessPage />,
+			},
+			{
+				path: "payment-cancel",
+				element: <PaymentCancelPage />,
+			},
+			{
+				path: "change",
+				element: <ChangeSubscriptionPage />,
+			},
+		],
+	},
 	{
 		path: "/games/search",
 		element: <GameSearchPage />,
@@ -161,6 +163,10 @@ const privateRoutes: RouteObject[] = [
 	{
 		path: "/child/dashboard",
 		element: <ChildDashboardPage />,
+	},
+	{
+		path: "/admin/user-list",
+		element: <AdminUserListPage />,
 	}
 
 

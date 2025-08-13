@@ -1,3 +1,6 @@
+
+// Better Auth admin/impersonation API
+export { admin, impersonateUser, stopImpersonating } from '../../config/auth';
 export type {
     LoginOtpData,
     LoginFormData,
