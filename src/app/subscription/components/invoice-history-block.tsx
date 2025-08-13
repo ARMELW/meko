@@ -25,23 +25,23 @@ export function InvoiceHistoryBlock() {
   return (
     <div className="mt-8 mb-4">
       <Card className="flex flex-col ">
-        <div 
+        <div
           className="flex justify-between items-center text-sm cursor-pointer p-4 border-b border-meko-blue-light-1"
           onClick={() => setIsExpanded(!isExpanded)}
         >
           <Typography color="default" weight="bold" styleCase="uppercase">
             Historique
           </Typography>
-          <svg 
-            className={`w-4 h-4 text-white transition-transform duration-200 ${isExpanded ? 'rotate-180' : ''}`} 
-            fill="none" 
-            stroke="currentColor" 
+          <svg
+            className={`w-4 h-4 text-white transition-transform duration-200 ${isExpanded ? 'rotate-180' : ''}`}
+            fill="none"
+            stroke="currentColor"
             viewBox="0 0 24 24"
           >
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
           </svg>
         </div>
-        
+
         {isExpanded && (
           <CardContent className="flex flex-col justify-center w-full">
             {isLoading ? (
@@ -75,9 +75,9 @@ export function InvoiceHistoryBlock() {
                               {inv.isRefund && (
                                 <span className="ml-2 px-2 py-0.5 rounded-full text-xs bg-red-500 text-white font-bold">Remboursé</span>
                               )}
-                              <span className={intervalBadgeVariants({ interval: inv.interval })}>
+                              {!inv.isTrial && (<span className={intervalBadgeVariants({ interval: inv.interval })}>
                                 {inv.interval === 'year' ? 'Annuel' : 'Mensuel'}
-                              </span>
+                              </span>)}
                             </div>
                           </TableCell>
                           <TableCell>
