@@ -12,6 +12,8 @@ export interface Invoice {
   paidAt?: string | null;
   invoiceUrl: string;
   interval: 'month' | 'year';
+  isTrial?: boolean;
+  isRefund?: boolean;
 }
 
 export function useInvoices() {

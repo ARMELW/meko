@@ -69,6 +69,12 @@ export function InvoiceHistoryBlock() {
                               <Typography color="primary" weight="bold" styleCase="uppercase">
                                 OFFRE {inv.planName}
                               </Typography>
+                              {inv.isTrial && (
+                                <span className="ml-2 px-2 py-0.5 rounded-full text-xs bg-yellow-400 text-black font-bold">Essai gratuit</span>
+                              )}
+                              {inv.isRefund && (
+                                <span className="ml-2 px-2 py-0.5 rounded-full text-xs bg-red-500 text-white font-bold">Remboursé</span>
+                              )}
                               <span className={intervalBadgeVariants({ interval: inv.interval })}>
                                 {inv.interval === 'year' ? 'Annuel' : 'Mensuel'}
                               </span>
