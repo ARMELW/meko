@@ -38,8 +38,8 @@ function ChildDashboardPage() {
         return (
             <div className="min-h-screen text-white p-4 md:p-8">
                 <div className="text-center py-8">
-                    <Typography className="text-white" label="Aucun enfant sélectionné">
-                        Aucun enfant connecté
+                    <Typography className="text-white" label={t('childDashboard.noChildTitle', 'Aucun enfant sélectionné')}>
+                        {t('childDashboard.noChildConnected', 'Aucun enfant connecté')}
                     </Typography>
                 </div>
             </div>
@@ -66,16 +66,16 @@ function ChildDashboardPage() {
                                     <Typography
                                         as="h1"
                                         className="text-2xl font-bold mb-2"
-                                        label={`Tableau de bord de ${selectedChild.firstname}`}
+                                        label={t('childDashboard.title', { name: selectedChild.firstname, defaultValue: `Tableau de bord de ${selectedChild.firstname}` })}
                                     >
-                                        Bonjour {selectedChild.firstname} ! 👋
+                                        {t('childDashboard.greeting', { name: selectedChild.firstname, defaultValue: `Bonjour ${selectedChild.firstname} ! 👋` })}
                                     </Typography>
                                     <Typography
                                         as="p"
                                         className="text-meko-blue-light-1"
-                                        label="Message d'accueil"
+                                        label={t('childDashboard.welcome', 'Message d\'accueil')}
                                     >
-                                        Voici ton tableau de bord personnel
+                                        {t('childDashboard.welcome', 'Voici ton tableau de bord personnel')}
                                     </Typography>
                                 </div>
                             </div>
@@ -89,16 +89,16 @@ function ChildDashboardPage() {
                                 styleCase={"uppercase"}
                                 color={"secondary"}
                                 weight={"bold"}
-                                label="Nombre de jeux terminés"
+                                label={t('childDashboard.finishedGames', 'Nombre de jeux terminés')}
                             >
-                                🏆 Jeux terminés
+                                🏆 {t('childDashboard.finishedGames', 'Jeux terminés')}
                             </Typography>
                             <Typography
                                 as="span"
                                 color={"default"}
                                 weight={"bold"}
                                 className="block text-[24px]"
-                                label={`${progressSummary?.data?.gamesCompleted || 0} jeux terminés`}
+                                label={t('childDashboard.finishedGamesCount', { count: progressSummary?.data?.gamesCompleted || 0, defaultValue: '{{count}} jeux terminés' })}
                             >
                                 {progressSummary?.data?.gamesCompleted ?? '0'}
                             </Typography>
@@ -109,16 +109,16 @@ function ChildDashboardPage() {
                                 styleCase={"uppercase"}
                                 color={"secondary"}
                                 weight={"bold"}
-                                label="Nombre de jeux en cours"
+                                label={t('childDashboard.inProgressGames', 'Nombre de jeux en cours')}
                             >
-                                🎮 Jeux en cours
+                                🎮 {t('childDashboard.inProgressGames', 'Jeux en cours')}
                             </Typography>
                             <Typography
                                 as="span"
                                 color={"default"}
                                 weight={"bold"}
                                 className="block text-[24px]"
-                                label={`${progressSummary?.data?.gamesInProgress || 0} jeux en cours`}
+                                label={t('childDashboard.inProgressGamesCount', { count: progressSummary?.data?.gamesInProgress || 0, defaultValue: '{{count}} jeux en cours' })}
                             >
                                 {progressSummary?.data?.gamesInProgress ?? '0'}
                             </Typography>
@@ -129,16 +129,16 @@ function ChildDashboardPage() {
                                 styleCase={"uppercase"}
                                 color={"secondary"}
                                 weight={"bold"}
-                                label="Pourcentage de progression global"
+                                label={t('childDashboard.progressPercent', 'Pourcentage de progression global')}
                             >
-                                📊 Progression
+                                📊 {t('childDashboard.progress', 'Progression')}
                             </Typography>
                             <Typography
                                 as="span"
                                 color={"default"}
                                 weight={"bold"}
                                 className="block text-[24px]"
-                                label={`${progressSummary?.data?.progressPercent || 0}% de progression`}
+                                label={t('childDashboard.progressPercentLabel', { percent: progressSummary?.data?.progressPercent || 0, defaultValue: '{{percent}}% de progression' })}
                             >
                                 {progressSummary?.data?.progressPercent != null ? `${progressSummary.data.progressPercent}%` : '0%'}
                             </Typography>
@@ -149,16 +149,16 @@ function ChildDashboardPage() {
                                 styleCase={"uppercase"}
                                 color={"secondary"}
                                 weight={"bold"}
-                                label="Temps total passé à jouer"
+                                label={t('childDashboard.totalTimeSpent', 'Temps total passé à jouer')}
                             >
-                                ⏱️ Temps de jeu
+                                ⏱️ {t('childDashboard.totalTimeSpentShort', 'Temps de jeu')}
                             </Typography>
                             <Typography
                                 as="span"
                                 color={"default"}
                                 weight={"bold"}
                                 className="block text-[20px]"
-                                label={`Temps total: ${formatDuration(progressSummary?.data?.totalTimeSpent)}`}
+                                label={t('childDashboard.totalTimeSpentLabel', { time: formatDuration(progressSummary?.data?.totalTimeSpent), defaultValue: 'Temps total: {{time}}' })}
                             >
                                 {progressSummary?.data?.totalTimeSpent != null ? formatDuration(progressSummary.data.totalTimeSpent) : '0m'}
                             </Typography>
@@ -170,7 +170,7 @@ function ChildDashboardPage() {
                         <Card className="w-full bg-meko-blue-darker transition-all duration-300">
                             <div className="p-4 border-b border-meko-blue-transparent-1">
                                 <Typography as="h3" weight="bold" color="default">
-                                    🎯 Dernière activité
+                                    🎯 {t('childDashboard.lastActivity', 'Dernière activité')}
                                 </Typography>
                             </div>
                             <div className="p-4">
@@ -183,15 +183,15 @@ function ChildDashboardPage() {
                                     <div className="text-center py-8">
                                         <Typography
                                             className="text-white"
-                                            label="Aucune activité récente trouvée"
+                                            label={t('childDashboard.noRecentActivityLabel', 'Aucune activité récente trouvée')}
                                         >
-                                            Aucune activité récente
+                                            {t('childDashboard.noRecentActivity', 'Aucune activité récente')}
                                         </Typography>
                                         <Typography
                                             className="text-meko-blue-light-1 text-sm mt-2"
-                                            label="Encouragement à jouer"
+                                            label={t('childDashboard.encouragementLabel', 'Encouragement à jouer')}
                                         >
-                                            Lance ton premier jeu pour commencer !
+                                            {t('childDashboard.encouragement', 'Lance ton premier jeu pour commencer !')}
                                         </Typography>
                                     </div>
                                 )}
@@ -200,7 +200,7 @@ function ChildDashboardPage() {
 
                         <Card className="bg-[#0040B6]">
                             <CardTitle
-                                title="Répartition des jeux"
+                                title={t('childDashboard.gamesDistribution', 'Répartition des jeux')}
                                 className="flex justify-between items-center text-sm"
                                 titleColor="default"
                             />
@@ -216,8 +216,8 @@ function ChildDashboardPage() {
                                         showPercentLabels={true}
                                     />
                                 ) : (
-                                    <Typography className="text-meko-blue-light-1 mt-2" label="Aucune donnée de progression">
-                                        Aucune donnée de progression
+                                    <Typography className="text-meko-blue-light-1 mt-2" label={t('childDashboard.noProgressDataLabel', 'Aucune donnée de progression')}>
+                                        {t('childDashboard.noProgressData', 'Aucune donnée de progression')}
                                     </Typography>
                                 )}
                             </CardContent>

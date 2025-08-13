@@ -6,8 +6,10 @@ import { useQueryState, parseAsString } from 'nuqs';
 import { LessonItem } from './module-detail-page';
 import { useNavigate } from 'react-router';
 import { GameSimulationModal } from '@/app/game-sessions/components/game-simulation-modal';
+import { useTranslation } from 'react-i18next';
 
 export default function GameSearchPage() {
+    const { t } = useTranslation();
     const { selectedChild } = useSession();
     const childId = selectedChild?.id;
     const [page, setPage] = useState(1);
@@ -69,15 +71,15 @@ export default function GameSearchPage() {
             <div className="max-w-4xl mx-auto">
                 <div className="mb-6">
                     <Typography as="h3" weight="bold" className="text-3xl mb-2 uppercase">
-                       {`Résultats pour "${searchParam}"`}
+                       {t('gameSearch.resultsFor', { search: searchParam, defaultValue: `Résultats pour "${searchParam}"` })}
                     </Typography>
                     <hr className="my-2 text-white" />
                 </div>
 
                 <div className="flex flex-col gap-6">
-                    {isLoading && <Typography>Chargement...</Typography>}
-                    {error && <Typography color="error">Erreur lors du chargement</Typography>}
-                    {data?.games?.length === 0 && <Typography>Aucun jeu trouvé</Typography>}
+                    {isLoading && <Typography>{t('gameSearch.loading', 'Chargement...')}</Typography>}
+                    {error && <Typography color="error">{t('gameSearch.error', 'Erreur lors du chargement')}</Typography>}
+                    {data?.games?.length === 0 && <Typography>{t('gameSearch.noGames', 'Aucun jeu trouvé')}</Typography>}
                     {data?.games?.map((game) => (
                         <LessonItem 
                             key={game.id} 
@@ -99,17 +101,17 @@ export default function GameSearchPage() {
                           onClick={handlePrev}
                           disabled={page === 1}
                       >
-                          Précédent
+                          {t('gameSearch.prev', 'Précédent')}
                       </button>
                       <span className="text-white">
-                        Page {data.pagination.page} / {data.pagination.totalPages}
+                        {t('gameSearch.page', { page: data.pagination.page, total: data.pagination.totalPages, defaultValue: `Page ${data.pagination.page} / ${data.pagination.totalPages}` })}
                       </span>
                       <button
                           className="px-4 py-2 bg-meko-blue-light-1 text-white rounded disabled:opacity-50"
                           onClick={handleNext}
                           disabled={!data?.pagination?.hasNext}
                       >
-                          Suivant
+                          {t('gameSearch.next', 'Suivant')}
                       </button>
                   </footer>
                 )}

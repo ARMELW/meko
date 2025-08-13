@@ -47,9 +47,9 @@ function ChangeAvatarPage() {
       navigate("/home");
     } catch (error) {
       console.error('Erreur lors du changement d\'avatar:', error);
-      toast("Erreur lors du changement d'avatar", {
+      toast(t('onboarding.avatar.errorTitle', "Erreur lors du changement d'avatar"), {
         position: 'bottom-right',
-        description: "Une erreur s'est produite lors du changement d'avatar",
+        description: t('onboarding.avatar.errorDescription', "Une erreur s'est produite lors du changement d'avatar"),
         duration: 5000,
         icon: '❌'
       });

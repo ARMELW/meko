@@ -1,4 +1,5 @@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow, Typography, ExpandableTableRow } from '@/components';
+import { useTranslation } from 'react-i18next';
 import React, { useState } from 'react';
 import { useModuleGames } from '../hooks/use-module-games';
 import ModuleGamesDetail from './module-games-detail';
@@ -18,6 +19,7 @@ export interface ModuleProgressTableProps {
 }
 
 const ModuleProgressTable: React.FC<ModuleProgressTableProps> = ({ modules, expandable = true }) => {
+  const { t } = useTranslation();
   const [expandedModuleId, setExpandedModuleId] = useState<string | null>(null);
   const currentChild = useChildrenStore(state => state.currentChild);
   
@@ -35,10 +37,10 @@ const ModuleProgressTable: React.FC<ModuleProgressTableProps> = ({ modules, expa
       <TableHeader>
         <TableRow>
           <TableHead></TableHead>
-          <TableHead>Jeux à débloquer</TableHead>
-          <TableHead>Jeux en cours</TableHead>
-          <TableHead>Jeux terminés</TableHead>
-          <TableHead className="text-right">Progression</TableHead>
+          <TableHead>{t('modules.progress.unlockableGames', 'Jeux à débloquer')}</TableHead>
+          <TableHead>{t('modules.progress.inProgressGames', 'Jeux en cours')}</TableHead>
+          <TableHead>{t('modules.progress.completedGames', 'Jeux terminés')}</TableHead>
+          <TableHead className="text-right">{t('modules.progress.progress', 'Progression')}</TableHead>
           {expandable && <TableHead className="w-12"></TableHead>}
         </TableRow>
       </TableHeader>

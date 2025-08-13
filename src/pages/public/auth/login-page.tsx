@@ -96,10 +96,10 @@ function LoginPage() {
           <Card className="flex flex-col justify-center items-center p-4 sm:p-8 w-full mb-4">
             <div className="flex flex-col justify-center items-center my-4">
               <Typography as="p" className="text-sm sm:text-base text-center font-bold">
-                Connexion rapide
+                {t('auth.quickLogin', 'Connexion rapide')}
               </Typography>
               <Typography align="center" as="p" className="text-xs sm:text-sm mt-1 text-gray-600">
-                Sélectionnez un compte récent
+                {t('auth.selectRecent', 'Sélectionnez un compte récent')}
               </Typography>
             </div>
 
@@ -139,7 +139,7 @@ function LoginPage() {
               className="mt-4"
               disabled={loading || isSubmitted}
             >
-              Utiliser un autre email
+              {t('auth.useOtherEmail', 'Utiliser un autre email')}
             </Button>
           </Card>
         )}
@@ -152,7 +152,7 @@ function LoginPage() {
                 onClick={() => setShowManualEntry(false)}
                 className="self-start mb-4 text-white text-sm underline cursor-pointer"
               >
-                ← Retour aux comptes sauvegardés
+                ← {t('auth.backToSaved', 'Retour aux comptes sauvegardés')}
               </button>
             )}
           </div>
@@ -165,10 +165,10 @@ function LoginPage() {
             <form onSubmit={handleSubmit(onSubmit)}>
               <div className="flex flex-col justify-center items-center">
                 <Typography as="p" className="text-sm sm:text-base text-center">
-                  Bienvenue sur Meko Academy
+                  {t('auth.welcome', 'Bienvenue sur Meko Academy')}
                 </Typography>
                 <Typography align="center" as="p" className="text-sm sm:text-base mt-2">
-                  Entrez votre adresse email pour continuer !
+                  {t('auth.enterEmail', 'Entrez votre adresse email pour continuer !')}
                 </Typography>
               </div>
               <div className="flex flex-col gap-3 py-4 w-full px-2 sm:px-4">

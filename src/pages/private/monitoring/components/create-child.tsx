@@ -86,7 +86,7 @@ const CreateChild = () => {
                                 size="small"
                                 color="secondary"
                             >
-                                Créer
+                                {t('monitoring.children.create.submit', 'Créer')}
                             </LoadingButton>
                         </div>
                     </form>

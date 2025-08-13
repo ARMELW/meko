@@ -1,4 +1,5 @@
 import { OtpFormData, otpSchema, useVerifyOtpAuth, } from "@/app/auth";
+import { useTranslation } from "react-i18next";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Card, Typography } from "@/components";
 import { useForm } from "react-hook-form";
@@ -11,6 +12,7 @@ const defaultValues: OtpFormData = {
   otp: "",
 };
 function VerifyOtpPage() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const location = useLocation();
   const [loading,setLoading] = useState(false)
@@ -74,13 +76,13 @@ function VerifyOtpPage() {
                 variant='h1' 
                 className="text-lg sm:text-xl md:text-2xl text-center"
               >
-                CODE A 6 CHIFFRES
+                {t('auth.otpTitle', 'CODE A 6 CHIFFRES')}
               </Typography>
               <Typography 
                 align="center" 
                 className="text-sm sm:text-base px-2 sm:px-4 text-gray-400"
               >
-                Veuillez saisir le code envoyé à votre adresse email
+                {t('auth.otpInstruction', 'Veuillez saisir le code envoyé à votre adresse email')}
               </Typography>
             </div>
 
@@ -99,7 +101,7 @@ function VerifyOtpPage() {
               color="secondary"
               className="w-full sm:w-[200px] md:w-[240px]"
             >
-              Valider
+              {t('auth.validate', 'Valider')}
             </LoadingButton>
           </Card>
         </div>

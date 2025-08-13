@@ -155,7 +155,7 @@ function ChildMonitoringPage() {
                   color={"secondary"}
                   className="text-sm truncate block"
                   title={children.firstname}
-                  label={`Sélectionner ${children.firstname}`}
+                  label={t('monitoring.children.select', 'Sélectionner') + ' ' + children.firstname}
                 >
                   {truncateText(children.firstname, 12)}
                 </Typography>
@@ -172,9 +172,9 @@ function ChildMonitoringPage() {
                 weight={"bold"}
                 color={"secondary"}
                 className="text-sm"
-                label="Ajouter un enfant"
+                label={t('monitoring.children.add', 'Ajouter un enfant')}
               >
-                Ajouter
+                {t('monitoring.children.add', 'Ajouter')}
               </Typography>
             </div>
           </div>
@@ -184,8 +184,8 @@ function ChildMonitoringPage() {
       <main className="flex-1">
         {!currentChild ? (
           <div className="text-center py-8">
-            <Typography className="text-white" label="Message de sélection d'enfant">
-              Sélectionnez un enfant pour voir ses statistiques
+            <Typography className="text-white" label={t('monitoring.children.selectMessage', "Message de sélection d'enfant")}> 
+              {t('monitoring.children.selectMessage', 'Sélectionnez un enfant pour voir ses statistiques')}
             </Typography>
           </div>
         ) : (
@@ -208,9 +208,9 @@ function ChildMonitoringPage() {
                       color={"secondary"}
                       styleCase={"uppercase"}
                       weight={"bold"}
-                      label="Prénom de l'enfant"
+                      label={t('monitoring.children.firstNameLabel', "Prénom de l'enfant")}
                     >
-                      Prénom
+                      {t('monitoring.children.firstName', 'Prénom')}
                     </Typography>
                     <p className="bg-meko-blue-transparent-2 rounded-xl focus:border-meko-blue-light-1 focus:border-2 outline-none py-2 px-5">
                       {currentChild.firstname || ''}
@@ -223,9 +223,9 @@ function ChildMonitoringPage() {
                       color={"secondary"}
                       styleCase={"uppercase"}
                       weight={"bold"}
-                      label="Date de naissance de l'enfant"
+                      label={t('monitoring.children.birthdayLabel', "Date de naissance de l'enfant")}
                     >
-                      Date de naissance
+                      {t('monitoring.children.birthday', 'Date de naissance')}
                     </Typography>
                     <p className="bg-meko-blue-transparent-2 rounded-xl focus:border-meko-blue-light-1 focus:border-2 outline-none py-2 px-5">
                       {currentChild.birthday
@@ -253,91 +253,91 @@ function ChildMonitoringPage() {
         )}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mt-4">
           <Card className="bg-[#000F4799] p-4">
-            <Typography
-              as="span"
-              styleCase={"uppercase"}
-              color={"secondary"}
-              weight={"bold"}
-              label="Nombre de jeux terminés"
-            >
-              {t('monitoring.children.progress.gamesCompleted')}
-            </Typography>
-            <Typography
-              as="span"
-              color={"default"}
-              weight={"bold"}
-              className="block text-[20px]"
-              label={`${progressSummary?.data?.gamesCompleted || 0} jeux terminés`}
-            >
-              {progressSummary?.data?.gamesCompleted ?? '-'}
-            </Typography>
+              <Typography
+                as="span"
+                styleCase={"uppercase"}
+                color={"secondary"}
+                weight={"bold"}
+                label={t('monitoring.children.progress.gamesCompletedLabel', 'Nombre de jeux terminés')}
+              >
+                {t('monitoring.children.progress.gamesCompleted', 'Jeux terminés')}
+              </Typography>
+              <Typography
+                as="span"
+                color={"default"}
+                weight={"bold"}
+                className="block text-[20px]"
+                label={t('monitoring.children.progress.gamesCompletedValue', '{{count}} jeux terminés', { count: progressSummary?.data?.gamesCompleted || 0 })}
+              >
+                {progressSummary?.data?.gamesCompleted ?? '-'}
+              </Typography>
           </Card>
           <Card className="bg-[#000F4799] p-4">
-            <Typography
-              as="span"
-              styleCase={"uppercase"}
-              color={"secondary"}
-              weight={"bold"}
-              label="Nombre de jeux en cours"
-            >
-              {t('monitoring.children.progress.gamesInProgress')}
-            </Typography>
-            <Typography
-              as="span"
-              color={"default"}
-              weight={"bold"}
-              className="block text-[20px]"
-              label={`${progressSummary?.data?.gamesInProgress || 0} jeux en cours`}
-            >
-              {progressSummary?.data?.gamesInProgress ?? '-'}
-            </Typography>
+              <Typography
+                as="span"
+                styleCase={"uppercase"}
+                color={"secondary"}
+                weight={"bold"}
+                label={t('monitoring.children.progress.gamesInProgressLabel', 'Nombre de jeux en cours')}
+              >
+                {t('monitoring.children.progress.gamesInProgress', 'Jeux en cours')}
+              </Typography>
+              <Typography
+                as="span"
+                color={"default"}
+                weight={"bold"}
+                className="block text-[20px]"
+                label={t('monitoring.children.progress.gamesInProgressValue', '{{count}} jeux en cours', { count: progressSummary?.data?.gamesInProgress || 0 })}
+              >
+                {progressSummary?.data?.gamesInProgress ?? '-'}
+              </Typography>
           </Card>
           <Card className="bg-[#000F4799] p-4 flex flex-col items-center justify-center">
-            <Typography
-              as="span"
-              styleCase={"uppercase"}
-              color={"secondary"}
-              weight={"bold"}
-              label="Pourcentage de progression global"
-            >
-              {t('monitoring.children.progress.progressPercent')}
-            </Typography>
-            <Typography
-              as="span"
-              color={"default"}
-              weight={"bold"}
-              className="block text-[20px]"
-              label={`${progressSummary?.data?.progressPercent || 0}% de progression`}
-            >
-              {progressSummary?.data?.progressPercent != null ? `${progressSummary.data.progressPercent}%` : '-'}
-            </Typography>
+              <Typography
+                as="span"
+                styleCase={"uppercase"}
+                color={"secondary"}
+                weight={"bold"}
+                label={t('monitoring.children.progress.progressPercentLabel', 'Pourcentage de progression global')}
+              >
+                {t('monitoring.children.progress.progressPercent', 'Progression')}
+              </Typography>
+              <Typography
+                as="span"
+                color={"default"}
+                weight={"bold"}
+                className="block text-[20px]"
+                label={t('monitoring.children.progress.progressPercentValue', '{{percent}}% de progression', { percent: progressSummary?.data?.progressPercent || 0 })}
+              >
+                {progressSummary?.data?.progressPercent != null ? `${progressSummary.data.progressPercent}%` : '-'}
+              </Typography>
           </Card>
           <Card className="bg-[#000F4799] p-4">
-            <Typography
-              as="span"
-              styleCase={"uppercase"}
-              color={"secondary"}
-              weight={"bold"}
-              label="Temps total passé à jouer"
-            >
-              {t('monitoring.children.progress.totalTimeSpent')}
-            </Typography>
-            <Typography
-              as="span"
-              color={"default"}
-              weight={"bold"}
-              className="block text-[20px]"
-              label={`Temps total: ${formatDuration(progressSummary?.data?.totalTimeSpent)}`}
-            >
-              {progressSummary?.data?.totalTimeSpent != null ? `${formatDuration(progressSummary.data.totalTimeSpent)}` : '-'}
-            </Typography>
+              <Typography
+                as="span"
+                styleCase={"uppercase"}
+                color={"secondary"}
+                weight={"bold"}
+                label={t('monitoring.children.progress.totalTimeSpentLabel', 'Temps total passé à jouer')}
+              >
+                {t('monitoring.children.progress.totalTimeSpent', 'Temps passé')}
+              </Typography>
+              <Typography
+                as="span"
+                color={"default"}
+                weight={"bold"}
+                className="block text-[20px]"
+                label={t('monitoring.children.progress.totalTimeSpentValue', 'Temps total: {{time}}', { time: formatDuration(progressSummary?.data?.totalTimeSpent) })}
+              >
+                {progressSummary?.data?.totalTimeSpent != null ? `${formatDuration(progressSummary.data.totalTimeSpent)}` : '-'}
+              </Typography>
           </Card>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
           <Card className="w-full bg-meko-blue-darker transition-all duration-300">
             <CardTitle
-              title={"Dernière activité"}
+              title={t('monitoring.children.lastActivity.title', 'Dernière activité')}
               className="flex justify-between items-center text-sm"
               titleColor={"default"}
             />
@@ -359,7 +359,7 @@ function ChildMonitoringPage() {
           </Card>
           <Card className="w-full bg-[#0040B6] transition-all duration-300">
             <CardTitle
-              title={"Taux de progression"}
+              title={t('monitoring.children.progressRate', 'Taux de progression')}
               className="flex justify-between items-center text-sm"
               titleColor={"default"}
             />

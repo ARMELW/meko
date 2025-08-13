@@ -2,6 +2,49 @@ const en = {
    ui: {
       title: "Design system"
    },
+   payment: {
+      cancel: {
+         title: "Payment cancelled",
+         message: "Your payment was cancelled. You can try again or choose another plan.",
+         cta: "Back to offers"
+      }
+   },
+   userList: {
+      title: "Admin users",
+      searchPlaceholder: "Search by email...",
+      refresh: "Refresh",
+      loading: "Loading...",
+      email: "Email",
+      role: "Role",
+      action: "Action",
+      impersonate: "Impersonate",
+      prev: "Previous",
+      page: "Page",
+      next: "Next"
+   },
+   notFound: {
+      title: "Oops, this page does not exist!",
+      message: "The page you are looking for cannot be found or you do not have access rights.",
+      suggestion: "Return to the homepage or contact an administrator if needed.",
+      cta: "Back to homepage"
+   },
+   gameSearch: {
+      resultsFor: 'Results for "{{search}}"',
+      loading: 'Loading...',
+      error: 'Error while loading',
+      noGames: 'No games found',
+      prev: 'Previous',
+      next: 'Next',
+      page: 'Page {{page}} / {{total}}'
+   },
+   choose: {
+      loading: "Loading offers...",
+      none: "No offers available.",
+      title: "Choose your plan",
+      perMonth: "month",
+      purchasing: "Processing payment...",
+      subscribe: "Subscribe"
+   },
    monitoring: {
       children: {
          create: {
@@ -46,7 +89,33 @@ const en = {
          lastActivity: {
             none: "No recent activity"
          }
-      }
+         },
+         childStatistics: {
+            noChildTitle: "No child selected",
+            noChildDescription: "Please select a child to view statistics",
+            title: "{name}'s statistics",
+            subtitle: "Performance dashboard",
+            finishedGames: "Games completed",
+            inProgressGames: "Games in progress",
+            progress: "Progress",
+            timeSpent: "Time spent",
+            weeklyActivity: "Weekly activity",
+            chartComingSoon: "Chart coming soon",
+            progressRate: "Progress rate",
+            detailedStats: "Detailed statistics",
+            finishedModules: "Modules completed",
+            completedLessons: "Lessons completed",
+            successRate: "Success rate",
+            gamesPlayed: "Games played",
+            playTime: "Play time",
+            avgTimePerGame: "Average time per game",
+            sessionCount: "Session count",
+            avgSessionDuration: "Average session duration",
+            moduleProgress: "Module progress",
+            module1: "Module 1: Shapes",
+            module2: "Module 2: Colors",
+            module3: "Module 3: Numbers"
+         }
    },
    onboarding: {
       welcome: {

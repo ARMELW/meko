@@ -1,7 +1,9 @@
+
 import { useInvoices } from '@/app/subscription/hooks/use-invoices';
 import { Card, CardContent, Table, TableBody, TableCell, TableHead, TableHeader, TableRow, Typography } from '@/components';
 import { cva } from "class-variance-authority";
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 const intervalBadgeVariants = cva(
   "px-2 py-0.5 rounded-full text-xs bg-meko-blue-darker font-bold inline-flex items-center justify-center ml-2",
@@ -21,6 +23,7 @@ const intervalBadgeVariants = cva(
 export function InvoiceHistoryBlock() {
   const { data: invoices, isLoading, error } = useInvoices();
   const [isExpanded, setIsExpanded] = useState(false);
+  const { t } = useTranslation();
 
   return (
     <div className="mt-8 mb-4">
@@ -30,7 +33,7 @@ export function InvoiceHistoryBlock() {
           onClick={() => setIsExpanded(!isExpanded)}
         >
           <Typography color="default" weight="bold" styleCase="uppercase">
-            Historique
+            {t('subscription.invoiceHistory.title', 'Historique')}
           </Typography>
           <svg
             className={`w-4 h-4 text-white transition-transform duration-200 ${isExpanded ? 'rotate-180' : ''}`}
@@ -45,9 +48,9 @@ export function InvoiceHistoryBlock() {
         {isExpanded && (
           <CardContent className="flex flex-col justify-center w-full">
             {isLoading ? (
-              <div className="text-center py-4 text-white">Chargement de l'historique...</div>
+              <div className="text-center py-4 text-white">{t('subscription.invoiceHistory.loading', "Chargement de l'historique...")}</div>
             ) : error ? (
-              <div className="text-center py-4 text-red-500">Erreur lors du chargement de l'historique de facturation.</div>
+              <div className="text-center py-4 text-red-500">{t('subscription.invoiceHistory.error', "Erreur lors du chargement de l'historique de facturation.")}</div>
             ) : Array.isArray(invoices) && invoices.length > 0 ? (
               <div className="bg-meko-blue-dark rounded-lg flex flex-col gap-2">
                 <div className="overflow-x-auto">
@@ -55,10 +58,10 @@ export function InvoiceHistoryBlock() {
                     <TableHeader>
                       <TableRow>
                         <TableHead className="w-1/3"></TableHead>
-                        <TableHead>Période</TableHead>
-                        <TableHead>Date paiement</TableHead>
-                        <TableHead className="text-right">Montant</TableHead>
-                        <TableHead>Facture</TableHead>
+                        <TableHead>{t('subscription.invoiceHistory.period', 'Période')}</TableHead>
+                        <TableHead>{t('subscription.invoiceHistory.paymentDate', 'Date paiement')}</TableHead>
+                        <TableHead className="text-right">{t('subscription.invoiceHistory.amount', 'Montant')}</TableHead>
+                        <TableHead>{t('subscription.invoiceHistory.invoice', 'Facture')}</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
@@ -67,16 +70,16 @@ export function InvoiceHistoryBlock() {
                           <TableCell>
                             <div className="flex items-center gap-4">
                               <Typography color="primary" weight="bold" styleCase="uppercase">
-                                OFFRE {inv.planName}
+                                {t('subscription.invoiceHistory.offer', 'OFFRE')} {inv.planName}
                               </Typography>
                               {inv.isTrial && (
-                                <span className="ml-2 px-2 py-0.5 rounded-full text-xs bg-yellow-400 text-black font-bold">Essai gratuit</span>
+                                <span className="ml-2 px-2 py-0.5 rounded-full text-xs bg-yellow-400 text-black font-bold">{t('subscription.invoiceHistory.trial', 'Essai gratuit')}</span>
                               )}
                               {inv.isRefund && (
-                                <span className="ml-2 px-2 py-0.5 rounded-full text-xs bg-red-500 text-white font-bold">Remboursé</span>
+                                <span className="ml-2 px-2 py-0.5 rounded-full text-xs bg-red-500 text-white font-bold">{t('subscription.invoiceHistory.refunded', 'Remboursé')}</span>
                               )}
                               {!inv.isTrial && (<span className={intervalBadgeVariants({ interval: inv.interval })}>
-                                {inv.interval === 'year' ? 'Annuel' : 'Mensuel'}
+                                {inv.interval === 'year' ? t('subscription.invoiceHistory.yearly', 'Annuel') : t('subscription.invoiceHistory.monthly', 'Mensuel')}
                               </span>)}
                             </div>
                           </TableCell>
@@ -101,9 +104,9 @@ export function InvoiceHistoryBlock() {
                               target="_blank"
                               rel="noopener noreferrer"
                               className="underline text-meko-blue-light-1 hover:text-orange-400"
-                              aria-label={`Télécharger la facture ${inv.id}`}
+                              aria-label={t('subscription.invoiceHistory.downloadInvoice', { id: inv.id, defaultValue: `Télécharger la facture ${inv.id}` })}
                             >
-                              Voir
+                              {t('subscription.invoiceHistory.view', 'Voir')}
                             </a>
                           </TableCell>
                         </TableRow>
@@ -114,8 +117,8 @@ export function InvoiceHistoryBlock() {
               </div>
             ) : (
               <div className="text-center py-4 text-gray-300">
-                <div className="mb-2">Aucune facture trouvée.</div>
-                <div className="text-meko-blue-light-1">Essai gratuit en cours. Les factures apparaîtront ici le jour de la facturation.</div>
+                <div className="mb-2">{t('subscription.invoiceHistory.noInvoices', 'Aucune facture trouvée.')}</div>
+                <div className="text-meko-blue-light-1">{t('subscription.invoiceHistory.trialOngoing', 'Essai gratuit en cours. Les factures apparaîtront ici le jour de la facturation.')}</div>
               </div>
             )}
           </CardContent>
@@ -123,4 +126,5 @@ export function InvoiceHistoryBlock() {
       </Card>
     </div>
   );
+// End of InvoiceHistoryBlock
 }

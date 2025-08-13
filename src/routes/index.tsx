@@ -26,12 +26,10 @@ import { SettingPage } from "@/pages/private/settings/setting-page";
 import { ChangeAvatarPage } from "@/pages/private/settings/change-avatar-page";
 
 import { ChooseSubscriptionPage } from "@/pages/private/subscription/choose-subscription-page";
-import { SubscriptionSettingPage } from "@/pages/private/subscription/subscription-setting-page";
-import { PaymentPage } from "@/pages/private/subscription/payment-page";
 import PaymentSuccessPage from '@/pages/private/subscription/payment-success';
 import PaymentCancelPage from '@/pages/private/subscription/payment-cancel';
 import ChangeSubscriptionPage from '@/pages/private/subscription/change-subscription';
-import { NotFoundPage } from "@/pages/not-found-page";
+import { NotFoundPage } from "@/pages/public/auth/not-found-page";
 import { ProtectedLayout } from "./components/protected-layout";
 import { UiPage } from "@/pages/ui-page";
 import { VerifyOtpPage } from "@/pages/public/auth/verify-otp-page";
@@ -133,14 +131,6 @@ const privateRoutes: RouteObject[] = [
 			{
 				path: "choose",
 				element: <ChooseSubscriptionPage />,
-			},
-			{
-				path: "settings",
-				element: <SubscriptionSettingPage />,
-			},
-			{
-				path: "payment",
-				element: <PaymentPage />,
 			},
 			{
 				path: "payment-success",

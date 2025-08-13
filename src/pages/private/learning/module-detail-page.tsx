@@ -330,28 +330,28 @@ export function LessonItem({ image, title, status, onGameClick, isFirstGame = fa
             <span className={`inline-block ${statusColor[status]} px-2 py-0.5 rounded text-xs`}>
               {getStatusText(status)}
             </span>
-            <div className="flex flex-col  mt-2">
-              <div className="flex flex-row">
-                <h3 className="text-meko-blue-light-3 text-sm">
-                  Module :
-                </h3>
-                {moduleTitle && (
-                  <Typography as="p" className="text-white px-2 text-sm">
-                    {moduleTitle}
-                  </Typography>
-                )}
+              <div className="flex flex-col  mt-2">
+                <div className="flex flex-row">
+                  <h3 className="text-meko-blue-light-3 text-sm">
+                    {t('modules.detail.moduleLabel', 'Module :')}
+                  </h3>
+                  {moduleTitle && (
+                    <Typography as="p" className="text-white px-2 text-sm">
+                      {moduleTitle}
+                    </Typography>
+                  )}
+                </div>
+                <div className="flex flex-row">
+                  <h3 className="text-meko-blue-light-3 text-sm">
+                    {t('modules.detail.lessonLabel', 'Leçon :')}
+                  </h3>
+                  {lessonOrder && (
+                    <Typography as="p" className="text-white px-2 text-sm">
+                      {lessonOrder}
+                    </Typography>
+                  )}
+                </div>
               </div>
-              <div className="flex flex-row">
-                <h3 className="text-meko-blue-light-3 text-sm">
-                  Lécon :
-                </h3>
-                {lessonOrder && (
-                  <Typography as="p" className="text-white px-2 text-sm">
-                    {lessonOrder}
-                  </Typography>
-                )}
-              </div>
-            </div>
           </div>
 
           <LoadingButton

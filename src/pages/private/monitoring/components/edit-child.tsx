@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { addChildrenSchema, Children, ChildrenPayload, useChildrenActions } from '@/app/children';
@@ -25,6 +26,7 @@ interface EditChildProps {
 }
 
 const EditChild = ({ childToEdit, setChildToEdit, onClose }: EditChildProps) => {
+    const { t } = useTranslation();
     const { update, isUpdating, invalidate } = useChildrenActions();
     const { open, mode, openUpdate, close } = useModalStore();
     const makeOpen = !!(open && mode == 'update')
@@ -77,18 +79,16 @@ const EditChild = ({ childToEdit, setChildToEdit, onClose }: EditChildProps) => 
                     size="small"
                     color="secondary"
                 >
-                    Modifier
+                    {t('monitoring.children.edit', 'Modifier')}
                 </Button>
             </DialogTrigger>
             <DialogCard className="max-w-[600px]">
                 <DialogHeader>
-                    <DialogTitle title="Modifier compte enfant" />
+                    <DialogTitle title={t('monitoring.children.editTitle', 'Modifier compte enfant')} />
                 </DialogHeader>
                 <DialogContent>
                     <form className="w-full space-y-4" onSubmit={handleSubmit(onSubmit)}>
                         <ChildrenForm control={control} isLoading={isUpdating} />
-
-
                         <div className="w-full flex justify-center">
                             <LoadingButton
                                 type="submit"
@@ -96,7 +96,7 @@ const EditChild = ({ childToEdit, setChildToEdit, onClose }: EditChildProps) => 
                                 size="small"
                                 color="secondary"
                             >
-                                Modifier
+                                {t('monitoring.children.edit', 'Modifier')}
                             </LoadingButton>
                         </div>
                     </form>

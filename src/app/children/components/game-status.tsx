@@ -14,7 +14,6 @@ const GameStatus: React.FC<GameStatusProps> = ({
 }) => {
   const { t } = useTranslation();
 
-  // Mapper les statuts de jeu vers les statuts du composant Status avec traduction
   const getStatusConfig = (gameStatus: string) => {
     switch (gameStatus) {
       case 'completed':

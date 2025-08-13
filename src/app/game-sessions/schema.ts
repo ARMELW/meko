@@ -1,12 +1,10 @@
 import { z } from "zod";
 
-// Schema pour créer une session de jeu
 export const createGameSessionSchema = z.object({
   childId: z.string(),
   gameId: z.string()
 });
 
-// Schema pour une session de jeu (structure mise à jour selon l'API)
 export const gameSessionSchema = z.object({
   id: z.string(),
   childId: z.string(),

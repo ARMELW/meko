@@ -23,7 +23,7 @@ export function SubscriptionManagementPage() {
         <div className="w-full flex flex-col gap-6 md:flex-row md:gap-8">
           <div className="flex-1">
             {isLoading && (
-              <div className="text-center py-8">Chargement...</div>
+              <div className="text-center py-8">{t('common.loading', 'Chargement...')}</div>
             )}
             {subscription && (
               <CurrentSubscriptionBlock
