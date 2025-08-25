@@ -3,6 +3,9 @@ import { useOtpAuth } from "@/app/auth/hooks/use-otp-auth";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button, Card, Typography } from "@/components";
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router";
+import { useSession } from "@/config/auth";
+import { useChildrenStore } from "@/app/children/store";
 import { useForm } from "react-hook-form";
 import { useLocation } from "react-router";
 import { ControlledTextInput } from "@/components/molecules/form/controlled-input";
@@ -14,6 +17,19 @@ import { useSavedSessions } from '@/app/auth/hooks/use-saved-sessions';
 import { OtpLoginStep } from "@/components/otp-login-step";
 
 function LoginPage() {
+  const navigate = useNavigate();
+  const { data: session } = useSession();
+  const currentChild = useChildrenStore(state => state.currentChild);
+
+  useEffect(() => {
+    if (session) {
+      if (!currentChild) {
+        navigate("/profile/choose", { replace: true });
+      } else {
+        navigate("/home", { replace: true });
+      }
+    }
+  }, [session, currentChild, navigate]);
   const location = useLocation();
   const { t } = useTranslation();
   const [isSubmitted, setIsSubmitted] = useState(false);
