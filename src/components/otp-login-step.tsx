@@ -5,9 +5,9 @@ import { useForm } from "react-hook-form";
 import ControlledOtpInput from "@/components/molecules/form/controlled-otp-input";
 import { LoadingButton } from "@/components/atoms/actions/loading-button";
 import { handleSimpleApiError } from "@/utils/error-handler";
-import { useNavigate } from "react-router";
 import { OtpFormData, otpSchema } from "@/app/auth";
 import { useVerifyOtpLogin } from "@/app/auth/hooks/use-verify-otp-login";
+import { useNavigate } from "react-router";
 
 export interface OtpLoginStepProps {
   email: string;
@@ -22,11 +22,6 @@ export function OtpLoginStep({ email }: OtpLoginStepProps) {
     resolver: zodResolver(otpSchema),
     mode: "onSubmit",
   });
-  if (!email) {
-    navigate("/login");
-    return null;
-  }
-
   const onSubmit = async (data: OtpFormData) => {
     try {
       await initiateVerifyOtpLogin({

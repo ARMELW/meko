@@ -1,12 +1,10 @@
 import { useState } from 'react';
 import { verifyOtpLogin, VerifyOtpData } from "..";
 import { toast } from 'sonner';
-import { useNavigate } from 'react-router';
 
 export function useVerifyOtpLogin() {
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<unknown | null>(null);
-    const navigate = useNavigate();
     const initiateVerifyOtpLogin = async (
         data: VerifyOtpData
     ): Promise<void> => {
@@ -20,7 +18,6 @@ export function useVerifyOtpLogin() {
                 duration: 5000,
                 icon: '✅'
             });
-             navigate("/profile/choose");
         } catch (unexpectedError) {
             setError(unexpectedError);
             const errorMessage = unexpectedError instanceof Error ? unexpectedError.message : String(unexpectedError);
