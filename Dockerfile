@@ -1,18 +1,33 @@
-# Image de base
-FROM node:20-alpine
+# Étape 1 : Build
+FROM node:20-alpine AS builder
 WORKDIR /app
 
-# Copie des fichiers
-COPY . .
+# Copier les fichiers package.json + lock d'abord (optimisation du cache Docker)
+COPY package*.json ./
 
-# Installation des dependances
+# Installer les dépendances
 RUN npm install
 
-# Renommer le .env
+# Copier le reste du code
+COPY . .
+
+# Copier le .env.production vers .env
 RUN cp .env.production .env
 
-# Exposer le port
-EXPOSE 5173
+# Construire l'application
+RUN npm run build
 
-# Lancer avec --host, indispensable pour que Vite accepte des connexions extérieures (pas uniquement sur localhost)
-CMD ["npm", "run", "dev", "--", "--host", "0.0.0.0"]
+# Étape 2 : Runtime (production)
+FROM node:20-alpine AS runner
+WORKDIR /app
+
+# Copier uniquement le résultat du build + dépendances nécessaires
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/package*.json ./
+
+# Exposer le port (Vite preview utilise 4173 par défaut, sauf si tu configures)
+EXPOSE 4173
+
+# Lancer en mode preview (production)
+CMD ["npm", "run", "preview", "--", "--host", "0.0.0.0"]
