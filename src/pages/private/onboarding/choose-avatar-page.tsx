@@ -3,7 +3,6 @@ import { Avatar } from "@/app/avatar/types";
 import { useChildrenStore } from "@/app/children/store";
 import { Typography } from "@/components";
 import { useLocation, useNavigate } from "react-router";
-import { useEffect } from "react";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
 import { useSession as useChildrenSession } from '@/services/session/store';
@@ -26,12 +25,6 @@ function ChooseAvatarPage() {
 
   const childId = location.state?.id || sessionChild?.id || '';
   const childFirstname = location.state?.firstname || sessionChild?.firstname || '';
-
-  useEffect(() => {
-    if (!signUp) {
-      navigate("/profile/choose");
-    }
-  }, [selectedChild, navigate]);
 
   const handleChoice = async (avatar: Avatar) => {
     if (!childId) {

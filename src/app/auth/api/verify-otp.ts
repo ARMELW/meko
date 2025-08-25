@@ -3,6 +3,7 @@ import { authClient } from "@/config/auth";
 import { VerifyOtpData } from "../";
 
 export async function verifyOtpLogin(data: VerifyOtpData): Promise<void> {
+
     const { error: authError } = await authClient.signIn.emailOtp({
         email: data.email,
         otp: data.otp,
