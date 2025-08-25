@@ -61,15 +61,15 @@ function ChildMonitoringPage() {
     if (formatted.length > 0) {
       // Éviter les re-renders inutiles en vérifiant si l'enfant courant existe déjà dans la liste
       const currentChildExists = currentChild && formatted.some(child => child.id === currentChild.id);
-      
+
       if (!currentChildExists) {
         // Sélectionner l'enfant de la session, sinon le premier disponible
-        const targetChild = selectedChild 
-          ? formatted.find(child => child.id === selectedChild.id) 
+        const targetChild = selectedChild
+          ? formatted.find(child => child.id === selectedChild.id)
           : null;
-        
+
         const defaultChild = targetChild || formatted[0];
-        
+
         if (defaultChild && defaultChild.id !== currentChild?.id) {
           switchCurrentChild(defaultChild);
         }
@@ -127,355 +127,371 @@ function ChildMonitoringPage() {
     ].filter(Boolean).join(' ');
   }, []);
 
-  return(
-  <SubscriptionRequiredGuard>
-  <div className="min-h-screen text-white p-4 md:p-8">
-  <div className="flex flex-col md:flex-row gap-6">
-  {/* Sidebar hidden on mobile; mobile UI uses a modal */}
-  <aside className="hidden md:flex w-20 md:w-32 flex-col items-center gap-4">
-        <div className="child-item-wrapper flex flex-col items-center justify-center">
-          {formatted.map((children: Children, index: number) => (
-            <div key={`child-${children.id}`} className="mb-5 flex flex-col items-center justify-center">
-              <div
-                onClick={() => handleChildSwitch(children)}
-                className={`shadow-lg rounded-full w-[50px] overflow-hidden cursor-pointer ${children.id === currentChild?.id ? 'border-2 border-white' : ''
-                  }`}
-              >
-                <UserAvatar
-                  key={`avatar-${children.id}`}
-                  avatarUrl={children.avatarUrl}
-                  size={50}
-                  username={`${children.firstname} ${children.lastname}`}
-                  alt={`Avatar ${index + 1}`}
-                />
-              </div>
-              <div className="text-center max-w-[70px]">
-                <Typography
-                  as="span"
-                  styleCase={"uppercase"}
-                  weight={"bold"}
-                  color={"secondary"}
-                  className="text-sm truncate block"
-                  title={children.firstname}
-                  label={t('monitoring.children.select', 'Sélectionner') + ' ' + children.firstname}
-                >
-                  {truncateText(children.firstname, 12)}
-                </Typography>
-              </div>
-            </div>
-          ))}
-
-          <div className="flex flex-col items-center">
-            <CreateChild />
-            <div className="account-label text-center">
-              <Typography
-                as="span"
-                styleCase={"uppercase"}
-                weight={"bold"}
-                color={"secondary"}
-                className="text-sm"
-                label={t('monitoring.children.add', 'Ajouter un enfant')}
-              >
-                {t('monitoring.children.add', 'Ajouter')}
-              </Typography>
-            </div>
-          </div>
-        </div>
-      </aside>
-
-      <main className="flex-1">
-        {/* Mobile: open children modal */}
-        <div className="md:hidden mb-4">
-          <button
-            onClick={() => setMobileChildrenModalOpen((v) => !v)}
-            className="w-full bg-meko-blue-transparent-2 text-white px-3 py-2 rounded flex items-center justify-between"
-            aria-label={t('monitoring.children.openList', 'Afficher la liste des enfants')}
-            aria-expanded={mobileChildrenModalOpen}
-          >
-            <span className="mr-2">{t('monitoring.children.openList', 'Enfants')}</span>
-            <svg
-              className={`w-4 h-4 text-white transition-transform duration-200 ${mobileChildrenModalOpen ? 'rotate-180' : ''}`}
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-              aria-hidden="true"
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-            </svg>
-          </button>
-        </div>
-        {mobileChildrenModalOpen && (
-          <div className="fixed inset-0 z-50">
-            <div className="absolute inset-0 bg-black/50" onClick={() => setMobileChildrenModalOpen(false)} />
-            <div className="absolute bottom-0 left-0 right-0 bg-meko-blue-darker p-4 rounded-t-lg max-h-[70vh] overflow-auto">
-              <div className="mb-3 flex justify-between items-center">
-                <h3 className="font-bold">{t('monitoring.children.chooseChild', 'Choisir un enfant')}</h3>
-                <button onClick={() => setMobileChildrenModalOpen(false)} aria-label="Fermer" className="px-2 py-1">✕</button>
-              </div>
-              <div className="grid grid-cols-3 gap-3">
-                {formatted.map((children: Children, index: number) => (
-                  <button
-                    key={`mobile-child-${children.id}`}
-                    onClick={() => { handleChildSwitch(children); setMobileChildrenModalOpen(false); }}
-                    className="flex flex-col items-center text-center p-2"
+  return (
+    <SubscriptionRequiredGuard>
+      <div className="min-h-screen text-white p-4 md:p-8">
+        <div className="flex flex-col md:flex-row gap-6">
+          {/* Sidebar hidden on mobile; mobile UI uses a modal */}
+          <aside className="hidden md:flex w-20 md:w-32 flex-col items-center gap-4">
+            <div className="child-item-wrapper flex flex-col items-center justify-center">
+              {formatted.map((children: Children, index: number) => (
+                <div key={`child-${children.id}`} className="mb-5 flex flex-col items-center justify-center">
+                  <div
+                    onClick={() => handleChildSwitch(children)}
+                    className={`shadow-lg rounded-full w-[50px] overflow-hidden cursor-pointer ${children.id === currentChild?.id ? 'border-2 border-white' : ''
+                      }`}
                   >
-                    <div className={`rounded-full overflow-hidden w-20 h-20 mb-2 ${children.id === currentChild?.id ? 'ring-2 ring-white' : ''}`}>
-                      <UserAvatar avatarUrl={children.avatarUrl} size={80} username={`${children.firstname} ${children.lastname}`} alt={`Avatar ${index + 1}`} />
-                    </div>
-                    <span className="text-sm truncate">{truncateText(children.firstname, 12)}</span>
-                  </button>
-                ))}
+                    <UserAvatar
+                      key={`avatar-${children.id}`}
+                      avatarUrl={children.avatarUrl}
+                      size={50}
+                      username={`${children.firstname} ${children.lastname}`}
+                      alt={`Avatar ${index + 1}`}
+                    />
+                  </div>
+                  <div className="text-center max-w-[70px]">
+                    <Typography
+                      as="span"
+                      styleCase={"uppercase"}
+                      weight={"bold"}
+                      color={"secondary"}
+                      className="text-sm truncate block"
+                      title={children.firstname}
+                      label={t('monitoring.children.select', 'Sélectionner') + ' ' + children.firstname}
+                    >
+                      {truncateText(children.firstname, 12)}
+                    </Typography>
+                  </div>
+                </div>
+              ))}
+
+              <div className="flex flex-col items-center">
+                <CreateChild />
+                <div className="account-label text-center">
+                  <Typography
+                    as="span"
+                    styleCase={"uppercase"}
+                    weight={"bold"}
+                    color={"secondary"}
+                    className="text-sm"
+                    label={t('monitoring.children.add', 'Ajouter un enfant')}
+                  >
+                    {t('monitoring.children.add', 'Ajouter')}
+                  </Typography>
+                </div>
               </div>
             </div>
-          </div>
-        )}
-        {!currentChild ? (
-          <div className="text-center py-8">
-            <Typography className="text-white" label={t('monitoring.children.selectMessage', "Message de sélection d'enfant")}> 
-              {t('monitoring.children.selectMessage', 'Sélectionnez un enfant pour voir ses statistiques')}
-            </Typography>
-          </div>
-        ) : (
-          <>
-            <Card className="text-white flex flex-col sm:flex-row px-4 sm:px-8 py-4" style={{ boxShadow: "rgb(255 255 255 / 19%) 0px -1px 1px" }}>
-              <div className="flex flex-row sm:flex-row items-start sm:items-center gap-4">
-                <UserAvatar
-                  key={`main-avatar-${currentChild.id}`}
-                  avatarUrl={currentChild.avatarUrl}
-                  size={80}
-                  username={currentChild.firstname}
-                  alt={`Avatar de ${currentChild.firstname}`}
-                  className="w-16 h-16 sm:w-20 sm:h-20"
-                />
+          </aside>
 
-                <div className="space-y-2 flex-1 px-0 sm:px-4">
-                  <div className="w-full">
-                    <Typography
-                      as="span"
-                      className="block text-sm"
-                      color={"secondary"}
-                      styleCase={"uppercase"}
-                      weight={"bold"}
-                      label={t('monitoring.children.firstNameLabel', "Prénom de l'enfant")}
-                    >
-                      {t('monitoring.children.firstName', 'Prénom')}
-                    </Typography>
-                    <p className="bg-meko-blue-transparent-2 rounded-xl focus:border-meko-blue-light-1 focus:border-2 outline-none py-2 px-5">
-                      {currentChild.firstname || ''}
-                    </p>
+          <main className="flex-1">
+            {/* Mobile: open children modal */}
+            <div className="md:hidden mb-4">
+              <button
+                onClick={() => setMobileChildrenModalOpen((v) => !v)}
+                className="w-full bg-meko-blue-transparent-2 text-white px-3 py-2 rounded flex items-center justify-between"
+                aria-label={t('monitoring.children.openList', 'Afficher la liste des enfants')}
+                aria-expanded={mobileChildrenModalOpen}
+              >
+                <span className="mr-2">{t('monitoring.children.openList', 'Enfants')}</span>
+                <svg
+                  className={`w-4 h-4 text-white transition-transform duration-200 ${mobileChildrenModalOpen ? 'rotate-180' : ''}`}
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                  aria-hidden="true"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+            </div>
+            {mobileChildrenModalOpen && (
+              <div className="fixed inset-0 z-50">
+                <div className="absolute inset-0 bg-black/50" onClick={() => setMobileChildrenModalOpen(false)} />
+                <div className="absolute bottom-0 left-0 right-0 bg-meko-blue-darker p-4 rounded-t-lg max-h-[70vh] overflow-auto">
+                  <div className="mb-3 flex justify-between items-center">
+                    <h3 className="font-bold">{t('monitoring.children.chooseChild', 'Choisir un enfant')}</h3>
+                    <button onClick={() => setMobileChildrenModalOpen(false)} aria-label="Fermer" className="px-2 py-1">✕</button>
                   </div>
-                  <div className="w-full">
-                    <Typography
-                      as="span"
-                      className="block text-sm"
-                      color={"secondary"}
-                      styleCase={"uppercase"}
-                      weight={"bold"}
-                      label={t('monitoring.children.birthdayLabel', "Date de naissance de l'enfant")}
-                    >
-                      {t('monitoring.children.birthday', 'Date de naissance')}
-                    </Typography>
-                    <p className="bg-meko-blue-transparent-2 rounded-xl focus:border-meko-blue-light-1 focus:border-2 outline-none py-2 px-5">
-                      {currentChild.birthday
-                        ? format(new Date(currentChild.birthday), 'dd MMMM yyyy', { locale: fr })
-                        : ''}
-                    </p>
+
+                  <div className="grid grid-cols-3 items-center gap-3">
+                    {formatted.map((children: Children, index: number) => (
+                      <button
+                        key={`mobile-child-${children.id}`}
+                        onClick={() => { handleChildSwitch(children); setMobileChildrenModalOpen(false); }}
+                        className="flex flex-col items-center text-center p-2"
+                      >
+                        <div className={`rounded-full overflow-hidden w-20 h-20 mb-2 ${children.id === currentChild?.id ? 'ring-2 ring-white' : ''}`}>
+                          <UserAvatar avatarUrl={children.avatarUrl} size={80} username={`${children.firstname} ${children.lastname}`} alt={`Avatar ${index + 1}`} />
+                        </div>
+                        <span className="text-sm truncate">{truncateText(children.firstname, 12)}</span>
+                      </button>
+                    ))}
+                    <div className="flex flex-col items-center">
+                      <CreateChild />
+                      <div className="account-label text-center">
+                        <Typography
+                          as="span"
+                          styleCase={"uppercase"}
+                          weight={"bold"}
+                          color={"secondary"}
+                          className="text-sm"
+                          label={t('monitoring.children.add', 'Ajouter un enfant')}
+                        >
+                          {t('monitoring.children.add', 'Ajouter')}
+                        </Typography>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
-
-              <div className="flex items-center space-x-2 mt-3 sm:mt-0">
-                <EditChild
-                  key={currentChild.id}
-                  childToEdit={currentChild}
-                  setChildToEdit={switchCurrentChild}
-                  onClose={handleCloseEdit}
-                />
-                <DeleteChildDialog
-                  childId={currentChild.id}
-                />
-              </div>
-
-            </Card>
-          </>
-        )}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mt-4">
-          <Card className="bg-[#000F4799] p-4">
-              <Typography
-                as="span"
-                styleCase={"uppercase"}
-                color={"secondary"}
-                weight={"bold"}
-                label={t('monitoring.children.progress.gamesCompletedLabel', 'Nombre de jeux terminés')}
-              >
-                {t('monitoring.children.progress.gamesCompleted', 'Jeux terminés')}
-              </Typography>
-              <Typography
-                as="span"
-                color={"default"}
-                weight={"bold"}
-                className="block text-[20px]"
-                label={t('monitoring.children.progress.gamesCompletedValue', '{{count}} jeux terminés', { count: progressSummary?.data?.gamesCompleted || 0 })}
-              >
-                {progressSummary?.data?.gamesCompleted ?? '-'}
-              </Typography>
-          </Card>
-          <Card className="bg-[#000F4799] p-4">
-              <Typography
-                as="span"
-                styleCase={"uppercase"}
-                color={"secondary"}
-                weight={"bold"}
-                label={t('monitoring.children.progress.gamesInProgressLabel', 'Nombre de jeux en cours')}
-              >
-                {t('monitoring.children.progress.gamesInProgress', 'Jeux en cours')}
-              </Typography>
-              <Typography
-                as="span"
-                color={"default"}
-                weight={"bold"}
-                className="block text-[20px]"
-                label={t('monitoring.children.progress.gamesInProgressValue', '{{count}} jeux en cours', { count: progressSummary?.data?.gamesInProgress || 0 })}
-              >
-                {progressSummary?.data?.gamesInProgress ?? '-'}
-              </Typography>
-          </Card>
-          <Card className="bg-[#000F4799] p-4 flex flex-col items-center justify-center">
-              <Typography
-                as="span"
-                styleCase={"uppercase"}
-                color={"secondary"}
-                weight={"bold"}
-                label={t('monitoring.children.progress.progressPercentLabel', 'Pourcentage de progression global')}
-              >
-                {t('monitoring.children.progress.progressPercent', 'Progression')}
-              </Typography>
-              <Typography
-                as="span"
-                color={"default"}
-                weight={"bold"}
-                className="block text-[20px]"
-                label={t('monitoring.children.progress.progressPercentValue', '{{percent}}% de progression', { percent: progressSummary?.data?.progressPercent || 0 })}
-              >
-                {progressSummary?.data?.progressPercent != null ? `${progressSummary.data.progressPercent}%` : '-'}
-              </Typography>
-          </Card>
-          <Card className="bg-[#000F4799] p-4">
-              <Typography
-                as="span"
-                styleCase={"uppercase"}
-                color={"secondary"}
-                weight={"bold"}
-                label={t('monitoring.children.progress.totalTimeSpentLabel', 'Temps total passé à jouer')}
-              >
-                {t('monitoring.children.progress.totalTimeSpent', 'Temps passé')}
-              </Typography>
-              <Typography
-                as="span"
-                color={"default"}
-                weight={"bold"}
-                className="block text-[20px]"
-                label={t('monitoring.children.progress.totalTimeSpentValue', 'Temps total: {{time}}', { time: formatDuration(progressSummary?.data?.totalTimeSpent) })}
-              >
-                {progressSummary?.data?.totalTimeSpent != null ? `${formatDuration(progressSummary.data.totalTimeSpent)}` : '-'}
-              </Typography>
-          </Card>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-          <Card className="w-full bg-meko-blue-darker transition-all duration-300">
-            <CardTitle
-              title={t('monitoring.children.lastActivity.title', 'Dernière activité')}
-              className="flex justify-between items-center text-sm"
-              titleColor={"default"}
-            />
-            <CardContent className="flex flex-col items-center justify-center">
-              {lastActivityData?.data ? (
-                <LastActivitySummary
-                  lastActivity={lastActivityData.data}
-                  showActions={true}
-                />
-              ) : (
-                <Typography
-                  className="text-white text-center py-8"
-                  label="Aucune activité récente trouvée"
-                >
-                  {t('monitoring.children.lastActivity.none', 'Aucune activité récente')}
+            )}
+            {!currentChild ? (
+              <div className="text-center py-8">
+                <Typography className="text-white" label={t('monitoring.children.selectMessage', "Message de sélection d'enfant")}>
+                  {t('monitoring.children.selectMessage', 'Sélectionnez un enfant pour voir ses statistiques')}
                 </Typography>
-              )}
-            </CardContent>
-          </Card>
-          <Card className="w-full bg-[#0040B6] transition-all duration-300">
-            <CardTitle
-              title={t('monitoring.children.progressRate', 'Taux de progression')}
-              className="flex justify-between items-center text-sm"
-              titleColor={"default"}
-            />
-            <CardContent className="flex flex-col justify-center">
-              <StatusPieChart data={pieData} showPercentLabels={true} />
-            </CardContent>
-          </Card>
-        </div>
-
-        <Card className="bg-[#000F4799] p-4 mt-4">
-          {isStatsLoading ? (
-            <div className="flex justify-center items-center py-8">
-              <LoadingSpinner size={32} />
-            </div>
-          ) : (
-            <ChildStatsSection
-              period={period}
-              onPeriodChange={handlePeriodChange}
-              topStats={[
-                { label: 'Modules terminés', value: activityStats ? String(activityStats.completedModules) : '-' },
-                { label: 'Leçons complétées', value: activityStats ? String(activityStats.completedLessons) : '-' },
-                { label: 'Réussite aux jeux', value: activityStats ? `${activityStats.successRate ?? '-'}%` : '-' },
-                { label: 'Jeux joués', value: activityStats ? String(activityStats.gamesPlayed) : '-' },
-              ]}
-              bottomStats={[
-                { label: 'Nb. sessions', value: activityStats ? String(activityStats.sessionsCount) : '-' },
-                { label: 'Durée moyenne session', value: activityStats ? formatDuration(activityStats.avgSessionDuration) : '-' },
-                { label: '', value: '' },
-              ]}
-            />
-          )}
-        </Card>
-
-        <Card className="w-full bg-[#0040B6] transition-all duration-300 mt-4">
-          <CardTitle
-            title={t('monitoring.children.progress.modules', 'Progression par module')}
-            className="flex justify-between items-center text-sm"
-            titleColor={"default"}
-          />
-          <CardContent className="flex flex-col justify-center">
-            {isModulesLoading ? (
-              <div className="flex justify-center items-center py-8">
-                <LoadingSpinner size={32} />
               </div>
             ) : (
-              <ModuleProgressTable
-                expandable={true}
-                modules={
-                  modulesData?.modules?.map((mod) => ({
-                    id: mod.id,
-                    name: mod.name,
-                    coverUrl: mod.coverUrl,
-                    availableGames: mod.availableGames,
-                    inProgressGames: mod.inProgressGames ?? 0,
-                    completedGames: mod.completedGames,
-                    progressPercentage: mod.progressPercentage,
-                  })) || []
-                }
-              />
-            )}
-          </CardContent>
-        </Card>
+              <>
+                <Card className="text-white flex flex-col sm:flex-row px-4 sm:px-8 py-4" style={{ boxShadow: "rgb(255 255 255 / 19%) 0px -1px 1px" }}>
+                  <div className="flex flex-row sm:flex-row items-start sm:items-center gap-4 flex-1">
+                    <UserAvatar
+                      key={`main-avatar-${currentChild.id}`}
+                      avatarUrl={currentChild.avatarUrl}
+                      size={80}
+                      username={currentChild.firstname}
+                      alt={`Avatar de ${currentChild.firstname}`}
+                      className="w-16 h-16 sm:w-20 sm:h-20"
+                    />
 
-      </main>
-    </div>
-  </div>
-  </SubscriptionRequiredGuard>
+                    <div className="space-y-2 flex-1 px-0 sm:px-4">
+                      <div className="w-full">
+                        <Typography
+                          as="span"
+                          className="block text-sm"
+                          color={"secondary"}
+                          styleCase={"uppercase"}
+                          weight={"bold"}
+                          label={t('monitoring.children.firstNameLabel', "Prénom de l'enfant")}
+                        >
+                          {t('monitoring.children.firstName', 'Prénom')}
+                        </Typography>
+                        <p className="bg-meko-blue-transparent-2 rounded-xl focus:border-meko-blue-light-1 focus:border-2 outline-none py-2 px-5">
+                          {currentChild.firstname || ''}
+                        </p>
+                      </div>
+                      <div className="w-full">
+                        <Typography
+                          as="span"
+                          className="block text-sm"
+                          color={"secondary"}
+                          styleCase={"uppercase"}
+                          weight={"bold"}
+                          label={t('monitoring.children.birthdayLabel', "Date de naissance de l'enfant")}
+                        >
+                          {t('monitoring.children.birthday', 'Date de naissance')}
+                        </Typography>
+                        <p className="bg-meko-blue-transparent-2 rounded-xl focus:border-meko-blue-light-1 focus:border-2 outline-none py-2 px-5">
+                          {currentChild.birthday
+                            ? format(new Date(currentChild.birthday), 'dd MMMM yyyy', { locale: fr })
+                            : ''}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center space-x-2 mt-3 sm:mt-0 sm:ml-auto justify-center sm:justify-end w-full sm:w-auto">
+                    <EditChild
+                      key={currentChild.id}
+                      childToEdit={currentChild}
+                      setChildToEdit={switchCurrentChild}
+                      onClose={handleCloseEdit}
+                    />
+                    <DeleteChildDialog
+                      childId={currentChild.id}
+                    />
+                  </div>
+
+                </Card>
+              </>
+            )}
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mt-4">
+              <Card className="bg-[#000F4799] p-4">
+                <Typography
+                  as="span"
+                  styleCase={"uppercase"}
+                  color={"secondary"}
+                  weight={"bold"}
+                  label={t('monitoring.children.progress.gamesCompletedLabel', 'Nombre de jeux terminés')}
+                >
+                  {t('monitoring.children.progress.gamesCompleted', 'Jeux terminés')}
+                </Typography>
+                <Typography
+                  as="span"
+                  color={"default"}
+                  weight={"bold"}
+                  className="block text-[20px]"
+                  label={t('monitoring.children.progress.gamesCompletedValue', '{{count}} jeux terminés', { count: progressSummary?.data?.gamesCompleted || 0 })}
+                >
+                  {progressSummary?.data?.gamesCompleted ?? '-'}
+                </Typography>
+              </Card>
+              <Card className="bg-[#000F4799] p-4">
+                <Typography
+                  as="span"
+                  styleCase={"uppercase"}
+                  color={"secondary"}
+                  weight={"bold"}
+                  label={t('monitoring.children.progress.gamesInProgressLabel', 'Nombre de jeux en cours')}
+                >
+                  {t('monitoring.children.progress.gamesInProgress', 'Jeux en cours')}
+                </Typography>
+                <Typography
+                  as="span"
+                  color={"default"}
+                  weight={"bold"}
+                  className="block text-[20px]"
+                  label={t('monitoring.children.progress.gamesInProgressValue', '{{count}} jeux en cours', { count: progressSummary?.data?.gamesInProgress || 0 })}
+                >
+                  {progressSummary?.data?.gamesInProgress ?? '-'}
+                </Typography>
+              </Card>
+              <Card className="bg-[#000F4799] p-4 flex flex-col items-center justify-center">
+                <Typography
+                  as="span"
+                  styleCase={"uppercase"}
+                  color={"secondary"}
+                  weight={"bold"}
+                  label={t('monitoring.children.progress.progressPercentLabel', 'Pourcentage de progression global')}
+                >
+                  {t('monitoring.children.progress.progressPercent', 'Progression')}
+                </Typography>
+                <Typography
+                  as="span"
+                  color={"default"}
+                  weight={"bold"}
+                  className="block text-[20px]"
+                  label={t('monitoring.children.progress.progressPercentValue', '{{percent}}% de progression', { percent: progressSummary?.data?.progressPercent || 0 })}
+                >
+                  {progressSummary?.data?.progressPercent != null ? `${progressSummary.data.progressPercent}%` : '-'}
+                </Typography>
+              </Card>
+              <Card className="bg-[#000F4799] p-4">
+                <Typography
+                  as="span"
+                  styleCase={"uppercase"}
+                  color={"secondary"}
+                  weight={"bold"}
+                  label={t('monitoring.children.progress.totalTimeSpentLabel', 'Temps total passé à jouer')}
+                >
+                  {t('monitoring.children.progress.totalTimeSpent', 'Temps passé')}
+                </Typography>
+                <Typography
+                  as="span"
+                  color={"default"}
+                  weight={"bold"}
+                  className="block text-[20px]"
+                  label={t('monitoring.children.progress.totalTimeSpentValue', 'Temps total: {{time}}', { time: formatDuration(progressSummary?.data?.totalTimeSpent) })}
+                >
+                  {progressSummary?.data?.totalTimeSpent != null ? `${formatDuration(progressSummary.data.totalTimeSpent)}` : '-'}
+                </Typography>
+              </Card>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+              <Card className="w-full bg-meko-blue-darker transition-all duration-300">
+                <CardTitle
+                  title={t('monitoring.children.lastActivity.title', 'Dernière activité')}
+                  className="flex justify-between items-center text-sm"
+                  titleColor={"default"}
+                />
+                <CardContent className="flex flex-col items-center justify-center">
+                  {lastActivityData?.data ? (
+                    <LastActivitySummary
+                      lastActivity={lastActivityData.data}
+                      showActions={true}
+                    />
+                  ) : (
+                    <Typography
+                      className="text-white text-center py-8"
+                      label="Aucune activité récente trouvée"
+                    >
+                      {t('monitoring.children.lastActivity.none', 'Aucune activité récente')}
+                    </Typography>
+                  )}
+                </CardContent>
+              </Card>
+              <Card className="w-full bg-[#0040B6] transition-all duration-300">
+                <CardTitle
+                  title={t('monitoring.children.progressRate', 'Taux de progression')}
+                  className="flex justify-between items-center text-sm"
+                  titleColor={"default"}
+                />
+                <CardContent className="flex flex-col justify-center">
+                  <StatusPieChart data={pieData} showPercentLabels={true} />
+                </CardContent>
+              </Card>
+            </div>
+
+            <Card className="bg-[#000F4799] p-4 mt-4">
+              {isStatsLoading ? (
+                <div className="flex justify-center items-center py-8">
+                  <LoadingSpinner size={32} />
+                </div>
+              ) : (
+                <ChildStatsSection
+                  period={period}
+                  onPeriodChange={handlePeriodChange}
+                  topStats={[
+                    { label: 'Modules terminés', value: activityStats ? String(activityStats.completedModules) : '-' },
+                    { label: 'Leçons complétées', value: activityStats ? String(activityStats.completedLessons) : '-' },
+                    { label: 'Réussite aux jeux', value: activityStats ? `${activityStats.successRate ?? '-'}%` : '-' },
+                    { label: 'Jeux joués', value: activityStats ? String(activityStats.gamesPlayed) : '-' },
+                  ]}
+                  bottomStats={[
+                    { label: 'Nb. sessions', value: activityStats ? String(activityStats.sessionsCount) : '-' },
+                    { label: 'Durée moyenne session', value: activityStats ? formatDuration(activityStats.avgSessionDuration) : '-' },
+                    { label: '', value: '' },
+                  ]}
+                />
+              )}
+            </Card>
+
+            <Card className="w-full bg-[#0040B6] transition-all duration-300 mt-4">
+              <CardTitle
+                title={t('monitoring.children.progress.modules', 'Progression par module')}
+                className="flex justify-between items-center text-sm"
+                titleColor={"default"}
+              />
+              <CardContent className="flex flex-col justify-center">
+                {isModulesLoading ? (
+                  <div className="flex justify-center items-center py-8">
+                    <LoadingSpinner size={32} />
+                  </div>
+                ) : (
+                  <ModuleProgressTable
+                    expandable={true}
+                    modules={
+                      modulesData?.modules?.map((mod) => ({
+                        id: mod.id,
+                        name: mod.name,
+                        coverUrl: mod.coverUrl,
+                        availableGames: mod.availableGames,
+                        inProgressGames: mod.inProgressGames ?? 0,
+                        completedGames: mod.completedGames,
+                        progressPercentage: mod.progressPercentage,
+                      })) || []
+                    }
+                  />
+                )}
+              </CardContent>
+            </Card>
+
+          </main>
+        </div>
+      </div>
+    </SubscriptionRequiredGuard>
   );
 }
 

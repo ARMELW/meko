@@ -23,7 +23,7 @@ export function Header() {
     const location = useLocation();
     const { data: session } = useSession();
     const sessionChild = useChildrenSession(state => state.selectedChild);
-    const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+    const [, setMobileMenuOpen] = useState(false);
     const { logout: handleLogout, isLoggingOut } = useLogout();
     const [isLastActivityModalOpen, setIsLastActivityModalOpen] = useState(false);
     const [gameModalState, setGameModalState] = useState<{
@@ -95,9 +95,7 @@ export function Header() {
         : session?.user?.name || 'User';
     const displayImage = sessionChild ? sessionChild.avatarUrl : session?.user?.image;
 
-    const toggleMobileMenu = () => {
-        setMobileMenuOpen(!mobileMenuOpen);
-    };
+    
 
     // Close mobile menu when route changes
     useEffect(() => {
@@ -246,18 +244,21 @@ export function Header() {
                     onClick={() => navigate('/login')}
                     label={t('auth.login')}
                 />
-                <Button
-                    onClick={() => navigate('/register')}
-                    variant={'primary'}
-                    size={'small'}
-                >
-                    {t('common.trial')}
-                </Button>
+                <div className="hidden md:block">
+                    <Button
+                        onClick={() => navigate('/register')}
+                        variant={'primary'}
+                        size={'small'}
+                    >
+                        {t('common.trial')}
+                    </Button>
+                </div>
+                
             </>
         );
     };
 
-    
+
     const renderChildrenOptions = () => {
         if (!sessionChild || !isAuthenticated) return null;
         return (
@@ -412,65 +413,47 @@ export function Header() {
 
 
                 {renderAuthOptions()}
-                <div className="md:hidden">
-                    <div className="flex justify-end px-4 -mt-2">
-                        <button
-                            aria-label={mobileMenuOpen ? 'Fermer le menu' : 'Ouvrir le menu'}
-                            onClick={toggleMobileMenu}
-                            className="p-2 rounded-md focus:outline-none"
-                        >
-                            {mobileMenuOpen ? (
-                                <svg className="w-6 h-6 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
-                            ) : (
-                                <svg className="w-6 h-6 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" /></svg>
-                            )}
-                        </button>
-                    </div>
 
-                </div>
             </div>
             {/* Mobile sliding menu panel */}
             <div className="md:hidden">
 
-                {mobileMenuOpen && (
-                    <div className="fixed inset-0 z-50">
-                        <div className="absolute inset-0 bg-black/40" onClick={() => setMobileMenuOpen(false)} />
-                        <div className="absolute right-0 top-0 h-full w-11/12 max-w-xs bg-meko-blue-darker p-4 overflow-auto shadow-lg border-l border-meko-blue-transparent-1 transform transition-transform duration-200 ease-out">
-                            <div className="mb-3">
-                                <SearchInput className="w-full" autoFocus={true} onSearch={() => setMobileMenuOpen(false)} />
-                            </div>
+                    <div className='flex flex-col items-center'>
+                        {isAuthenticated && (
+                        <div className="mb-3">
+                            <SearchInput className="w-full" autoFocus={true} onSearch={() => setMobileMenuOpen(false)} />
+                        </div>
+                        )}
 
-                            {isAuthenticated && (
-                                <div className="flex flex-col gap-3 mb-3">
-                                    {lastActivityData?.data && (
-                                        <button
-                                            onClick={() => {
-                                                // open last activity modal (preferred on mobile) and close menu
-                                                setIsLastActivityModalOpen(true);
-                                                setMobileMenuOpen(false);
-                                            }}
-                                            className="flex items-center gap-3 px-3 py-2 rounded bg-meko-blue-transparent-2 text-white w-full"
-                                        >
-                                            <LastActivityIcon />
-                                            <span>{t('common.lastActivity')}</span>
-                                        </button>
-                                    )}
-
+                        {isAuthenticated && (
+                            <div className="flex flex-col gap-3 mb-3">
+                                {lastActivityData?.data && (
                                     <button
                                         onClick={() => {
-                                            navigate('/child/dashboard');
+                                            // open last activity modal (preferred on mobile) and close menu
+                                            setIsLastActivityModalOpen(true);
                                             setMobileMenuOpen(false);
                                         }}
-                                        className="flex items-center gap-3 px-3 py-2 rounded bg-meko-blue-transparent-2 text-white w-full"
+                                        className="flex items-center gap-3 px-3 rounded text-white"
                                     >
-                                        <StatisticIcon />
-                                        <span>{t('common.statistics')}</span>
+                                        <LastActivityIcon />
+                                        <span>{t('common.lastActivity')}</span>
                                     </button>
-                                </div>
-                            )}
-                        </div>
+                                )}
+
+                                <button
+                                    onClick={() => {
+                                        navigate('/child/dashboard');
+                                        setMobileMenuOpen(false);
+                                    }}
+                                    className="flex items-center gap-3 px-3 py-2 rounded text-white"
+                                >
+                                    <StatisticIcon />
+                                    <span>{t('common.statistics')}</span>
+                                </button>
+                            </div>
+                        )}
                     </div>
-                )}
             </div>
 
             <LastActivityModal

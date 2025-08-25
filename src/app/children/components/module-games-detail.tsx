@@ -67,64 +67,102 @@ const ModuleGamesDetail: React.FC<ModuleGamesDetailProps> = ({
             {t('modules.detail.lessonLabel', 'Leçon')} {index + 1}
           </Typography>
           
-          <Table className="w-full">
-            <TableHeader>
-              <TableRow>
-                <TableHead className="w-12 p-2"></TableHead>
-                <TableHead className="p-2">{t('modules.detail.gameName', 'Nom du jeu')}</TableHead>
-                <TableHead className="text-center p-2">{t('modules.detail.status', 'Statut')}</TableHead>
-                <TableHead className="text-center p-2">{t('modules.detail.completedAt', 'Terminé le')}</TableHead>
-                <TableHead className="text-center p-2">{t('modules.detail.action', 'Action')}</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {lesson.games.map((game) => (
-                <TableRow key={game.id} className="hover:bg-meko-blue-transparent-1/30">
-                  <TableCell className="p-2">
-                    <img
-                      src={game.coverUrl}
-                      alt={game.title}
-                      className="w-10 h-10 rounded-lg object-cover"
-                    />
-                  </TableCell>
-                  <TableCell className="p-2">
-                    <Typography weight="bold" variant="small">
+          {/* Desktop / tablet table */}
+          <div className="hidden sm:block">
+            <Table className="w-full">
+              <TableHeader>
+                <TableRow>
+                  <TableHead className="w-12 p-2"></TableHead>
+                  <TableHead className="p-2">{t('modules.detail.gameName', 'Nom du jeu')}</TableHead>
+                  <TableHead className="text-center p-2">{t('modules.detail.status', 'Statut')}</TableHead>
+                  <TableHead className="text-center p-2">{t('modules.detail.completedAt', 'Terminé le')}</TableHead>
+                  <TableHead className="text-center p-2">{t('modules.detail.action', 'Action')}</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {lesson.games.map((game) => (
+                  <TableRow key={game.id} className="hover:bg-meko-blue-transparent-1/30">
+                    <TableCell className="p-2">
+                      <img
+                        src={game.coverUrl}
+                        alt={game.title}
+                        className="w-10 h-10 rounded-lg object-cover"
+                      />
+                    </TableCell>
+                    <TableCell className="p-2">
+                      <Typography weight="bold" variant="small">
+                        {game.title}
+                      </Typography>
+                    </TableCell>
+                    <TableCell className="text-center p-2">
+                      <div className="flex justify-center">
+                        <GameStatus 
+                          status={game.status} 
+                          size="small"
+                        />
+                      </div>
+                    </TableCell>
+                    <TableCell className="text-center p-2">
+                      {game.completedAt ? (
+                        <Typography variant="small" color="secondary">
+                          {new Date(game.completedAt).toLocaleDateString()}
+                        </Typography>
+                      ) : (
+                        <Typography variant="small" color="secondary">
+                          -
+                        </Typography>
+                      )}
+                    </TableCell>
+                    <TableCell className="text-center p-2">
+                      <LoadingButton
+                        onClick={() => handleGameClick(game.id, game.title)}
+                        disabled={game.status === 'blocked'}
+                        size="small"
+                        className="text-xs"
+                      >
+                        {t('modules.detail.launch', 'Lancer')}
+                      </LoadingButton>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
+
+          {/* Mobile: stacked cards */}
+          <div className="block sm:hidden space-y-3">
+            {lesson.games.map((game) => (
+              <div key={game.id} className="bg-meko-blue-transparent-3 rounded-xl shadow-sm p-3">
+                <div className="flex items-start gap-3">
+                  <img src={game.coverUrl} alt={game.title} className="w-12 h-12 rounded-md object-cover flex-shrink-0" />
+                  <div className="flex-1 min-w-0">
+                    <Typography weight="bold" variant="small" className="truncate">
                       {game.title}
                     </Typography>
-                  </TableCell>
-                  <TableCell className="text-center p-2">
-                    <div className="flex justify-center">
-                      <GameStatus 
-                        status={game.status} 
-                        size="small"
-                      />
+                    <div className="mt-1 flex items-center gap-2 text-sm text-slate-600">
+                      <div className="flex items-center gap-2">
+                        <GameStatus status={game.status} size="small" />
+                        
+                      </div>
+                      <div className="ml-auto text-right text-xs text-slate-500">
+                        {game.completedAt ? new Date(game.completedAt).toLocaleDateString() : '-'}
+                      </div>
                     </div>
-                  </TableCell>
-                  <TableCell className="text-center p-2">
-                    {game.completedAt ? (
-                      <Typography variant="small" color="secondary">
-                        {new Date(game.completedAt).toLocaleDateString()}
-                      </Typography>
-                    ) : (
-                      <Typography variant="small" color="secondary">
-                        -
-                      </Typography>
-                    )}
-                  </TableCell>
-                  <TableCell className="text-center p-2">
-                    <LoadingButton
-                      onClick={() => handleGameClick(game.id, game.title)}
-                      disabled={game.status === 'blocked'}
-                      size="small"
-                      className="text-xs"
-                    >
-                      {t('modules.detail.launch', 'Lancer')}
-                    </LoadingButton>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+                  </div>
+                </div>
+
+                <div className="mt-3">
+                  <LoadingButton
+                    onClick={() => handleGameClick(game.id, game.title)}
+                    disabled={game.status === 'blocked'}
+                    className="w-full"
+                  >
+                    {t('modules.detail.launch', 'Lancer')}
+                  </LoadingButton>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       ))}
 

@@ -3,7 +3,7 @@ import { useGameSearch } from '@/app/game-search';
 import { useSession } from '@/services/session';
 import { Typography } from '@/components';
 import { useQueryState, parseAsString } from 'nuqs';
-import { LessonItem } from './module-detail-page';
+import LessonItem from '@/app/modules/components/lesson-item';
 import { useNavigate } from 'react-router';
 import { GameSimulationModal } from '@/app/game-sessions/components/game-simulation-modal';
 import { useTranslation } from 'react-i18next';

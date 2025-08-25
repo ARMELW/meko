@@ -53,7 +53,8 @@ export function InvoiceHistoryBlock() {
               <div className="text-center py-4 text-red-500">{t('subscription.invoiceHistory.error')}</div>
             ) : Array.isArray(invoices) && invoices.length > 0 ? (
               <div className="bg-meko-blue-dark rounded-lg flex flex-col gap-2">
-                <div className="overflow-x-auto">
+                {/* Desktop / tablet: table view */}
+                <div className="overflow-x-auto hidden sm:block">
                   <Table className="w-full">
                     <TableHeader>
                       <TableRow>
@@ -113,6 +114,56 @@ export function InvoiceHistoryBlock() {
                       ))}
                     </TableBody>
                   </Table>
+                </div>
+
+                {/* Mobile: stacked card view */}
+                <div className="flex flex-col gap-3 sm:hidden p-2">
+                  {invoices.map(inv => (
+                    <div key={inv.id} className="bg-meko-blue-darker rounded-lg p-3 flex flex-col gap-2">
+                      <div className="flex items-start justify-between gap-4">
+                        <div className="flex-1">
+                          <div className="flex items-center gap-2">
+                            <Typography color="primary" weight="bold" styleCase="uppercase">
+                              {t('subscription.invoiceHistory.offer')} {inv.planName}
+                            </Typography>
+                            {inv.isTrial && (
+                              <span className="ml-2 px-2 py-0.5 rounded-full text-xs bg-yellow-400 text-black font-bold">{t('subscription.invoiceHistory.trial')}</span>
+                            )}
+                            {inv.isRefund && (
+                              <span className="ml-2 px-2 py-0.5 rounded-full text-xs bg-red-500 text-white font-bold">{t('subscription.invoiceHistory.refunded')}</span>
+                            )}
+                            {!inv.isTrial && (<span className={intervalBadgeVariants({ interval: inv.interval })}>
+                              {inv.interval === 'year' ? t('subscription.invoiceHistory.yearly') : t('subscription.invoiceHistory.monthly')}
+                            </span>)}
+                          </div>
+                          <div className="text-sm text-gray-300 mt-1">
+                            <span>{new Date(inv.periodStart).toLocaleDateString('fr-FR', { day: '2-digit', month: 'short', year: 'numeric' })}</span>
+                            {inv.periodEnd && inv.periodEnd !== inv.periodStart ? (
+                              <span className="font-bold mx-2">—</span>
+                            ) : null}
+                            {inv.periodEnd && inv.periodEnd !== inv.periodStart ? (
+                              <span>{new Date(inv.periodEnd).toLocaleDateString('fr-FR', { day: '2-digit', month: 'short', year: 'numeric' })}</span>
+                            ) : null}
+                          </div>
+                        </div>
+                        <div className="text-right text-white font-mono">
+                          {inv.amount}&nbsp;{inv.currency.toUpperCase()}
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <a
+                          href={inv.invoiceUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="underline text-meko-blue-light-1 hover:text-orange-400"
+                          aria-label={t('subscription.invoiceHistory.downloadInvoice', { id: inv.id, defaultValue: `Télécharger la facture ${inv.id}` })}
+                        >
+                          {t('subscription.invoiceHistory.view')}
+                        </a>
+                        <span className="text-sm text-gray-300">{new Date(inv.periodStart).toLocaleDateString('fr-FR', { day: '2-digit', month: 'short', year: 'numeric' })}</span>
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </div>
             ) : (

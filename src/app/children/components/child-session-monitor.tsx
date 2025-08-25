@@ -84,7 +84,7 @@ export function ChildSessionMonitor({
       {/* En-tête avec informations de l'enfant */}
       <Card className="bg-meko-blue-darker">
         <CardContent className="p-6">
-          <div className="flex items-center gap-4">
+          <div className="flex sm:flex-row flex-col items-center gap-4">
             <UserAvatar
               avatarUrl={selectedChild.avatarUrl}
               size={80}

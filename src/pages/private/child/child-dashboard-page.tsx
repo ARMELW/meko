@@ -53,7 +53,7 @@ function ChildDashboardPage() {
 
                 <div className="max-w-6xl mx-auto">
                     <Card className="text-white px-8 py-4 flex mb-6" style={{ boxShadow: "rgb(255 255 255 / 19%) 0px -1px 1px" }}>
-                        <div className="flex items-center space-x-4 flex-1">
+                        <div className="flex flex-col sm:flex-row items-center space-x-4 flex-1">
                             <UserAvatar
                                 key={`child-avatar-${selectedChild.id}`}
                                 avatarUrl={selectedChild.avatarUrl}
@@ -61,8 +61,8 @@ function ChildDashboardPage() {
                                 username={selectedChild.firstname}
                                 alt={`Avatar de ${selectedChild.firstname}`}
                             />
-                            <div className="space-y-2 flex-1 px-4">
-                                <div className="w-full">
+                            <div className="space-y-2 sm:text-left text-center flex-1 px-4">
+                                <div className="w-full sm:text-left text-center">
                                     <Typography
                                         as="h1"
                                         className="text-2xl font-bold mb-2"

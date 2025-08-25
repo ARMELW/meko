@@ -5,7 +5,8 @@ import { ArrowLeft } from 'lucide-react';
 import { useModuleDetail } from '@/app/modules/hooks/use-module-detail';
 import { useSession as useChildrenSession } from '@/services/session/store';
 import { LoadingDisplay, ErrorDisplay } from '@/app/modules/components/display-states';
-import { LoadingButton } from "@/components/atoms/actions/loading-button";
+// LoadingButton moved to the LessonItem component
+import LessonItem from '@/app/modules/components/lesson-item';
 import { GameSimulationModal } from '@/app/game-sessions/components/game-simulation-modal';
 import { useState, useEffect } from 'react';
 import { SubscriptionRequiredGuard } from "@/routes/components/subscription-required-guard";
@@ -104,21 +105,21 @@ function ModuleDetailPage() {
           </button>
         </div>
 
-        <div className="py-6 mb-8 flex flex-col md:flex-row gap-6">
-          <div className="card-image-detail w-4/12">
+        <div className="py-6 mb-8 flex flex-col sm:flex-row gap-6">
+          <div className="card-image-detail w-full sm:w-4/12">
             <Card style={{ boxShadow: "rgb(255 255 255 / 19%) 0px -1px 1px" }}>
               <CardContent className="p-2">
                 <img
                   src={moduleDetail.coverUrl}
                   alt={moduleDetail.moduleName}
-                  className="w-full aspect-square object-cover rounded-xl"
+                  className="w-full  sm:aspect-square object-cover rounded-xl"
                 />
               </CardContent>
             </Card>
 
 
           </div>
-          <div className="w-8/12 space-y-3">
+          <div className="w-full sm:w-8/12 space-y-3">
             <Typography as="h3" shadow={null}>
               {moduleDetail.moduleName}
             </Typography>
@@ -133,9 +134,9 @@ function ModuleDetailPage() {
               {moduleDetail.moduleDescription || t('modules.detail.description', 'Aucune description disponible')}
             </p>
 
-            <div className="flex gap-4 mt-2 bg-[#000F4726] justify-center py-3">
-              <div className="flex-1 px-3 rounded text-center text-xs">
-                <Typography as="span" className="block text-[30px]" weight={"bold"} shadow={"sm"} align="center" styleCase={"uppercase"}>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-2 bg-[#000F4726] py-3">
+              <div className="px-3 rounded text-center text-xs flex flex-col items-center justify-center">
+                <Typography as="span" className="block text-[28px] sm:text-[30px]" weight={"bold"} shadow={"sm"} align="center" styleCase={"uppercase"}>
                   {moduleDetail.totalLessons}
                 </Typography>
                 <Typography
@@ -151,8 +152,8 @@ function ModuleDetailPage() {
                 </Typography>
               </div>
 
-              <div className="flex-1 px-3 text-center text-xs border-x border-x-[#7EDAFD]">
-                <Typography as="span" className="block text-[30px]" weight={"bold"} shadow={"sm"} align="center" styleCase={"uppercase"}>
+              <div className="px-3 text-center text-xs flex flex-col items-center justify-center border-t sm:border-t-0 sm:border-x border-x-[#7EDAFD]">
+                <Typography as="span" className="block text-[28px] sm:text-[30px]" weight={"bold"} shadow={"sm"} align="center" styleCase={"uppercase"}>
                   {moduleDetail.totalGames}
                 </Typography>
                 <Typography
@@ -168,8 +169,8 @@ function ModuleDetailPage() {
                 </Typography>
               </div>
 
-              <div className="flex-1 px-3 rounded text-center text-xs">
-                <Typography as="span" className="block text-[30px]" weight={"bold"} shadow={"sm"} align="center" styleCase={"uppercase"}>
+              <div className="px-3 rounded text-center text-xs flex flex-col items-center justify-center">
+                <Typography as="span" className="block text-[28px] sm:text-[30px]" weight={"bold"} shadow={"sm"} align="center" styleCase={"uppercase"}>
                   {moduleDetail.completedGames}
                 </Typography>
                 <Typography
@@ -199,7 +200,7 @@ function ModuleDetailPage() {
                 <div key={lesson.id} className="mb-10 sm:relative sm:pl-20">
                   {/* Mobile badge (inline) */}
                   <div className="sm:hidden mb-2 flex items-center gap-2">
-                    <div className={`px-3 py-1 rounded-full text-xs font-bold ${isLessonBlocked ? 'opacity-50 text-[#0040B6]' : 'bg-gradient-to-r from-[#FA4616] to-[#FF7F32] bg-clip-text text-transparent'}`}>
+                    <div className={`py-1 rounded-full text-md font-bold ${isLessonBlocked ? 'opacity-50 text-[#0040B6]' : 'bg-gradient-to-r from-[#FA4616] to-[#FF7F32] bg-clip-text text-transparent'}`}>
                       {t('modules.detail.lesson', 'Leçon')} {lesson.order}
                     </div>
                   </div>
@@ -284,116 +285,6 @@ function ModuleDetailPage() {
   );
 }
 
-type LessonItemProps = {
-  image: string;
-  title: string;
-  status: 'completed' | 'blocked' | 'in_progress' | 'available';
-  onGameClick?: () => void;
-  isFirstGame?: boolean;
-  moduleTitle?: string;
-  lessonOrder?: number;
-  isHighlighted?: boolean;
-};
 
-export function LessonItem({ image, title, status, onGameClick, isFirstGame = false, moduleTitle, lessonOrder, gameId, isHighlighted = false }: LessonItemProps & { gameId: string }) {
-  const { t } = useTranslation();
-
-  const statusColor = {
-    not_started: 'bg-[#000F4799] text-white',
-    completed: 'bg-[#00AF42] text-white',
-    blocked: 'bg-red-500 text-white',
-    available: 'bg-[#000F4799] text-white',
-    in_progress: 'bg-[#FF7F32] text-white'
-  };
-
-  const getStatusText = (status: 'completed' | 'blocked' | 'in_progress' | 'available') => {
-  // Correction : utilise les clés existantes dans modules.status.*
-    const statusKey =
-      status === 'completed'
-        ? 'modules.status.completed'
-        : status === 'blocked'
-        ? 'modules.status.blocked'
-        : status === 'in_progress'
-        ? 'modules.status.in_progress'
-        : status === 'available'
-        ? 'modules.status.not_started'
-        : 'modules.status.not_started';
-    return t(statusKey, status);
-  };
-
-  // Le premier jeu n'est jamais bloqué, même si le module n'est pas commencé
-  const isGameBlocked = isFirstGame ? false : (status === 'blocked');
-
-  return (
-    <Card
-      id={`game-${gameId}`}
-      style={{ boxShadow: "rgb(255 255 255 / 19%) 0px -1px 1px" }}
-      className={`transition-all duration-300 ${isHighlighted
-          ? 'highlight-game'
-          : ''
-        }`}
-    >
-      <CardContent className="p-2">
-        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
-          <img
-            src={image}
-            alt={title}
-            className={`w-full sm:w-[120px] h-[180px] sm:h-[120px] object-cover rounded-xl ${isGameBlocked ? 'grayscale opacity-50' : ''}`}
-          />
-
-          <div className="flex-1">
-            <h3 className={`font-bold text-sm uppercase ${isGameBlocked ? 'text-gray-400' : 'text-white'}`}>
-              {title}
-            </h3>
-            <span className={`inline-block ${statusColor[status]} px-2 py-0.5 rounded text-xs mt-1`}>
-              {getStatusText(status)}
-            </span>
-            <div className="flex flex-col mt-2">
-              <div className="flex flex-row">
-                <h3 className="text-meko-blue-light-3 text-sm">
-                  {t('modules.detail.moduleLabel', 'Module :')}
-                </h3>
-                {moduleTitle && (
-                  <Typography as="p" className="text-white px-2 text-sm">
-                    {moduleTitle}
-                  </Typography>
-                )}
-              </div>
-              <div className="flex flex-row">
-                <h3 className="text-meko-blue-light-3 text-sm">
-                  {t('modules.detail.lessonLabel', 'Leçon :')}
-                </h3>
-                {lessonOrder && (
-                  <Typography as="p" className="text-white px-2 text-sm">
-                    {lessonOrder}
-                  </Typography>
-                )}
-              </div>
-            </div>
-          </div>
-
-          <div className="w-full sm:w-auto mt-3 sm:mt-0">
-            <LoadingButton
-              onClick={onGameClick}
-              disabled={isGameBlocked}
-              className={`${isGameBlocked ? 'opacity-75 cursor-not-allowed relative' : ''} w-full sm:w-auto`}
-            >
-              {isGameBlocked && (
-                <img
-                  src="/assets/images/icons/lock.png"
-                  alt="Locked"
-                  className="absolute top-1 -right-4 w-12 h-12 z-10"
-                />
-              )}
-              <Typography as="span" styleCase={"uppercase"} shadow={"sm"} weight={"bold"}>
-                {t('modules.detail.launch', 'Lancer')}
-              </Typography>
-            </LoadingButton>
-          </div>
-        </div>
-      </CardContent>
-    </Card>
-  );
-}
 
 export { ModuleDetailPage };

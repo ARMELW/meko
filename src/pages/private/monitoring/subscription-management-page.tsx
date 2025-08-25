@@ -12,7 +12,7 @@ export function SubscriptionManagementPage() {
   } = useCurrentSubscription();
   return (
     <div className="min-h-screen p-2 sm:p-4">
-      <div className="px-28 mx-auto w-full">
+  <div className="max-w-6xl mx-auto w-full px-4 sm:px-6 lg:px-8">
         <div className="mb-4">
           <Typography as="h3" weight="bold" className="text-xl sm:text-3xl mb-2">
             {t('menu.childOptions.subscriptions')}
@@ -20,8 +20,8 @@ export function SubscriptionManagementPage() {
           <hr className="my-2 text-white" />
         </div>
 
-        <div className="w-full flex flex-col gap-6 md:flex-row md:gap-8">
-          <div className="flex-1">
+        <div className="w-full flex flex-col gap-6 md:flex-row md:gap-8 items-start">
+          <div className="w-full md:w-2/3">
             {isLoading && (
               <div className="text-center py-8">{t('common.loading', 'Chargement...')}</div>
             )}
@@ -32,12 +32,13 @@ export function SubscriptionManagementPage() {
               />
             )}
           </div>
-          <div className="flex-1">
-
+          <div className="w-full md:w-1/3">
             <PaymentMethodBlock />
           </div>
         </div>
-        <InvoiceHistoryBlock />
+        <div className="mt-6">
+          <InvoiceHistoryBlock />
+        </div>
       </div>
       
     </div>
