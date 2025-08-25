@@ -1,7 +1,7 @@
 import { Button } from '@/components/atoms/actions/button';
 import { MenuOption } from '@/components/atoms/actions/menu-option';
 import { Link, useNavigate, useLocation } from 'react-router';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSession } from '@/config/auth';
 import { useSession as useChildrenSession } from '@/services/session/store';
@@ -99,6 +99,11 @@ export function Header() {
         setMobileMenuOpen(!mobileMenuOpen);
     };
 
+    // Close mobile menu when route changes
+    useEffect(() => {
+        setMobileMenuOpen(false);
+    }, [location.pathname]);
+
     const handleGoToLastActivity = () => {
         if (lastActivityData?.data) {
             const moduleId = lastActivityData.data.module.id;
@@ -155,10 +160,10 @@ export function Header() {
                             </div>
                             <div className="flex items-center gap-2">
                                 <UserAvatar avatarUrl={displayImage || ''} className="border border-white rounded-full w-12 h-12 flex-shrink-0" size={50} username={displayName} alt={'Avatar'} />
-                                <svg 
-                                    className="w-4 h-4 text-white transition-transform duration-200 group-data-[state=open]:rotate-180" 
-                                    fill="none" 
-                                    stroke="currentColor" 
+                                <svg
+                                    className="w-4 h-4 text-white transition-transform duration-200 group-data-[state=open]:rotate-180"
+                                    fill="none"
+                                    stroke="currentColor"
                                     viewBox="0 0 24 24"
                                 >
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
@@ -252,75 +257,7 @@ export function Header() {
         );
     };
 
-    const renderMobileAuthOptions = () => {
-        if (isAuthenticated) {
-            return (
-                <div className="flex flex-col items-center gap-4">
-                    <img
-                        src={displayImage || ""}
-                        alt="Avatar"
-                        className="border-2 border-white rounded-full w-16 h-16 lg:w-20 lg:h-20"
-                        title={sessionChild ? `${sessionChild.firstname} ${sessionChild.lastname}` : displayName}
-                    />
-                    <Typography
-                        as="h3"
-                        weight="bold"
-                        color={"default"}
-                        className="text-center truncate max-w-xs"
-                    >
-                        {shortDisplayName}
-                    </Typography>
-
-                    <MenuOption
-                        onClick={() => {
-                            navigate('/profile/choose');
-                            setMobileMenuOpen(false);
-                        }}
-                        label={t('common.dashboard')}
-                    />
-
-                    <div className="bg-gray-700 my-2 w-full h-px" />
-
-                    <MenuOption
-                        onClick={() => {
-                            if (!isLoggingOut) {
-
-                                handleLogout();
-
-                                setMobileMenuOpen(false);
-                            }
-                        }}
-                        label={
-                            isLoggingOut ? t('auth.loggingOut') : t('auth.logout')
-                        }
-                    />
-                </div>
-            );
-        }
-
-        return (
-            <>
-                <MenuOption
-                    onClick={() => {
-                        navigate('/login');
-                        setMobileMenuOpen(false);
-                    }}
-                    label={t('auth.login')}
-                />
-                <Button
-                    variant={'primary'}
-                    size={'small'}
-                    className="w-full"
-                    onClick={() => {
-                        navigate('/register');
-                        setMobileMenuOpen(false);
-                    }}
-                >
-                    {t('common.trial')}
-                </Button>
-            </>
-        );
-    };
+    
     const renderChildrenOptions = () => {
         if (!sessionChild || !isAuthenticated) return null;
         return (
@@ -328,10 +265,10 @@ export function Header() {
                 <DropdownMenu.Trigger asChild>
                     <button className="flex items-center gap-2 ml-4 focus:outline-none cursor-pointer group">
                         <img src='/assets/images/icons/menu.png' alt="Enfants" className="w-6 h-6" />
-                        <svg 
-                            className="w-3 h-3 text-white transition-transform duration-200 group-data-[state=open]:rotate-180" 
-                            fill="none" 
-                            stroke="currentColor" 
+                        <svg
+                            className="w-3 h-3 text-white transition-transform duration-200 group-data-[state=open]:rotate-180"
+                            fill="none"
+                            stroke="currentColor"
                             viewBox="0 0 24 24"
                         >
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
@@ -456,30 +393,85 @@ export function Header() {
                 </div>
             </div>
 
-            <div className="md:hidden flex flex-row justify-between items-center px-4 py-3">
-                <Link to={(sessionChild && isAuthenticated) ? "/home" : "/"} className="flex items-center">
-                    <img
-                        src={(sessionChild && isAuthenticated) ? '/favicon.png' : '/small-logo.svg'}
-                        alt="Logo"
-                        className="w-auto h-7"
-                    />
-                </Link>
-                <button
-                    onClick={toggleMobileMenu}
-                    className="focus:outline-none text-white"
-                    aria-label="Menu principal"
-                >
-                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={mobileMenuOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"} />
-                    </svg>
-                </button>
-            </div>
+            <div className="md:hidden flex flex-row justify-between items-center py-3">
+                <div className='flex flex-row gap-2'>
+                    <Link to={(sessionChild && isAuthenticated) ? "/home" : "/"} className="flex items-center">
+                        <img
+                            src={(sessionChild && isAuthenticated) ? '/favicon.png' : '/small-logo.svg'}
+                            alt="Logo"
+                            className="w-auto h-7"
+                        />
 
-            {mobileMenuOpen && (
-                <div className="md:hidden top-14 right-0 left-0 z-50 absolute flex flex-col gap-4 shadow-lg px-4 py-5 border-white border-t meko-bg">
-                    {renderMobileAuthOptions()}
+                    </Link>
+                    {(sessionChild && isAuthenticated) && (
+                        <>
+                            {renderChildrenOptions()}
+                        </>
+                    )}
                 </div>
-            )}
+
+
+                {renderAuthOptions()}
+                <div className="md:hidden">
+                    <div className="flex justify-end px-4 -mt-2">
+                        <button
+                            aria-label={mobileMenuOpen ? 'Fermer le menu' : 'Ouvrir le menu'}
+                            onClick={toggleMobileMenu}
+                            className="p-2 rounded-md focus:outline-none"
+                        >
+                            {mobileMenuOpen ? (
+                                <svg className="w-6 h-6 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+                            ) : (
+                                <svg className="w-6 h-6 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" /></svg>
+                            )}
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+            {/* Mobile sliding menu panel */}
+            <div className="md:hidden">
+
+                {mobileMenuOpen && (
+                    <div className="fixed inset-0 z-50">
+                        <div className="absolute inset-0 bg-black/40" onClick={() => setMobileMenuOpen(false)} />
+                        <div className="absolute right-0 top-0 h-full w-11/12 max-w-xs bg-meko-blue-darker p-4 overflow-auto shadow-lg border-l border-meko-blue-transparent-1 transform transition-transform duration-200 ease-out">
+                            <div className="mb-3">
+                                <SearchInput className="w-full" autoFocus={true} onSearch={() => setMobileMenuOpen(false)} />
+                            </div>
+
+                            {isAuthenticated && (
+                                <div className="flex flex-col gap-3 mb-3">
+                                    {lastActivityData?.data && (
+                                        <button
+                                            onClick={() => {
+                                                // open last activity modal (preferred on mobile) and close menu
+                                                setIsLastActivityModalOpen(true);
+                                                setMobileMenuOpen(false);
+                                            }}
+                                            className="flex items-center gap-3 px-3 py-2 rounded bg-meko-blue-transparent-2 text-white w-full"
+                                        >
+                                            <LastActivityIcon />
+                                            <span>{t('common.lastActivity')}</span>
+                                        </button>
+                                    )}
+
+                                    <button
+                                        onClick={() => {
+                                            navigate('/child/dashboard');
+                                            setMobileMenuOpen(false);
+                                        }}
+                                        className="flex items-center gap-3 px-3 py-2 rounded bg-meko-blue-transparent-2 text-white w-full"
+                                    >
+                                        <StatisticIcon />
+                                        <span>{t('common.statistics')}</span>
+                                    </button>
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                )}
+            </div>
 
             <LastActivityModal
                 isOpen={isLastActivityModalOpen}

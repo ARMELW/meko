@@ -189,15 +189,23 @@ function ModuleDetailPage() {
           </div>
         </div>
 
-        <div className="relative border-l-8 border-[#08488b] ml-6">
+        <div className="relative sm:border-l-8 sm:border-[#08488b] sm:ml-6">
           {moduleDetail.lessons
             .filter(lesson => Array.isArray(lesson.games) && lesson.games.length > 0)
             .map((lesson, lessonIndex) => {
               const isLessonBlocked = lesson.games.every(game => game.status === 'blocked');
 
               return (
-                <div key={lesson.id} className="relative mb-10 pl-20">
-                  <div className={`absolute -left-12 w-24 top-0 ${isLessonBlocked ? 'text-[#0040B6]' : 'text-white'} font-bold text-sm z-10 bg-[#08488b]`}>
+                <div key={lesson.id} className="mb-10 sm:relative sm:pl-20">
+                  {/* Mobile badge (inline) */}
+                  <div className="sm:hidden mb-2 flex items-center gap-2">
+                    <div className={`px-3 py-1 rounded-full text-xs font-bold ${isLessonBlocked ? 'opacity-50 text-[#0040B6]' : 'bg-gradient-to-r from-[#FA4616] to-[#FF7F32] bg-clip-text text-transparent'}`}>
+                      {t('modules.detail.lesson', 'Leçon')} {lesson.order}
+                    </div>
+                  </div>
+
+                  {/* Desktop timeline badge */}
+                  <div className={`hidden sm:block sm:absolute sm:-left-12 sm:w-24 sm:top-0 ${isLessonBlocked ? 'text-[#0040B6]' : 'text-white'} font-bold text-sm z-10 bg-[#08488b]`}>
                     <div className="w-full relative px-2 py-1">
                       <div className={`absolute w-full top-[-6px] left-0 h-3 z-0 bg-[#08488b]`} style={{ transform: "skew(0deg, -5deg)" }}></div>
                       <div className="w-full relative z-10">
@@ -326,61 +334,62 @@ export function LessonItem({ image, title, status, onGameClick, isFirstGame = fa
         }`}
     >
       <CardContent className="p-2">
-        <div className="flex items-center gap-4 pe-3">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
           <img
             src={image}
             alt={title}
-            className={`w-[120px] h-[120px] object-cover rounded-xl ${isGameBlocked ? 'grayscale opacity-50' : ''
-              }`}
+            className={`w-full sm:w-[120px] h-[180px] sm:h-[120px] object-cover rounded-xl ${isGameBlocked ? 'grayscale opacity-50' : ''}`}
           />
+
           <div className="flex-1">
-            <h3 className={`font-bold text-sm uppercase ${isGameBlocked ? 'text-gray-400' : 'text-white'
-              }`}>
+            <h3 className={`font-bold text-sm uppercase ${isGameBlocked ? 'text-gray-400' : 'text-white'}`}>
               {title}
             </h3>
-            <span className={`inline-block ${statusColor[status]} px-2 py-0.5 rounded text-xs`}>
+            <span className={`inline-block ${statusColor[status]} px-2 py-0.5 rounded text-xs mt-1`}>
               {getStatusText(status)}
             </span>
-              <div className="flex flex-col  mt-2">
-                <div className="flex flex-row">
-                  <h3 className="text-meko-blue-light-3 text-sm">
-                    {t('modules.detail.moduleLabel', 'Module :')}
-                  </h3>
-                  {moduleTitle && (
-                    <Typography as="p" className="text-white px-2 text-sm">
-                      {moduleTitle}
-                    </Typography>
-                  )}
-                </div>
-                <div className="flex flex-row">
-                  <h3 className="text-meko-blue-light-3 text-sm">
-                    {t('modules.detail.lessonLabel', 'Leçon :')}
-                  </h3>
-                  {lessonOrder && (
-                    <Typography as="p" className="text-white px-2 text-sm">
-                      {lessonOrder}
-                    </Typography>
-                  )}
-                </div>
+            <div className="flex flex-col mt-2">
+              <div className="flex flex-row">
+                <h3 className="text-meko-blue-light-3 text-sm">
+                  {t('modules.detail.moduleLabel', 'Module :')}
+                </h3>
+                {moduleTitle && (
+                  <Typography as="p" className="text-white px-2 text-sm">
+                    {moduleTitle}
+                  </Typography>
+                )}
               </div>
+              <div className="flex flex-row">
+                <h3 className="text-meko-blue-light-3 text-sm">
+                  {t('modules.detail.lessonLabel', 'Leçon :')}
+                </h3>
+                {lessonOrder && (
+                  <Typography as="p" className="text-white px-2 text-sm">
+                    {lessonOrder}
+                  </Typography>
+                )}
+              </div>
+            </div>
           </div>
 
-          <LoadingButton
-            onClick={onGameClick}
-            disabled={isGameBlocked}
-            className={isGameBlocked ? 'opacity-75 cursor-not-allowed relative' : ''}
-          >
-            {isGameBlocked && (
-              <img
-                src="/assets/images/icons/lock.png"
-                alt="Locked"
-                className="absolute top-1 -right-4 w-12 h-12 z-10"
-              />
-            )}
-            <Typography as="span" styleCase={"uppercase"} shadow={"sm"} weight={"bold"}>
-              {t('modules.detail.launch', 'Lancer')}
-            </Typography>
-          </LoadingButton>
+          <div className="w-full sm:w-auto mt-3 sm:mt-0">
+            <LoadingButton
+              onClick={onGameClick}
+              disabled={isGameBlocked}
+              className={`${isGameBlocked ? 'opacity-75 cursor-not-allowed relative' : ''} w-full sm:w-auto`}
+            >
+              {isGameBlocked && (
+                <img
+                  src="/assets/images/icons/lock.png"
+                  alt="Locked"
+                  className="absolute top-1 -right-4 w-12 h-12 z-10"
+                />
+              )}
+              <Typography as="span" styleCase={"uppercase"} shadow={"sm"} weight={"bold"}>
+                {t('modules.detail.launch', 'Lancer')}
+              </Typography>
+            </LoadingButton>
+          </div>
         </div>
       </CardContent>
     </Card>

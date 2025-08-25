@@ -32,6 +32,7 @@ function ChildMonitoringPage() {
   const clearCurrentChild = useChildrenStore((state) => state.clearCurrentChild);
   const { switchCurrentChild } = useChildMonitoringSwitch();
   const [period, setPeriod] = useState<'7d' | '30d' | '6m'>('7d');
+  const [mobileChildrenModalOpen, setMobileChildrenModalOpen] = useState(false);
   const { data: activityStats, isLoading: isStatsLoading } = useChildActivityStats(currentChild?.id, period);
   const { data: modulesData, isLoading: isModulesLoading } = useModules(currentChild?.id || '');
   const { t } = useTranslation();
@@ -129,8 +130,9 @@ function ChildMonitoringPage() {
   return(
   <SubscriptionRequiredGuard>
   <div className="min-h-screen text-white p-4 md:p-8">
-    <div className="flex flex-col md:flex-row gap-6">
-      <aside className="w-20 md:w-32 flex flex-col items-center gap-4">
+  <div className="flex flex-col md:flex-row gap-6">
+  {/* Sidebar hidden on mobile; mobile UI uses a modal */}
+  <aside className="hidden md:flex w-20 md:w-32 flex-col items-center gap-4">
         <div className="child-item-wrapper flex flex-col items-center justify-center">
           {formatted.map((children: Children, index: number) => (
             <div key={`child-${children.id}`} className="mb-5 flex flex-col items-center justify-center">
@@ -182,6 +184,52 @@ function ChildMonitoringPage() {
       </aside>
 
       <main className="flex-1">
+        {/* Mobile: open children modal */}
+        <div className="md:hidden mb-4">
+          <button
+            onClick={() => setMobileChildrenModalOpen((v) => !v)}
+            className="w-full bg-meko-blue-transparent-2 text-white px-3 py-2 rounded flex items-center justify-between"
+            aria-label={t('monitoring.children.openList', 'Afficher la liste des enfants')}
+            aria-expanded={mobileChildrenModalOpen}
+          >
+            <span className="mr-2">{t('monitoring.children.openList', 'Enfants')}</span>
+            <svg
+              className={`w-4 h-4 text-white transition-transform duration-200 ${mobileChildrenModalOpen ? 'rotate-180' : ''}`}
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+              aria-hidden="true"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
+        </div>
+        {mobileChildrenModalOpen && (
+          <div className="fixed inset-0 z-50">
+            <div className="absolute inset-0 bg-black/50" onClick={() => setMobileChildrenModalOpen(false)} />
+            <div className="absolute bottom-0 left-0 right-0 bg-meko-blue-darker p-4 rounded-t-lg max-h-[70vh] overflow-auto">
+              <div className="mb-3 flex justify-between items-center">
+                <h3 className="font-bold">{t('monitoring.children.chooseChild', 'Choisir un enfant')}</h3>
+                <button onClick={() => setMobileChildrenModalOpen(false)} aria-label="Fermer" className="px-2 py-1">✕</button>
+              </div>
+              <div className="grid grid-cols-3 gap-3">
+                {formatted.map((children: Children, index: number) => (
+                  <button
+                    key={`mobile-child-${children.id}`}
+                    onClick={() => { handleChildSwitch(children); setMobileChildrenModalOpen(false); }}
+                    className="flex flex-col items-center text-center p-2"
+                  >
+                    <div className={`rounded-full overflow-hidden w-20 h-20 mb-2 ${children.id === currentChild?.id ? 'ring-2 ring-white' : ''}`}>
+                      <UserAvatar avatarUrl={children.avatarUrl} size={80} username={`${children.firstname} ${children.lastname}`} alt={`Avatar ${index + 1}`} />
+                    </div>
+                    <span className="text-sm truncate">{truncateText(children.firstname, 12)}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
         {!currentChild ? (
           <div className="text-center py-8">
             <Typography className="text-white" label={t('monitoring.children.selectMessage', "Message de sélection d'enfant")}> 
@@ -190,17 +238,18 @@ function ChildMonitoringPage() {
           </div>
         ) : (
           <>
-            <Card className="text-white px-8 py-4 flex" style={{ boxShadow: "rgb(255 255 255 / 19%) 0px -1px 1px" }}>
-              <div className="flex items-center space-x-4 flex-1">
+            <Card className="text-white flex flex-col sm:flex-row px-4 sm:px-8 py-4" style={{ boxShadow: "rgb(255 255 255 / 19%) 0px -1px 1px" }}>
+              <div className="flex flex-row sm:flex-row items-start sm:items-center gap-4">
                 <UserAvatar
                   key={`main-avatar-${currentChild.id}`}
                   avatarUrl={currentChild.avatarUrl}
-                  size={100}
+                  size={80}
                   username={currentChild.firstname}
                   alt={`Avatar de ${currentChild.firstname}`}
+                  className="w-16 h-16 sm:w-20 sm:h-20"
                 />
 
-                <div className="space-y-2 flex-1 px-4">
+                <div className="space-y-2 flex-1 px-0 sm:px-4">
                   <div className="w-full">
                     <Typography
                       as="span"
@@ -236,7 +285,7 @@ function ChildMonitoringPage() {
                 </div>
               </div>
 
-              <div className="flex items-center space-x-2">
+              <div className="flex items-center space-x-2 mt-3 sm:mt-0">
                 <EditChild
                   key={currentChild.id}
                   childToEdit={currentChild}

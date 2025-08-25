@@ -8,7 +8,7 @@ import { useGameSuggestions, Game } from '@/app/game-search';
 import { GameSuggestions } from '@/app/game-search/components/game-suggestions';
 import { useSession } from '@/services/session/store';
 
-export function SearchInput({ className = '' }: { className?: string }) {
+export function SearchInput({ className = '', autoFocus = false, onSearch, }: { className?: string; autoFocus?: boolean; onSearch?: (term: string) => void }) {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [search, setSearch] = useQueryState('search', parseAsString.withDefault(''));
@@ -66,6 +66,7 @@ export function SearchInput({ className = '' }: { className?: string }) {
     if (searchTerm.trim() === '') {
       navigate('/home', { replace: true });
       setSearch('');
+  if (onSearch) onSearch(searchTerm);
       return;
     }
 
@@ -81,8 +82,19 @@ export function SearchInput({ className = '' }: { className?: string }) {
     setTimeout(() => {
       setIsNavigating(false);
       setIsSearching(false);
+      if (onSearch) onSearch(searchTerm);
     }, 500);
   };
+
+  // Focus input when requested (mobile menu opens)
+  useEffect(() => {
+    if (autoFocus) {
+      // small timeout to ensure element is visible when called from parent
+      setTimeout(() => {
+        inputRef.current?.focus();
+      }, 80);
+    }
+  }, [autoFocus]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;

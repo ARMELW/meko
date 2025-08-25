@@ -6,7 +6,8 @@ export function LessonCard(props: ComponentProps<"div">) {
 		<div
 			{...props}
 			className={cn(
-				"w-full max-w-[920px] bg-meko-blue-transparent-1 hover:bg-meko-blue-transparent-3 px-5 flex items-center justify-stretch gap-5 rounded-2xl overflow-hidden",
+				// Mobile: stacked card (image on top), Desktop: horizontal layout
+				"w-full max-w-[920px] bg-meko-blue-transparent-1 hover:bg-meko-blue-transparent-3 px-4 py-3 flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-5 rounded-2xl overflow-hidden",
 				props?.className
 			)}
 		/>
@@ -15,8 +16,11 @@ export function LessonCard(props: ComponentProps<"div">) {
 
 export function LessonCardImage(props: ComponentProps<"img">) {
 	return (
-		<div className="max-w-[120px] w-full aspect-square rounded-xl overflow-hidden">
-			<img {...props} className={cn("", props?.className)} />
+		<div className="w-full sm:max-w-[120px] rounded-xl overflow-hidden">
+			{/* Mobile: wider rectangle, Desktop: square */}
+			<div className="w-full h-56 sm:h-auto sm:aspect-square overflow-hidden">
+				<img {...props} className={cn("object-cover w-full h-full", props?.className)} />
+			</div>
 		</div>
 	);
 }
@@ -30,7 +34,8 @@ export function LessonCardAction(props: ComponentProps<"div">) {
 		<div
 			{...props}
 			className={cn(
-				"flex justify-center items-center self-stretch",
+				// Full width action on mobile, auto width on desktop
+				"flex justify-center items-center self-stretch w-full sm:w-auto",
 				props?.className
 			)}
 		/>

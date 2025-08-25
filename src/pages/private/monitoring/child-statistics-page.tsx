@@ -66,7 +66,7 @@ export function ChildStatisticsPage() {
         </Card>
 
         {/* Statistiques principales */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
           <Card className="bg-[#000F4799] p-4">
             <Typography 
               as="span" 
@@ -81,7 +81,7 @@ export function ChildStatisticsPage() {
               as="span" 
               color="default" 
               weight="bold" 
-              className="block text-2xl mt-2"
+              className="block text-2xl sm:text-3xl mt-2"
             >
               12
             </Typography>
@@ -101,7 +101,7 @@ export function ChildStatisticsPage() {
               as="span" 
               color="default" 
               weight="bold" 
-              className="block text-2xl mt-2"
+              className="block text-2xl sm:text-3xl mt-2"
             >
               5
             </Typography>
@@ -121,7 +121,7 @@ export function ChildStatisticsPage() {
               as="span" 
               color="default" 
               weight="bold" 
-              className="block text-2xl mt-2"
+              className="block text-2xl sm:text-3xl mt-2"
             >
               8.5%
             </Typography>
@@ -141,7 +141,7 @@ export function ChildStatisticsPage() {
               as="span" 
               color="default" 
               weight="bold" 
-              className="block text-2xl mt-2"
+              className="block text-2xl sm:text-3xl mt-2"
             >
               32h 30mn
             </Typography>

@@ -1,7 +1,6 @@
 import { Card, CardContent, CardFooter } from '@/components';
 import { Typography } from '@/components';
 import { useTranslation } from 'react-i18next';
-import { truncateText } from '@/utils/text';
 
 type CardModuleProps = {
   image: string;
@@ -13,7 +12,6 @@ type CardModuleProps = {
 
 function CardModule({ image, title, status, progress, onClick }: CardModuleProps) {
   const { t } = useTranslation();
-  console.log('status', status)
   const statusColors: Record<CardModuleProps['status'], string> = {
     'not_started': 'bg-[#000F4799] text-white',
     'completed': 'bg-[#00AF42] text-white',
@@ -35,17 +33,18 @@ function CardModule({ image, title, status, progress, onClick }: CardModuleProps
               className="w-full h-36 sm:h-44 md:h-48 lg:h-52 object-cover rounded-xl transition-transform duration-200 hover:scale-105" 
             />
           </div>
-          <div className="card-title">
-            <Typography 
-              as="p" 
-              align="center" 
-              styleCase="uppercase" 
-              weight="bold" 
-              className="py-2 px-1 sm:py-4 sm:px-2 text-base sm:text-lg md:text-xl line-clamp-2" 
+          <div className="card-title w-full flex items-center justify-center min-h-[3.5rem] sm:min-h-[4.5rem]">
+            <Typography
+              as="p"
+              align="center"
+              styleCase="uppercase"
+              weight="bold"
+              className="px-1 sm:px-2 py-2 text-base sm:text-lg md:text-xl leading-tight break-words line-clamp-2 max-h-[2.8em]"
+              style={{ display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden', textOverflow: 'ellipsis', wordBreak: 'break-word' }}
               title={title}
-              label={title} 
+              label={title}
             >
-              {truncateText(title, 70)}
+              {title}
             </Typography>
           </div>
         </CardContent>

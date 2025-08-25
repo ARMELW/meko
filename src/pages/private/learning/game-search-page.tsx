@@ -70,7 +70,7 @@ export default function GameSearchPage() {
         <div className="min-h-screen p-4">
             <div className="max-w-4xl mx-auto">
                 <div className="mb-6">
-                    <Typography as="h3" weight="bold" className="text-3xl mb-2 uppercase">
+                    <Typography as="h3" weight="bold" className="text-2xl sm:text-3xl mb-2 uppercase">
                        {t('gameSearch.resultsFor', { search: searchParam, defaultValue: `Résultats pour "${searchParam}"` })}
                     </Typography>
                     <hr className="my-2 text-white" />
