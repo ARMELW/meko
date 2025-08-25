@@ -1,56 +1,133 @@
 stages:
   - build
+  - scan
   - deploy
  
 variables:
+  DOCKER_TLS_CERTDIR: ''
   IMAGE_TAG: "$CI_COMMIT_SHORT_SHA"
   REMOTE_DIR: "/home/project/meko-academy-front-office"
   DOCKER_REGISTRY: "$REGISTRY_HOST"
   IMAGE_NAME: "$IMAGE_NAME:$IMAGE_TAG"
+  REMOTE_TRIVY_DIR: /home/project/trivy
 
-build-image:
+before_script:
+  - apk add --no-cache openssh-client
+  - eval $(ssh-agent -s)
+  - mkdir -p ~/.ssh
+  - echo "$SSH_KEY" | tr -d '\r' > ~/.ssh/ssh_key
+  - chmod 600 ~/.ssh/ssh_key
+  - ssh-keyscan -H $SSH_IP >> ~/.ssh/known_hosts
+  - chmod 644 ~/.ssh/known_hosts
+  - echo "SSH connection setup"
+
+######################################################################
+# build
+######################################################################
+build:
   stage: build
   tags:
     - front
-    
-  variables:
-    DOCKER_HOST: unix:///var/run/docker.sock
-  before_script:
-    - mkdir -p /etc/docker/certs.d/$DOCKER_REGISTRY
-    - echo "$CERT_CA" > /etc/docker/certs.d/$DOCKER_REGISTRY/ca.crt
-    - echo "$REGISTRY_PASS" | docker login "$DOCKER_REGISTRY" -u "$REGISTRY_USER" --password-stdin
+
   script:
-    |
-     echo "Building Docker image:"" $IMAGE_NAME"
-     docker build -t "$IMAGE_NAME" . 
-     echo "📦 Pushing image to registry..."
-     docker push "$IMAGE_NAME"
+    - |
+      echo " Connecting to remote server to build image..."
+      ssh -o StrictHostKeyChecking=no -i ~/.ssh/ssh_key $SSH_USER@$SSH_IP <<EOF
+        set -e
+        cd "$REMOTE_DIR" || exit 1
+        echo " Pulling latest changes from repo & building "
+        git pull origin develop
+        docker build -t "$IMAGE_NAME" .
+      EOF
   only:
     - develop
 
+######################################################################
+# scan: test de sécurité
+######################################################################
+scan:
+  stage: scan
+  tags:
+    - front
+
+  script:
+    - |
+      echo "Connecting to remote server to scan..."
+      ssh -o StrictHostKeyChecking=no -i ~/.ssh/ssh_key $SSH_USER@$SSH_IP <<EOF
+        set -e
+        
+        cd /home/project/trivy || exit 1
+        rm -rf valeur.txt
+
+        pwd
+        echo $IMAGE_NAME > image.txt
+        bash ./scan_trivy_jq.sh < /dev/null
+
+        pwd
+        cat valeur.txt
+
+        echo "debut de condition"
+        nombre_vulnerable=\$(tr -cd '0-9' < valeur.txt)
+        nombre_vulnerable=\${nombre_vulnerable:-0}
+        if [ \$nombre_vulnerable -gt 0 ];then
+          echo "⚠️ Vulnerable detected, veuillez consulter dans l'artefact "
+          echo "il existe \$nombre_vulnerable vulnerables"
+          #exit 1
+        else
+          echo "No HIGH or CRITICAL vulnerabilities detected"
+          echo "$REGISTRY_PASS" | docker login $DOCKER_REGISTRY -u $REGISTRY_USER --password-stdin
+          echo " Pushing image to registry..."
+          docker push "$IMAGE_NAME"
+        fi
+        echo "fin de condition"
+
+      EOF
+    - mkdir -p scanrapport
+    - |
+        scp -o StrictHostKeyChecking=no -i ~/.ssh/ssh_key $SSH_USER@$SSH_IP:$REMOTE_TRIVY_DIR/rapport.txt rapport.txt 2>/dev/null || echo "Rapport introuvable, on continue..."
+        if [ -f 'rapport.txt' ];then
+          rapport=$(tr -d '\n' < rapport.txt)
+          echo "copier filtre sur le pipeline"
+          scp -o StrictHostKeyChecking=no -i ~/.ssh/ssh_key $SSH_USER@$SSH_IP:$REMOTE_TRIVY_DIR/filtre/filtre_$rapport scanrapport/
+          echo "Rapport copier avec succés"
+          #exit 1
+        else
+          echo "Rapport introuvable..."
+        fi
+
+  needs:
+   - build
+  only:
+   - develop
+  artifacts:
+    untracked: false
+    when: on_success
+    expire_in: 3 days
+    paths:
+      - scanrapport/
+
+######################################################################
+# déploiement Kubernetes
+######################################################################
 deploy-k8s:
   stage: deploy
   image: alpine:latest
   tags:
     - front
-  before_script:
-    - apk add --no-cache openssh-client
-    - eval $(ssh-agent -s)
-    - mkdir -p ~/.ssh
-    - echo "$SSH_KEY" | tr -d '\r' > ~/.ssh/ssh_key
-    - chmod 600 ~/.ssh/ssh_key
-    - ssh-keyscan -H $SSH_IP >> ~/.ssh/known_hosts
-    - chmod 644 ~/.ssh/known_hosts
+
   script:
     - |
       echo "🔐 Connecting to remote server to deploy..."
       ssh -o StrictHostKeyChecking=no -i ~/.ssh/ssh_key $SSH_USER@$SSH_IP <<EOF
         set -e
 
-        echo "$REGISTRY_PASS" | docker login $DOCKER_REGISTRY -u $REGISTRY_USER --password-stdin
-        cd "$REMOTE_DIR" || exit 1       
+        cd "$REMOTE_DIR" || exit 1
 
+        echo "Registry login... "
+        echo "$REGISTRY_PASS" | docker login $DOCKER_REGISTRY -u $REGISTRY_USER --password-stdin
+               
         echo "📄 Replacing image tag in deployment manifest..."
+        echo "$IMAGE_TAG"
         sed -i "s|image: .*|image: $IMAGE_NAME|" deploy.yml
         cat deploy.yml
         
@@ -58,8 +135,13 @@ deploy-k8s:
         microk8s kubectl apply -f deploy.yml
 
         echo "✅ Deployment successful."
-        docker images --format '{{.Repository}} {{.ID}}' |grep '^registry.meko.ac/meko-academy-front-office' | awk '{print $2}' | xargs -r docker rmi -f # effacement ciblé des images in'util generer par docker pour le repos meko-backend
-        docker buildx prune -f # effacement des caches
+
+        # Nettoyage
+        docker images --format '{{.Repository}} {{.ID}}' |grep '^registry.meko.ac/meko-academy-front-office' | awk '{print $2}' | xargs -r docker rmi -f
+        docker buildx prune -f
+
       EOF
+  needs:
+    - scan
   only: 
     - develop
