@@ -4,19 +4,20 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Button, Card, Typography } from "@/components";
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { useLocation, useNavigate } from "react-router";
+import { useLocation } from "react-router";
 import { ControlledTextInput } from "@/components/molecules/form/controlled-input";
 import { useTranslation } from "react-i18next";
 import { LoadingButton } from "@/components/atoms/actions/loading-button";
 import { handleSimpleApiError } from "@/utils/error-handler";
 import { toast } from "sonner";
 import { useSavedSessions } from '@/app/auth/hooks/use-saved-sessions';
+import { OtpLoginStep } from "@/components/otp-login-step";
 
 function LoginPage() {
-  const navigate = useNavigate();
   const location = useLocation();
   const { t } = useTranslation();
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [otpStepEmail, setOtpStepEmail] = useState<string | null>(null);
   const [showManualEntry, setShowManualEntry] = useState(false);
   const [quickLoginLoadingIndex, setQuickLoginLoadingIndex] = useState<number | null>(null);
   const { loading, initiateOtpLogin } = useOtpAuth();
@@ -51,16 +52,9 @@ function LoginPage() {
       await initiateOtpLogin({
         email: data.email,
       });
-
       saveSession(data.email);
-
       setIsSubmitted(true);
-      navigate("/verify-otp", {
-        state: {
-          email: data.email,
-          isSignUp: false
-        },
-      });
+      setOtpStepEmail(data.email);
     } catch (error) {
       handleSimpleApiError(error);
     }
@@ -72,12 +66,7 @@ function LoginPage() {
       await initiateOtpLogin({ email });
       saveSession(email);
       setIsSubmitted(true);
-      navigate("/verify-otp", {
-        state: {
-          email,
-          isSignUp: false
-        },
-      });
+      setOtpStepEmail(email);
     } catch (error) {
       handleSimpleApiError(error);
     } finally {
@@ -85,13 +74,14 @@ function LoginPage() {
     }
   };
 
+  if (otpStepEmail) {
+    return <OtpLoginStep email={otpStepEmail} />;
+  }
+
   return (
     <div className="flex flex-col justify-center items-center h-full p-4">
-
-
       <div className="flex flex-col justify-center items-center w-full max-w-md">
         <img src="/logo.svg" className="pb-10 w-32 sm:w-40" />
-
         {savedSessions.length > 0 && !showManualEntry && (
           <Card className="flex flex-col justify-center items-center p-4 sm:p-8 w-full mb-4">
             <div className="flex flex-col justify-center items-center my-4">
@@ -102,7 +92,6 @@ function LoginPage() {
                 {t('auth.selectRecent', 'Sélectionnez un compte récent')}
               </Typography>
             </div>
-
             <div className="flex flex-col gap-2 w-full">
               {savedSessions.map((session, index) => (
                 <div
@@ -131,7 +120,6 @@ function LoginPage() {
                 </div>
               ))}
             </div>
-
             <Button
               type="button"
               size={'small'}
@@ -143,7 +131,6 @@ function LoginPage() {
             </Button>
           </Card>
         )}
-
         {(savedSessions.length === 0 || showManualEntry) && (
           <div className="flex flex-row justify-center">
             {savedSessions.length > 0 && (
@@ -157,11 +144,9 @@ function LoginPage() {
             )}
           </div>
         )}
-
         {/* Formulaire manuel */}
         {(savedSessions.length === 0 || showManualEntry) && (
           <Card className="flex flex-col justify-center text-center items-center p-4 sm:p-8 w-full">
-
             <form onSubmit={handleSubmit(onSubmit)}>
               <div className="flex flex-col justify-center items-center">
                 <Typography as="p" className="text-sm sm:text-base text-center">
@@ -196,9 +181,7 @@ function LoginPage() {
             </form>
           </Card>
         )}
-
       </div>
-
     </div>
   );
 }

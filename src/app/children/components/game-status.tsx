@@ -19,23 +19,23 @@ const GameStatus: React.FC<GameStatusProps> = ({
       case 'completed':
         return {
           variant: 'completed',
-          label: t('modules.detail.gameStatus.completed', 'TERMINÉ')
+          label: t('modules.status.completed')
         };
       case 'blocked':
         return {
           variant: 'blocked',
-          label: t('modules.detail.gameStatus.blocked', 'BLOQUÉ')
+          label: t('modules.status.blocked')
         };
       case 'in_progress':
         return {
           variant: 'inProgress',
-          label: t('modules.detail.gameStatus.in_progress', 'EN COURS')
+          label: t('modules.status.in_progress')
         };
       case 'available':
       default:
         return {
           variant: 'toDiscover',
-          label: t('modules.detail.gameStatus.available', 'À DÉCOUVRIR')
+          label: t('modules.status.not_started')
         };
     }
   };

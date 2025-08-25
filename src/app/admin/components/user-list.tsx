@@ -11,29 +11,29 @@ export function AdminUserList({ onImpersonate }: { onImpersonate: (userId: strin
     return (
         <Card className="w-full max-w-3xl p-8 shadow-lg">
             <div className="flex items-center justify-between mb-6">
-                <Typography as="h2" className="text-2xl font-bold">{t('admin.userList.title', 'Utilisateurs administratifs')}</Typography>
+                <Typography as="h2" className="text-2xl font-bold">{t('admin.userList.title')}</Typography>
             </div>
             <div className="flex items-center gap-4 mb-6">
                 <Input
-                    placeholder={t('admin.userList.searchPlaceholder', 'Rechercher par email...')}
+                    placeholder={t('admin.userList.searchPlaceholder')}
                     value={search}
                     onChange={e => setSearch(e.target.value)}
                     className="w-full"
                 />
-                <Button size="small" variant="secondary" onClick={refetch}>{t('admin.userList.refresh', 'Rafraîchir')}</Button>
+                <Button size="small" variant="secondary" onClick={refetch}>{t('admin.userList.refresh')}</Button>
             </div>
             {error && <div className="text-red-500 mb-4">{error}</div>}
             {loading ? (
-                <div className="text-center py-8 text-gray-400">{t('admin.userList.loading', 'Chargement...')}</div>
+                <div className="text-center py-8 text-gray-400">{t('admin.userList.loading')}</div>
             ) : (
                 <>
                 <div className="overflow-x-auto rounded-lg  dark:bg-meko-blue-dark">
                     <Table>
                         <TableHeader>
                             <TableRow>
-                                <TableHead align="left">{t('admin.userList.email', 'Email')}</TableHead>
-                                <TableHead align="left">{t('admin.userList.role', 'Rôle')}</TableHead>
-                                <TableHead align="center">{t('admin.userList.action', 'Action')}</TableHead>
+                                <TableHead align="left">{t('admin.userList.email')}</TableHead>
+                                <TableHead align="left">{t('admin.userList.role')}</TableHead>
+                                <TableHead align="center">{t('admin.userList.action')}</TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
@@ -43,7 +43,7 @@ export function AdminUserList({ onImpersonate }: { onImpersonate: (userId: strin
                                     <TableCell align="left">{user.role || <span className="italic text-gray-400">—</span>}</TableCell>
                                     <TableCell align="center">
                                         <Button size="small" variant="primary" onClick={() => onImpersonate(user.id)}>
-                                            {t('admin.userList.impersonate', 'Impersonate')}
+                                            {t('admin.userList.impersonate')}
                                         </Button>
                                     </TableCell>
                                 </TableRow>
@@ -53,11 +53,11 @@ export function AdminUserList({ onImpersonate }: { onImpersonate: (userId: strin
                 </div>
                 <div className="flex justify-center items-center gap-4 mt-6">
                     <Button size="small" variant="secondary" disabled={!hasPrevPage} onClick={() => setPage(page - 1)}>
-                        {t('admin.userList.prev', 'Précédent')}
+                        {t('admin.userList.prev')}
                     </Button>
-                    <span className="text-sm text-gray-600 dark:text-gray-300">{t('admin.userList.page', 'Page')} {page}</span>
+                    <span className="text-sm text-gray-600 dark:text-gray-300">{t('admin.userList.page')} {page}</span>
                     <Button size="small" variant="secondary" disabled={!hasNextPage} onClick={() => setPage(page + 1)}>
-                        {t('admin.userList.next', 'Suivant')}
+                        {t('admin.userList.next')}
                     </Button>
                 </div>
                 </>

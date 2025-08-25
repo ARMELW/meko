@@ -1,4 +1,88 @@
 const en = {
+    modules: {
+         error: 'Error loading modules',
+         noModules: 'No modules available',
+         loading: 'Loading modules...',
+         detail: {
+            description: 'No description available',
+            lessons: 'Lessons',
+            games: 'Games',
+            completedCount: 'Completed',
+            lesson: 'Lesson',
+            launch: 'Launch',
+            notFound: 'Module not found',
+            lessonLabel: 'Lesson',
+            gameName: 'Game name',
+            status: 'Status',
+            completedAt: 'Completed at',
+            action: 'Action',
+            moduleLabel: 'Module:',
+            launchLabel: 'Launch',
+         },
+         pagination: {
+            prev: "Previous",
+            next: "Next",
+            page: "Page"
+         },
+         status: {
+            not_started: 'TO DISCOVER',
+            in_progress: 'IN PROGRESS',
+            completed: 'COMPLETED',
+            blocked: 'BLOCKED'
+         }
+    },
+   childSessionMonitor: {
+      noChildSelected: "No child selected",
+      noChildConnected: "No child connected",
+      childProfile: "Connected child profile",
+      dashboardTitle: "{{name}}'s dashboard",
+      finishedGames: "Number of games completed",
+      inProgressGames: "Number of games in progress",
+      progressPercent: "Progress percentage",
+      totalPlayTime: "Total play time",
+      noRecentActivity: "No recent activity",
+      detailedStats: "Detailed statistics"
+   },
+   admin: {
+      userList: {
+         title: "Admin users",
+         searchPlaceholder: "Search by email...",
+         refresh: "Refresh",
+         loading: "Loading...",
+         email: "Email",
+         role: "Role",
+         action: "Action",
+         impersonate: "Impersonate",
+         prev: "Previous",
+         page: "Page",
+         next: "Next"
+      }
+   },
+   childDashboard: {
+      noChildTitle: "No child selected",
+      noChildConnected: "No child connected",
+      title: "{{name}}'s dashboard",
+      greeting: "Hello {{name}}! 👋",
+      welcome: "Here is your personal dashboard",
+      finishedGames: "Number of games completed",
+      finishedGamesCount: "{{count}} games completed",
+      inProgressGames: "Number of games in progress",
+      inProgressGamesCount: "{{count}} games in progress",
+      progressPercent: "Overall progress percentage",
+      progress: "Progress",
+      progressPercentLabel: "{{percent}}% progress",
+      totalTimeSpent: "Total time spent playing",
+      totalTimeSpentShort: "Play time",
+      totalTimeSpentLabel: "Total time: {{time}}",
+      lastActivity: "Last activity",
+      noRecentActivityLabel: "No recent activity found",
+      noRecentActivity: "No recent activity",
+      encouragementLabel: "Encouragement to play",
+      encouragement: "Start your first game to begin!",
+      gamesDistribution: "Games distribution",
+      noProgressDataLabel: "No progress data",
+      noProgressData: "No progress data"
+   },
    ui: {
       title: "Design system"
    },
@@ -89,33 +173,33 @@ const en = {
          lastActivity: {
             none: "No recent activity"
          }
-         },
-         childStatistics: {
-            noChildTitle: "No child selected",
-            noChildDescription: "Please select a child to view statistics",
-            title: "{name}'s statistics",
-            subtitle: "Performance dashboard",
-            finishedGames: "Games completed",
-            inProgressGames: "Games in progress",
-            progress: "Progress",
-            timeSpent: "Time spent",
-            weeklyActivity: "Weekly activity",
-            chartComingSoon: "Chart coming soon",
-            progressRate: "Progress rate",
-            detailedStats: "Detailed statistics",
-            finishedModules: "Modules completed",
-            completedLessons: "Lessons completed",
-            successRate: "Success rate",
-            gamesPlayed: "Games played",
-            playTime: "Play time",
-            avgTimePerGame: "Average time per game",
-            sessionCount: "Session count",
-            avgSessionDuration: "Average session duration",
-            moduleProgress: "Module progress",
-            module1: "Module 1: Shapes",
-            module2: "Module 2: Colors",
-            module3: "Module 3: Numbers"
-         }
+      },
+      childStatistics: {
+         noChildTitle: "No child selected",
+         noChildDescription: "Please select a child to view statistics",
+         title: "{name}'s statistics",
+         subtitle: "Performance dashboard",
+         finishedGames: "Games completed",
+         inProgressGames: "Games in progress",
+         progress: "Progress",
+         timeSpent: "Time spent",
+         weeklyActivity: "Weekly activity",
+         chartComingSoon: "Chart coming soon",
+         progressRate: "Progress rate",
+         detailedStats: "Detailed statistics",
+         finishedModules: "Modules completed",
+         completedLessons: "Lessons completed",
+         successRate: "Success rate",
+         gamesPlayed: "Games played",
+         playTime: "Play time",
+         avgTimePerGame: "Average time per game",
+         sessionCount: "Session count",
+         avgSessionDuration: "Average session duration",
+         moduleProgress: "Module progress",
+         module1: "Module 1: Shapes",
+         module2: "Module 2: Colors",
+         module3: "Module 3: Numbers"
+      }
    },
    onboarding: {
       welcome: {
@@ -192,6 +276,9 @@ const en = {
       }
    },
    auth: {
+      otpTitle: "6-DIGIT CODE",
+      otpInstruction: "Please enter the code sent to your email address",
+      validate: "Validate",
       login: 'Login',
       success: 'A login code has been sent to your email address',
       createAccount: 'Create parent account',
@@ -234,39 +321,6 @@ const en = {
       annual: 'Annual',
       switchPlan: 'Switch Plan',
       buyPlan: "Buy the plan"
-   },
-   modules: {
-      loading: 'Loading modules...',
-      error: 'Error loading modules',
-      noModules: 'No modules available',
-      status: {
-         not_started: 'TO DISCOVER',
-         in_progress: 'IN PROGRESS',
-         completed: 'COMPLETED',
-         blocked: 'BLOCKED'
-      },
-      detail: {
-         notFound: 'Module not found',
-         totalLessons: 'Total lessons',
-         totalGames: 'Total games',
-         completedGames: 'Completed games',
-         progress: 'Progress',
-         overallProgress: 'Overall progress',
-         completed: 'completed',
-         completedAt: 'Completed on',
-         lesson: 'Lesson',
-         lessons: 'LESSONS',
-         games: 'GAMES',
-         completedCount: 'COMPLETED',
-         launch: 'LAUNCH',
-         description: 'Dive into the world of additions and through interactive lessons and fun games, learn to add with ease while taking on fun challenges. Ready to become a master of additions?',
-         gameStatus: {
-            completed: 'COMPLETED',
-            blocked: 'LOCKED',
-            available: 'TO DISCOVER',
-            in_progress: 'IN PROGRESS'
-         }
-      }
    },
    games: {
       search: {
@@ -328,6 +382,24 @@ const en = {
          standard: "Standard subscription - 3 children maximum",
          premium: "Premium subscription - Unlimited children"
       },
+      invoiceHistory: {
+         title: "Invoice history",
+         loading: "Loading invoices...",
+         error: "Error loading invoices.",
+         period: "Period",
+         paymentDate: "Payment date",
+         amount: "Amount",
+         invoice: "Invoice",
+         offer: "Offer:",
+         trial: "Trial",
+         refunded: "Refunded",
+         yearly: "Yearly",
+         monthly: "Monthly",
+         view: "View",
+         downloadInvoice: "Download invoice {{id}}",
+         noInvoices: "No invoices found.",
+         trialOngoing: "Your free trial is ongoing. No invoices yet."
+      }
    },
 };
 

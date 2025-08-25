@@ -77,9 +77,9 @@ function ModuleDetailPage() {
     }
   }, [location.state, moduleDetail]);
 
-  if (isLoading) return <LoadingDisplay message={t('modules.loading')} />;
-  if (error) return <ErrorDisplay message={t('modules.error')} />;
-  if (!moduleDetail) return <ErrorDisplay message={t('modules.detail.notFound')} />;
+  if (isLoading) return <LoadingDisplay message={t('modules.loading', 'Chargement du module...')} />;
+  if (error) return <ErrorDisplay message={t('modules.error', 'Erreur lors du chargement du module')} />;
+  if (!moduleDetail) return <ErrorDisplay message={t('modules.detail.notFound', 'Module introuvable')} />;
 
   const moduleStatus = moduleDetail.status;
 
@@ -130,7 +130,7 @@ function ModuleDetailPage() {
               {t(`modules.status.${moduleStatus}`)}
             </Typography>
             <p className="text-sm leading-relaxed">
-              {moduleDetail.moduleDescription || t('modules.detail.description')}
+              {moduleDetail.moduleDescription || t('modules.detail.description', 'Aucune description disponible')}
             </p>
 
             <div className="flex gap-4 mt-2 bg-[#000F4726] justify-center py-3">
@@ -147,7 +147,7 @@ function ModuleDetailPage() {
                   color="secondary"
                   className="text-[14px]"
                 >
-                  {t('modules.detail.lessons')}
+                  {t('modules.detail.lessons', 'Leçons')}
                 </Typography>
               </div>
 
@@ -164,7 +164,7 @@ function ModuleDetailPage() {
                   color="secondary"
                   className="text-[14px]"
                 >
-                  {t('modules.detail.games')}
+                  {t('modules.detail.games', 'Jeux')}
                 </Typography>
               </div>
 
@@ -181,7 +181,7 @@ function ModuleDetailPage() {
                   color="secondary"
                   className="text-[14px]"
                 >
-                  {t('modules.detail.completedCount')}
+                  {t('modules.detail.completedCount', 'Nombre de modules complétés')}
                 </Typography>
               </div>
             </div>
@@ -209,7 +209,7 @@ function ModuleDetailPage() {
                           weight="bold"
                           className={`text-[12px] block ${isLessonBlocked ? 'opacity-50 text-[#0040B6]' : 'bg-gradient-to-r from-[#FA4616] to-[#FF7F32] bg-clip-text !text-transparent'}`}
                         >
-                          {t('modules.detail.lesson')}
+                          {t('modules.detail.lesson', 'Leçon')}
                         </Typography>
                         <Typography
                           as="h1"
@@ -299,7 +299,18 @@ export function LessonItem({ image, title, status, onGameClick, isFirstGame = fa
   };
 
   const getStatusText = (status: 'completed' | 'blocked' | 'in_progress' | 'available') => {
-    return t(`modules.detail.gameStatus.${status}`) as string;
+  // Correction : utilise les clés existantes dans modules.status.*
+    const statusKey =
+      status === 'completed'
+        ? 'modules.status.completed'
+        : status === 'blocked'
+        ? 'modules.status.blocked'
+        : status === 'in_progress'
+        ? 'modules.status.in_progress'
+        : status === 'available'
+        ? 'modules.status.not_started'
+        : 'modules.status.not_started';
+    return t(statusKey, status);
   };
 
   // Le premier jeu n'est jamais bloqué, même si le module n'est pas commencé
@@ -367,7 +378,7 @@ export function LessonItem({ image, title, status, onGameClick, isFirstGame = fa
               />
             )}
             <Typography as="span" styleCase={"uppercase"} shadow={"sm"} weight={"bold"}>
-              {t('modules.detail.launch')}
+              {t('modules.detail.launch', 'Lancer')}
             </Typography>
           </LoadingButton>
         </div>

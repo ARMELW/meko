@@ -30,14 +30,14 @@ export function SubscriptionRequiredGuard({ children }: { children: React.ReactN
         <Card className="max-w-md w-full p-8 flex flex-col items-center gap-4 shadow-lg">
           <div className="text-meko-blue-light-1 text-5xl mb-2">🔒</div>
           <Typography as="h2" className="text-xl font-bold mb-2" align="center">
-            {t('subscription.guard.title', 'Accès réservé aux abonnés')}
+            {t('subscription.guard.title', 'Abonnement requis')}
           </Typography>
           <Typography as="p" className="text-meko-blue-light-1 mb-4" align="center">
-            {t('subscription.guard.message', 'Vous devez souscrire à une offre pour accéder à cette fonctionnalité.')}
+            {t('subscription.guard.message', 'Vous devez avoir un abonnement actif pour accéder à cette fonctionnalité.')}
           </Typography>
           <div className="flex gap-2 mt-2">
-            <Button variant="primary" size="small" onClick={() => navigate('/subscription')} aria-label={t('subscription.guard.cta', 'Aller à la souscription')}>
-              {t('subscription.guard.cta', 'Choisir une offre')}
+            <Button variant="primary" size="small" onClick={() => navigate('/subscription')} aria-label={t('subscription.guard.cta', 'Souscrire')}>
+              {t('subscription.guard.cta', 'Souscrire')}
             </Button>
             <Button variant='secondary' size="small" onClick={() => navigate(-1)} aria-label={t('subscription.guard.back', 'Retour')}>
               {t('subscription.guard.back', 'Retour')}
@@ -57,11 +57,11 @@ export function SubscriptionRequiredGuard({ children }: { children: React.ReactN
             {t('subscription.guard.expiredTitle', 'Abonnement expiré')}
           </Typography>
           <Typography as="p" className="text-meko-blue-light-1 mb-4" align="center">
-            {t('subscription.guard.expiredMessage', 'Votre abonnement a expiré. Veuillez renouveler pour continuer à profiter des fonctionnalités premium.')}
+            {t('subscription.guard.expiredMessage', 'Votre abonnement a expiré. Veuillez le renouveler pour continuer à utiliser cette fonctionnalité.')}
           </Typography>
           <div className="flex gap-2 mt-2">
-            <Button variant="primary" size="small" onClick={() => navigate('/subscription')} aria-label={t('subscription.guard.renew', 'Renouveler l\'abonnement')}>
-              {t('subscription.guard.renew', 'Renouveler l\'abonnement')}
+            <Button variant="primary" size="small" onClick={() => navigate('/subscription')} aria-label={t('subscription.guard.renew', 'Renouveler')}>
+              {t('subscription.guard.renew', 'Renouveler')}
             </Button>
             <Button variant="secondary" size="small" onClick={() => navigate(-1)} aria-label={t('subscription.guard.back', 'Retour')}>
               {t('subscription.guard.back', 'Retour')}

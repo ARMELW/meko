@@ -37,10 +37,10 @@ export function ChildSessionMonitor({
       not_started: '#a3a3a3'
     },
     labels: {
-      blocked: t('modules.status.blocked', 'Bloqué'),
-      completed: t('modules.status.completed', 'Terminé'),
-      in_progress: t('modules.status.in_progress', 'En cours'),
-      not_started: t('modules.status.not_started', 'Non commencé')
+      blocked: t('modules.status.blocked'),
+      completed: t('modules.status.completed'),
+      in_progress: t('modules.status.in_progress'),
+      not_started: t('modules.status.not_started')
     }
   }), [t]);
 
@@ -223,7 +223,7 @@ export function ChildSessionMonitor({
                 className="text-white text-center py-8"
                 label="Aucune activité récente"
               >
-                {t('monitoring.children.lastActivity.none', 'Aucune activité récente')}
+                {t('monitoring.children.lastActivity.none')}
               </Typography>
             )}
           </CardContent>

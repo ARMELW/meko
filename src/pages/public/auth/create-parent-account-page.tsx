@@ -1,5 +1,6 @@
 
 import { useOtpAuth, useCheckEmail } from "@/app/auth";
+import { OtpRegisterStep } from "@/components/otp-register-step";
 import { signUpSchema } from "@/app/auth/schema";
 import { SignUpFormData } from "@/app/auth/types";
 import { Label, Typography } from "@/components";
@@ -22,6 +23,7 @@ function CreateParentAccountPage() {
   const { t } = useTranslation();
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
+  const [otpStepData, setOtpStepData] = useState<SignUpFormData | null>(null);
   const { loading, initiateOtpLogin } = useOtpAuth();
   const { checkEmail, loading: checkingEmail } = useCheckEmail();
   const {
@@ -33,22 +35,14 @@ function CreateParentAccountPage() {
     mode: "onSubmit",
   });
   const onSubmit = useCallback(async (data: SignUpFormData) => {
-    // Éviter les soumissions multiples
     if (isProcessing || loading || checkingEmail) {
       return;
     }
-
     setIsProcessing(true);
-    
     try {
-      // Vérifier si l'email existe déjà
       const { exists } = await checkEmail({ email: data.email });
-      
       if (exists) {
-        // Email déjà utilisé, afficher un message et rediriger vers login
         toast.error(t('auth.errors.email.alreadyExists'));
-        
-        // Attendre un petit délai pour que l'utilisateur puisse voir le toast
         setTimeout(() => {
           navigate("/login", {
             state: {
@@ -59,38 +53,26 @@ function CreateParentAccountPage() {
         }, 1500);
         return;
       }
-
-      // Email disponible, procéder à la création du compte
-      await initiateOtpLogin({
-        email: data.email
-      });
-      
+      await initiateOtpLogin({ email: data.email });
+      setOtpStepData(data);
       setIsSubmitted(true);
-      
-      navigate("/verify-otp", {
-        state: {
-          email: data.email,
-          firstName: data.firstName,
-          lastName: data.lastName,
-          isSignUp: true
-        },
-      });
     } catch (error) {
       handleSimpleApiError(error);
     } finally {
       setIsProcessing(false);
     }
   }, [isProcessing, loading, checkingEmail, checkEmail, t, navigate, initiateOtpLogin]);
-  return <div className="flex flex-col justify-center items-center w-full h-screen">
 
+  if (otpStepData) {
+    return <OtpRegisterStep email={otpStepData.email} firstName={otpStepData.firstName} lastName={otpStepData.lastName} />;
+  }
+
+  return <div className="flex flex-col justify-center items-center w-full h-screen">
     <div>
       <form className="space-y-4 w-full" onSubmit={handleSubmit(onSubmit)}>
-
-
         <Typography as="h3" align={"center"}>
           {t('auth.createAccount')}
         </Typography>
-
         <Typography as="p" align={"left"}>
           {t('auth.provideInfo')}
         </Typography>
@@ -105,7 +87,7 @@ function CreateParentAccountPage() {
             <ControlledTextInput
               name="firstName"
               control={control}
-              placeholder="Nom"
+              placeholder={t('auth.firstName')}
               size="w-full"
               disabled={isSubmitted || isProcessing}
             />
@@ -119,7 +101,7 @@ function CreateParentAccountPage() {
             <ControlledTextInput
               name="lastName"
               control={control}
-              placeholder="Prénom"
+              placeholder={t('auth.lastName')}
               size="w-full"
               disabled={isSubmitted || isProcessing}
             />

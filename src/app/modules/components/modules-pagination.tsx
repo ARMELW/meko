@@ -28,7 +28,7 @@ export function ModulesPagination({
                 disabled={!hasPrevPage}
                 className="px-4 py-2 bg-meko-blue-transparent-1 text-white rounded disabled:opacity-50 disabled:cursor-not-allowed hover:bg-meko-blue-transparent-2 transition-colors"
             >
-                {t('modules.pagination.prev', 'Précédent')}
+                {t('modules.pagination.prev')}
             </button>
 
             <div className="flex items-center gap-2">
@@ -64,7 +64,7 @@ export function ModulesPagination({
                 disabled={!hasNextPage}
                 className="px-4 py-2 bg-meko-blue-transparent-1 text-white rounded disabled:opacity-50 disabled:cursor-not-allowed hover:bg-meko-blue-transparent-2 transition-colors"
             >
-                {t('modules.pagination.next', 'Suivant')}
+                {t('modules.pagination.next')}
             </button>
         </div>
     );

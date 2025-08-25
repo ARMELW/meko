@@ -30,15 +30,15 @@ function HomePage() {
   };
 
   if (isLoading) {
-    return <LoadingDisplay message={t('modules.loading')} />;
+  return <LoadingDisplay message={t('modules.loading', 'Chargement des modules...')} />;
   }
 
   if (error) {
-    return <ErrorDisplay message={t('modules.error')} />;
+  return <ErrorDisplay message={t('modules.error', 'Erreur lors du chargement des modules')} />;
   }
 
   if (!modulesData?.modules || modulesData.modules.length === 0) {
-    return <EmptyDisplay message={t('modules.noModules')} />;
+  return <EmptyDisplay message={t('modules.noModules', 'Aucun module disponible')} />;
   }
 
   return (

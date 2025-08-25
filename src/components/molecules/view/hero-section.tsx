@@ -40,7 +40,10 @@ export default function HeroSection() {
                                 : t('common.trial')  
                             }
                         </Button>
+
                     </div>
+
+                    <p className="py-2 text-slate-50">Essai gratuit de 7 jours. Annule en 1 clic.</p>
                 </div>
 
                 <div className="hidden md:flex justify-center mt-6 md:mt-0 w-full md:w-1/2 lg:w-auto">

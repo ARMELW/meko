@@ -46,7 +46,7 @@ const ModuleGamesDetail: React.FC<ModuleGamesDetailProps> = ({
     return (
       <div className="flex justify-center items-center py-4">
         <div className="w-6 h-6 border-2 border-meko-blue-light-1 border-t-transparent rounded-full animate-spin" />
-        <Typography className="ml-2">{t('modules.loading', 'Chargement...')}</Typography>
+  <Typography className="ml-2">{t('modules.error')}</Typography>
       </div>
     );
   }
@@ -54,7 +54,7 @@ const ModuleGamesDetail: React.FC<ModuleGamesDetailProps> = ({
   if (!lessons?.length) {
     return (
       <Typography color="secondary" className="text-center py-4">
-        {t('modules.noGames', 'Aucun jeu disponible')}
+  {t('modules.noModules')}
       </Typography>
     );
   }
@@ -73,7 +73,7 @@ const ModuleGamesDetail: React.FC<ModuleGamesDetailProps> = ({
                 <TableHead className="w-12 p-2"></TableHead>
                 <TableHead className="p-2">{t('modules.detail.gameName', 'Nom du jeu')}</TableHead>
                 <TableHead className="text-center p-2">{t('modules.detail.status', 'Statut')}</TableHead>
-                <TableHead className="text-center p-2">{t('modules.detail.completedAt', 'Date de completion')}</TableHead>
+                <TableHead className="text-center p-2">{t('modules.detail.completedAt', 'Terminé le')}</TableHead>
                 <TableHead className="text-center p-2">{t('modules.detail.action', 'Action')}</TableHead>
               </TableRow>
             </TableHeader>
@@ -118,7 +118,7 @@ const ModuleGamesDetail: React.FC<ModuleGamesDetailProps> = ({
                       size="small"
                       className="text-xs"
                     >
-                      {t('modules.detail.launch', 'LANCER')}
+                      {t('modules.detail.launch', 'Lancer')}
                     </LoadingButton>
                   </TableCell>
                 </TableRow>

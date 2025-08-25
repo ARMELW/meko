@@ -32,7 +32,6 @@ import ChangeSubscriptionPage from '@/pages/private/subscription/change-subscrip
 import { NotFoundPage } from "@/pages/public/auth/not-found-page";
 import { ProtectedLayout } from "./components/protected-layout";
 import { UiPage } from "@/pages/ui-page";
-import { VerifyOtpPage } from "@/pages/public/auth/verify-otp-page";
 import GameSearchPage from '@/pages/private/learning/game-search-page';
 import SubscriptionPage from "@/pages/private/subscription/subscription-page";
 import { CreateParentAccountPage } from "@/pages/public/auth/create-parent-account-page";
@@ -181,10 +180,6 @@ const publicRoutes: RouteObject[] = [
 			{
 				path: 'login',
 				element: <LoginPage />,
-			},
-			{
-				path: 'verify-otp',
-				element: <VerifyOtpPage />,
 			},
 			{
 				path: 'forgot-password',

@@ -18,7 +18,8 @@ export {
 } from './api/otp'
 
 export {
-    verifyOtp
+    verifyOtpLogin,
+    verifyOtpRegister
 } from './api/verify-otp'
 
 export {
@@ -28,10 +29,6 @@ export {
 export {
     useOtpAuth,
 } from './hooks/use-otp-auth'
-
-export {
-    useVerifyOtpAuth,
-} from './hooks/use-verify-otp-auth'
 
 export {
     useCheckEmail,
