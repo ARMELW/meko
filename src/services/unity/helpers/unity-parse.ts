@@ -23,6 +23,7 @@ export const parseUnityMessage = (message: string): ParsedUnityMessage | null =>
             }
             return result;
         }
+        console.log('message',message);
     }
     return {
         type: UnityMessageType.UNKNOWN,
