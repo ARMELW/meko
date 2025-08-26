@@ -62,7 +62,7 @@ scan:
 
         pwd
         echo $IMAGE_NAME > image.txt
-        bash ./scan_trivy_jq.sh < /dev/null
+        bash ./scan_trivy_jq_front.sh < /dev/null
 
         pwd
         cat valeur.txt
@@ -89,7 +89,7 @@ scan:
         if [ -f 'rapport.txt' ];then
           rapport=$(tr -d '\n' < rapport.txt)
           echo "copier filtre sur le pipeline"
-          scp -o StrictHostKeyChecking=no -i ~/.ssh/ssh_key $SSH_USER@$SSH_IP:$REMOTE_TRIVY_DIR/filtre/filtre_$rapport scanrapport/
+          scp -o StrictHostKeyChecking=no -i ~/.ssh/ssh_key $SSH_USER@$SSH_IP:$REMOTE_TRIVY_DIR/filtre_front/filtre_$rapport scanrapport/
           echo "Rapport copier avec succés"
           #exit 1
         else
