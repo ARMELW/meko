@@ -38,7 +38,7 @@ build:
         cd "$REMOTE_DIR" || exit 1
         echo " Pulling latest changes from repo & building "
         git pull origin develop
-        docker build --no-cahe -t "$IMAGE_NAME" .
+        docker build -t "$IMAGE_NAME" .
       EOF
   only:
     - develop
