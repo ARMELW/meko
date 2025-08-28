@@ -11,9 +11,9 @@ export interface ModuleGamesDetailProps {
   isLoading?: boolean;
 }
 
-const ModuleGamesDetail: React.FC<ModuleGamesDetailProps> = ({ 
-  lessons, 
-  isLoading 
+const ModuleGamesDetail: React.FC<ModuleGamesDetailProps> = ({
+  lessons,
+  isLoading
 }) => {
   const { t } = useTranslation();
   const [gameModalState, setGameModalState] = useState<{
@@ -46,7 +46,7 @@ const ModuleGamesDetail: React.FC<ModuleGamesDetailProps> = ({
     return (
       <div className="flex justify-center items-center py-4">
         <div className="w-6 h-6 border-2 border-meko-blue-light-1 border-t-transparent rounded-full animate-spin" />
-  <Typography className="ml-2">{t('modules.error')}</Typography>
+        <Typography className="ml-2">{t('modules.error')}</Typography>
       </div>
     );
   }
@@ -54,7 +54,7 @@ const ModuleGamesDetail: React.FC<ModuleGamesDetailProps> = ({
   if (!lessons?.length) {
     return (
       <Typography color="secondary" className="text-center py-4">
-  {t('modules.noModules')}
+        {t('modules.noModules')}
       </Typography>
     );
   }
@@ -66,7 +66,7 @@ const ModuleGamesDetail: React.FC<ModuleGamesDetailProps> = ({
           <Typography weight="bold" className="text-sm border-b border-meko-blue-light-1 pb-1 mb-2">
             {t('modules.detail.lessonLabel', 'Leçon')} {index + 1}
           </Typography>
-          
+
           {/* Desktop / tablet table */}
           <div className="hidden sm:block">
             <Table className="w-full">
@@ -96,8 +96,8 @@ const ModuleGamesDetail: React.FC<ModuleGamesDetailProps> = ({
                     </TableCell>
                     <TableCell className="text-center p-2">
                       <div className="flex justify-center">
-                        <GameStatus 
-                          status={game.status} 
+                        <GameStatus
+                          status={game.status}
                           size="small"
                         />
                       </div>
@@ -142,7 +142,7 @@ const ModuleGamesDetail: React.FC<ModuleGamesDetailProps> = ({
                     <div className="mt-1 flex items-center gap-2 text-sm text-slate-600">
                       <div className="flex items-center gap-2">
                         <GameStatus status={game.status} size="small" />
-                        
+
                       </div>
                       <div className="ml-auto text-right text-xs text-slate-500">
                         {game.completedAt ? new Date(game.completedAt).toLocaleDateString() : '-'}
@@ -166,13 +166,15 @@ const ModuleGamesDetail: React.FC<ModuleGamesDetailProps> = ({
         </div>
       ))}
 
-      {/* Modal de simulation de jeu */}
-      <GameSimulationModal
-        isOpen={gameModalState.isOpen}
-        onClose={handleCloseModal}
-        gameId={gameModalState.gameId}
-        gameTitle={gameModalState.gameTitle}
-      />
+      {gameModalState.gameId && (
+        <GameSimulationModal
+          isOpen={gameModalState.isOpen}
+          onClose={handleCloseModal}
+          gameId={gameModalState.gameId}
+          gameTitle={gameModalState.gameTitle}
+        />
+      )}
+
     </div>
   );
 };

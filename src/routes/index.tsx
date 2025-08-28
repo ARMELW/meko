@@ -37,7 +37,7 @@ import SubscriptionPage from "@/pages/private/subscription/subscription-page";
 import { CreateParentAccountPage } from "@/pages/public/auth/create-parent-account-page";
 
 import AdminUserListPage from '@/pages/private/admin/user-list';
-import GamePlay from "@/pages/public/game/game-play";
+import GamePlay from "@/app/game-sessions/components/unity/game-play";
 
 const privateRoutes: RouteObject[] = [
 	{
@@ -194,10 +194,6 @@ const publicRoutes: RouteObject[] = [
 			{
 				path: '/subscription',
 				element: <SubscriptionPage />,
-			},
-			{
-				path: '/play',
-				element: <GamePlay />,
 			}
 		],
 	},
