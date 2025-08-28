@@ -1,5 +1,10 @@
-import { ParsedUnityMessage } from "@/services/unity/helpers";
 
+type ParsedUnityMessage = {
+  type: string;
+  value?: string;
+  numericValue?: number;
+  timestamp?: number;
+}
 export default class EventBus<Events extends Record<string, unknown> = Record<string, unknown>> {
   private listeners: Map<keyof Events, Array<(payload: Events[keyof Events]) => void>> = new Map();
 
@@ -12,10 +17,10 @@ export default class EventBus<Events extends Record<string, unknown> = Record<st
     (targetListeners as Array<(payload: ParsedUnityMessage) => void>).push(listener);
   }
 
-  off<K extends keyof Events>(eventName: K, listener: (payload: ParsedUnityMessage  ) => void) {
+  off<K extends keyof Events>(eventName: K, listener: (payload: ParsedUnityMessage) => void) {
     const targetListeners = this.listeners.get(eventName);
     if (!targetListeners) return;
-    
+
     const typedListeners = targetListeners as Array<(payload: ParsedUnityMessage) => void>;
     const index = typedListeners.indexOf(listener);
     if (index >= 0) {

@@ -155,7 +155,6 @@ export function GameSimulationModal({
       }
 
       setGameState({
-        questions: [],
         currentQuestionIndex: 0,
         score: 0,
         totalAttempts: 0,
@@ -202,7 +201,6 @@ export function GameSimulationModal({
     });
     setCurrentSession(null);
     setGameState({
-      questions: [],
       currentQuestionIndex: 0,
       score: 0,
       totalAttempts: 0,
@@ -216,16 +214,17 @@ export function GameSimulationModal({
     }
   };
 
+
   const handleClose = () => {
     onClose();
   };
-console.log('Game:', gameId);
   if (isLoading) {
     return <div className="flex items-center justify-center h-full">Chargement du jeu…</div>;
   }
   if (error || !game) {
     return <div className="text-red-500 text-center mt-8">Erreur lors du chargement du jeu.</div>;
   }
+
   if (!isOpen) return null;
 
 

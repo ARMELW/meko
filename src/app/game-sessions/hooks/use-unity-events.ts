@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import {
   registerUnityGlobalHandler,
   unregisterUnityGlobalHandler,
-} from '@/services/unity/unity-event-bridge';
+} from '@/services/unity/events/unity-event-bridge';
 
 export function useUnityEvents(handler: (msg: string) => void, enabled = true) {
   useEffect(() => {

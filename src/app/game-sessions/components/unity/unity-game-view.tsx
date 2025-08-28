@@ -1,6 +1,7 @@
 import React from 'react';
 import { unityGameRegistry } from '@/services/unity/registry';
 import { UnityGameConfig, useUnityLoader } from '@/app/game-sessions/hooks/use-unity-loader';
+
 import { useUnityGameHandler } from '@/app/game-sessions/hooks/use-unity-game-handler';
 import { useUnityEvents } from '@/app/game-sessions/hooks/use-unity-events';
 import { Unity } from 'react-unity-webgl';
@@ -17,10 +18,11 @@ interface UnityGameViewProps {
     game: keyof typeof unityGameRegistry | string;
     config: UnityGameConfig;
     info: UnityGameInfo
+    start: () => Promise<void>;
 
 }
 
-export const UnityGameView: React.FC<UnityGameViewProps> = ({ game, config, info }) => {
+export const UnityGameView: React.FC<UnityGameViewProps> = ({ game, config, info, start }) => {
     const {
         unityProvider,
         isLoaded,
@@ -37,12 +39,19 @@ export const UnityGameView: React.FC<UnityGameViewProps> = ({ game, config, info
         },
         isLoaded
     );
+
+    React.useEffect(() => {
+        if (isLoaded) {
+            start();
+        }
+    }, [isLoaded]);
+   
     const isValidGame = game in unityGameRegistry;
     return (
         <div className={`unity-game-modal z-50 flex items-center justify-center bg-black bg-opacity-40 transition-all`}>
             <div className={`dark:bg-meko-blue-dark rounded-xl shadow-2xl flex w-[900px] h-[540px] overflow-hidden relative`}>
 
-                <UnityAside
+                <UnityAside 
                     title={info.title}
                     coverUrl={info.coverUrl}
                     game={game}
@@ -58,7 +67,7 @@ export const UnityGameView: React.FC<UnityGameViewProps> = ({ game, config, info
                                     className="absolute top-4 right-4 z-10 p-2 rounded-full bg-white/80 dark:bg-meko-blue-dark/80 hover:bg-meko-blue-light-2 hover:scale-105 transition-all border border-meko-blue-light-2 dark:border-meko-blue-light-1 shadow"
                                     title="Plein écran"
                                 >
-                                    <FullscreenIcon className='text-meko-blue-flat' />
+                                  <FullscreenIcon className='text-meko-blue-flat'/>
                                 </button>
                             )}
                             <Unity unityProvider={unityProvider as UnityProvider} style={{ width: '100%', height: '100%', boxShadow: '0 2px 8px #0001' }} />
