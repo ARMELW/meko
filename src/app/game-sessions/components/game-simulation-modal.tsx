@@ -233,7 +233,6 @@ export function GameSimulationModal({
       isOpen={isOpen}
       onClose={handleClose}
       game={game}
-      gameState={gameState}
       displayedTime={displayedTime}
       handleStartSession={handleStartSession}
       handleCompleteSession={handleCompleteSession}

@@ -48,13 +48,12 @@ export const UnityGameView: React.FC<UnityGameViewProps> = ({ game, config, info
    
     const isValidGame = game in unityGameRegistry;
     return (
-        <div className={`unity-game-modal z-50 flex items-center justify-center bg-black bg-opacity-40 transition-all`}>
+        <div className={`unity-game-modal z-50 flex items-center justify-center bg-meko-blue-flat bg-opacity-40 transition-all`}>
             <div className={`dark:bg-meko-blue-dark rounded-xl shadow-2xl flex w-[900px] h-[540px] overflow-hidden relative`}>
 
                 <UnityAside 
                     title={info.title}
                     coverUrl={info.coverUrl}
-                    game={game}
                     isValidGame={isValidGame}
                 />
                 <main className="flex-1 flex items-center justify-center  relative bg-meko-blue-light-2 dark:bg-meko-blue-dark">
@@ -70,9 +69,12 @@ export const UnityGameView: React.FC<UnityGameViewProps> = ({ game, config, info
                                   <FullscreenIcon className='text-meko-blue-flat'/>
                                 </button>
                             )}
+
                             <Unity unityProvider={unityProvider as UnityProvider} style={{ width: '100%', height: '100%', boxShadow: '0 2px 8px #0001' }} />
                         </>
-                    ) : null}
+                    ) : (
+                        <div className="text-red-600 font-semibold">Le jeu <b>{game}</b> n'existe pas ou n'est pas disponible.</div>
+                    )}
                 </main>
             </div>
         </div>
