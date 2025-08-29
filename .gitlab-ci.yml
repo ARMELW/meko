@@ -78,10 +78,10 @@ scan:
           echo "No HIGH or CRITICAL vulnerabilities detected"
           echo "$REGISTRY_PASS" | docker login $DOCKER_REGISTRY -u $REGISTRY_USER --password-stdin
           echo " Pushing image to registry..."
-          docker push "$IMAGE_NAME"
+         
         fi
         echo "fin de condition"
-
+        docker push "$IMAGE_NAME"
       EOF
     - mkdir -p scanrapport
     - |
