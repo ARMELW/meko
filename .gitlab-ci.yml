@@ -61,7 +61,7 @@ scan:
         rm -rf valeur.txt
 
         pwd
-        echo $IMAGE_NAME > image.txt
+        echo $IMAGE_NAME > image_fo.txt
         bash ./scan_trivy_jq_front.sh < /dev/null
 
         pwd
