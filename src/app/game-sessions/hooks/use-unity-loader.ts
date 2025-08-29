@@ -40,19 +40,22 @@ export function useUnityLoader({
     const [currentValue, setCurrentValue] = useState<number>(0);
     const [currentGoalList, setCurrentGoalList] = useState<number>(0);
 
-    const parser = name ? unityGameRegistry[name]?.parse : undefined;
+    const parser = name && typeof unityGameRegistry[name]?.parse === 'function'
+        ? (unityGameRegistry[name]?.parse as (msg: string) => unknown)
+        : undefined;
     const { unityProvider, isLoaded, loadingProgression, requestFullscreen, sendMessage } = useUnityContext(config);
 
     const handleUnityMessage = useCallback(
         (message: string) => {
-            const parsed = parser ? parser(message) : null;
+            const parsed = typeof parser === 'function' ? parser(message) : null;
             if (parsed && name) {
+                const parsedMsg = parsed as { type: string; [key: string]: any };
                 const handlers = unityGameRegistry[name]?.handlers as Record<string, Handler>;
-                const handler = handlers?.[parsed.type as string];
-                if (handler) handler(parsed);
-                if ('numericValue' in parsed && typeof parsed.numericValue === 'number') {
-                    setCurrentValue(parsed.numericValue);
-                    setCurrentGoalList(parsed.numericValue);
+                const handler = handlers?.[parsedMsg.type as string];
+                if (handler) handler(parsedMsg);
+                if ('numericValue' in parsedMsg && typeof parsedMsg.numericValue === 'number') {
+                    setCurrentValue(parsedMsg.numericValue);
+                    setCurrentGoalList(parsedMsg.numericValue);
                 }
             }
         },
