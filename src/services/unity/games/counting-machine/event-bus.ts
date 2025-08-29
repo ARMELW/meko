@@ -1,5 +1,5 @@
 
-import EventBus from '../../events/event-bus';
+import { createGameEventBus } from '../../events/create-game-event-bus';
 import { CountingMachineMessageType, CountingMachineParsedMessage } from './types';
 
-export const countingMachineEventBus = new EventBus<Record<CountingMachineMessageType, CountingMachineParsedMessage>>();
+export const countingMachineEventBus = createGameEventBus<CountingMachineMessageType, CountingMachineParsedMessage>();

@@ -15,5 +15,5 @@ export interface CountingMachineParsedMessage {
   type: CountingMachineMessageType;
   value?: string;
   numericValue?: number;
-  timestamp?: number;
+  timestamp: number;
 }

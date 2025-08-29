@@ -34,7 +34,7 @@ export const UnityGameView: React.FC<UnityGameViewProps> = ({ game, config, info
 
     useUnityEvents(
         (msg: string) => {
-            const parsed = parseUnityMessage ? parseUnityMessage(msg) : null;
+            const parsed = typeof parseUnityMessage === 'function' ? parseUnityMessage(msg) : null;
             if (parsed && typeof handleUnityMessage === 'function') handleUnityMessage(parsed);
         },
         isLoaded
