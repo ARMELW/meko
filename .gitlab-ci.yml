@@ -93,7 +93,7 @@ scan:
           echo "Rapport copier avec succés"
           #exit 1
         else
-          echo "Rapport introuvable..."
+          echo "Rapport introuvable ..."
         fi
 
   needs:
