@@ -193,7 +193,7 @@ const publicRoutes: RouteObject[] = [
 			{
 				path: '/subscription',
 				element: <SubscriptionPage />,
-			},
+			}
 		],
 	},
 ];

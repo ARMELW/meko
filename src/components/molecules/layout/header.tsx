@@ -95,7 +95,7 @@ export function Header() {
         : session?.user?.name || 'User';
     const displayImage = sessionChild ? sessionChild.avatarUrl : session?.user?.image;
 
-    
+
 
     // Close mobile menu when route changes
     useEffect(() => {
@@ -253,7 +253,7 @@ export function Header() {
                         {t('common.trial')}
                     </Button>
                 </div>
-                
+
             </>
         );
     };
@@ -418,42 +418,42 @@ export function Header() {
             {/* Mobile sliding menu panel */}
             <div className="md:hidden">
 
-                    <div className='flex flex-col items-center'>
-                        {isAuthenticated && (
+                <div className='flex flex-col items-center'>
+                    {isAuthenticated && (
                         <div className="mb-3">
                             <SearchInput className="w-full" autoFocus={true} onSearch={() => setMobileMenuOpen(false)} />
                         </div>
-                        )}
+                    )}
 
-                        {isAuthenticated && (
-                            <div className="flex flex-col gap-3 mb-3">
-                                {lastActivityData?.data && (
-                                    <button
-                                        onClick={() => {
-                                            // open last activity modal (preferred on mobile) and close menu
-                                            setIsLastActivityModalOpen(true);
-                                            setMobileMenuOpen(false);
-                                        }}
-                                        className="flex items-center gap-3 px-3 rounded text-white"
-                                    >
-                                        <LastActivityIcon />
-                                        <span>{t('common.lastActivity')}</span>
-                                    </button>
-                                )}
-
+                    {isAuthenticated && (
+                        <div className="flex flex-col gap-3 mb-3">
+                            {lastActivityData?.data && (
                                 <button
                                     onClick={() => {
-                                        navigate('/child/dashboard');
+                                        // open last activity modal (preferred on mobile) and close menu
+                                        setIsLastActivityModalOpen(true);
                                         setMobileMenuOpen(false);
                                     }}
-                                    className="flex items-center gap-3 px-3 py-2 rounded text-white"
+                                    className="flex items-center gap-3 px-3 rounded text-white"
                                 >
-                                    <StatisticIcon />
-                                    <span>{t('common.statistics')}</span>
+                                    <LastActivityIcon />
+                                    <span>{t('common.lastActivity')}</span>
                                 </button>
-                            </div>
-                        )}
-                    </div>
+                            )}
+
+                            <button
+                                onClick={() => {
+                                    navigate('/child/dashboard');
+                                    setMobileMenuOpen(false);
+                                }}
+                                className="flex items-center gap-3 px-3 py-2 rounded text-white"
+                            >
+                                <StatisticIcon />
+                                <span>{t('common.statistics')}</span>
+                            </button>
+                        </div>
+                    )}
+                </div>
             </div>
 
             <LastActivityModal
@@ -462,12 +462,15 @@ export function Header() {
                 onRelaunch={handleRelaunchGame}
                 lastActivity={lastActivityData?.data || null}
             />
-            <GameSimulationModal
-                isOpen={gameModalState.isOpen}
-                onClose={handleCloseGameModal}
-                gameId={gameModalState.gameId}
-                gameTitle={gameModalState.gameTitle}
-            />
+            {gameModalState.gameId && (
+                <GameSimulationModal
+                    isOpen={gameModalState.isOpen}
+                    onClose={handleCloseGameModal}
+                    gameId={gameModalState.gameId}
+                    gameTitle={gameModalState.gameTitle}
+                />
+            )}
+
         </div>
     );
 }

@@ -271,14 +271,15 @@ function ModuleDetailPage() {
               );
             })}
         </div>
-
-        <GameSimulationModal
-          isOpen={gameModalState.isOpen}
-          onClose={handleCloseModal}
-          gameId={gameModalState.gameId}
-          gameTitle={gameModalState.gameTitle}
-          moduleId={moduleId}
-        />
+        {gameModalState.gameId && (
+          <GameSimulationModal
+            isOpen={gameModalState.isOpen}
+            onClose={handleCloseModal}
+            gameId={gameModalState.gameId}
+            gameTitle={gameModalState.gameTitle}
+            moduleId={moduleId}
+          />
+        )}
       </div>
 
     </SubscriptionRequiredGuard>

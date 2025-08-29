@@ -71,7 +71,7 @@ export default function GameSearchPage() {
             <div className="max-w-4xl mx-auto">
                 <div className="mb-6">
                     <Typography as="h3" weight="bold" className="text-2xl sm:text-3xl mb-2 uppercase">
-                       {t('gameSearch.resultsFor', { search: searchParam, defaultValue: `Résultats pour "${searchParam}"` })}
+                        {t('gameSearch.resultsFor', { search: searchParam, defaultValue: `Résultats pour "${searchParam}"` })}
                     </Typography>
                     <hr className="my-2 text-white" />
                 </div>
@@ -81,50 +81,50 @@ export default function GameSearchPage() {
                     {error && <Typography color="error">{t('gameSearch.error', 'Erreur lors du chargement')}</Typography>}
                     {data?.games?.length === 0 && <Typography>{t('gameSearch.noGames', 'Aucun jeu trouvé')}</Typography>}
                     {data?.games?.map((game) => (
-                        <LessonItem 
-                            key={game.id} 
+                        <LessonItem
+                            key={game.id}
                             gameId={game.id}
-                            title={game.title} 
-                            image={game.coverUrl} 
-                            status={game.status} 
+                            title={game.title}
+                            image={game.coverUrl}
+                            status={game.status}
                             moduleTitle={game.moduleTitle}
                             lessonOrder={game.lessonOrder}
-                            onGameClick={() => handleGameClick(game.id, game.title, game.moduleId)} 
+                            onGameClick={() => handleGameClick(game.id, game.title, game.moduleId)}
                         />
                     ))}
                 </div>
 
                 {data?.pagination && data.pagination.totalPages > 1 && (
-                  <footer className="flex justify-center items-center gap-4 p-4">
-                      <button
-                          className="px-4 py-2 bg-meko-blue-light-1 text-white rounded disabled:opacity-50"
-                          onClick={handlePrev}
-                          disabled={page === 1}
-                      >
-                          {t('gameSearch.prev', 'Précédent')}
-                      </button>
-                      <span className="text-white">
-                        {t('gameSearch.page', { page: data.pagination.page, total: data.pagination.totalPages, defaultValue: `Page ${data.pagination.page} / ${data.pagination.totalPages}` })}
-                      </span>
-                      <button
-                          className="px-4 py-2 bg-meko-blue-light-1 text-white rounded disabled:opacity-50"
-                          onClick={handleNext}
-                          disabled={!data?.pagination?.hasNext}
-                      >
-                          {t('gameSearch.next', 'Suivant')}
-                      </button>
-                  </footer>
+                    <footer className="flex justify-center items-center gap-4 p-4">
+                        <button
+                            className="px-4 py-2 bg-meko-blue-light-1 text-white rounded disabled:opacity-50"
+                            onClick={handlePrev}
+                            disabled={page === 1}
+                        >
+                            {t('gameSearch.prev', 'Précédent')}
+                        </button>
+                        <span className="text-white">
+                            {t('gameSearch.page', { page: data.pagination.page, total: data.pagination.totalPages, defaultValue: `Page ${data.pagination.page} / ${data.pagination.totalPages}` })}
+                        </span>
+                        <button
+                            className="px-4 py-2 bg-meko-blue-light-1 text-white rounded disabled:opacity-50"
+                            onClick={handleNext}
+                            disabled={!data?.pagination?.hasNext}
+                        >
+                            {t('gameSearch.next', 'Suivant')}
+                        </button>
+                    </footer>
                 )}
             </div>
 
             {/* Modal de simulation de jeu */}
-            <GameSimulationModal
+            {gameModalState.gameId && <GameSimulationModal
                 isOpen={gameModalState.isOpen}
                 onClose={handleCloseModal}
                 gameId={gameModalState.gameId}
                 gameTitle={gameModalState.gameTitle}
                 moduleId={gameModalState.moduleId}
-            />
+            />}
         </div>
 
     );
