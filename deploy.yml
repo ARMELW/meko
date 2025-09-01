@@ -63,3 +63,4 @@ spec:
             name: meko-fo-service
             port:
               number: 4173
+  
