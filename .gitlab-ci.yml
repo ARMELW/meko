@@ -61,7 +61,7 @@ scan:
         rm -rf valeur.txt
 
         pwd
-        echo $IMAGE_NAME > image.txt
+        echo $IMAGE_NAME > image_fo.txt
         bash ./scan_trivy_jq_front.sh < /dev/null
 
         pwd
@@ -78,10 +78,10 @@ scan:
           echo "No HIGH or CRITICAL vulnerabilities detected"
           echo "$REGISTRY_PASS" | docker login $DOCKER_REGISTRY -u $REGISTRY_USER --password-stdin
           echo " Pushing image to registry..."
-          docker push "$IMAGE_NAME"
+         
         fi
         echo "fin de condition"
-
+        docker push "$IMAGE_NAME"
       EOF
     - mkdir -p scanrapport
     - |
@@ -93,7 +93,7 @@ scan:
           echo "Rapport copier avec succés"
           #exit 1
         else
-          echo "Rapport introuvable..."
+          echo "Rapport introuvable ..."
         fi
 
   needs:
@@ -146,3 +146,4 @@ deploy-k8s:
     - scan
   only: 
     - develop
+
