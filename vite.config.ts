@@ -22,6 +22,7 @@ export default defineConfig({
 		allowedHosts: ['dev.meko.ac'],
 	},
 	preview: {
+		port: 4173,
 		allowedHosts: ['dev.meko.ac'],
 	},
 });
