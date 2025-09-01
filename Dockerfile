@@ -26,8 +26,8 @@ COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/package*.json ./
 
-# Exposer le port (Vite preview utilise 4173 par défaut, sauf si tu configures)
-EXPOSE 4173
+# Exposer le port (Vite preview utilise 5173 par défaut, sauf si tu configures)
+EXPOSE 5173
 
 # Lancer en mode preview (production)
 CMD ["npm", "run", "preview", "--", "--host", "0.0.0.0"]
