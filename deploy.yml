@@ -18,13 +18,6 @@ spec:
           imagePullPolicy: Always
           ports:
             - containerPort: 5173
-          resources:
-            requests:
-              cpu: "50m"
-              memory: "64Mi"
-            limits:
-              cpu: "200m"
-              memory: "512Mi"
       imagePullSecrets:
         - name: nexus-registry-secret  # Même secret que pour le backend
 ---
