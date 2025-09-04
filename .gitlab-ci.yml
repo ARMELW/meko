@@ -130,15 +130,14 @@ deploy-k8s:
         echo "📄 Replacing image tag in deployment manifest..."
         echo "$IMAGE_TAG"
         #sed -i "s|image: .*|image: $IMAGE_NAME|" deploy.yml
-
-        cat deploy.yml
         
         echo "🚀 Deploying updated front..."
         #microk8s kubectl apply -f deploy.yml
         sed "s|\(image: registry.meko.ac/frontoffice-meko:\).*|\1$IMAGE_TAG|" deploy.yml | microk8s kubectl apply -f -
 
         echo "✅ Deployment successful."
-
+        cat deploy.yml
+        
         # Nettoyage
         docker images --format '{{.Repository}} {{.ID}}' |grep '^registry.meko.ac/meko-academy-front-office' | awk '{print $2}' | xargs -r docker rmi -f
         docker buildx prune -f
