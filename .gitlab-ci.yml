@@ -133,7 +133,7 @@ deploy-k8s:
         
         echo "🚀 Deploying updated front..."
         #microk8s kubectl apply -f deploy.yml
-        sed "s|\(image: registry.meko.ac/frontoffice-meko:\).*|\1$IMAGE_TAG|" deploy.yml | microk8s kubectl apply -f -
+        sed "s|\(image: registry.meko.ac/frontoffice-meko:\).*|\1$IMAGE_TAG|" deploy.yml | tee /tmp/deploy_tmp.yml | microk8s kubectl apply -f -
 
         echo "✅ Deployment successful."
         cat deploy.yml
