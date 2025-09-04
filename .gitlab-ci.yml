@@ -36,7 +36,6 @@ build:
       ssh -o StrictHostKeyChecking=no -i ~/.ssh/ssh_key $SSH_USER@$SSH_IP <<EOF
         set -e
         cd "$REMOTE_DIR" || exit 1
-        git status
         echo " Pulling latest changes from repo & building "
         git pull origin develop
         docker build -t "$IMAGE_NAME" .
