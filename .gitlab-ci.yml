@@ -36,6 +36,7 @@ build:
       ssh -o StrictHostKeyChecking=no -i ~/.ssh/ssh_key $SSH_USER@$SSH_IP <<EOF
         set -e
         cd "$REMOTE_DIR" || exit 1
+        git status
         echo " Pulling latest changes from repo & building "
         git pull origin develop
         docker build -t "$IMAGE_NAME" .
@@ -127,14 +128,12 @@ deploy-k8s:
         echo "Registry login... "
         echo "$REGISTRY_PASS" | docker login $DOCKER_REGISTRY -u $REGISTRY_USER --password-stdin
                
-        echo "📄 Replacing image tag in deployment manifest..."
+        echo "🚀 Replacing image tag and deploying updated front..."
         echo "$IMAGE_TAG"
-        #sed -i "s|image: .*|image: $IMAGE_NAME|" deploy.yml
-        
-        echo "🚀 Deploying updated front..."
-        #microk8s kubectl apply -f deploy.yml
+
         sed "s|image: .*|image: $IMAGE_NAME|" deploy.yml | tee /tmp/meko-academy-front-office.yml | microk8s kubectl apply -f -
         cat /tmp/meko-academy-front-office.yml
+        
         echo "✅ Deployment successful."
         
         # Nettoyage
