@@ -1,0 +1,389 @@
+{
+    "gameTitle": "La Machine à Codes Magique",
+    "concept": "Valeur positionnelle des nombres à 4 chiffres",
+    "timeline": [
+        {
+            "stepId": 0,
+            "phase": "accroche",
+            "narrativeText": "*Whoooosh !* Une étrange vapeur dorée s'échappe de l'atelier... Tu pousses la lourde porte et là, devant toi, une machine extraordinaire ronronne doucement ! Quatre cylindres colorés s'alignent majestueusement, chacun orné de symboles mystérieux qui bougent lentement... 0, 1, 2... Les chiffres défilent comme par magie ! Un grand écran scintille au centre, affichant : **0000**. *'Psst ! Approche-toi, petit mécanicien !'* murmure une voix chaleureuse. *'Cette machine recèle des secrets incroyables. Chaque code que tu découvriras ouvrira un compartiment rempli de merveilles ! Es-tu prêt pour l'aventure ?'*",
+            "interactionType": "click",
+            "action": {
+                "type": "click_element",
+                "target": "Bouton 'Je suis prêt pour l'aventure !'",
+                "expectedValue": null
+            },
+            "visualElements": {
+                "elementsToShow": [
+                    "Atelier mystérieux",
+                    "Machine dorée",
+                    "Vapeur scintillante",
+                    "Écran affichant 0000"
+                ],
+                "animations": [
+                    "Vapeur qui s'échappe",
+                    "Chiffres qui défilent doucement",
+                    "Effet scintillement"
+                ],
+                "stateChanges": "Transition de l'extérieur vers l'atelier"
+            },
+            "pausePoint": true,
+            "learningObjective": "Créer l'immersion et l'envie d'explorer"
+        },
+        {
+            "stepId": 1,
+            "phase": "découverte",
+            "narrativeText": "Commençons par réveiller cette belle endormie ! Tu vois ce petit rouleau bleu à droite ? C'est le rouleau des unités, le plus rapide de tous ! Clique sur le bouton [+] sous le rouleau bleu pour voir ce qui arrive.",
+            "interactionType": "click",
+            "action": {
+                "type": "click_element",
+                "target": "Bouton [+] du rouleau bleu (unités)",
+                "expectedValue": null,
+                "choices": null
+            },
+            "feedback": {
+                "success": "Click, click ! À chaque pression, le chiffre change : 1... 2... 3... L'écran affiche maintenant 0001 !",
+                "error": "Essaie de cliquer sur le petit bouton [+] sous le rouleau bleu !",
+                "hint": "Regarde le petit rouleau bleu tout à droite, son bouton [+] scintille !"
+            },
+            "visualElements": {
+                "elementsToShow": [
+                    "Machine dorée",
+                    "4 rouleaux colorés",
+                    "Écran 0000",
+                    "Boutons +/- sous chaque rouleau"
+                ],
+                "animations": [
+                    "Rouleau bleu tourne",
+                    "Chiffre change sur l'écran",
+                    "Étincelles bleues"
+                ],
+                "stateChanges": "Écran passe de 0000 à 0001, puis 0002, etc."
+            },
+            "pausePoint": true,
+            "learningObjective": "Découvrir que le rouleau des unités contrôle le dernier chiffre"
+        },
+        {
+            "stepId": 2,
+            "phase": "découverte",
+            "narrativeText": "Incroyable ! Tu viens de découvrir que le rouleau bleu contrôle le dernier chiffre ! Mais que se passe-t-il après 9 ? Continue à cliquer sur [+] jusqu'à dépasser 9 !",
+            "interactionType": "click",
+            "action": {
+                "type": "click_element",
+                "target": "Bouton [+] du rouleau bleu jusqu'à 9, puis au-delà",
+                "expectedValue": "10",
+                "choices": null
+            },
+            "feedback": {
+                "success": "Ding ! Le rouleau fait un tour complet, revient à 0, et... Surprise ! Le rouleau vert bouge d'un cran ! L'écran affiche 0010.",
+                "error": "Continue à cliquer, il faut dépasser 9 !",
+                "hint": "N'aie pas peur, clique encore après 9 !"
+            },
+            "visualElements": {
+                "elementsToShow": [
+                    "Rouleau bleu revient à 0",
+                    "Rouleau vert bouge à 1",
+                    "Écran affiche 0010"
+                ],
+                "animations": [
+                    "Report automatique",
+                    "Étincelles vertes",
+                    "Animation de liaison entre rouleaux"
+                ],
+                "stateChanges": "Découverte du système de report : 9→0 + 1 dizaine"
+            },
+            "pausePoint": true,
+            "learningObjective": "Comprendre le mécanisme de report (10 unités = 1 dizaine)"
+        },
+        {
+            "stepId": 3,
+            "phase": "construction_pattern",
+            "narrativeText": "Tu as découvert le premier secret ! Quand le petit rouleau fait un tour complet, il donne un petit coup de coude au rouleau suivant. D'après toi, que va-t-il se passer si on fait tourner le rouleau vert 5 fois ?",
+            "interactionType": "choice",
+            "action": {
+                "type": "multiple_choice",
+                "target": "Question prédictive",
+                "expectedValue": "Le nombre va augmenter de 50",
+                "choices": [
+                    "Le nombre va augmenter de 5",
+                    "Le nombre va augmenter de 50",
+                    "Rien ne va se passer"
+                ]
+            },
+            "feedback": {
+                "success": "Excellente prédiction ! Voyons si tu as raison...",
+                "error": "Hmm, réfléchis bien... le rouleau vert est plus gros que le bleu !",
+                "hint": "Le rouleau vert semble plus important que le petit bleu..."
+            },
+            "visualElements": {
+                "elementsToShow": [
+                    "Question avec 3 choix",
+                    "Rouleau vert surligné"
+                ],
+                "animations": [
+                    "Surbrillance du rouleau vert",
+                    "Boutons de choix interactifs"
+                ],
+                "stateChanges": "Interface de choix multiple apparaît"
+            },
+            "pausePoint": true,
+            "learningObjective": "Développer l'intuition sur la valeur des dizaines"
+        },
+        {
+            "stepId": 4,
+            "phase": "construction_pattern",
+            "narrativeText": "Explorons maintenant ce beau rouleau vert, le maître des dizaines ! Clique 5 fois sur [+] sous le rouleau vert et observe bien ce qui se passe.",
+            "interactionType": "click",
+            "action": {
+                "type": "click_element",
+                "target": "Bouton [+] du rouleau vert, exactement 5 fois",
+                "expectedValue": "5",
+                "choices": null
+            },
+            "feedback": {
+                "success": "Regardez-moi ça ! L'écran se transforme progressivement : 0010 → 0020 → 0030 → 0040 → 0050. Chaque clic du rouleau vert ajoute exactement 10 au total !",
+                "error": "N'oublie pas de cliquer exactement 5 fois !",
+                "hint": "Compte tes clics : 1, 2, 3, 4, 5 !"
+            },
+            "visualElements": {
+                "elementsToShow": [
+                    "Rouleau vert en action",
+                    "Écran changeant par bonds de 10"
+                ],
+                "animations": [
+                    "Animation du rouleau vert",
+                    "Nombres qui changent",
+                    "Effet +10 visible"
+                ],
+                "stateChanges": "Démonstration claire que 1 clic vert = +10"
+            },
+            "pausePoint": true,
+            "learningObjective": "Comprendre que chaque rouleau a un pouvoir différent (×10 pour les dizaines)"
+        },
+        {
+            "stepId": 5,
+            "phase": "construction_pattern",
+            "narrativeText": "C'est comme si chaque cran valait 10 unités du petit rouleau bleu ! Maintenant, fais tourner le rouleau orange (centaines) 3 fois. Que va-t-il se passer selon toi ?",
+            "interactionType": "click",
+            "action": {
+                "type": "click_element",
+                "target": "Bouton [+] du rouleau orange, 3 fois",
+                "expectedValue": "3",
+                "choices": null
+            },
+            "feedback": {
+                "success": "Fantastique ! 0050 → 0150 → 0250 → 0350. Tu commences à voir le pattern ? Chaque rouleau a un pouvoir différent !",
+                "error": "Clique 3 fois sur le bouton [+] du rouleau orange !",
+                "hint": "Le rouleau orange, celui du milieu-gauche !"
+            },
+            "visualElements": {
+                "elementsToShow": [
+                    "Rouleau orange actif",
+                    "Progression par centaines"
+                ],
+                "animations": [
+                    "Rotation rouleau orange",
+                    "Bonds de +100",
+                    "Pattern émergent"
+                ],
+                "stateChanges": "Révélation du pattern : chaque rouleau = puissance de 10"
+            },
+            "pausePoint": true,
+            "learningObjective": "Généraliser le pattern : unités (+1), dizaines (+10), centaines (+100)"
+        },
+        {
+            "stepId": 6,
+            "phase": "extension_système",
+            "narrativeText": "Le rouleau rouge est le plus gros... à ton avis, de combien va augmenter le nombre si tu le fais tourner d'un cran ? Fais ta prédiction puis teste !",
+            "interactionType": "choice",
+            "action": {
+                "type": "multiple_choice",
+                "target": "Prédiction pour le rouleau rouge",
+                "expectedValue": "+1000",
+                "choices": [
+                    "+10",
+                    "+100",
+                    "+1000",
+                    "+10000"
+                ]
+            },
+            "feedback": {
+                "success": "Excellente logique ! Testons maintenant...",
+                "error": "Réfléchis au pattern : bleu +1, vert +10, orange +100... et rouge ?",
+                "hint": "Suis la logique : ×1, ×10, ×100... ×?"
+            },
+            "visualElements": {
+                "elementsToShow": [
+                    "Choix de prédiction",
+                    "Rouleau rouge surligné",
+                    "Pattern visible"
+                ],
+                "animations": [
+                    "Surbrillance progression",
+                    "Question interactive"
+                ],
+                "stateChanges": "Interface de prédiction pour les milliers"
+            },
+            "pausePoint": true,
+            "learningObjective": "Prédire la valeur des milliers par logique"
+        },
+        {
+            "stepId": 7,
+            "phase": "extension_système",
+            "narrativeText": "Maintenant, clique UNE SEULE fois sur le rouleau rouge et découvre son incroyable pouvoir !",
+            "interactionType": "click",
+            "action": {
+                "type": "click_element",
+                "target": "Bouton [+] du rouleau rouge, 1 fois seulement",
+                "expectedValue": "1",
+                "choices": null
+            },
+            "feedback": {
+                "success": "WAHOU ! Un seul petit clic et hop, de 0350 à 1350 ! +1000 ! Tu viens de comprendre le secret : chaque rouleau a un pouvoir magique différent !",
+                "error": "Un seul clic suffit pour voir la magie !",
+                "hint": "Juste UN clic sur le bouton [+] du gros rouleau rouge !"
+            },
+            "visualElements": {
+                "elementsToShow": [
+                    "Bond spectaculaire à 1350",
+                    "Effet dramatique +1000"
+                ],
+                "animations": [
+                    "Explosion dorée",
+                    "Nombre qui bondit",
+                    "Révélation du pouvoir"
+                ],
+                "stateChanges": "Révélation complète du système positionnel"
+            },
+            "pausePoint": true,
+            "learningObjective": "Moment 'aha!' : comprendre les milliers et le système complet"
+        },
+        {
+            "stepId": 8,
+            "phase": "extension_système",
+            "narrativeText": "Maintenant que tu maîtrises les bases, je vais te révéler la mission secrète ! Cette machine garde des codes mystérieux. Le premier code à découvrir est... 2025 ! Utilise tes nouveaux pouvoirs pour faire apparaître exactement 2025 sur l'écran !",
+            "interactionType": "drag",
+            "action": {
+                "type": "click_element",
+                "target": "Manipuler tous les rouleaux pour obtenir 2025",
+                "expectedValue": "2025",
+                "choices": null
+            },
+            "feedback": {
+                "success": "BRAVO ! Le compartiment s'ouvre dans un nuage doré ! Tu as compris que 2025 = 2×1000 + 0×100 + 2×10 + 5×1 !",
+                "error": "Presque ! Souviens-toi : rouge=milliers, orange=centaines, vert=dizaines, bleu=unités",
+                "hint": "Pour 2025, il faut : 2 milliers + 0 centaines + 2 dizaines + 5 unités"
+            },
+            "visualElements": {
+                "elementsToShow": [
+                    "Tous les rouleaux actifs",
+                    "Code cible 2025",
+                    "Compartiment secret"
+                ],
+                "animations": [
+                    "Manipulation libre",
+                    "Validation temps réel",
+                    "Ouverture magique"
+                ],
+                "stateChanges": "Mode défi actif, feedback continu"
+            },
+            "pausePoint": true,
+            "learningObjective": "Application pratique : composer un nombre spécifique"
+        },
+        {
+            "stepId": 9,
+            "phase": "généralisation",
+            "narrativeText": "Il est temps de révéler le secret ultime de cette machine... [LA MACHINE S'ILLUMINE ENTIÈREMENT, RÉVÉLANT DES ÉTIQUETTES] Chaque position a sa propre valeur ! C'est exactement comme ça que fonctionnent TOUS les nombres que tu connais !",
+            "interactionType": "wait",
+            "action": {
+                "type": "auto_continue",
+                "target": "Révélation automatique du système",
+                "expectedValue": null,
+                "choices": null
+            },
+            "feedback": {
+                "success": "Révélation complète du système positionnel !",
+                "error": null,
+                "hint": null
+            },
+            "visualElements": {
+                "elementsToShow": [
+                    "Étiquettes sur chaque rouleau",
+                    "Formule mathématique",
+                    "Illumination totale"
+                ],
+                "animations": [
+                    "Révélation dramatique",
+                    "Étiquettes qui apparaissent",
+                    "Compréhension globale"
+                ],
+                "stateChanges": "Vue d'ensemble du système positionnel"
+            },
+            "pausePoint": false,
+            "learningObjective": "Généralisation : tous les nombres suivent ce système"
+        },
+        {
+            "stepId": 10,
+            "phase": "généralisation",
+            "narrativeText": "Choisis maintenant n'importe quel nombre entre 1000 et 9999, crée-le avec la machine, puis explique-moi comment il se décompose ! C'est ton moment de maîtrise totale !",
+            "interactionType": "input",
+            "action": {
+                "type": "text_input",
+                "target": "Saisir un nombre puis expliquer sa décomposition",
+                "expectedValue": "Explication correcte de la décomposition",
+                "choices": null
+            },
+            "feedback": {
+                "success": "PARFAIT ! Tu es maintenant un véritable maître des codes secrets ! Tu comprends que chaque nombre cache une structure magique !",
+                "error": "Presque ! Souviens-toi : milliers + centaines + dizaines + unités",
+                "hint": "Exemple : 3456 = 3×1000 + 4×100 + 5×10 + 6×1"
+            },
+            "visualElements": {
+                "elementsToShow": [
+                    "Zone de saisie",
+                    "Machine libre",
+                    "Décomposition visuelle"
+                ],
+                "animations": [
+                    "Création libre",
+                    "Décomposition animée",
+                    "Validation interactive"
+                ],
+                "stateChanges": "Mode créatif et explicatif"
+            },
+            "pausePoint": true,
+            "learningObjective": "Maîtrise complète : créer et décomposer n'importe quel nombre"
+        },
+        {
+            "stepId": 11,
+            "phase": "généralisation",
+            "narrativeText": "Bravo, maître des codes ! Tu viens de découvrir l'un des secrets les plus puissants des mathématiques : la valeur positionnelle ! Maintenant, partout où tu regarderas, tu verras cette magie : dans les numéros de téléphone, les dates, les prix... Cette machine t'a révélé comment TOUS les nombres du monde sont construits !",
+            "interactionType": "wait",
+            "action": {
+                "type": "auto_continue",
+                "target": "Message final inspirant",
+                "expectedValue": null,
+                "choices": null
+            },
+            "feedback": {
+                "success": "L'aventure ne fait que commencer... À bientôt, petit maître des nombres !",
+                "error": null,
+                "hint": null
+            },
+            "visualElements": {
+                "elementsToShow": [
+                    "Machine qui s'endort doucement",
+                    "Dernière étincelle dorée",
+                    "Message final"
+                ],
+                "animations": [
+                    "Conclusion apaisante",
+                    "Retour au calme",
+                    "Ouverture sur le monde"
+                ],
+                "stateChanges": "Fin de l'expérience, invitation à continuer"
+            },
+            "pausePoint": false,
+            "learningObjective": "Vision élargie : application universelle du concept"
+        }
+    ]
+}

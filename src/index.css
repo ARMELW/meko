@@ -216,3 +216,6 @@ input.custom-input {
 		transform: rotate(360deg);
 	}
 }
+.game-bg{
+	background: linear-gradient(180deg, #006eb6 0%, #0040b6 100%);
+}

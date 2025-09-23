@@ -15,12 +15,12 @@ interface GameSimulationViewProps {
 	completeSessionPending: boolean;
 }
 
-
 function formatDisplayedTime(seconds: number): string {
 	const min = Math.floor(seconds / 60).toString().padStart(2, '0');
 	const sec = (seconds % 60).toString().padStart(2, '0');
 	return `${min}:${sec}`;
 }
+
 export function GameSimulationView({
 	isOpen,
 	onClose,
@@ -31,71 +31,110 @@ export function GameSimulationView({
 	handleAbandonSession,
 }: GameSimulationViewProps) {
 
-	   useEffect(() => {
-		   const listenerInstance = createGameEventListener(game.name, {
-			   handleCompleteSession,
-			   handleAbandonSession,
-		   });
-		   const listeners = listenerInstance ? listenerInstance.getListeners() : {};
-		   const cleanup = setupGameEventBusListeners({
-			   game: game.name,
-			   listeners,
-		   });
-		   return cleanup;
-	   }, [
-		   game.name,
-		   handleStartSession,
-		   handleCompleteSession,
-		   handleAbandonSession,
-	   ]);
+	useEffect(() => {
+		const listenerInstance = createGameEventListener(game.name, {
+			handleCompleteSession,
+			handleAbandonSession,
+		});
+		const listeners = listenerInstance ? listenerInstance.getListeners() : {};
+		const cleanup = setupGameEventBusListeners({
+			game: game.name,
+			listeners,
+		});
+		return cleanup;
+	}, [
+		game.name,
+		handleStartSession,
+		handleCompleteSession,
+		handleAbandonSession,
+	]);
 
 	const handleClose = () => {
-		   onClose();
-		   handleAbandonSession();
+		onClose();
+		handleAbandonSession();
 	};
 
-	   if (!isOpen) return null;
-	   return (
-		   <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-			   <div className="w-full max-w-4xl">
-				   <div className="flex flex-col items-center justify-center mb-6">
-					   <button
-						   onClick={handleClose}
-						   className="text-gray-400 hover:text-gray-600"
-					   >
-						<span className="sr-only">Close</span>
-						<svg
-							className="w-6 h-6"
-							fill="none"
-							stroke="currentColor"
-							strokeWidth="2"
+	// Gérer l'échap pour fermer
+	useEffect(() => {
+		if (!isOpen) return;
+		
+		const handleEscape = (e: KeyboardEvent) => {
+			if (e.key === 'Escape') {
+				handleClose();
+			}
+		};
+
+		document.addEventListener('keydown', handleEscape);
+		// Empêcher le scroll du body
+		document.body.style.overflow = 'hidden';
+
+		return () => {
+			document.removeEventListener('keydown', handleEscape);
+			document.body.style.overflow = 'unset';
+		};
+	}, [isOpen]);
+
+	if (!isOpen) return null;
+
+	return (
+		<div className="fixed inset-0 bg-black z-50 flex flex-col">
+			{/* Header avec contrôles */}
+			<div className="relative flex items-center justify-between p-4 bg-gradient-to-b from-black/80 to-transparent z-10">
+				{/* Timer centré */}
+				<div className="absolute left-1/2 transform -translate-x-1/2">
+					<div className="flex items-center gap-3 bg-white/10 dark:bg-black/30 rounded-full px-6 py-3 backdrop-blur-md border border-white/20 dark:border-gray-700">
+						<svg 
+							className="w-5 h-5 text-white/90" 
+							fill="none" 
+							stroke="currentColor" 
+							strokeWidth="2" 
 							viewBox="0 0 24 24"
 						>
-							<path
-								strokeLinecap="round"
-								strokeLinejoin="round"
-								d="M6 18L18 6M6 6l12 12"
-							/>
+							<circle cx="12" cy="12" r="10" />
+							<path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6l4 2" />
 						</svg>
-					</button>
-					{isOpen && (
-						<div
-							className="z-[9999] mt-3 flex items-center justify-center gap-2 bg-white/90 dark:bg-meko-blue-darker/90 rounded-full px-4 py-2 shadow-lg backdrop-blur-md select-none border border-meko-blue-light-1 dark:border-meko-blue-light-2"
-							aria-label="Temps de jeu"
-						>
-							<svg className="w-5 h-5 text-meko-blue-darker dark:text-meko-blue-light-1" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24" aria-hidden="true">
-								<circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2" />
-								<path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6l4 2" />
-							</svg>
-							<span className="text-base sm:text-lg font-semibold text-meko-blue-darker dark:text-meko-blue-light-1 tracking-wide">
-								<span className="sr-only">Temps écoulé&nbsp;: </span>
-								{formatDisplayedTime(displayedTime)}
-							</span>
-						</div>)}
+						<span className="text-xl font-mono font-bold text-white/90 tracking-wider">
+							{formatDisplayedTime(displayedTime)}
+						</span>
+					</div>
 				</div>
-				<div className="relative w-full  max-w-4xl flex flex-col items-center justify-center min-h-[400px]">
 
-					<GamePlay game={game} start={handleStartSession} />
+				{/* Bouton fermer */}
+				<button
+					onClick={handleClose}
+					className="ml-auto p-3 rounded-full bg-white/10 hover:bg-white/20 text-white/80 hover:text-white transition-all duration-200 backdrop-blur-sm border border-white/20"
+					aria-label="Fermer le jeu"
+				>
+					<svg
+						className="w-6 h-6"
+						fill="none"
+						stroke="currentColor"
+						strokeWidth="2"
+						viewBox="0 0 24 24"
+					>
+						<path
+							strokeLinecap="round"
+							strokeLinejoin="round"
+							d="M6 18L18 6M6 6l12 12"
+						/>
+					</svg>
+				</button>
+			</div>
+
+			{/* Zone de jeu - prend tout l'espace restant */}
+			<div className="flex-1 flex items-center justify-center p-4">
+				<div className="w-full h-full max-w-none flex items-center justify-center">
+					<GamePlay game={game} start={handleStartSession} completed={handleCompleteSession} onClose={handleClose} />
+				</div>
+			</div>
+
+			{/* Footer optionnel avec contrôles supplémentaires */}
+			<div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 z-10">
+				<div className="flex items-center gap-4 bg-white/10 dark:bg-black/30 rounded-full px-6 py-2 backdrop-blur-md border border-white/20 dark:border-gray-700">
+					<span className="text-white/70 text-sm font-medium">
+						{game.name}
+					</span>
+					
 				</div>
 			</div>
 		</div>

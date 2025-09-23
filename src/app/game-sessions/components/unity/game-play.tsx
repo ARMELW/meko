@@ -3,9 +3,11 @@ import { UnityGameView } from '@/app/game-sessions/components/unity/unity-game-v
 type GamePlayProps = {
   game: GamePlayApiResponse;
   start: () => Promise<void>;
+  completed: () => Promise<void>
+  onClose: () => void;
 }
-export default function GamePlay({ game, start }: GamePlayProps) {
-
+export default function GamePlay({ game, start, completed, onClose }: GamePlayProps) {
+  console.log('Rendering Unity GamePlay for game:', game);
 
   return <UnityGameView game={game.name} config={{
     loaderUrl: game.loaderUrl,
@@ -19,5 +21,7 @@ export default function GamePlay({ game, start }: GamePlayProps) {
       coverUrl: game.coverUrl || '',
     }}
     start={start}
+    completed={completed}
+    onClose={onClose}
   />;
 }

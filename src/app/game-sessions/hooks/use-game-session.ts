@@ -14,7 +14,7 @@ export const useGameSession = () => {
     mutationFn: ({ childId, gameId }: { childId: string; gameId: string }) =>
       gameSessionService.startSession({ childId, gameId }),
     onSuccess: (_, variables) => {
-      toast.success(t('games.session.started'));
+     // toast.success(t('games.session.started'));
       // Invalider la cache de la dernière activité pour l'enfant qui commence une session
       invalidateLastActivity(variables.childId);
     },

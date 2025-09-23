@@ -35,8 +35,10 @@ import { UiPage } from "@/pages/ui-page";
 import GameSearchPage from '@/pages/private/learning/game-search-page';
 import SubscriptionPage from "@/pages/private/subscription/subscription-page";
 import { CreateParentAccountPage } from "@/pages/public/auth/create-parent-account-page";
+import { VoiceExamplePage } from "@/pages/voice-example";
 
 import AdminUserListPage from '@/pages/private/admin/user-list';
+import MaitreCountingMachineTestPage from "@/pages/maitre-counting-machine-test";
 
 const privateRoutes: RouteObject[] = [
 	{
@@ -165,6 +167,14 @@ const publicRoutes: RouteObject[] = [
 	{
 		path: '/ui',
 		element: <UiPage />,
+	},
+	{
+		path: '/voice-example',
+		element: <VoiceExamplePage />,
+	},
+	{
+		path: '/test',
+		element: <MaitreCountingMachineTestPage />,
 	},
 	{
 		path: '/',

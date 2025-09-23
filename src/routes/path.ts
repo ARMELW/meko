@@ -5,6 +5,7 @@ export const appPath = {
 		login: "/login",
 		forgotPassword: "/forgot-password",
 		resetPassword: "/reset-password",
+		test: '/test',
 	},
 	private: {
 		profile: {

@@ -35,7 +35,6 @@ export function useUnitySync(
         if (!isLoaded || !currentValue || lastValue.current === currentValue) {
             return;
         }
-
         if (sendUnityMessage(sendMessage, 'WebBridge', 'ReceiveStringMessageFromJs', `SetValue${currentValue}`)) {
             lastValue.current = currentValue;
         }

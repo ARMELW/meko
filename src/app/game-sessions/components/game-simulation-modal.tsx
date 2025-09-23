@@ -52,7 +52,7 @@ export function GameSimulationModal({
 
   const [displayedTime, setDisplayedTime] = useState(0);
 
-  useEffect(() => {
+    useEffect(() => {
     let interval: NodeJS.Timeout;
 
     if (gameState.isGameStarted && !gameState.isGameCompleted) {
@@ -208,7 +208,7 @@ export function GameSimulationModal({
       isGameStarted: false,
       isGameCompleted: false
     });
-    toast.info(t('games.session.abandoned'));
+    //toast.info(t('games.session.abandoned'));
     if (selectedChild?.id) {
       updateLastActivity(selectedChild.id);
     }

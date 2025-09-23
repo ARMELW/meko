@@ -7,6 +7,10 @@ export async function sendOtpVerification(
         {
             email: data.email,
             type: "sign-in"
+        }, {
+            headers: {
+               'X-APP': 'ADMIN_APP',
+            }
         }
     );
 }
