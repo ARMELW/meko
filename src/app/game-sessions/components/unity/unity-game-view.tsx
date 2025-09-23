@@ -30,6 +30,7 @@ interface UnityGameViewProps {
 }
 
 export const UnityGameView: React.FC<UnityGameViewProps> = ({ game, config, info, start, completed, onClose }) => {
+    const [timer, setTimer] = React.useState(0);
     const { isLoading } = useAssistantStore();
     const [hasLoadedOnce, setHasLoadedOnce] = React.useState(false);
 
@@ -56,6 +57,20 @@ export const UnityGameView: React.FC<UnityGameViewProps> = ({ game, config, info
         },
         isLoaded
     );
+
+    React.useEffect(() => {
+        let interval: NodeJS.Timeout | undefined;
+        if (isLoaded) {
+            interval = setInterval(() => {
+                setTimer((t) => t + 1);
+            }, 1000);
+        } else {
+            setTimer(0);
+        }
+        return () => {
+            if (interval) clearInterval(interval);
+        };
+    }, [isLoaded]);
 
     React.useEffect(() => {
         if (isLoaded && goalList.length > 0) {
@@ -95,6 +110,7 @@ export const UnityGameView: React.FC<UnityGameViewProps> = ({ game, config, info
                     attempt={useAssistantContextStore.getState().attempt}
                     goalIndex={useAssistantContextStore.getState().goal ? goalList.findIndex(g => Number(g) === useAssistantContextStore.getState().goal) + 1 : 1}
                     goalTotal={goalList.length}
+                    timer={timer}
                     completed={completed}
                 />
             </div>

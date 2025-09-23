@@ -9,8 +9,14 @@ type UnityAsideProps = {
   attempt?: number;
   goalIndex?: number;
   goalTotal?: number;
+  timer?: number;
   sendMessage?: (gameObject: string, method: string, parameter: string) => void;
   completed: () => void;
+}
+function formatDisplayedTime(seconds: number): string {
+	const min = Math.floor(seconds / 60).toString().padStart(2, '0');
+	const sec = (seconds % 60).toString().padStart(2, '0');
+	return `${min}:${sec}`;
 }
 
 const UnityAside: React.FC<UnityAsideProps> = ({ 
@@ -21,16 +27,29 @@ const UnityAside: React.FC<UnityAsideProps> = ({
   goal,
   goalIndex,
   goalTotal,
+  timer,
   completed
 }) => (
   <aside className="h-full flex flex-col p-6 game-bg">
     {isValidGame ? (
       <>
-        {/* Header du panneau */}
+
+        {/* Header du panneau + Chronomètre mis en avant */}
         <div className="flex-shrink-0 mb-6">
-          <h2 className="text-xl font-bold uppercase mb-4  text-meko-blue-darker dark:text-white">
-            {title} 
+          <h2 className="text-xl font-bold uppercase mb-2 text-meko-blue-darker dark:text-white">
+            {title}
           </h2>
+          {timer !== undefined && (
+            <div className="flex items-center justify-center gap-2 bg-meko-blue-light-2/90 dark:bg-meko-blue-flat/80 rounded-full mt-4 px-4 py-2 mb-2 shadow border border-meko-blue-light-2/60 dark:border-meko-blue-light-1/40">
+              <svg className="w-6 h-6 text-meko-blue-darker dark:text-meko-blue-light-1" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="10" />
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6l4 2" />
+              </svg>
+              <span className="text-2xl font-mono font-extrabold text-meko-blue-darker dark:text-meko-blue-light-1 tracking-widest">
+                {formatDisplayedTime(timer)}
+              </span>
+            </div>
+          )}
         </div>
 
         {/* Objectif actuel */}
@@ -57,6 +76,7 @@ const UnityAside: React.FC<UnityAsideProps> = ({
                   Nombre d'essais : <span className="font-semibold">{attempt}</span>
                 </div>
               )}
+              {/* Chrono déjà affiché en haut, ne pas dupliquer ici */}
             </div>
           </div>
         )}

@@ -80,24 +80,7 @@ export function GameSimulationView({
 		<div className="fixed inset-0 bg-black z-50 flex flex-col">
 			{/* Header avec contrôles */}
 			<div className="relative flex items-center justify-between p-4 bg-gradient-to-b from-black/80 to-transparent z-10">
-				{/* Timer centré */}
-				<div className="absolute left-1/2 transform -translate-x-1/2">
-					<div className="flex items-center gap-3 bg-white/10 dark:bg-black/30 rounded-full px-6 py-3 backdrop-blur-md border border-white/20 dark:border-gray-700">
-						<svg 
-							className="w-5 h-5 text-white/90" 
-							fill="none" 
-							stroke="currentColor" 
-							strokeWidth="2" 
-							viewBox="0 0 24 24"
-						>
-							<circle cx="12" cy="12" r="10" />
-							<path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6l4 2" />
-						</svg>
-						<span className="text-xl font-mono font-bold text-white/90 tracking-wider">
-							{formatDisplayedTime(displayedTime)}
-						</span>
-					</div>
-				</div>
+			
 
 				{/* Bouton fermer */}
 				<button
@@ -124,7 +107,7 @@ export function GameSimulationView({
 			{/* Zone de jeu - prend tout l'espace restant */}
 			<div className="flex-1 flex items-center justify-center p-4">
 				<div className="w-full h-full max-w-none flex items-center justify-center">
-					<GamePlay game={game} start={handleStartSession} completed={handleCompleteSession} onClose={handleClose} />
+					<GamePlay game={game} start={handleStartSession} timer={formatDisplayedTime(displayedTime)} completed={handleCompleteSession} onClose={handleClose} />
 				</div>
 			</div>
 
