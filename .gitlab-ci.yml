@@ -127,16 +127,14 @@ deploy-k8s:
         echo "Registry login... "
         echo "$REGISTRY_PASS" | docker login $DOCKER_REGISTRY -u $REGISTRY_USER --password-stdin
                
-        echo "📄 Replacing image tag in deployment manifest..."
+        echo "🚀 Replacing image tag and deploying updated front..."
         echo "$IMAGE_TAG"
-        sed -i "s|image: .*|image: $IMAGE_NAME|" deploy.yml
-        cat deploy.yml
+
+        sed "s|image: .*|image: $IMAGE_NAME|" deploy.yml | tee /tmp/meko-academy-front-office.yml | microk8s kubectl apply -f -
+        cat /tmp/meko-academy-front-office.yml
         
-        echo "🚀 Deploying updated front..."
-        microk8s kubectl apply -f deploy.yml
-
         echo "✅ Deployment successful."
-
+        
         # Nettoyage
         docker images --format '{{.Repository}} {{.ID}}' |grep '^registry.meko.ac/meko-academy-front-office' | awk '{print $2}' | xargs -r docker rmi -f
         docker buildx prune -f
