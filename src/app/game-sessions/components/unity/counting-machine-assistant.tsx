@@ -34,7 +34,7 @@ type CountingMachineAssistantProps = {
 };
 export default function CountingMachineAssistant({ sendMessage,completed }: CountingMachineAssistantProps) {
     const [currentText, setCurrentText] = useState('');
-    const { setAssistantReady, setIsLoading } = useAssistantStore();
+    const { setAssistantReady, isLoading, setIsLoading } = useAssistantStore();
     const { currentValue, goal, attempt, setCurrentValue, setGoal, incrementAttempt, resetAttempt } = useAssistantContextStore();
     const isCancelled = useRef(false);
     const isPlaying = useRef(false);
@@ -169,9 +169,16 @@ export default function CountingMachineAssistant({ sendMessage,completed }: Coun
     }, []);
 
     return (
-        <div className={`p-4 h-full rounded-lg ${assistantBg}  flex`}>
-            <div className="text-lg font-medium text-white/85 min-h-[1.5em]">
-                {currentText}
+        <div className={`p-4 h-full rounded-lg ${assistantBg} flex`}>
+            <div className="text-lg font-medium text-white/85 min-h-[1.5em] flex gap-2">
+                {isLoading ? (
+                    <div className='flex text-center flex-col justify-center items-center gap-2'>
+                        <span className="inline-block w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>
+                        <span className="text-base text-white/80">Préparation de la réponse…</span>
+                    </div>
+                ) : (
+                    currentText
+                )}
             </div>
         </div>
     );

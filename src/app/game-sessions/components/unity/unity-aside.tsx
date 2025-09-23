@@ -1,13 +1,14 @@
 import React from 'react';
 import CountingMachineAssistant from './counting-machine-assistant';
-
-interface UnityAsideProps {
+type UnityAsideProps = {
   title: string;
   coverUrl?: string;
   description?: string;
   isValidGame: boolean;
   goal: string | number | undefined;
   attempt?: number;
+  goalIndex?: number;
+  goalTotal?: number;
   sendMessage?: (gameObject: string, method: string, parameter: string) => void;
   completed: () => void;
 }
@@ -18,8 +19,9 @@ const UnityAside: React.FC<UnityAsideProps> = ({
   isValidGame, 
   sendMessage, 
   goal,
+  goalIndex,
+  goalTotal,
   completed
-
 }) => (
   <aside className="h-full flex flex-col p-6 game-bg">
     {isValidGame ? (
@@ -39,16 +41,22 @@ const UnityAside: React.FC<UnityAsideProps> = ({
                 <span className="text-sm font-medium text-meko-blue-dark dark:text-meko-blue-light-2">
                   Objectif actuel
                 </span>
-              {attempt !== undefined && (
-                <div className="mt-2 text-xs text-meko-blue-dark dark:text-meko-blue-light-2">
-                  Nombre d'essais : <span className="font-semibold">{attempt}</span>
-                </div>
-              )}
+              
                 <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
               </div>
               <div className="text-3xl font-bold text-meko-blue-darker dark:text-white font-mono">
                 {goal}
               </div>
+              {(goalIndex !== undefined && goalTotal !== undefined) && (
+                <div className="mt-2 text-xs text-meko-blue-dark dark:text-meko-blue-light-2">
+                  Objectif : <span className="font-semibold">{goalIndex}/{goalTotal}</span>
+                </div>
+              )}
+              {attempt !== undefined && (
+                <div className="mt-1 text-xs text-meko-blue-dark dark:text-meko-blue-light-2">
+                  Nombre d'essais : <span className="font-semibold">{attempt}</span>
+                </div>
+              )}
             </div>
           </div>
         )}

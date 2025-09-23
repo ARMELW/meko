@@ -68,11 +68,7 @@ export const UnityGameView: React.FC<UnityGameViewProps> = ({ game, config, info
     const isValidGame = game in unityGameRegistry;
     const { isAssistantSpeaking } = useAssistantContextStore();
 
-    const handleFullscreenToggle = () => {
-        if (typeof requestFullscreen === 'function') {
-            requestFullscreen(true);
-        }
-    };
+  
 
     return (
         <div className="unity-game-modal fixed inset-0 z-50 flex bg-black">
@@ -97,6 +93,8 @@ export const UnityGameView: React.FC<UnityGameViewProps> = ({ game, config, info
                     sendMessage={sendMessage}
                     goal={goal}
                     attempt={useAssistantContextStore.getState().attempt}
+                    goalIndex={useAssistantContextStore.getState().goal ? goalList.findIndex(g => Number(g) === useAssistantContextStore.getState().goal) + 1 : 1}
+                    goalTotal={goalList.length}
                     completed={completed}
                 />
             </div>
@@ -106,12 +104,12 @@ export const UnityGameView: React.FC<UnityGameViewProps> = ({ game, config, info
                 <div className="flex-1 flex items-center justify-center">
                     {isValidGame ? (
                         <div className="relative w-full h-full flex items-center justify-center">
-                       
-                            <div className="w-full h-full max-w-none">
-                                <Unity 
-                                    unityProvider={unityProvider as UnityProvider} 
-                                    style={{ 
-                                        width: '100%', 
+
+                            <div className={`w-full h-full max-w-none ${isAssistantSpeaking ? 'filter blur-xs pointer-events-none select-none' : ''}`}>
+                                <Unity
+                                    unityProvider={unityProvider as UnityProvider}
+                                    style={{
+                                        width: '100%',
                                         height: '100%',
                                         maxWidth: 'none',
                                         maxHeight: 'none',
@@ -122,31 +120,12 @@ export const UnityGameView: React.FC<UnityGameViewProps> = ({ game, config, info
                             </div>
 
                             {/* Overlay de chargement : affiché uniquement au tout premier chargement */}
-                            {(!isLoaded || (hasLoadedOnce && isLoading)) && (
+                            {(!isLoaded) && (
                                 <div className="absolute inset-0 flex items-center justify-center bg-black/50 backdrop-blur-sm z-10">
                                     <div className="text-center">
-                                        {!isLoaded ? (
+                                      
                                             <UnityLoader loadingProgression={loadingProgression} />
-                                        ) : (
-                                            <div className="flex flex-col items-center gap-4">
-                                                <div className="w-8 h-8 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
-                                                <span className="text-lg font-semibold text-white">
-                                                    Préparation du jeu…
-                                                </span>
-                                            </div>
-                                        )}
-                                    </div>
-                                </div>
-                            )}
-
-                            {/* Overlay assistant en cours */}
-                            {isAssistantSpeaking && (
-                                <div className="absolute top-2 right-2 z-30">
-                                    <div className="flex items-center gap-3 bg-black/70 rounded-full px-6 py-3 shadow-lg backdrop-blur-md border border-white/20">
-                                        <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-                                        <span className="text-white text-sm font-medium">
-                                            L'assistant parle…
-                                        </span>
+                                      
                                     </div>
                                 </div>
                             )}
