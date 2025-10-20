@@ -1,69 +1,184 @@
-// cette fonction sert à changer le nombre afficher sur la machine
-// SetValue322 -> la machine affichera 0322
-function ChangeCurrentValue() {
-    var value = document.getElementById("currentValue").value;
-    if (typeof unityInstance !== 'undefined') {
-        unityInstance.SendMessage('WebBridge', 'ReceiveStringMessageFromJs', 'SetValue' + value);
-    }
+import { machineANombresEventBus } from '@/services/unity/games/machine-a-nombres/event-bus';
+import { MachineANombresMessageType } from '@/services/unity/games/machine-a-nombres/types';
+
+/**
+ * Unity Bridge for Machine à Nombres
+ * This module provides communication between the React game and Unity WebGL
+ */
+
+// Unity instance type (will be set by Unity WebGL)
+declare global {
+  interface Window {
+    unityInstance?: {
+      SendMessage: (objectName: string, methodName: string, value: string) => void;
+    };
+    onUnityMessage?: (message: string) => void;
+  }
 }
 
-// cette fonction sert à envoyer la liste des objectifs vers Unity
-// ChangeList544/1352/9871 -> les objectifs seront 544 puis 1352 puis 9871
-function ChangeCurrentGoalList() {
-    var value = document.getElementById("currentGoalList").value;
-    if (typeof unityInstance !== 'undefined') {
-        unityInstance.SendMessage('WebBridge', 'ReceiveStringMessageFromJs', 'ChangeList' + value);
-    }
+/**
+ * Send a value change to Unity
+ * @param value - The numeric value to display (e.g., 322 will display as 0322)
+ */
+export function changeCurrentValue(value: number): void {
+  if (typeof window.unityInstance !== 'undefined') {
+    window.unityInstance.SendMessage('WebBridge', 'ReceiveStringMessageFromJs', `SetValue${value}`);
+  }
+  
+  // Emit event to local event bus
+  machineANombresEventBus.emit(MachineANombresMessageType.SET_VALUE, {
+    type: MachineANombresMessageType.SET_VALUE,
+    value: value.toString(),
+    numericValue: value,
+    timestamp: Date.now()
+  } as any);
 }
 
-// cas possible : bloquage de rouleau
-// si rouleau des 1 bloqué      -> on ne peut pas augmenté/réduire de 1
-// si rouleau des 10 bloqué     -> on ne peut pas augmenté/réduire de 1 si prochaine valeur n'est pas dans la plage de valeur disponible
-//                              exemple : notre valeur est de 5895
-//                                                              on est bloqué sur 9 donc si on augmente/réduit de 1, min=5890 et max=5899
-//                              -> on ne peut pas augmenté/réduire de 10
-// si rouleau des 100 bloqué    -> on ne peut pas augmenté/réduire de 1 si prochaine valeur n'est pas dans la plage de valeur disponible
-//                              -> on ne peut pas augmenté/réduire de 10 si prochaine valeur n'est pas dans la plage de valeur disponible
-//                              exemple : notre valeur est de 3259
-//                                                              on est bloqué sur 2 donc si on augmente/réduit de 1 ou de 10, min=3200 et max=3299
-//                              -> on ne peut pas augmenté/réduire de 100
-// si rouleau des 1000 bloqué   -> on ne peut pas augmenté/réduire de 1 si prochaine valeur n'est pas dans la plage de valeur disponible
-//                              -> on ne peut pas augmenté/réduire de 10 si prochaine valeur n'est pas dans la plage de valeur disponible
-//                              -> on ne peut pas augmenté/réduire de 100 si prochaine valeur n'est pas dans la plage de valeur disponible
-//                              exemple : notre valeur est de 7381
-//                                                              on est bloqué sur 7 donc si on augmente/réduit de 1 ou de 10 ou de 100, min=7000 et max=7999
-//                              -> on ne peut pas augmenté/réduire de 1000
-// PS: on peut bloquer plusieurs rouleaux en même temps
-// + animation de blocage
-
-// cette fonction sert à bloquer/débloquer le rouleau des 1000
-function LockThousandRoll(locked) {
-    if (typeof unityInstance !== 'undefined') {
-        unityInstance.SendMessage('WebBridge', 'ReceiveStringMessageFromJs', 'LockThousand:' + (locked ? 1 : 0));
-    }
+/**
+ * Send the goal list to Unity
+ * @param goals - Array of numeric goals
+ * Example: [544, 1352, 9871] -> "ChangeList544/1352/9871"
+ */
+export function changeCurrentGoalList(goals: number[]): void {
+  const goalString = goals.join('/');
+  if (typeof window.unityInstance !== 'undefined') {
+    window.unityInstance.SendMessage('WebBridge', 'ReceiveStringMessageFromJs', `ChangeList${goalString}`);
+  }
 }
 
-// cette fonction sert à bloquer/débloquer le rouleau des 100
-function LockHundredRoll(locked) {
-    if (typeof unityInstance !== 'undefined') {
-        unityInstance.SendMessage('WebBridge', 'ReceiveStringMessageFromJs', 'LockHundred:' + (locked ? 1 : 0));
-    }
+/**
+ * Column locking logic:
+ * - Unit (1s) locked: cannot increment/decrement by 1
+ * - Tens (10s) locked: cannot increment/decrement by 1 if next value not in range (min: x90, max: x99)
+ *   cannot increment/decrement by 10
+ * - Hundreds (100s) locked: similar constraints for 1, 10, and 100
+ * - Thousands (1000s) locked: similar constraints for 1, 10, 100, and 1000
+ * Multiple columns can be locked simultaneously
+ */
+
+/**
+ * Lock or unlock the thousands column (1000s)
+ */
+export function lockThousandRoll(locked: boolean): void {
+  if (typeof window.unityInstance !== 'undefined') {
+    window.unityInstance.SendMessage('WebBridge', 'ReceiveStringMessageFromJs', `LockThousand:${locked ? 1 : 0}`);
+  }
+  
+  // Emit event to local event bus
+  const eventType = locked ? MachineANombresMessageType.COLUMN_LOCKED : MachineANombresMessageType.COLUMN_UNLOCKED;
+  machineANombresEventBus.emit(eventType, {
+    type: eventType,
+    columnIndex: 3, // Thousands column
+    timestamp: Date.now()
+  } as any);
 }
 
-// cette fonction sert à bloquer/débloquer le rouleau des 10
-function LockTenRoll(locked) {
-    if (typeof unityInstance !== 'undefined') {
-        unityInstance.SendMessage('WebBridge', 'ReceiveStringMessageFromJs', 'LockTen:' + (locked ? 1 : 0));
-    }
+/**
+ * Lock or unlock the hundreds column (100s)
+ */
+export function lockHundredRoll(locked: boolean): void {
+  if (typeof window.unityInstance !== 'undefined') {
+    window.unityInstance.SendMessage('WebBridge', 'ReceiveStringMessageFromJs', `LockHundred:${locked ? 1 : 0}`);
+  }
+  
+  // Emit event to local event bus
+  const eventType = locked ? MachineANombresMessageType.COLUMN_LOCKED : MachineANombresMessageType.COLUMN_UNLOCKED;
+  machineANombresEventBus.emit(eventType, {
+    type: eventType,
+    columnIndex: 2, // Hundreds column
+    timestamp: Date.now()
+  } as any);
 }
 
-// cette fonction sert à bloquer/débloquer le rouleau des 1
-function LockUnitRoll(locked) {
-    if (typeof unityInstance !== 'undefined') {
-        unityInstance.SendMessage('WebBridge', 'ReceiveStringMessageFromJs', 'LockUnit:' + (locked ? 1 : 0));
-    }
+/**
+ * Lock or unlock the tens column (10s)
+ */
+export function lockTenRoll(locked: boolean): void {
+  if (typeof window.unityInstance !== 'undefined') {
+    window.unityInstance.SendMessage('WebBridge', 'ReceiveStringMessageFromJs', `LockTen:${locked ? 1 : 0}`);
+  }
+  
+  // Emit event to local event bus
+  const eventType = locked ? MachineANombresMessageType.COLUMN_LOCKED : MachineANombresMessageType.COLUMN_UNLOCKED;
+  machineANombresEventBus.emit(eventType, {
+    type: eventType,
+    columnIndex: 1, // Tens column
+    timestamp: Date.now()
+  } as any);
 }
 
-window.onUnityMessage = function(message) {
-    console.log("[UnityBridge override] Message:", message);
-};
+/**
+ * Lock or unlock the units column (1s)
+ */
+export function lockUnitRoll(locked: boolean): void {
+  if (typeof window.unityInstance !== 'undefined') {
+    window.unityInstance.SendMessage('WebBridge', 'ReceiveStringMessageFromJs', `LockUnit:${locked ? 1 : 0}`);
+  }
+  
+  // Emit event to local event bus
+  const eventType = locked ? MachineANombresMessageType.COLUMN_LOCKED : MachineANombresMessageType.COLUMN_UNLOCKED;
+  machineANombresEventBus.emit(eventType, {
+    type: eventType,
+    columnIndex: 0, // Units column
+    timestamp: Date.now()
+  } as any);
+}
+
+/**
+ * Emit a column add event
+ */
+export function emitAddUnit(columnIndex: number): void {
+  machineANombresEventBus.emit(MachineANombresMessageType.ADD_UNIT, {
+    type: MachineANombresMessageType.ADD_UNIT,
+    columnIndex,
+    timestamp: Date.now()
+  } as any);
+}
+
+/**
+ * Emit a column subtract event
+ */
+export function emitSubtractUnit(columnIndex: number): void {
+  machineANombresEventBus.emit(MachineANombresMessageType.SUBTRACT_UNIT, {
+    type: MachineANombresMessageType.SUBTRACT_UNIT,
+    columnIndex,
+    timestamp: Date.now()
+  } as any);
+}
+
+/**
+ * Emit a phase change event
+ */
+export function emitPhaseChanged(phase: string): void {
+  machineANombresEventBus.emit(MachineANombresMessageType.PHASE_CHANGED, {
+    type: MachineANombresMessageType.PHASE_CHANGED,
+    phase,
+    value: phase,
+    timestamp: Date.now()
+  } as any);
+}
+
+/**
+ * Emit a value changed event
+ */
+export function emitValueChanged(value: number): void {
+  machineANombresEventBus.emit(MachineANombresMessageType.VALUE_CHANGED, {
+    type: MachineANombresMessageType.VALUE_CHANGED,
+    numericValue: value,
+    value: value.toString(),
+    timestamp: Date.now()
+  } as any);
+}
+
+/**
+ * Handle incoming messages from Unity
+ */
+if (typeof window !== 'undefined') {
+  window.onUnityMessage = function(message: string) {
+    console.log("[UnityBridge] Message from Unity:", message);
+    
+    // Parse and emit the message through the event bus
+    // The message will be parsed by the parseMachineANombresMessage function
+    // which is registered in the Unity game registry
+  };
+}

@@ -27,6 +27,7 @@ import {
     getSolutionAnimationStep,
     getGuidedClickFeedback
 } from './feedbackSystem.ts';
+import { emitPhaseChanged, emitValueChanged, emitAddUnit, emitSubtractUnit } from './unityBridge.ts';
 
 export const initialColumns: Column[] = [
     { name: 'Unités', value: 0, unlocked: true, color: 'bg-green-500' },
@@ -114,6 +115,11 @@ export const useStore = create<MachineState>((set, get) => ({
     setColumns: (updater) => {
         const newColumns = typeof updater === 'function' ? updater(get().columns) : updater;
         set({ columns: newColumns });
+        
+        // Emit value changed event with the total number
+        const totalNumber = newColumns.reduce((acc, col, idx) => acc + col.value * Math.pow(10, idx), 0);
+        emitValueChanged(totalNumber);
+        
         get().updateButtonVisibility();
     },
     setPhase: (phase) => {
@@ -126,6 +132,9 @@ export const useStore = create<MachineState>((set, get) => ({
 
         set({ phase });
         console.log('set phase', phase);
+        
+        // Emit Unity event
+        emitPhaseChanged(phase);
         
         // Handle auto-transitions for intro phases
         if (phase === 'intro-welcome-personalized') {
@@ -1445,6 +1454,9 @@ export const useStore = create<MachineState>((set, get) => ({
         const { isCountingAutomatically, isTransitioningToChallenge, phase, columns, addClicks, sequenceFeedback, guidedMode, currentTarget } = get();
         const totalNumber = columns.reduce((acc: number, col: Column, idx: number) => acc + col.value * Math.pow(10, idx), 0);
 
+        // Emit Unity event
+        emitAddUnit(idx);
+
         if (isCountingAutomatically || isTransitioningToChallenge) return;
 
         const isUnitsColumn = (i: number) => i === 0;
@@ -2262,6 +2274,9 @@ export const useStore = create<MachineState>((set, get) => ({
         const { isCountingAutomatically, phase, columns, guidedMode, currentTarget } = get();
         const totalNumber = columns.reduce((acc: number, col: Column, idx: number) => acc + col.value * Math.pow(10, idx), 0);
         const { sequenceFeedback, resetUnitChallenge } = get();
+
+        // Emit Unity event
+        emitSubtractUnit(idx);
 
         if (isCountingAutomatically) return;
 
