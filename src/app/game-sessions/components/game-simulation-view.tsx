@@ -73,7 +73,7 @@ export function GameSimulationView({
 			document.body.style.overflow = 'unset';
 		};
 	}, [isOpen]);
-
+	console.log('displayedTime',displayedTime);
 	if (!isOpen) return null;
 
 	return (
@@ -107,7 +107,7 @@ export function GameSimulationView({
 			{/* Zone de jeu - prend tout l'espace restant */}
 			<div className="flex-1 flex items-center justify-center p-4">
 				<div className="w-full h-full max-w-none flex items-center justify-center">
-					<GamePlay game={game} start={handleStartSession} timer={formatDisplayedTime(displayedTime)} completed={handleCompleteSession} onClose={handleClose} />
+					<GamePlay game={game} start={handleStartSession} timer={displayedTime} completed={handleCompleteSession} onClose={handleClose} />
 				</div>
 			</div>
 

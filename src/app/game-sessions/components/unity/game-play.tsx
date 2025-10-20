@@ -2,7 +2,7 @@ import { GamePlayApiResponse } from '@/app/game-sessions/hooks/use-game-play-api
 import { UnityGameView } from '@/app/game-sessions/components/unity/unity-game-view';
 type GamePlayProps = {
   game: GamePlayApiResponse;
-  timer: string;
+  timer: number;
   start: () => Promise<void>;
   completed: () => Promise<void>
   onClose: () => void;

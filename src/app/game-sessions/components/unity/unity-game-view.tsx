@@ -27,22 +27,21 @@ interface UnityGameViewProps {
     start: () => Promise<void>;
     completed: () => Promise<void>;
     onClose?: () => void;
+    timer: string;
 }
 
-export const UnityGameView: React.FC<UnityGameViewProps> = ({ game, config, info, start, completed, onClose }) => {
-    const [timer, setTimer] = React.useState(0);
-    const { isLoading } = useAssistantStore();
+export const UnityGameView: React.FC<UnityGameViewProps> = ({ game, config, info, start, completed, onClose, timer }) => {
+
     const [hasLoadedOnce, setHasLoadedOnce] = React.useState(false);
 
     const generateGoals = (count = 5, min = 10, max = 999) =>
         Array.from({ length: count }, () => Math.floor(Math.random() * (max - min + 1)) + min);
-    const goalList = React.useMemo(() => generateGoals(10, 10, 999).map(String), []);
+    const goalList = React.useMemo(() => generateGoals(5, 10, 999).map(String), []);
     
     const {
         unityProvider,
         isLoaded,
         loadingProgression,
-        requestFullscreen,
         sendMessage
     } = useUnityLoader({ name: game as keyof typeof unityGameRegistry, config, goalList });
     
@@ -58,20 +57,7 @@ export const UnityGameView: React.FC<UnityGameViewProps> = ({ game, config, info
         isLoaded
     );
 
-    React.useEffect(() => {
-        let interval: NodeJS.Timeout | undefined;
-        if (isLoaded) {
-            interval = setInterval(() => {
-                setTimer((t) => t + 1);
-            }, 1000);
-        } else {
-            setTimer(0);
-        }
-        return () => {
-            if (interval) clearInterval(interval);
-        };
-    }, [isLoaded]);
-
+ 
     React.useEffect(() => {
         if (isLoaded && goalList.length > 0) {
             setGoal(Number(goalList[0]));

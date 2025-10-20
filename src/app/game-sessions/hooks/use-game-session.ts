@@ -4,6 +4,7 @@ import { SaveProgressPayload, CompleteGameSessionPayload } from '../types';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import { useLastActivityActions } from './use-last-activity-actions';
+import { $ } from 'node_modules/react-router/dist/development/fog-of-war-1hWhK5ey.d.mts';
 
 export const useGameSession = () => {
   const { t } = useTranslation();
@@ -19,7 +20,7 @@ export const useGameSession = () => {
       invalidateLastActivity(variables.childId);
     },
     onError: (error: Error) => {
-      toast.error(t('games.session.error'));
+      //toast.error(t('games.session.error'));
       console.error('Error starting game session:', error);
     }
   });
@@ -37,7 +38,7 @@ export const useGameSession = () => {
       invalidateLastActivity(variables.childId);
     },
     onError: (error: Error) => {
-      toast.error(t('games.session.error'));
+     // toast.error(t('games.session.error'));
       console.error('Error saving progress:', error);
     }
   });
@@ -68,7 +69,7 @@ export const useGameSession = () => {
       }
     },
     onError: (error: Error) => {
-      toast.error(t('games.session.error'));
+     // toast.error(t('games.session.error'));
       console.error('Error completing game session:', error);
     }
   });
@@ -83,7 +84,7 @@ export const useGameSession = () => {
       queryClient.invalidateQueries({ queryKey: ['game-sessions'] });
     },
     onError: (error: Error) => {
-      toast.error(t('games.session.error'));
+      //toast.error(t('games.session.error'));
       console.error('Error abandoning game session:', error);
     }
   });
